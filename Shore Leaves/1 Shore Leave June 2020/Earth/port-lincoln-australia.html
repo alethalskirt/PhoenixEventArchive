@@ -1,0 +1,2412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - port-lincoln-australia</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/6c6374bad0b0b6d204d8d6dc4a18d820.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/e8acd7d9bf6207f99350ca9f9e23b168.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/3bdef1251a424500c1b3a78dea9b7e57.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/be0060dafb7a0e31d2a1ca17c0708636.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/8e12fb4f14d9c4592eb8ec9f22337b04.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    white-space: pre-wrap;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.spoiler {
+    width: fit-content;
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image img {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 0.5em 0.7em;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="https://cdn.discordapp.com/icons/629656123091451934/741f79395701523dd2db7c22f691220d.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">earth / port-lincoln-australia</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+    <div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 11:50 AM</span>
+
+            <div class="chatlog__message " data-message-id="726751302834585622" id="message-726751302834585622">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Kun materialized not far from where they&#39;d start their small trek. He&#39;d come here a couple times before with Academy friends, damn it felt like ages ago. Last memory he had here was sneaking off at some Divine awful time to go skinny-dipping. There mere thought elicited a chuckle from the Acamarian. Shaking he head, he went off to the side to await Cosek.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 11:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="726752016172449824" id="message-726752016172449824">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He materialized, wearing science-blue swimming shorts with a floral pattern, and a towel on his shoulder.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 11:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="726752633154699284" id="message-726752633154699284">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Hey! Glad you made it.&quot; <em>The shorter male waved him over, warm smile ever so present.</em> &quot;I hope you don&#39;t mind that we&#39;ve got a way to go to get up to the spot. I promise it ain&#39;t too far.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 11:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="726753212257796147" id="message-726753212257796147">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;That&#39;s absolutely fine&quot; <em>the acamarian was met with a soft smile, and Cosek walks over to him</em> &quot;Australia huh? I have actually never been here before, though I have heard of it&#39;s beauty.&quot; <em>he looks around</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 11:59 AM</span>
+
+            <div class="chatlog__message " data-message-id="726753674906566687" id="message-726753674906566687">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Oh for sure, it&#39;s amazin&#39; here. Learned about it when I was a teen, honestly wish I had learned Standard with their accent. But you don&#39;t find a lot of people nowadays talking like that.&quot; <em>Kun placed both hands on his bag strap, beginning to walk a certain direction.</em> &quot;You afraid of heights?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="726754323312148613" id="message-726754323312148613">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Depends on the height, and what&#39;s below.&quot; <em>he smiled as he raised an eyebrow</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="726754778373423195" id="message-726754778373423195">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Oh, you&#39;re in for a ride, bud.&quot; <em>His smile was a full on grin.</em> &quot;Keep walking this way, I&#39;m going to drop our stuff off at the bottom!&quot; <em>He snatched Cosek&#39;s towel before jogging off.</em>
+
+<em>He returned quick enough, backpack, glasses, and flipflops left at Divines know where.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="726755856976314398" id="message-726755856976314398">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>and before he knew it his towel, and with that his combadge, had disappeared, all he could do now was follow Kun. He scratched his ear and follows, realising that safety protocols do not exist outside of the holodeck.</em> &quot;Quite well, let&#39;s see what spot you picked.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="726756276347863061" id="message-726756276347863061">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Haha, can&#39;t back out on this one, okay?&quot; <em>Kunzo was walking a little bit ahead, their path beginning to slope up. He turned around, continuing to walk but backwards as he held out his pinky.</em> &quot;You wouldn&#39;t break a pinky promise, right?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="726756843644256287" id="message-726756843644256287">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Well, it&#39;s not like had much of a choice now, but still, he held out his pinky as well.</em> &quot;I suppose not, no.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="726757271484235908" id="message-726757271484235908">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He locked pinkies with Cosek for a moment before pulling back and turning towards the trail. While Kun hadn&#39;t been looking up, if you did, anyone would notice on how steep it was about to get. No tree in sight, just flora filling the horizon.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="726758102610739230" id="message-726758102610739230">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Too late to back out now, so he might as well enjoy it, Cosek follows, looking around the area.</em> &quot;So how have you been?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="726758848089686047" id="message-726758848089686047">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Eh, not bad. Got promoted, recovering just fine. Really not much going on with me.&quot; <em>He wasn&#39;t the type of person to really outwardly talk about himself, so he flipped the topic.</em> &quot;But I would rather know what&#39;s been up with you. How&#39;s the month been? Any other plans for leave? Oh oh oh and how&#39;s Quackford?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="726759972880515397" id="message-726759972880515397">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Congrats! And I&#39;m happy to hear you have been recovering!&quot; <em>he paused</em> &quot;Well I actually mostly spent my time at home, watching shows from the couch with a cup of hot cocoa, occasionally visiting the gym.&quot; <em>he scratched his ear again, it seemed to be a habit of his</em> &quot;and Quackford has been doing great, he&#39;s enjoying the many pats.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="726761524491976764" id="message-726761524491976764">
+                <div class="chatlog__content">
+                    <div class="markdown">“Ah, your time sounds nicely spent. Oh and thank you,” <em>He couldn’t forget to be polite and. .</em> <strong>the gym</strong>. <em>Was he going to talk about how there was a literal bar of chocolate on that man’s abdomen? No. Was he going to casually and internally drool over it while reminding himself that that was his Second officer? Yes.</em> “I- I could tell pretty easily you’re a gym guy.” <em>Before he could delve further into that, he went back to the little man.</em> “I’m sure Quackford would’ve loved it here, or uhh— is he an inside or outside type of guy?”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="726762147253583875" id="message-726762147253583875">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Well he loves the holodeck, I often take him there for walks.&quot; <em>and there was the famous sparkle in Cosek&#39;s eyes, that appeared whenever he talked about his duck.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="726762542491238441" id="message-726762542491238441">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>His warm smile stayed as he listened to him speak.</em> “Literally, <em>adorable</em>. I’m still hung over that I haven’t even met him.” <em>There was a tease to his voice as he continued to trudge up the path. Maybe it was the talking, but they had gotten significantly higher.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="726763251211174011" id="message-726763251211174011">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;&#39;m sure he would love to meet you as well.&quot; <em>He looks around</em> &quot;Uhm so, how high are we talking? Because it seems we have walked up quite a bit already&quot; <em>oh lord this was going to be his death, not Klingons, not some alien bacteria, but Kun taking him diving</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="726764003145023550" id="message-726764003145023550">
+                <div class="chatlog__content">
+                    <div class="markdown">“Oh it’s not much longer. You’ll be fine!” <em>This was the best part. It was like a little initiation was he was young adult. Getting people to come up here and take the plunge.</em>
+
+<em>The steepness had come down as they furthered the trail. It finally looked to be smoothing out, but it damned showed how high they were.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="726764397686423662" id="message-726764397686423662">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>&#39;Well shit&#39;, and he had agreed to a pinky swear too</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="726764853477244929" id="message-726764853477244929">
+                <div class="chatlog__content">
+                    <div class="markdown">“I promise you, it’s not that bad once you  jump!” <em>He couldn’t even keep a straight face, Kun bursted out laughing as he came to the edge. The horizon was stunning, everything seemed beautiful if it weren’t for the notion that they were about to fall all the way down to the turquoise ocean below.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="726765412842471474" id="message-726765412842471474">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;If you say so.. but know that you are the one who will take care of Quackford if this goes south.&quot; <em>he chuckled, he knew it was going to be fine, Kun would not take him to a cliff and tell him to jump of it if it were dangerous... right?</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="726765997943685172" id="message-726765997943685172">
+                <div class="chatlog__content">
+                    <div class="markdown">“You know that I would <em>love</em> to take care of him. But I don’t think I’d sacrifice ya’ for him!” <em>He said through bouts of laughter.</em> “I can go first? If you want. <em>Orrr</em>, we go down together.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="726766275325591632" id="message-726766275325591632">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Well, let&#39;s jump down at the same time then, I won&#39;t be known as the person who let the captain jump from a cliff alone.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="726766634584375316" id="message-726766634584375316">
+                <div class="chatlog__content">
+                    <div class="markdown">“Even if you did I’d keep it between you and me. Oh and, aim for the right side, I heard there’s sharks on the left.” <em>The Acamarian said with a final smirk before grabbing on to Cosek’s hand and pulling him along in a sprint to the edge.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="726766921336487947" id="message-726766921336487947">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He sprinted along</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="726767315063930950" id="message-726767315063930950">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>As soon as his feet left the ground, Kun let out a wild yell as the familiar whip of air surrounded him. He was terrified of looking down but just like rollercoasters, once you do it, it’s fine.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="726767852866109536" id="message-726767852866109536">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Unlike Kun, Cosek had been looking down this whole time, just in case Kun wasn&#39;t joking, and sharks were waiting for him down there, but after half a second, he let go of the stress and simply let gravity do it&#39;s job, a wide genuine smile formed, and he was laughing.</em><span class="chatlog__edited-timestamp" title="28-Jun-20 12:56 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="726769466272251905" id="message-726769466272251905">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Times like this made him feel like a teenager all over again. Of course, the plunge that made his shorts ride all the way up wasn’t pleasant at all but that was the least of his worries. And no, there weren’t any sharks, atleast he hoped there wasn’t! Once he had regained his bearing from the jump, Kunzō rose to the surface, breaking through the soft waves.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="726769992862924907" id="message-726769992862924907">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Cosek arrived at the surface shortly after as well, a smile on his face</em> &quot;that wasn&#39;t so bad now&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="726770558108172320" id="message-726770558108172320">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He ran a hand through his hair to get it out of his face, water beating with his legs to keep him above the surface.</em> “Yeah! It’s my favorite.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="726771240752381963" id="message-726771240752381963">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Cosek started swimming around</em> &quot;So, how did you come to discover this place?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="726772295330299965" id="message-726772295330299965">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He paddled on to his back, simply floating as he swum a bit closer to shore but not directly going to it.</em> “Eh, a couple  Seniors took me one night, just became a tradition, ya’ feel?” <em>Hazel eyes glanced towards the hybrid before lazily shifting to the blue sky above.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="726772865025835061" id="message-726772865025835061">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I get it, I went out with my friends and a group of seniors in my academy time as well, but it wasn&#39;t quite like this.&quot; <em>he smiled as he was talking to Kun, and looks up to the sky, following the few clouds floating by.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="726774399612747787" id="message-726774399612747787">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Kun mostly stopped padding around, instead choosing to merely float.</em> “I was in that weird, popular slash cool kid setting? I don’t know— was friends with all sort of people.”
+
+“It’s cool though, wish I could take more of my friends out here.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="726774974374871060" id="message-726774974374871060">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Well this isn&#39;t the last shore leave we&#39;ll ever have, and one is a good start.&quot; <em>he slowed down a bit as well, not swimming too far from Kun, so that they could still speak to each other.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="726775285906669649" id="message-726775285906669649">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Aye, next time, I&#39;ll actually get A&#39;aehrel to come.&quot; <em>He chuckled.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="726775745732411413" id="message-726775745732411413">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I have yet to speak to A&#39;aehrel, what is she like?&quot; <em>he stopped swimming and started floating as well.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="726776344746131487" id="message-726776344746131487">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Oh shit, I totally forgot you two didn&#39;t interact at <em>all</em>.&quot; <em>Ah, he had let a curse through. Damn.</em> &quot;She&#39;s pretty cool, definitely haven&#39;t gotten to know her too much as well but she can run the ship amazingly. I think the Phoenix will be good for her, you know?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="726776716445614163" id="message-726776716445614163">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He knew very little aout the woman apart that she was previously intel</em> &quot;like a change of pace, getting used to a different environment? That can be good for all of us.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="726777207774773258" id="message-726777207774773258">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Yeah something like that, not just for her, but the crew as well. Dunamis had this. . weird mistrust of Intel and like I get why but it really messes with the minds of your officers when you make your views so, so <em>known</em>. It&#39;d be good for them.&quot; <em>What was he even doing?</em> &quot;Sorry sorry, we&#39;re on <em>leave</em>, the last thing we should be talking about is work!&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="726777789763813416" id="message-726777789763813416">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;That&#39;s quite alright, we are starfleet officers, so work is a big part of our lives, we basically spend most of our time surrounded by work, as we can&#39;t really leave the ship all that often.&quot;<span class="chatlog__edited-timestamp" title="28-Jun-20 01:35 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="726778207042404353" id="message-726778207042404353">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Got a good point there, just don&#39;t want it takin&#39; up half of what I talk about all the time. More interested in hearing about stuff that&#39;s cool like-&quot; <em>He paused for a moment.</em> &quot;You said you were spending time at home? Got a place on Earth?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="726778691685842956" id="message-726778691685842956">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Well, I was talking about my quarters, I guess it has become my home now. Though I would love to get my own house on Earth someday, it&#39;s such a diverse planet, with outstanding beauty everywhere..&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="726779310396145705" id="message-726779310396145705">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;<em>Oh</em>, ah must&#39;ve got it wrong. It&#39;s not really. . often? That you hear people consider their quarters &#39;home&#39;, it&#39;s always something else. Just assumed that since you&#39;re half human that you&#39;d got some sort of place here.&quot; <em>There was a bit of a chuckle on his end.</em> &quot;And yeah, trust me I can agree with you on that. Such a small place but full of variety.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="726779974844940290" id="message-726779974844940290">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;After I left home I stayed on campus until graduation, and after that I have always lived aboard Starfleet vessels, I never really had my own house or apartment, I just made the place I stayed at &#39;home&#39;&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="726780303946940457" id="message-726780303946940457">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Now <em>that</em> does make sense. So, where exactly were you born then?&quot; <em>He then questioned, sinking further into the water.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="726780924192227398" id="message-726780924192227398">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I was born on a starbase, starbase 718 to be more precise, it was where my mother arrived as a refugee, and where she met my father, I moved to Earth when I turned four.&quot;<span class="chatlog__edited-timestamp" title="28-Jun-20 01:48 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="726781305110659182" id="message-726781305110659182">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Oh! I seeee,&quot; <em>He drawled on. And mind, it did fit the pieces.</em> &quot;Do they still live there?&quot;<span class="chatlog__edited-timestamp" title="28-Jun-20 01:49 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="726782323634470954" id="message-726782323634470954">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>that comment made his face turn sour, but only for a moment</em> &quot;No, they seperated while I was in my teens.. Not my happiest time, you could say that I was glad to join Starfleet academy and leave &#39;home&#39;, my mother wasn&#39;t exactly the most open-minded person, and tried to make sure I grew up to be a good Reman boy.. Let&#39;s just say she wasn&#39;t the most pleased with me sometimes preffering the human way of life.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="726783075270262824" id="message-726783075270262824">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;<em>Oh</em>&quot; <em>You just had to ask, didn&#39;t you? Dummy. He could already sense it before he had even inquired about it.</em> &quot;Sorry for bringing it up, obviously not the <em>greatest</em> topic I could&#39;ve chose. Just glad you made it this far.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="726783379332268032" id="message-726783379332268032">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;That&#39;s okay, I&#39;m glad to be where I am now and that is what matters.&quot; <em>he smiled</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="726783667208192051" id="message-726783667208192051">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;How about we swim to shore? I brought some snacks and water.&quot; <em>He offered, tilting himself forward.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="726783839476776960" id="message-726783839476776960">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;That sounds good&quot; <em>he follows</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="726784432077275197" id="message-726784432077275197">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>With a soft paddle, he made his way towards the shore, eventually being able to get on his feet. Sitting neatly on Cosek&#39;s towel was Kun&#39;s pack and the rest of their stuff.</em> &quot;Sandwiches cool with you?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="726784775540703264" id="message-726784775540703264">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>he walks onto the shore and towards their stuff</em> &quot;Yeah thanks, I totally forgot to bring anything.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="726787874908799026" id="message-726787874908799026">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;It&#39;sall good, I thought we could both use it. Sandwiches always hit different on the beach.&quot; <em>He ruffled through his pack, pulling out two boxes out, each having two triangle slices.</em> &quot;Here you are,&quot; <em>Kun offered, flopping down on to the sand with his own box.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="726788485075304448" id="message-726788485075304448">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He runs the towel through his hair and sits down with a sandwich</em> &quot;So enough about me, you were going to show me Acamar in the holodeck, but seeing how we are on the beach, I&#39;d like to just hear about it.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="726790295462871150" id="message-726790295462871150">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Oh! Oh my gosh I had totally forgotten about that.&quot; <em>Kun, placed the box on to his lap.</em> &quot;Divines, holodeck could never do it justice. Acamar is just filled with a mix of modernized cities settled in a practical jungle. There are very few clans who live in the flora filled parts unless you were one of the clans that have to keep up the comm lines or highways. Vorvoss runs rampant on the roads.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="726790530167734272" id="message-726790530167734272">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;So then you grew up in the jungle?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="726791207287521330" id="message-726791207287521330">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Somewhat yeah, it was a town in one of the rare clearings. I didn&#39;t move into the more. . <em>populated</em> areas till I was like, a pre teen? Man, I&#39;d love to actually, take you there. I&#39;m awful at describing such a thing.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="726791808515964979" id="message-726791808515964979">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Are there any transports that run from Earth to there? And is there a tourist sector? If so that might actually be possible.&quot; <em>he takes a bite from the sandwich</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="726792456741584927" id="message-726792456741584927">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;It&#39;s not really, uh, tourist friendly per-say. The most you&#39;d get is into the Capital before you&#39;ve got to go through extensive uhm. What&#39;s the word. . screening? You have to provide invitation from a clan to go to their home. It&#39;s weird, they&#39;re all awfully territorial.&quot;
+
+&quot;I&#39;m sure one of these days I could ask my parents for one.&quot;<span class="chatlog__edited-timestamp" title="28-Jun-20 02:33 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="726793419745132706" id="message-726793419745132706">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He nods, taking another bite</em> &quot;Oh I see, but maybe in the future then, Starfleet might be able to help as well seeing how it&#39;s a foreign culture to the Federation and I am an anthropologist, though even apart from that, I&#39;d love to see Acamar, tribe structures are pretty rare in the galactic community.&quot;  <em>he paused</em> &quot;so how did you end up in Starfleet as an Acamarian?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="726794067467304961" id="message-726794067467304961">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Yeah! I&#39;m sure with the notion of Starfleet it could help you out.&quot; <em>Kun chuckled, setting aside his box as he leaned back.</em> &quot;I uhhh, I got arrested for illegally accessing people&#39;s databanks? And a Captain helped me out, got me outta there and recommended me for the Fleet?&quot; <em>There was a nervous laugh on his end. Sometimes, he had totally forgotten that had even happened.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="726794596603920415" id="message-726794596603920415">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He raised his eyebrows</em> &quot;You accessed people&#39;s databanks, and got a starfleet captain to smuggle you of planet? Now that&#39;s an exciting way to get into the federation isn&#39;t it?&quot; <em>he laughed</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="726794977794850826" id="message-726794977794850826">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Oh gosh you make it sound much more exciting then it actually was but if I wanted to I could say that happened aha! Nah, nah, she offered to take me off their hands, and I sure as hell was going to stay there.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="726795178685235260" id="message-726795178685235260">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;So you knew what the federation was like when you agreed to join her?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="726795550644502609" id="message-726795550644502609">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Nope. Not a clue actually, all I knew was that they were a thing and they didn&#39;t want to put me in prison.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="726796029311320186" id="message-726796029311320186">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Well, that sounds like good enough of a reason to me. So, I assume they don&#39;t want to put you in prison anymore?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="726796146441322566" id="message-726796146441322566">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Nope! They&#39;re fine with me now, but I haven&#39;t been back there in <em>ages</em>.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="726796440487329842" id="message-726796440487329842">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;When was the last time you visited?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="726796621744177232" id="message-726796621744177232">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Uhh, Divines like, twenty years ago?&quot; <em>His head tilted to the side.</em><span class="chatlog__edited-timestamp" title="28-Jun-20 02:56 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="726798636587155498" id="message-726798636587155498">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;That long ago? You should go back to meet your family!&quot; <em>he&#39;d finished his sandwich</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="726798937712754739" id="message-726798937712754739">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;We talk sometimes, I&#39;m alright.&quot; <em>Eyes flickered.</em> &quot;What about you? Have you gotten the chance to meet some Remans?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 03:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="726799171650322542" id="message-726799171650322542">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>he scratched his ear</em> &quot;Yeah! I went to several Reman colonies a few times when I was younger, and once more while I was serving on the USS Chimera, the people were always more friendly than I expected, and were very welcoming, I still want to just spend a few weeks, maybe even months travelling around one of the Reman colonies meeting people, and just explore my heritage&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 03:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="726799589423841325" id="message-726799589423841325">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;That sounds amazing to do, learning all about where your parents come from is always so.. what&#39;s a good word? Enlightening in a way? Things make more sense. It&#39;s the same with just, learning about other cultures y&#39;know? You understand people a lot better.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 03:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="726800070556516393" id="message-726800070556516393">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Yeah, even if half of me is Human, there is a part of me that is Reman as well, and recently I have gotten more and more curious about the Reman telepathic ability, but I haven&#39;t been able to really figure out much on my own, so maybe someday I&#39;ll find someone who can tell me more about it.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 03:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="726800195463020556" id="message-726800195463020556">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;No way, Remans are telepathic? I had no idea!&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 03:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="726800636997402724" id="message-726800636997402724">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Well I don&#39;t blame you, literature is hard to find, there are only a few books that talk about it and even then it&#39;s all pretty vague. I hope to find out how it works someday, who knows how useful it would be&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 03:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="726800862583718019" id="message-726800862583718019">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Aye, it&#39;s what makes learning the language even harder. You&#39;ve gotta scrap together info from all over to learn one thing.&quot; <em>Kun shook his head.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 03:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="726801211604467782" id="message-726801211604467782">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He nods</em> &quot;that&#39;s right, you know how to speak Reman, I have to say that&#39;s an awesome ability, like even I, who had a native speaker to teach me, don&#39;t speak it perfectly. It is truly impressive.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 04:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="726815185574297640" id="message-726815185574297640">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I wouldn&#39;t say but I appreciate it! It&#39;s always got a special place in my heart.&quot; <em>Kun sent him the brightest of grins.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 04:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="726818202117734450" id="message-726818202117734450">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;So, you have been promoted eh? How does being the captain feel? Have you gotten used to the new quarters yet?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 04:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="726818807892672603" id="message-726818807892672603">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Honestly, feels real weird. Just never expected you know?&quot; <em>He answered, surprisingly honest.</em> &quot;By the way, how&#39;s Science been going? I know there hasn&#39;t been much for all of you lately.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 04:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="726821409401077820" id="message-726821409401077820">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;How so? You have been doing well as a commander, so getting your own ship was only a matter of time right? And we are doing what we can with the resources we have got, so mostly individual research projects right now, as we haven&#39;t had any expeditions lately.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 04:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="726822116187570238" id="message-726822116187570238">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;It just felt wrong in how I got it I guess, haha.&quot; <em>He shook his head, pushing himself forward.</em> &quot;I&#39;m hoping to get you guys some more Science oriented assignments. Finally get you all on the grind again.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 04:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="726822657533673523" id="message-726822657533673523">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;That would be nice, maybe some expeditions or field trips where we can collect some samples in the field, there are still some planets with a relatively unexplored flora and fauna.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 04:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="726822903861215242" id="message-726822903861215242">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I&#39;ll see what I can do, science is brimming with smart officers - it&#39;d be a shame to see that go to waste.&quot; <em>Kun put the full box back into the bag and Cosek&#39;s empty one as well.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 04:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="726824637513597019" id="message-726824637513597019">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Yeah, agreed, but don&#39;t rush it if there are other, more important things to focus on, as science is also a very flexible department, we&#39;ll do what we can whenever we can, and take oppurtunities as they present themselves.&quot; <em>he offers an encouraging smile</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 04:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="726825102301200478" id="message-726825102301200478">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;You know-&quot; <em>He looked up from rifling with the bag.</em> &quot;-I appreciate it Cosek. And if things get too much, don&#39;t hesitate to tell me.&quot; <em>A similar smile was sent back as he threw the backpack on to his shoulders, fastening the straps.</em>
+
+&quot;Now I hate to leave you on a high note, but I&#39;ve got one of those &#39;I think I left the stove on&#39; feelings about the reports sitting at him. So. . I&#39;ll see you, later?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 04:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="726825856093257780" id="message-726825856093257780">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He nods</em> &quot;Quite well, I understand the feeling, I&#39;ll go back to my hotel.&quot; <em>he smiles and gets up, grabbing his combadge</em> &quot;See you later Kun&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 04:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="726826074209517618" id="message-726826074209517618">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>With a single wave, Kun tapped his badge and beamed away.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/272070097152114688/ddf58511cafd294469e1796539fa5c66.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CaptainCasino#2089" data-user-id="272070097152114688"  style="color: rgb(39, 126, 205)" >Lt. Cmdr. Cosek Burns</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 04:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="726826650460749886" id="message-726826650460749886">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He&#39;d waved as well, and tapped his combadge shortly after, leaving only his footprints in the sand.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 94 message(s)</div>
+</div>
+
+</body>
+</html>

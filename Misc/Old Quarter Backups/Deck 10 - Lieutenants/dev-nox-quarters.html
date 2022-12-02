@@ -1,0 +1,1235 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - dev-nox-quarters</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discord.com/assets/6c6374bad0b0b6d204d8d6dc4a18d820.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discord.com/assets/e8acd7d9bf6207f99350ca9f9e23b168.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discord.com/assets/3bdef1251a424500c1b3a78dea9b7e57.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discord.com/assets/be0060dafb7a0e31d2a1ca17c0708636.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discord.com/assets/8e12fb4f14d9c4592eb8ec9f22337b04.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    white-space: pre-wrap;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.spoiler {
+    width: fit-content;
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image img {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 0.5em 0.7em;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/a_5361c0bf380eb945fe0f2e7ee079ec5d.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Deck 10: Lt. Quarters / dev-nox-quarters</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/074b791d1b4d72698019e1de2f7900e3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Khassid#7477" data-user-id="635608785196679188" style="color: rgb(149,165,166)">Khassid</span>
+
+
+        <span class="chatlog__timestamp">25-May-20 06:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="714525318714621992" id="message-714525318714621992">
+                <div class="chatlog__content">
+                    <div class="markdown">[D] <em>A message to Dev:</em>
+<div class="quote">Thank you so much sir. It&#39;s been amazing serving with you and your work has always been an inspiration to me. I hope I&#39;ll see you again in the future! 
+</div>- Sonden. </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/a_2bbd387fee45e8e4ecf9add05f9f6cbf.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#1967" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 02:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="714648398007107644" id="message-714648398007107644">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;<em>Oh!</em>&quot; <em>Please hold it together, woman. Somewhere within her, Blanche hoped that crying was some sort of cosmetic benefit.</em> &quot;I wouldn&#39;t worry about crowdin&#39; it, it could do with a little jazzin&#39; up after all those repairs.&quot; <em>Once entering, Blanche&#39;s smile softened within the moment she laid eyes upon that vast fish tank, bathed in its gentle glow the moment she crossed the threshold into the trill&#39;s quarters.</em> &quot;Your— or, well, <em>Houston&#39;s</em>—. The <em>crane</em> made it through, imagine that! It&#39;s still sittin&#39; pretty on my desk.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/aecf85c95e8be15f08d843c45bcd7cb1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dev Clark#6756" data-user-id="703386016068665407" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 02:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="714651753328410697" id="message-714651753328410697">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I love that crane. I like to peep in your office uhm, every so often to get a good look at it.&quot; <em>Then there came a tug on her coat, beckoning her over to the dining table that had been filled with social construct books all over. But in the middle was a simple salt water tank. Inside it was a speckled puffer fish.</em>
+
+&quot;I think he would make a good companion on your desk then. Or maybe with Dixie.&quot; <em>Clark eyes immediately lit up upon seeing the little guy, crouching down to get a better look while hands rubbed into the table. Another favorite tactile surface.</em> &quot;I got him thinking he would be good for the tank, but doing some research said that these guys don&#39;t really like neighbors. So I&#39;ve been housing him alone.&quot; <em>His head tilted back to Blanche to catch her gaze for just a moment.</em>
+
+&quot;Since you got your promotion, I thought it would be a good gift. You&#39;re, you&#39;re supposed to give gifts to people when stuff like this happens, yeah?&quot; <em>He really wasn&#39;t all that sure about this. Considering he&#39;s never done it before.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/a_2bbd387fee45e8e4ecf9add05f9f6cbf.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#1967" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 02:48 AM</span>
+
+            <div class="chatlog__message " data-message-id="714656150355836978" id="message-714656150355836978">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Blanche barely had time to process what was happening, having become somewhat enthralled by the serenity provided simply by fish. Perhaps it was simply being with Clark again, too, someone who had come to feel like family amidst all the chaos and uncertainty that seemed to envelop them constantly.</em>
+
+<em>Still, Carlisle was gladly tugged along, barely registering the books splayed out across the table before her eyes fell upon the little fish. Instantly, the sight drew a little sound of adoration from the woman, who crouched in a similar fashion so as to watch him swim around. She cast the intermittent glance to Dev, listening intently as he elaborated.</em>
+
+&quot;Oh, Clark,&quot; <em>she&#39;d practically cooed, beaming as she regarded the little yellow fish swim around quite happily.</em> &quot;It&#39;s a wonderful gift, darlin&#39;, <em>thank you</em>. Maybe he&#39;d like to be in my quarters, with Dixie, you know. That way he would have a different kind of neighbour.&quot; <em>Another sound of general affection.</em> &quot;Oh, he&#39;s just adorable, I adore him!&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/aecf85c95e8be15f08d843c45bcd7cb1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dev Clark#6756" data-user-id="703386016068665407" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 02:59 AM</span>
+
+            <div class="chatlog__message " data-message-id="714658880793083964" id="message-714658880793083964">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He was rather small, simply placed in a good seven gallon tank. It was just enough for the little puffer to swim around and be happy.</em> &quot;I think he&#39;d like it there. All he needs is Fish Supplement Number Forty-One and he&#39;s okay for the day.&quot; <em>Reaching out a finger, he tapped the tank, causing the fish to swim over to investigate.</em>
+
+&quot;I just suggested the office in the case you didn&#39;t come home some days, so you could feed him on time everyday.&quot; <em>His lips curved up in a: :]. It was good to finally give him a home. The poor guy really needed it. There was always this twinge of guilt when he&#39;d sit in front of the tank for hours ignoring the lonely tank on the table.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/a_2bbd387fee45e8e4ecf9add05f9f6cbf.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#1967" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 03:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="714662301990649917" id="message-714662301990649917">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Blue eyes followed the fish&#39;s every movement, admittedly mesmerised. Perhaps especially so due to the thoughtfulness behind the gesture; sentiment never failed to leave Blanche all flustered. Her smile softened some, and the doctor nodded.</em> &quot;Alright, Supplement Number Forty-One.&quot; <em>She repeated the words with extra care, knowing Dev&#39;s attachment to the little guys.</em>
+
+&quot;I&#39;ll try my best to keep a schedule,&quot; <em>it was then that she tore her eyes from the tank, looking to Clark with scarlet lips similarly upturned.</em> &quot;He&#39;ll be well looked after, don&#39;t worry. Mind, I might have to trust someone else feedin&#39; him for the next couple days; I was thinkin&#39; of headin&#39; home again for shoreleave. Were you plannin&#39; on goin&#39; anywhere yourself?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/aecf85c95e8be15f08d843c45bcd7cb1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dev Clark#6756" data-user-id="703386016068665407" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 03:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="714663882542809099" id="message-714663882542809099">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;No I wasn&#39;t going to go anywhere. I went last time to somewhere around Mexico, but this time I was thinking of just making sure sickbay was cared for well.&quot; <em>He shrugged where he was, pushing himself up back to stand up. Hands still gripped the table, rubbing on the glossed wood.</em>
+
+<em>It was good to know Blanche was a good choice for his home. There was no one else on board he&#39;d trust with the prospect.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/a_2bbd387fee45e8e4ecf9add05f9f6cbf.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#1967" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 03:32 AM</span>
+
+            <div class="chatlog__message " data-message-id="714667166414143501" id="message-714667166414143501">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Her lips had bunched to the side in that way they always did when she was thinking. Dark brows had furrowed, too, and the older woman&#39;s gaze returned to the pufferfish, newly pensive. The thought of him being cooped up in medical just didn&#39;t sit right with Blanche, not after all that had happened.</em>
+
+<em>Thus, after a lightbulb moment identified by those big blue eyes snapping open, the CMO looked up to Dev from where she was still crouched. Blinking, somewhat hopeful, and entirely serious,</em> &quot;Why don&#39;t you come back to Georgia with me?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/aecf85c95e8be15f08d843c45bcd7cb1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dev Clark#6756" data-user-id="703386016068665407" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 03:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="714668245092925481" id="message-714668245092925481">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Dev&#39;s head gave a tilt to the side, glancing once more at her.</em> &quot;Are you. . are you sure? I don&#39;t want to take away from your time visiting - home - home right?&quot; <em>He was really thrown off by the offer, evidence clear in how his monotone voice took a dip in emphasis.</em>
+
+&quot;I would, I would, I would really love to.&quot; <em>He then said in a mumble, smile creeping on to his face. As his teeth appeared, his eyes squinted into crescents.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/a_2bbd387fee45e8e4ecf9add05f9f6cbf.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#1967" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 03:47 AM</span>
+
+            <div class="chatlog__message " data-message-id="714670898317361162" id="message-714670898317361162">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Home.&quot; <em>She affirmed fondly, elbows propped atop the table so that she could rest her chin in her hands. Admittedly, his reaction had filled Blanche with absolute glee; too see him so delighted by the prospect after all that had transpired was enough to make her heart soar. Of course, such was reflected in the woman&#39;s own expression, eyes creased as she nodded eagerly.</em>
+
+&quot;Oh, I&#39;m <em>certain</em>! You could come and stay on the ranch, I bet you&#39;d just love it. We&#39;ve horses, chickens. Lots of cows, now, too. It&#39;s smack in the middle of the country, no noise or nothin&#39;, and i&#39;ll be lovely this time of year!&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/aecf85c95e8be15f08d843c45bcd7cb1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dev Clark#6756" data-user-id="703386016068665407" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 03:49 AM</span>
+
+            <div class="chatlog__message " data-message-id="714671563475124285" id="message-714671563475124285">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Oh I would like to see chickens. Are there baby chicks, I really love them, I used to have toys of them when I was younger.&quot; <em>There was a big grin on his face, even if his words didn&#39;t match his excitement. Really the only thing indicating it was the way his hands gave a tiny flap and that shining smile.</em> 
+
+&quot;You uhm-&quot; <em>Wait! He had read about a good phrase for this.</em> &quot;You just tell me the time and I&#39;ll be there!&quot; <em>It wasn&#39;t set in his usual mumble, instead it sounded. . normal for once. Only reason why was because it was so rehearsed.</em> </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="care" title="care" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/711609055021629502.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/a_2bbd387fee45e8e4ecf9add05f9f6cbf.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#1967" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 04:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="714674942402232339" id="message-714674942402232339">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Again, she nodded with sheer enthusiasm. Such a turn in the conversation had only made Blanche miss home all the more dearly, and thus, the prospect of returning with the likes of Dev became a dreamlike notion of sorts.</em> &quot;There&#39;ll be dozens of chicks; they&#39;re just comin&#39; out of spring now. Oh, wait &#39;til you hear them all chirpin&#39; together,&quot; <em>she grinned, then,</em> &quot;it&#39;s adorable.&quot;
+
+<em>Still beaming, the woman eventually straightened up.</em> &quot;Got it; I&#39;ll let you know. Don&#39;t worry about packin&#39; too much, mind, they&#39;ve got one or two replicators. It ought to be quite warm, too. I&#39;m gettin&#39; all excited, now. It feels like forever since I visited.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/aecf85c95e8be15f08d843c45bcd7cb1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dev Clark#6756" data-user-id="703386016068665407" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 04:07 AM</span>
+
+            <div class="chatlog__message " data-message-id="714676062222811187" id="message-714676062222811187">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Ookay! I-&quot; <em>He&#39;s got this one in the bag.</em> &quot;I can&#39;t wait.&quot; <em>He sent her a grin.</em> &quot;I&#39;ll put this guy on automated feeding till we get back. They&#39;ll be okay.&quot;
+
+&quot;Home is always good to be excited over. You should make sure whoever is there knows you are coming.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/a_2bbd387fee45e8e4ecf9add05f9f6cbf.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#1967" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 04:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="714678367777194035" id="message-714678367777194035">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Just so, the grin was matched. The fish even got one, too. She&#39;d have to come up with a name for him.</em> &quot;Thank you. I was thinkin&#39; of doin&#39; the same for Dixie, but I don&#39;t see why I couldn&#39;t just take her down.&quot;
+
+<em>A nod, then, abrupt as he had reminded her of basic etiquette.</em> &quot;Darn, you&#39;re right. I&#39;ll let them know I&#39;m bringin&#39; you along, too. They&#39;ll love to have you; I&#39;ll warn them against bein&#39; overbearin&#39;, mind. Southern hospitality and all, they can&#39;t help themselves sometimes.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/aecf85c95e8be15f08d843c45bcd7cb1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dev Clark#6756" data-user-id="703386016068665407" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 04:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="714679184240279604" id="message-714679184240279604">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I think Dixie will enjoy it down there. But I heard cats have trouble with being moved sometimes.&quot; <em>Clark gave a mumble, reverting back to his normal speech.</em> &quot;Oh yes - uhm, that would be nice. People are very nice but I do not like it when they get touchy.&quot; <em>Hospitality usually had a good connotation but not in the scenario he was thinking of did it.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/a_2bbd387fee45e8e4ecf9add05f9f6cbf.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#1967" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 04:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="714680692100956211" id="message-714680692100956211">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;You&#39;re right, I keep forgettin&#39; she&#39;s a space cat. That&#39;d be a pretty big move,&quot; <em>she chuckled lightly, tone and expression softening in unison upon Dev&#39;s elaboration.</em> &quot;They won&#39;t get touchy, you have my word, darlin&#39;. I&#39;ve been bossin&#39; my siblin&#39;s around since the start of time, they wouldn&#39;t dream of upsettin&#39; me now. Especially not after this big, shiny promotion.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/aecf85c95e8be15f08d843c45bcd7cb1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dev Clark#6756" data-user-id="703386016068665407" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 04:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="714681092963041360" id="message-714681092963041360">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>There came a soft laugh from his end, repeating what she said.</em> &quot;Space cat.&quot; <em>For some reason, the phrase really got him.</em> &quot;Thank you, that is very. . kind of you to do that. And yes, they cannot say no to Commander Carlisle.&quot; <em>It felt weird saying her last name, he hated how it rolled off the tongue, but it was needed for the joke.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/a_2bbd387fee45e8e4ecf9add05f9f6cbf.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#1967" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 10:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="714950935868342272" id="message-714950935868342272">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>His laugh only set Blanche at further ease, who had been subconsciously drumming her fingers against the table’s edge. Not to the severity of causing any sort of noise, but enough that the woman noticed and stopped once her train of thought had come to a halt. Dev’s joke prompted a chuckle in return, and the doctor sighed.</em> “No, they can’t. Alright, I should probably set to gettin’ ready, and leave you to do the same.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/aecf85c95e8be15f08d843c45bcd7cb1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dev Clark#6756" data-user-id="703386016068665407" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 10:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="714951666356715561" id="message-714951666356715561">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Yeah yeah, that&#39;s- that sounds good.&quot; <em>He corrected himself mid way through. It was nice to have someone around that was mindful of their actions.</em> &quot;I uhm, should I bring them something? You, your family I mean. I read up that it&#39;s customary in a lot of cultures but I&#39;m not, not that good at this.&quot; <em>Clark rose, eyes staring at Blanche&#39;s locks of hair.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/a_2bbd387fee45e8e4ecf9add05f9f6cbf.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#1967" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 10:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="714955250192351254" id="message-714955250192351254">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Carlisle inclined her head to one side, causing the hair in question to bounce about slender shoulders. The doctor’s eyes had widened upon the suggestion, and she found herself racking her brain.</em> “As sweet as that is, I doubt they’d be expectin’ anythin’. They’ll be happy enough to see us, I wouldn’t worry about it, darlin.”” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/aecf85c95e8be15f08d843c45bcd7cb1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dev Clark#6756" data-user-id="703386016068665407" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 10:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="714955604208123995" id="message-714955604208123995">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Okay!&quot; <em>He grinned, eyes going into crescents once more.</em> &quot;I will find someone to look over this guy and get ready I-&quot; <em>Don&#39;t forget.</em> &quot;Thank you for inviting me.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/a_2bbd387fee45e8e4ecf9add05f9f6cbf.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#1967" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 11:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="714964675695083580" id="message-714964675695083580">
+                <div class="chatlog__content">
+                    <div class="markdown">“Sounds good!” <em>And it did; she was genuinely excited, evident in every quirk of her features. Truth be told, Blanche hadn’t been this excited for some time, nor had she seen Dev so excited; of course, his excitement only made her excitement grow, and so on. It was a cycle, of sorts.</em>
+
+“Please, I’m honoured to have you come along. It’ll be fun as anythin’,”  <em>with one last grin, she was finally headed to the door.</em> “Thank <em>you</em> for the gift again; we’ll have to think of a name.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/aecf85c95e8be15f08d843c45bcd7cb1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dev Clark#6756" data-user-id="703386016068665407" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 11:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="714966149510463498" id="message-714966149510463498">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Rocking back on his heels, the doctor took one last look at the speckled boy.</em> &quot;Should look at some Trill names for him, it would suit him.&quot; <em>He turned back, making a bit of eye contact.</em>
+
+&quot;I will see you uhm, at the airlock!&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/a_2bbd387fee45e8e4ecf9add05f9f6cbf.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#1967" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">26-May-20 11:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="714972955871936573" id="message-714972955871936573">
+                <div class="chatlog__content">
+                    <div class="markdown">“It would,” <em>she chimed softly, noting the connection.</em> “I’ll see you there!” <em>Dev’s effort to make eye contact was similarly noted by Blanche, who gave the boy a gentle smile and wave before slipping out into the hallway.</em> <span class="chatlog__edited-timestamp" title="26-May-20 11:47 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/a_2bbd387fee45e8e4ecf9add05f9f6cbf.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#1967" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 08:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="726519901832872016" id="message-726519901832872016">
+                <div class="chatlog__content">
+                    <div class="markdown">[D] <em>Ping, a message for Dev.</em>
+
+<div class="quote">I&#39;ve been invited out for dinner, but I should be able to speak with you afterwards! I hope that all is well, and you&#39;re enjoying this much deserved break. :)
+</div>&gt; 
+<div class="quote">See you soon,
+Blanche</div> <span class="chatlog__edited-timestamp" title="27-Jun-20 08:30 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2010_%20Lt.%20Quarters%20-%20dev-nox-quarters%20%5B714108624494133310%5D.html_Files/92e1f50b015a52c20a3c465cb38688da.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Jayne#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">23-Aug-20 07:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="747154557145972797" id="message-747154557145972797">
+                <div class="chatlog__content">
+                    <div class="markdown">[D]<em>All Quarters were wiped out, being sucked into space.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 26 message(s)</div>
+</div>
+
+</body>
+</html>

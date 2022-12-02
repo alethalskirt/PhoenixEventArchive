@@ -1,0 +1,2391 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - climbing-rocks</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Deck 9: Recreation / climbing-rocks</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">23-Jan-21 06:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="802604760036540416" id="message-802604760036540416">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>A climbing rock cliff. How long it had been since he&#39;d seen one of these. It felt nostalgic to strap himself into a harnees and test the strength of the rope attached to the very top again after all these years in fact. Now satisfied with the latter he waited for Kytha to join him.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/6352fbad517839ea09e8d7c023b3ae3a-3DBD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">23-Jan-21 06:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="802611007767707648" id="message-802611007767707648">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha appeared and hooked up herself beside him, giving the rope a nice, strong tug.</em> &quot;You probably have more experience then me at this, so don&#39;t be afraid to go ahead of me. I&#39;ve only climbed exactly one mountain.&quot; <em>She grinned widely at him, giving him a thumbs up.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">23-Jan-21 06:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="802611736686886942" id="message-802611736686886942">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;If you say so.&quot; <em>He hoisted himself up, tested the first rock above him - and began his ascent. Slow, steady but graceful, smoothly moving from one rock and handhold to the next.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/6352fbad517839ea09e8d7c023b3ae3a-3DBD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">23-Jan-21 07:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="802617756419227698" id="message-802617756419227698">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She by comparison was alot slower and less graceful by comparison. Even though she had grew up in a mountain village, Kytha was never the outdoorsy type. Still, she held her own and climbed the wall at her own pace.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">23-Jan-21 07:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="802618776142741524" id="message-802618776142741524">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Neither was Dune, the bookworm and studyholic - but hey, you pick up things as you go in life. He was soon at the sheerest part of the rock climbing wall, almost near the top. He reached for the nearest handhold - and it nearly came off in his hand. Oh dear.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/6352fbad517839ea09e8d7c023b3ae3a-3DBD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">23-Jan-21 07:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="802619739959984248" id="message-802619739959984248">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;You doing okay up there?&quot; <em>Kytha shouted as she continued up the wall. This was remarkably easier then climbing up a mountain with a whole &#39;nother person to account for but she still hadn&#39;t got the full hang of it.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">23-Jan-21 07:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="802620171717050439" id="message-802620171717050439">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I will be fine.&quot; <em>He reassured her, proceeding up the rock face as he had been, albeit more carefully. Apparently somehow hooves work when climbing...</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/6352fbad517839ea09e8d7c023b3ae3a-3DBD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">23-Jan-21 07:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="802620457811181568" id="message-802620457811181568">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Okay, just be careful.&quot; <em>She added as she diligently focused on catching up to him</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">23-Jan-21 07:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="802620875765055528" id="message-802620875765055528">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Eventually he vaulted up to the top and settled at the summit with his legs hanging over the side, panting a little. He needed to go on runs on the deck, he decided. His stamina was flagging a little.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/6352fbad517839ea09e8d7c023b3ae3a-3DBD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">23-Jan-21 07:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="802621794737061978" id="message-802621794737061978">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha smiled up at him. He looked so adorable sitting over the edge with his little hooves hanging over the edge. She didn&#39;t want to keep him waiting so she picked up her pace determined to make it to the top.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 01:10 AM</span>
+
+            <div class="chatlog__message " data-message-id="802706750905778187" id="message-802706750905778187">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;How are you down there?&quot; <em>He reached down with a hand for her to grasp - but she had some distance to go. She would have to get to him on her own. He couldn&#39;t help her with everything after all.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/6352fbad517839ea09e8d7c023b3ae3a-3DBD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 01:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="802709980435185724" id="message-802709980435185724">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;m good! Almost there!&quot; <em>She said cheerfully though Abit fatigue was present in her voice. As she approched him, she took his hand and hoisted herself up atop the wall, a huge grin on her face as she felt pride in managing to make it.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 01:31 AM</span>
+
+            <div class="chatlog__message " data-message-id="802712102191104040" id="message-802712102191104040">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well done.&quot; <em>With a soft chuckle he reached across and hugged her with a soft kiss to her temples. Apart from the fact that the scene below them was full of Klingons and other crew and accordingly very rowdy, the moment was quite nice, actually. Just him, the one he cared for the most and no one else. For now.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/6352fbad517839ea09e8d7c023b3ae3a-3DBD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 01:41 AM</span>
+
+            <div class="chatlog__message " data-message-id="802714784272351262" id="message-802714784272351262">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;m getting the hang of it. I should scale more mountains&quot; <em>She laughed, blushing as he kissed her. It had been sometime since they had a moment like this and she had really missed it. Just being here with him put her heart at ease.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:05 AM</span>
+
+            <div class="chatlog__message " data-message-id="802720582386581504" id="message-802720582386581504">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;No, not really. A little more practice and you will get better at it,&quot; <em>He said, beaming and nuzzling her hair.</em> &quot;You look lovely today, by the way. Extraordinarily lovely...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/6352fbad517839ea09e8d7c023b3ae3a-3DBD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="802722415716204604" id="message-802722415716204604">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She turned bright, her bubbly giggling filling the air as she held on to him tightly</em> &quot;Thanks~ Your looking rather handsome yourself~ As you do everyday~!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:20 AM</span>
+
+            <div class="chatlog__message " data-message-id="802724427606523916" id="message-802724427606523916">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh, come now-&quot; <em>He went a dark shade of red, which was accompanied by a searing flush in his cheeks.</em> &quot;It&#39;s only how I usually appear-&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 02:20 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/6352fbad517839ea09e8d7c023b3ae3a-3DBD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="802725387431837716" id="message-802725387431837716">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Exactly.&quot; <em>She grinned widely, looking deep into his beautiful golden eyes.</em> &quot;Your always handsome.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 02:24 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:44 AM</span>
+
+            <div class="chatlog__message " data-message-id="802730435926949918" id="message-802730435926949918">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Kytha, sweet?&quot; <em>He leaned towards her, smirking and taking her hands in his own.</em> &quot;Please. Shut up.&quot; <em>He then did proceed to shut her up by kissing her, very briefly, before pulling away.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/6352fbad517839ea09e8d7c023b3ae3a-3DBD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:47 AM</span>
+
+            <div class="chatlog__message " data-message-id="802731273990569994" id="message-802731273990569994">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She instantly melted into the kiss for that brief moment there lips met, her face a dark shade of red. She squeezed his hands lightly, looking at him bewildered and awestruck.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="802733855462916106" id="message-802733855462916106">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;You look good enough to eat,&quot; <em>He joked upon seeing the fetching tomato-cherry red she always went. He did so love to tease her about it.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="CatStare" title="CatStare" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/730483672666341436-1F990.gif">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="bonk" title="bonk" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/737004715379785728-467E4.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/6352fbad517839ea09e8d7c023b3ae3a-3DBD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:05 AM</span>
+
+            <div class="chatlog__message " data-message-id="802735777549123635" id="message-802735777549123635">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Her heart was pounding in her chest. She could almost hear it herself.</em> &quot;Later.&quot; <em>She managed to squeak out, still holding his hands firmly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="802738814757503056" id="message-802738814757503056">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He hadn&#39;t actually meant it in <strong>that</strong> way, more in a joking sort of way - it didn&#39;t stop him from blushing a dark, burning red, however.</em> &quot;We should get back down again,&quot; <em>He mused with a soft smile,</em> &quot;If we are to partake of any food that&#39;s left of course.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/6352fbad517839ea09e8d7c023b3ae3a-3DBD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="802739938260680734" id="message-802739938260680734">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;We should do this more often, ya know? I really like just doing small things like this with you. Just the two of us.&quot; <em>She smiled and gently kissed his cheek before reluctantly letting go of him and starting on her way back down.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 03:22 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="802741780884881468" id="message-802741780884881468">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Indeed.&quot; <em>He started on his way down as well - but this time he simply let himself down by holding his rope while stepping off the rock face until he reached the bottom.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/6352fbad517839ea09e8d7c023b3ae3a-3DBD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:31 AM</span>
+
+            <div class="chatlog__message " data-message-id="802742333451010089" id="message-802742333451010089">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha copied him and reached the bottom shortly after. She proceeded to undue her harness.</em> &quot;Shall we?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:33 AM</span>
+
+            <div class="chatlog__message " data-message-id="802742949036556340" id="message-802742949036556340">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;We shall.&quot; <em>Upon unclipping his harness he reached out for her hand to take.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/6352fbad517839ea09e8d7c023b3ae3a-3DBD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="802743932827205642" id="message-802743932827205642">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She grabbed his hand, interlacing her fingers with his as they left</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/90a5528b46efbdf086e1698c0bf6cf5d-BA892.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 04:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="802941921530085426" id="message-802941921530085426">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Amanda decided to enjoy the holodeck program even though she really wanted to be in Engineering working. In the end  she didn&#39;t really want to be at the crowded bar so she decided to take a look at the climbing rocks.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/96a3a4cf09d083d299117d49dfd18b56-745DB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Shena Zalkvek#0000" data-user-id="802942992926113832" style="">Suvwl&#39; wa&#39;DIch Shena Zalkvek</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 04:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="802942994403164160" id="message-802942994403164160">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She walks towards the climbing rocks after deciding the bar wasn&#39;t worth it, she drank enough for three weeks anyway.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="802943496423473172" id="message-802943496423473172">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She approached the rocks, ready to start climbing, some intense activity was sure to make quick work of any hangover. Then she noticed the Starfleet woman who was apparently planning to climb as well.</em> &quot;Ah! Are you looking for some exercise too?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/90a5528b46efbdf086e1698c0bf6cf5d-BA892.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 04:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="802943808433422409" id="message-802943808433422409">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The tall ex-Borg looked at the Klingon woman and gave a small smile.</em> &quot;I was thinking about it. Have some excess energy to work off and this seems like a good way. Welcome to the Phoenix by the way, I&#39;m Lieutenant Commander Amanda Higgins.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/96a3a4cf09d083d299117d49dfd18b56-745DB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Shena Zalkvek#0000" data-user-id="802942992926113832" style="">Suvwl&#39; wa&#39;DIch Shena Zalkvek</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 04:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="802945149947609098" id="message-802945149947609098">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;m Suvwl&#39; wa&#39;DIch Shena Zalkvek, chief scientist. Good to meet you.&quot; <em>she smiles</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/90a5528b46efbdf086e1698c0bf6cf5d-BA892.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 05:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="802949566299242497" id="message-802949566299242497">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Pleasure is mine. Do you climb much? I&#39;ll admit it&#39;s not my Forte.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/96a3a4cf09d083d299117d49dfd18b56-745DB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Shena Zalkvek#0000" data-user-id="802942992926113832" style="">Suvwl&#39; wa&#39;DIch Shena Zalkvek</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 05:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="802950429188292609" id="message-802950429188292609">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh, not really no, but I&#39;m used to exercise, so this should be okay, seeing how your holodecks have safety regulations, and if they fail, well I have a tough body, so I think I&#39;ll survive a fall from that height.&quot; <em>She shrugs and starts stretching.</em> &quot;So, tell me something about yourself.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/90a5528b46efbdf086e1698c0bf6cf5d-BA892.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 05:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="802950628745150474" id="message-802950628745150474">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Hm....well I&#39;m a liberated Borg and I&#39;m chief engineer here. I figure we&#39;re both strong enough to climb without any problems. What about yourself?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 05:19 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/96a3a4cf09d083d299117d49dfd18b56-745DB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Shena Zalkvek#0000" data-user-id="802942992926113832" style="">Suvwl&#39; wa&#39;DIch Shena Zalkvek</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 05:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="802959054350843934" id="message-802959054350843934">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well as you might have noticed, I&#39;m a Klingon, and quite active, so this is just a small obstacle for me.&quot; <em>The tone of her voice made it clear she was joking, somewhat, at least.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/90a5528b46efbdf086e1698c0bf6cf5d-BA892.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 05:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="802959712458375188" id="message-802959712458375188">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well let&#39;s see what you got then. Less talking and more climbing.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/96a3a4cf09d083d299117d49dfd18b56-745DB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Shena Zalkvek#0000" data-user-id="802942992926113832" style="">Suvwl&#39; wa&#39;DIch Shena Zalkvek</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 06:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="802961572048797696" id="message-802961572048797696">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>and so she started climbing.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/90a5528b46efbdf086e1698c0bf6cf5d-BA892.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 06:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="802961738832150569" id="message-802961738832150569">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Amanda took her place after applying a little bit of chalk to hands and began to climb too.</em> &quot;Not so bad honestly, guess our muscles are for some use afterall.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/96a3a4cf09d083d299117d49dfd18b56-745DB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Shena Zalkvek#0000" data-user-id="802942992926113832" style="">Suvwl&#39; wa&#39;DIch Shena Zalkvek</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 06:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="802964031899697156" id="message-802964031899697156">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I would hope so, and we Klingons evolved to gain muscle easily, it would be a shame if it was all for show.&quot; <em>She smiles.</em> &quot;So, what do you think about us? The fact that we are here, I mean?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/90a5528b46efbdf086e1698c0bf6cf5d-BA892.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 06:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="802969200846831657" id="message-802969200846831657">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Happy to have you. Considering our last run in with the Iconians ended with a core breech, we could use the help honestly.&quot; <em>She hoisted herself up onto a ledge to take a momentary breather.</em> &quot;And how do you feel about us?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/96a3a4cf09d083d299117d49dfd18b56-745DB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Shena Zalkvek#0000" data-user-id="802942992926113832" style="">Suvwl&#39; wa&#39;DIch Shena Zalkvek</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 06:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="802971551599034423" id="message-802971551599034423">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well, in all honesty, a lot of Klingons don&#39;t mind outsiders very much at all, I have met people from the Federation before, and I must say that I have found only kindness, and I think that&#39;s fine, so long as you are able to bare your teeth when needed. And as a crew.. well you seem to care about each other, that much can be seen quite quickly, and you have a strong sense of duty..&quot; <em>she climbed up to a small ledge close to Amanda.</em> &quot;I&#39;m glad we ended up on this assignment, I have always been curious about Starfleet and it&#39;s customs, and the crew of your ship has shown itself resilient and strong, so I think our crew will accept working next to yours quite easily.&quot; <em>she smiled again, and while it did show her sharp, perhaps somewhat beast like teeth, it was earnest.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/90a5528b46efbdf086e1698c0bf6cf5d-BA892.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 06:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="802974751168659456" id="message-802974751168659456">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well thank you for the compliments. I can tell you at least for me, my teeth are happy to be bared. All of us on the ship are willing to protect each other with our lives. I for one think this will be a great exchange of cultures and enjoyable. Though the war might dampen some of it.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/96a3a4cf09d083d299117d49dfd18b56-745DB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Shena Zalkvek#0000" data-user-id="802942992926113832" style="">Suvwl&#39; wa&#39;DIch Shena Zalkvek</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 06:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="802975249716871208" id="message-802975249716871208">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yes, sadly that is the case, there should be more collaborations like this, but in peace time. I suppose that&#39;s a bit easier for me to say though, seeing how I am a scientist, the gunners might disagree.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/90a5528b46efbdf086e1698c0bf6cf5d-BA892.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 07:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="802977561607929947" id="message-802977561607929947">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;True, I&#39;m sure. Though while a scientist, you are a warrior right? So you want to prove yourself in battle right?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/96a3a4cf09d083d299117d49dfd18b56-745DB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Shena Zalkvek#0000" data-user-id="802942992926113832" style="">Suvwl&#39; wa&#39;DIch Shena Zalkvek</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 07:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="802979896729141358" id="message-802979896729141358">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Every Klingon is born a warrior, I am no different from the rest in that sense, still, some of my people take it too far, it is one thing to prove yourself, but something else entirely to seek death and destruction everywhere you go. That&#39;s not what I&#39;m like. You could say I only fight either to hone my skills, when someone wants to fight for fun, or when I have to defend myself. Some would call this blasphemy, but I don&#39;t wish to die in a meaningless battle, no matter how glorious it is.. I  would much rather live to die in a fight worth dying for.&quot; <em>she moved to continue climbing.</em> &quot;shall we continue to talk while we move?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/90a5528b46efbdf086e1698c0bf6cf5d-BA892.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 07:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="802980144952246313" id="message-802980144952246313">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Amanda nodded and stood back up.</em> &quot;That&#39;s fair and actually quite logical. I&#39;m an engineer, so dying in battle isn&#39;t my cup of...bloodwine either.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/96a3a4cf09d083d299117d49dfd18b56-745DB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Shena Zalkvek#0000" data-user-id="802942992926113832" style="">Suvwl&#39; wa&#39;DIch Shena Zalkvek</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 07:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="802980528323690516" id="message-802980528323690516">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She chuckled at that.</em> &quot;So, what is this crew like? I read the reports, but what are they really like? I would appreciate knowing who I&#39;m fighting besides.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/90a5528b46efbdf086e1698c0bf6cf5d-BA892.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 07:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="802980857937657898" id="message-802980857937657898">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;The crew? Well I&#39;d say we&#39;re a motly group of people who have creative ways of getting out of trouble. We work very hard and are like a large family. I can&#39;t say I&#39;ve met every single crew member on the ship, but at least for the one&#39;s I know, they&#39;re some of the finest people I&#39;ve served with in my career.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/96a3a4cf09d083d299117d49dfd18b56-745DB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Shena Zalkvek#0000" data-user-id="802942992926113832" style="">Suvwl&#39; wa&#39;DIch Shena Zalkvek</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 07:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="802981815177838653" id="message-802981815177838653">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She seemed happy to hear it.</em> &quot;Good, that&#39;s good to hear.&quot; <em>she nods.</em> &quot;In a way, so are we, we as in the crew of the nI&#39;raH, we may not be as soft about it, but we care about each other, and would all gladly give our life to protect each other, and not just because it would be an honorable death.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/90a5528b46efbdf086e1698c0bf6cf5d-BA892.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 07:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="802982386425004032" id="message-802982386425004032">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Then I think that we&#39;ll all get along just fine. Hopefully we can get through the Iconians without any trouble, but I think that&#39;s almost inevitable.&quot; <em>She managed to hoist herself up onto the final ledge and sit there, the view being incredible.</em> &quot;Lola did a great job with this.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/96a3a4cf09d083d299117d49dfd18b56-745DB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Shena Zalkvek#0000" data-user-id="802942992926113832" style="">Suvwl&#39; wa&#39;DIch Shena Zalkvek</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 07:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="802985758473846835" id="message-802985758473846835">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She sat next to Amanda</em> &quot;Oh yes I spoke to her before, and I must agree, it&#39;s beautiful.&quot; <em>she paused.</em> &quot;We&#39;ll show those Iconians who they are messing with! No way they are taking us down!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/90a5528b46efbdf086e1698c0bf6cf5d-BA892.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 07:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="802986772883177522" id="message-802986772883177522">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;That&#39;s the spirit. With your enthusiasm we&#39;ll be sure to win the war.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/96a3a4cf09d083d299117d49dfd18b56-745DB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Shena Zalkvek#0000" data-user-id="802942992926113832" style="">Suvwl&#39; wa&#39;DIch Shena Zalkvek</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 08:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="802992673275117608" id="message-802992673275117608">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Let&#39;s hope so!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/a_bc158dd5a46d5f3b64fca502a9d3030d-E02FD.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 10:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="803022913850048573" id="message-803022913850048573">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Suddenly, the image of the beach vanished into nothing and the standard holodeck room re-appeared. The rocks vanished but the holodeck minimised the height, meaning they only fell with a slight bit of an oof upon impact.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 10:06 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/96a3a4cf09d083d299117d49dfd18b56-745DB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Shena Zalkvek#0000" data-user-id="802942992926113832" style="">Suvwl&#39; wa&#39;DIch Shena Zalkvek</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 10:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="803024181884878869" id="message-803024181884878869">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She growls as she falls.</em> &quot;What just happened?!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/90a5528b46efbdf086e1698c0bf6cf5d-BA892.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 10:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="803024595702775908" id="message-803024595702775908">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Amanda managed to only fall on her ass. She rubbed at it and cursed.</em> &quot;Guess the party is over.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/96a3a4cf09d083d299117d49dfd18b56-745DB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Shena Zalkvek#0000" data-user-id="802942992926113832" style="">Suvwl&#39; wa&#39;DIch Shena Zalkvek</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 10:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="803025205580398652" id="message-803025205580398652">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I guess so. Any idea why?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/90a5528b46efbdf086e1698c0bf6cf5d-BA892.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 10:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="803026048798818404" id="message-803026048798818404">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well the Captain is over there, so I assume this is her doing.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/a_bc158dd5a46d5f3b64fca502a9d3030d-E02FD.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 10:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="803028578710061070" id="message-803028578710061070">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The programme came back to life exactly as it had been before.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/96a3a4cf09d083d299117d49dfd18b56-745DB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Shena Zalkvek#0000" data-user-id="802942992926113832" style="">Suvwl&#39; wa&#39;DIch Shena Zalkvek</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 10:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="803028886593208380" id="message-803028886593208380">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I see, well we&#39;re alright, which is all that matte-.&quot; <em>and at that time the program came back to life.</em> &quot;Oh, well here we are again.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/90a5528b46efbdf086e1698c0bf6cf5d-BA892.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 10:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="803029066671325195" id="message-803029066671325195">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well I don&#39;t know if I want to do all that climbing again, I might head out and grab some food before my shift.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/96a3a4cf09d083d299117d49dfd18b56-745DB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Shena Zalkvek#0000" data-user-id="802942992926113832" style="">Suvwl&#39; wa&#39;DIch Shena Zalkvek</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 10:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="803031477364719666" id="message-803031477364719666">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;That&#39;s okay, I enjoyed our chat. And really I should go back to work soon as well, I  shouldn&#39;t leave the ship with so few senior officers.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%209_%20Recreation%20-%20climbing-rocks%20%5B802584486642450452%5D.html_Files/90a5528b46efbdf086e1698c0bf6cf5d-BA892.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 02:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="803083814251003924" id="message-803083814251003924">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Amanda waved to Shena and soon left the holodeck.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 65 message(s)</div>
+</div>
+
+</body>
+
+</html>

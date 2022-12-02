@@ -1,0 +1,2553 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - hangar-bay</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Earth Spacedock / hangar-bay</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">09-Feb-20 04:58 AM</span>
+
+            <div class="chatlog__message " data-message-id="675928504960811078" id="message-675928504960811078">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He entered with <span class="mention" title="Ash!#0223">@Ash!</span> and together they boarded a civilian freighter bound for Kaminar.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="uwuInLove" title="uwuInLove" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/670146809183731715-42393.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">09-Feb-20 05:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="676113216291602472" id="message-676113216291602472">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie ran in. Finding the shuttle that will take them to Luna. Signalling Shar over.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/cac46dd93f07651b14dc7b90915b10d9-4D54D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Noxxious#8136" data-user-id="549649215995772960" style="">Noxxious</span>
+
+
+        <span class="chatlog__timestamp">09-Feb-20 05:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="676113401516261387" id="message-676113401516261387">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She followed her over and boarded</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="09-Feb-20 05:13 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">09-Feb-20 05:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="676114087301611560" id="message-676114087301611560">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie sat next to her.. looking worried</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/cac46dd93f07651b14dc7b90915b10d9-4D54D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Noxxious#8136" data-user-id="549649215995772960" style="">Noxxious</span>
+
+
+        <span class="chatlog__timestamp">09-Feb-20 05:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="676114728816214068" id="message-676114728816214068">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The shuttle took off</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-20 09:52 AM</span>
+
+            <div class="chatlog__message " data-message-id="677814537130475520" id="message-677814537130475520">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>Lylla and Dune landed at spacedock after another 10-hour space trip and headed off down the hallways, back to Phoenix...</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/821476452ad68e1a86d7f260a21fed4a-0CFA4.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Anglachel#1124" data-user-id="425785904703995904" style="">Anglachel</span>
+
+
+        <span class="chatlog__timestamp">26-Mar-20 04:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="692587185765089290" id="message-692587185765089290">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Tal entered and boarded a Lunar transport, ready to visit his mother.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/821476452ad68e1a86d7f260a21fed4a-0CFA4.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Anglachel#1124" data-user-id="425785904703995904" style="">Anglachel</span>
+
+
+        <span class="chatlog__timestamp">27-Mar-20 10:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="693231163288059924" id="message-693231163288059924">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The freighter arrived on ESD and out stepped a very refreshed 1/2 Bajoran, carrying a small bag with him.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/c8b1fd45f5ad51f776e019294307d184-CD46D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Weebamagic#4262" data-user-id="661593204038303776" style="">Weebamagic</span>
+
+
+        <span class="chatlog__timestamp">23-Jun-20 05:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="725022088364163224" id="message-725022088364163224">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Shoto- shy as can be- walked across the hangar. He ignored the cacophony of noises that the shipyard was creating- grinding drills, humming machines and people yelling. He kept his head low, wheeling along his many suitcases with his right hand and grasping a travel bag in his left. Slowed down by the weight of his possessions it took him nearly five minutes to get across the bay.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="725022404212162591" id="message-725022404212162591">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Finally he entered into the</em> <span class="mention">#deck-fifteen-airlock</span></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/913b46f0d24a0ba1b8868d804241ace3-AA885.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="KardasXRT#2665" data-user-id="533740341858402305" style="">KardasXRT</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 06:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="725395993792872468" id="message-725395993792872468">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Spacedock was unusually busy today - unsurprisingly so, frankly, considering how many people were going on shore leave.</em> &quot;So which one is our shuttle again?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/c66e30015eb0876b0fb3b6f6a56009f9-63E64.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Zeza#5008" data-user-id="705655273553133718" style="">Zeza</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 06:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="725399895653089280" id="message-725399895653089280">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;The Rutlander. What a starnge name. It should be a class 8 shuttle craft.&quot; <em>Zeza said staying close to Tarna so she didn&#39;t get lost in the crowd.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/913b46f0d24a0ba1b8868d804241ace3-AA885.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="KardasXRT#2665" data-user-id="533740341858402305" style="">KardasXRT</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 06:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="725401624335483000" id="message-725401624335483000">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Rutlander...&quot; <em>He looked through the crowd and spied their ride at the end of the hangar bay.</em> &quot;There. HOw long is the journey? 12 hours?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/c66e30015eb0876b0fb3b6f6a56009f9-63E64.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Zeza#5008" data-user-id="705655273553133718" style="">Zeza</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 06:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="725405550656880650" id="message-725405550656880650">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yep, it&#39;s not that far. Risa is much further.&quot; <em>Zeza said as they walkdd to the stuttle craft and entered it. It was small but, it would do. She took the pilot seat.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/913b46f0d24a0ba1b8868d804241ace3-AA885.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="KardasXRT#2665" data-user-id="533740341858402305" style="">KardasXRT</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 07:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="725415236919754772" id="message-725415236919754772">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He clambered in after her and sat down in the pilot seat next to her.</em> &quot;Alrighty. Fly us out of here.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/c66e30015eb0876b0fb3b6f6a56009f9-63E64.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Zeza#5008" data-user-id="705655273553133718" style="">Zeza</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 07:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="725416875609030746" id="message-725416875609030746">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Here we go!&quot; <em>Zeza said with excitement in her voice. She is really couldn&#39;t wait to see home again it had been a while since she had been back. She said as she started the thrusts and maneuvered out of the hanger bay ans ESD.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/913b46f0d24a0ba1b8868d804241ace3-AA885.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="KardasXRT#2665" data-user-id="533740341858402305" style="">KardasXRT</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 07:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="725419292455075960" id="message-725419292455075960">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He chuckled and sat back in the copilot&#39;s seat.</em> &quot;Home sweet home, huh?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/c66e30015eb0876b0fb3b6f6a56009f9-63E64.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Zeza#5008" data-user-id="705655273553133718" style="">Zeza</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 08:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="725426857901817956" id="message-725426857901817956">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yeah well, it is not our quarters but, it is where I come from. It is kind of home.&quot; <em>Zeza said as she weaved through all the ships that were going about the space near Earth.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 08:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="725430522456834058" id="message-725430522456834058">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Tarna]&quot;I&#39;d love to see it. Besides, I won&#39;r be so cold with the universe&#39;s best heat source...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/c66e30015eb0876b0fb3b6f6a56009f9-63E64.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Zeza#5008" data-user-id="705655273553133718" style="">Zeza</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 08:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="725430851084484619" id="message-725430851084484619">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Aw, Tarna. Come here you.&quot; <em>Zeza said switching to autopilot and leaned over to kiss him.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jun-20 08:27 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 08:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="725431755452055666" id="message-725431755452055666">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Tarna]<em>Oh, he was glad for that. He gladly obliged her, drawing her into a hug and kissing her back.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/c66e30015eb0876b0fb3b6f6a56009f9-63E64.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Zeza#5008" data-user-id="705655273553133718" style="">Zeza</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 08:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="725434852303700098" id="message-725434852303700098">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I think this is gonna be a fun trip.&quot; <em>Zeza said after they finished kkissing. She couldn&#39;t wait to get to Andor.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 08:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="725436434990760036" id="message-725436434990760036">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Tarna]&quot;Yep. It is. Just don&#39;t let me freeze to death, okay?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/c66e30015eb0876b0fb3b6f6a56009f9-63E64.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Zeza#5008" data-user-id="705655273553133718" style="">Zeza</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 09:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="725447057007181988" id="message-725447057007181988">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Don&#39;t worry Tarmy I won&#39;t. I love you to much ro ever let that happen.&quot; <em>Zeza said as she hugged him tight letting him feel her warmth at least that ia what she hoped.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/a_4f1f815550d15784953fd40b53dbcc46-5684F.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">29-Jun-20 03:41 AM</span>
+
+            <div class="chatlog__message " data-message-id="726990747890352180" id="message-726990747890352180">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>After finding an appropriate civilian shuttle, the Ba&#39;ku-bound Ensign took a moment to inventory his belongings, checking each one off, before meditating during the journey</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/c66e30015eb0876b0fb3b6f6a56009f9-63E64.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Zeza#5008" data-user-id="705655273553133718" style="">Zeza</span>
+
+
+        <span class="chatlog__timestamp">04-Jul-20 05:13 AM</span>
+
+            <div class="chatlog__message " data-message-id="728825689737920623" id="message-728825689737920623">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>After several hours of travel they reach ESD. Zeza landed their shuttle in the hanger bay.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">04-Jul-20 05:13 AM</span>
+
+            <div class="chatlog__message " data-message-id="728825793534492823" id="message-728825793534492823">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Tarna]<em>He was first out of the shuttle, carrying both their bags with him.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/c66e30015eb0876b0fb3b6f6a56009f9-63E64.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Zeza#5008" data-user-id="705655273553133718" style="">Zeza</span>
+
+
+        <span class="chatlog__timestamp">04-Jul-20 05:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="728826748069740564" id="message-728826748069740564">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Zeza powered down all the systems and made sure she left the shuttle in the condition they had requisitioned it in.</em>
+&quot;We&#39;re going back to our quarters, right?&quot; <em>Zeza said as she stepped out of the shuttle.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">04-Jul-20 05:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="728826920967471155" id="message-728826920967471155">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Tarna]&quot;Yup. I&#39;ll signal Phoenix to beam us back. We&#39;re pretty heavily laden.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/c66e30015eb0876b0fb3b6f6a56009f9-63E64.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Zeza#5008" data-user-id="705655273553133718" style="">Zeza</span>
+
+
+        <span class="chatlog__timestamp">04-Jul-20 05:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="728828488446115961" id="message-728828488446115961">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Alright. We could walk.&quot; <em>Zeza said as she stood next to Tarna.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">04-Jul-20 05:35 AM</span>
+
+            <div class="chatlog__message " data-message-id="728831305860644927" id="message-728831305860644927">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Tarna]<em>He tapped his commbadge.</em> &quot;Tarna to Phoenix. Two to beam into my quarters.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="728831803808284743" id="message-728831803808284743">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>He and Zeza dematerialized.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/a_525446c6b5f92017ac309c2e95f89ec2-52621.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">10-Aug-20 04:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="742409101350273182" id="message-742409101350273182">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="pre pre--multiline nohighlight"> </div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Aug-20 07:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="747890905825935370" id="message-747890905825935370">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Lithop had made her way to the hangar bay once the Phoenix had docked at the ESD. She got herself a shuttle and left the ESD to visit her uncle and parents.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Aug-20 07:51 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/93efb583430ea108c384f0b965bcb368-851CD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Naxalt2#1558" data-user-id="699263885387235338" style="color: rgb(41,169,238)">Ensign Kya Pok</span>
+
+
+        <span class="chatlog__timestamp">27-Aug-20 07:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="748605930601447444" id="message-748605930601447444">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Kya arrived here with a tired look in her eye, rubbing at her glasses covered eyes with a yawn. Time to face the music. She soon entered the shuttle to Bajor, sitting down with her carry on. As the shuttle took off.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/4316a83e19585dc50259cba03c8663ee-D2756.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Hatsumomo#0000" data-user-id="748631400353234964" style="">Hatsumomo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Aug-20 08:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="748631401456205824" id="message-748631401456205824">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She stood in the busy-ness that was the hangar bay. People boarding shuttles all over and families, friends, beginning to say their goodbyes. It made her stick out. The bleached hair and extravagant clothes along with her multitude of luggages. Most importantly, in her hand, she held a box. One that was given to her months ago.</em>
+
+<em>With a barely noticeable nervous tap to her foot, she looked across into the crowds for the one person she asked to come here.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/e3de968c843c1b0e60101cd22dd6315c-DBFCE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(215,52,42)">Commander Yllescas Itesh</span>
+
+
+        <span class="chatlog__timestamp">27-Aug-20 08:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="748632752857022485" id="message-748632752857022485">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>And here he came, wearing the sleek uniform he was usually seen wearing. His hands were folded behind his back. On the outside, he seemed calm and collected. On the inside, he felt a little nervous. Why all the way out here? Why not back in the promenade? When he made his way to her, his eyes stared down into hers. The first thing he noticed was her hair color.</em> 
+
+&quot;You changed your hair, and you&#39;ve...packed.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="27-Aug-20 09:02 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/4316a83e19585dc50259cba03c8663ee-D2756.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Hatsumomo#0000" data-user-id="748631400353234964" style="">Hatsumomo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Aug-20 09:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="748634563995107410" id="message-748634563995107410">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Uhm... yes. I did.” <em>The once confident Vorta was clearly, uncomfortable. As if she didn’t know how to approach the situation. She seemed to have give advice on how to do this so many times before but now that she was in their position? She hadn’t a clue on what to do. Amethyst eyes flickered down once more before lifting up to meet his gaze - far atop her own. With a soft nudge, she extended her arms to allow him to grab the box. One he should obviously recognize.</em>
+
+“I’m... I’m sorry, lovely” <em>was all that left glossed lips of hers.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/e3de968c843c1b0e60101cd22dd6315c-DBFCE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(215,52,42)">Commander Yllescas Itesh</span>
+
+
+        <span class="chatlog__timestamp">27-Aug-20 09:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="748635619617407046" id="message-748635619617407046">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Oskar stared at it for a moment, wheels obviously turning in his head. Then the reality of what just happened slammed into him like a freighter. His eyes seemed to lose the spark in his eyes. He slowly extended a hand and took the box. He looked at it, then to her. Emotion seemed to build within him. But he wouldn&#39;t let that show. Not...not now.</em> 
+
+&quot;Do you know when you&#39;ll be back?&quot; <em>He asked softly, his voice was choked, like he was being strangled.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/4316a83e19585dc50259cba03c8663ee-D2756.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Hatsumomo#0000" data-user-id="748631400353234964" style="">Hatsumomo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Aug-20 09:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="748636653983105044" id="message-748636653983105044">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>It took her a moment. Goodness did she feel horrible about this. But the ship, this world, it wasn’t meant for anyone of her likes.</em> “I - I don’t know” <em>she whispered back, barely audible in the sea of colored uniforms.</em> 
+
+“Darli- <em>Oskar</em>, you deserve someone that can be with you always, someone that can share your passions and <em>love</em> you to their fullest...” <em>Her eyes flickered around, ignoring the ever so often stares of others.</em> “And I-I can’t be that for you right now.” <em>It felt cruel to say. For someone who’d naturally say something such as this, it was horribly difficult to say aloud. Especially with the normal eloquence she always strived for.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/e3de968c843c1b0e60101cd22dd6315c-DBFCE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(215,52,42)">Commander Yllescas Itesh</span>
+
+
+        <span class="chatlog__timestamp">27-Aug-20 09:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="748638529302823043" id="message-748638529302823043">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The invisible hands around his throat clasped it tighter. He looked away from her for a moment, avoiding the pain he would feel of he looked into them. This couldn&#39;t be happening, right? He would pinch himself and he would wake up aboard the ship with her in his arms, right? But then reality hit him again with her words tumbling around in his head. He felt his muscles tighten.</em> 
+
+&quot;I...&quot; <em>He started, but he could barely get a word out. He sighed, looking down at the ground at his boots.</em> &quot;I understand.&quot; <em>He whispered, refusing to look up. He couldn&#39;t bring himself to lift his head and look her in the eyes. It hurt too much to do.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/4316a83e19585dc50259cba03c8663ee-D2756.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Hatsumomo#0000" data-user-id="748631400353234964" style="">Hatsumomo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Aug-20 09:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="748639977319039006" id="message-748639977319039006">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>With one last tip of her toes, the tiny woman had leaned up to press a final kiss to his jaw. She didn’t let herself fall back down without saying the smallest of.</em> “I’m sorry,” <em>Hatsu looked as if she was about to walk away, not before fumbling with something from one of her pockets and taking his clenched hands into her own. With a small a struggle, she pressed the pin she had made before closing his fingers back to where they were.</em>
+
+<em>Her pink tinted lips had opened to say something once more - but the loud speaker ring with the name of her shuttle craft. Lips pressed tight into a line, she gripped her hands on to the multitude of luggage - turning off into the people. No more glances to be spared.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/e3de968c843c1b0e60101cd22dd6315c-DBFCE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(215,52,42)">Commander Yllescas Itesh</span>
+
+
+        <span class="chatlog__timestamp">27-Aug-20 09:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="748641644567593100" id="message-748641644567593100">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Oskar&#39;s free hand first felt the place where she kissed his jaw, then to the pin placed upon him. He allowed his shoulders to slump and his hands to fall to his sides. He still looked down. It almost felt wrong to look back up again. The facade of confidence and collectedness crumbled and fell apart. His face looked numb. He felt numb inside. He felt weakened, like he couldn&#39;t move. But somehow he managed to find the strength to move his feet. He slowly walked out of the hangar bay.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/4316a83e19585dc50259cba03c8663ee-D2756.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Hatsumomo#0000" data-user-id="748631400353234964" style="">Hatsumomo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Aug-20 11:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="748672940064768113" id="message-748672940064768113">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She had hopped on to the small, luxury shuttle with a similarly blonde woman. While there was no smile to her face, it didn&#39;t stop her from giving the other a quick embrace. In a few hours, Momo would be gone from the space dock, off to who knows where.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">11</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">28-Aug-20 03:13 AM</span>
+
+            <div class="chatlog__message " data-message-id="748726821855690843" id="message-748726821855690843">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop&#39;s shuttle docked and she left it, tired as hell. Carrying her bags and leg she made her way to the airlock.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">28-Aug-20 05:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="748943118207811646" id="message-748943118207811646">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Belly full and belongings packed (three bags, my god) he was standing in the shuttle bay, awaiting his transport shuttle.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/d67b08460521c93b79f2200cde0e9311-5783F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SpaceCat#3522" data-user-id="689798832904470556" style="">SpaceCat</span>
+
+
+        <span class="chatlog__timestamp">28-Aug-20 05:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="748945666927231058" id="message-748945666927231058">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The Caitian had stayed in ESD for temporary quarters in the last few days, seeing as her own quarters - and most of the officers’ quarters on the Phoenix, for that matter - had been destroyed. S’Tera was now standing in the hangar bay, waiting for the transport shuttle to Kaminar along with the CTO, Commader Dunamis. She had packed only a small bag of the bare essentials - most things could be replicated nowadays, thankfully. S’Tera had spent her time reading on Kelpiens’ cultures in the last few days. She was hoping to improve her Kelpien, seeing as she had only attended a basic course on the language, back in the Academy days. At that moment, she was standing off to one side, a PADD displaying notable points in Kelpiens’ culture and cuisine in her paws.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/14ac5da64e1e0a4bbae87a9b4347e8a8-E4FB6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡~Jennei~♡#1799" data-user-id="737712181067645019" style="color: rgb(255,203,37)">Ensign Jennei Akvaa</span>
+
+
+        <span class="chatlog__timestamp">28-Aug-20 05:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="748946864765665421" id="message-748946864765665421">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Jennei had been wandering here and there on the ESD since Dune&#39;s and her last meeting, and a bit before she had packed her bag. Yep, there was only one, though it seemed to be well, well packed. Surely a special technique similar to &#39;Tetris&#39; had been used to pack that bag in a way everything that was inside could fit... and who knows what was in. It seemed big on the small woman, but it didn&#39;t seem to bother her to transport it, besides size-wise. She was wearing civil clothes, it wasn&#39;t quite &#39;rainbow&#39; but it was flashy. She was waiting along with them, excited.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/97f74a77ef67c6254c7bf17121ddd5a6-C9CD4.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The International Disaster#1800" data-user-id="513118186644832256" style="color: rgb(212,156,2)">Ensign Nikola Powell</span>
+
+
+        <span class="chatlog__timestamp">28-Aug-20 05:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="748947595061362748" id="message-748947595061362748">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nikola ran in and accidentally tripped on her own foot, letting out a curse in Russian before flopping on the ground in a not so graceful way. She was wearing civil clothes, such as a nerdy black t-shirt along with camo pants, a checkered red jacket around her waist and black knee-high boots. Her backpack was also themed as a classical, Cold War-era poster with a rocket and phrases written in Russian.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">28-Aug-20 05:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="748949304231854140" id="message-748949304231854140">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Good morning.&quot; <em>Had he told them that it&#39;d be cold? Damn it. The three of them might possibly freeze in the Kaminar winter - but the trip to his aunt&#39;s home was a short one anyway. He loped over to Nikola, grasped her by the shoulder and helped her up with an amused chuckle.</em> &quot;Do be warned, though, Kaminar is quite cold this time of year.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/d08810454bf19c79b70e0c30c0bd5c8a-29EB8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">28-Aug-20 05:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="748949709015613501" id="message-748949709015613501">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Day would be wandering in the hangar bay, having a bag that was well-packed, of course. The Betazoid/Human hybrid eventually found the group waiting for the shuttle to Kaminar. Day was wearing clothing that was for the winter-season. He wore a scarf, a coat, a turtleneck, and a surgical mask. He would walk over to the group, offering a little wave as he walked to them.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="28-Aug-20 11:42 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/97f74a77ef67c6254c7bf17121ddd5a6-C9CD4.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The International Disaster#1800" data-user-id="513118186644832256" style="color: rgb(212,156,2)">Ensign Nikola Powell</span>
+
+
+        <span class="chatlog__timestamp">28-Aug-20 06:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="748950438459736165" id="message-748950438459736165">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nikola was trying to get up, but only managed to do so when Dune helped her. She let out a quiet, embarrassed chuckle and thanked him before glancing at Dayton. He was coming with them!! She was even more excited now.</em> &quot;I grew up in Alaska, I know how to handle cold- And Day!! Hi!!&quot; <em>She excitedly waved at him, her face getting red.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/d67b08460521c93b79f2200cde0e9311-5783F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SpaceCat#3522" data-user-id="689798832904470556" style="">SpaceCat</span>
+
+
+        <span class="chatlog__timestamp">28-Aug-20 06:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="748950499839049829" id="message-748950499839049829">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Well, luckily S’Tera had a coat of fur, and while she came in short-sleeved T-shirt and pants, she did pack a quite warm coat in her bag.</em> “Morning, sir. And thank you for the warning, Commander, I have packed a coat, and will put it on later, should I feel cold. Winters on Cait are not exactly warm either, so I think I’ll be fine with the cold.” <em>S’Tera replied, and waved to the others, obviously her fellow crewmates on the Phoenix.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/14ac5da64e1e0a4bbae87a9b4347e8a8-E4FB6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡~Jennei~♡#1799" data-user-id="737712181067645019" style="color: rgb(255,203,37)">Ensign Jennei Akvaa</span>
+
+
+        <span class="chatlog__timestamp">28-Aug-20 06:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="748951240125317202" id="message-748951240125317202">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jennei patted her bag with a smile.</em> &quot;I don&#39;t know about the others, but you did tell me beforehand and it&#39;s all in there! Just didn&#39;t want to melt here. I think I should survive, but my will is already written in any case.&quot; <em>she said with a playful grin.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="28-Aug-20 06:05 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/d08810454bf19c79b70e0c30c0bd5c8a-29EB8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">28-Aug-20 06:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="748951754866950145" id="message-748951754866950145">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh- Hello, Rita- and hello, everyone.&quot; <em>He said, smiling as he spoke. The hybrid took off his glasses- just to check if there was any smudges there. After seeing none, he put them on again.</em> &quot;I usually pack in winter clothes- it&#39;s just a preference of mine, honestly.&quot; <em>He said, crossing his arms afterward.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">28-Aug-20 06:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="748951891391807558" id="message-748951891391807558">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Come now, let us not be quite so sordid. Our shuttle is waiting.&quot; <em>Clutching his bags (all three of them) he made for the shuttle at the far end of the hangar bay bound for Kaminar. The ride would be several hours long but the view would be worth it. He hoped.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/97f74a77ef67c6254c7bf17121ddd5a6-C9CD4.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The International Disaster#1800" data-user-id="513118186644832256" style="color: rgb(212,156,2)">Ensign Nikola Powell</span>
+
+
+        <span class="chatlog__timestamp">28-Aug-20 06:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="748952150184296678" id="message-748952150184296678">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I brought my winter coat, although it&#39;s... A little weird. Besides, I even brought my leather gloves!! Aah, i haven&#39;t used them in so long.&quot; <em>Nikola had a grin bigger than her heart on her face, considering this was going to be a whole new experience. Nonetheless, she kept her excitement in as she followed behind, her walking being a little odd due to her actually dancing a little.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/14ac5da64e1e0a4bbae87a9b4347e8a8-E4FB6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡~Jennei~♡#1799" data-user-id="737712181067645019" style="color: rgb(255,203,37)">Ensign Jennei Akvaa</span>
+
+
+        <span class="chatlog__timestamp">28-Aug-20 06:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="748953213796876329" id="message-748953213796876329">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Aye aye, Commander!&quot; <em>she said jokingly. The Betazoid followed suit, how she wasn&#39;t crumbling under her bag was anyone&#39;s guess though.</em> &quot;Nothing wrong with a little &#39;weird&#39;..!&quot; <em>she added with a smile.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/d67b08460521c93b79f2200cde0e9311-5783F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SpaceCat#3522" data-user-id="689798832904470556" style="">SpaceCat</span>
+
+
+        <span class="chatlog__timestamp">28-Aug-20 06:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="748953803457429595" id="message-748953803457429595">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>S’Tera grinned - she didn’t have a chance to interact with as many crew members as she’d have liked, having been swamped with work. This trip would be a nice chance for her to make more new friends, and also learn a somewhat-new language too! The Caitian followed behind others as she made her way to the shuttle.</em> “Being weird is normal and good - everyone is unique in there own ways!”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/d08810454bf19c79b70e0c30c0bd5c8a-29EB8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">28-Aug-20 06:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="748954309030445187" id="message-748954309030445187">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I have to agree with you two.&quot; <em>That was all that Day said, beginning to walkt woards the shuttle at the end of the hangar bay. Like the rest of them, he was excited to go to a new planet and learn more about its culture- it sounds interesting and pretty fun, actually.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">28-Aug-20 06:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="748954436583555123" id="message-748954436583555123">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Indeed. In a sense each one of us is an oddity in some way - each of us unique and singular in the universe.&quot; <em>He mused, leading the group into the shuttle. N&#39;illa&#39;s residence had plenty of guest rooms; even with unexpected guest rooms there&#39;d be space.</em> &quot;Ah, I ought not to bore you with philosophy.&quot; <em>He nodded to the pilot, who took off for Kaminar.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">29-Aug-20 01:09 AM</span>
+
+            <div class="chatlog__message " data-message-id="749058152779218945" id="message-749058152779218945">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop practically ran into the shuttle just making it before they shut the doors. She was on her way to Vulcan.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/821476452ad68e1a86d7f260a21fed4a-0CFA4.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Anglachel#1124" data-user-id="425785904703995904" style="">Anglachel</span>
+
+
+        <span class="chatlog__timestamp">22-Sep-20 09:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="758057246709121028" id="message-758057246709121028">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>A civilian shuttle set down in the open hangar, a large group of tourists and travellers coming back from Luna stepped out, and Tal hurried into the hall with an underpacked bag sling over his shoulder.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">02-Nov-20 11:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="772965788428402738" id="message-772965788428402738">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>...to the ESD shuttlebay. Shar led Maggie up to a shuttle which they both boarded.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/1d398b4245cce0749e5f34cb4d580f67-F52F6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="748631400353234964" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">07-Nov-20 01:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="774619616155533332" id="message-774619616155533332">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>It was from the Breen shuttlecraft that a familiar figure emerged - only to lock eyes with another familiar figure. It was with steps so quick that he almost tripped over his own feet that he made his way down the ramp, straight into the arms of the awaiting officer.</em>
+
+&quot;It&#39;s not fair,&quot; <em>he mumbled, almost instantly shoving his head into her shoulder in an attempt at finding comfort for both of them, it seemed.</em> &quot;It&#39;s not f-f-f-<em>fair.</em>&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="pridesparkle" title="pridesparkle" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/706583201488961567-A33F3.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/6cc67e2382c9c752a565c9884b46eb85-CE817.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JPO. Talphil Ephrix#0000" data-user-id="748631400353234964" style="">JPO. Talphil Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">07-Nov-20 01:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="774619618433040448" id="message-774619618433040448">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Upon hearing that Kennox was headed to Federation space she had immediately been on the look-out so she could go and meet them. She had been allowed leave, thank the stars, considering everything that was going on. There was no way that she wasn&#39;t going to be there for her family.</em>
+
+<em>Arms were tightly wrapped around her younger brother&#39;s back, ready to stay there for as long as he needed. For as long as she needed as well, as stalwart as she was trying to be.</em> &quot;I know, Nox. I know.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="pridesparkle" title="pridesparkle" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/706583201488961567-A33F3.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">29-Dec-20 11:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="793623044211736598" id="message-793623044211736598">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie entered the shuttle bay with a sigh as she headed towards a shuttle, bringing her dog with her. The dog looking up at her with a happy smile, which made Maggie shed a tear. She walked towards the shuttle, where...</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/5ecd29841523ddbd4f25114507d9cef5-1DFC8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commander Dorothea Roode#0000" data-user-id="748631400353234964" style="">Commander Dorothea Roode</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Dec-20 11:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="793623493639143455" id="message-793623493639143455">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie’s aunt was waiting outside the shuttle. A pilot waiting in the shuttle.</em> “Hey kiddo. You sure your okay with this?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">29-Dec-20 11:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="793623819460804618" id="message-793623819460804618">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie wiped a tear out of her eye as she walked forward, placing her dog in front of her. Wiping a tear out of her eye again as she handed her aunt the duffle bag.</em>￼ “Yeah aunt Dorothea, I am. I don’t want him to get hurt, and he’ll be fine at your place for now.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/5ecd29841523ddbd4f25114507d9cef5-1DFC8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commander Dorothea Roode#0000" data-user-id="748631400353234964" style="">Commander Dorothea Roode</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Dec-20 11:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="793624435541409792" id="message-793624435541409792">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Dorotheanodded as she gave her niece a hug, letting her relax for a ￼ moment before grabbing the bag and picking up her dog and heading into the shuttle.</em> “￼Don’t worry Mag’s, me and Sara’ll take care of em. And then you’ll get em back. I’ll see you on the other side okay?” <em>And with that, Dorothea boarded her shuttle. Placing Luke down as the doors closed, the weeping of the dog fairly evident even as the door closed. He didn’t want to leave Maggie.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20hangar-bay%20%5B675928361092120597%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">29-Dec-20 11:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="793628923128184872" id="message-793628923128184872">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie waved at her dogs very sad face, sighing softly as she wiped more tears out of her eyes. Crying softly to herself, that might be the last time she saw that dog. She just hoped even if she died, he would still have a good life with her family. With that, Maggie headed back down to the hallways.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 71 message(s)</div>
+</div>
+
+</body>
+
+</html>

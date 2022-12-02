@@ -1,0 +1,3491 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - the-core</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    white-space: pre-wrap;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.spoiler {
+    width: fit-content;
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image img {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 0.5em 0.7em;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/a_5361c0bf380eb945fe0f2e7ee079ec5d.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">GRAMEN - BAHARIEN / the-core</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/a_8e34591b829219aad24380783cb88077.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">21-Oct-20 10:28 PM</span>
+
+            <div class="chatlog__message chatlog__message--pinned" data-message-id="768586437074616331" id="message-768586437074616331">
+                <div class="chatlog__content">
+                    <div class="markdown">[D] <em>Even through EV suits you can feel the heat of the volcano’s core. Magma bubbles beneath and if a person were to fall in it would definitely mean certain death. It is both terrifying and intriguing to think that the Baharien are born from such a substance, rising from the magma to take their rock-like forms.</em> </div>
+                </div>
+
+
+
+            </div>
+            <div class="chatlog__message chatlog__message--pinned" data-message-id="768586460663644251" id="message-768586460663644251">
+                <div class="chatlog__content">
+                    <div class="markdown"> </div>
+                </div>
+
+                    <div class="chatlog__attachment">
+                            <a href="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/The_Core.jpg">
+                                    <img class="chatlog__attachment-thumbnail" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/The_Core.jpg" alt="Attachment">
+                            </a>
+                    </div>
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/5fbfc2c690c4af76de20172e398d1721.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="birb#0890" data-user-id="384551551567659009" style="color: rgb(41,169,238)">Lt. JG. Amy Olson</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 09:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="770040058370850827" id="message-770040058370850827">
+                <div class="chatlog__content">
+                    <div class="markdown">[D]<em>The away team arrived at the top of the volcano, the ground seemed to be solid enough, perfect anchor points the smoke made it somewhat difficult to navigate, however it shouldn’t be a major problem.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/9340a0631b58bf578563f52b097e1f55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 09:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="770040481446756393" id="message-770040481446756393">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Maggie took a deep breath as she looked around.</em> 
+“So, this is the top then. Let’s uh, stay on target team.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 09:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="770040637780262932" id="message-770040637780262932">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>She was starting to be <s>feeling a bit sweaty</s> rather uncomfortably warm, and she realized that they would get warmer the longer they stayed here.</em> “Yeah, definitely stay on task.” </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="bruh" title="bruh" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/704858214226853920.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="YOU" title="YOU" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/704859011228499971.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/637075614662393868.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/5b4e959255356402b7f8cb7c551cb5b3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="&#128375;&#128123;&#128128;HalloWoodster&#128128;&#128123;&#128375;#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Ensign Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 09:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="770040792156602418" id="message-770040792156602418">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Aaron made the grave, grave mistake of looking down.</em> &quot;How deep does it <em>go?</em>&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/e8b90877cf600e546c77e403f504836a.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Ensign Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 09:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="770040990756241429" id="message-770040990756241429">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Capri was kind of enjoying the feeling of not freezing for once, looking over the rim just slightly.</em> &quot;With or without the magma?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 09:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="770041220985520128" id="message-770041220985520128">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>She looked down too.</em> “If you fall, you’re toast no matter what.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/5b4e959255356402b7f8cb7c551cb5b3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="&#128375;&#128123;&#128128;HalloWoodster&#128128;&#128123;&#128375;#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Ensign Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 09:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="770041931521589249" id="message-770041931521589249">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Yeah, literally!&quot; <em>He looked at the temperature on his HUD.</em> &quot;TLDR: It&#39;s hot.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/9340a0631b58bf578563f52b097e1f55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 09:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="770042079237636116" id="message-770042079237636116">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Maggie laughed as he said that.</em> 
+“Please don’t specify. Let’s just keep moving.” </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="garaksmirk" title="garaksmirk" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/645268163566764032.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/d6b464e5371a719bde5ae4441b8fb002.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 09:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="770042245729615912" id="message-770042245729615912">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Yeah, can we get this done and get out of here? I don&#39;t want to become a Christmas Turkey.&quot; </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="HOWDAREYOU" title="HOWDAREYOU" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/704858704498917508.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/e8b90877cf600e546c77e403f504836a.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Ensign Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 09:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="770042474109861928" id="message-770042474109861928">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Capri simply nodded and turned back to the others.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 09:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="770042486420275200" id="message-770042486420275200">
+                <div class="chatlog__content">
+                    <div class="markdown">“I know! I can feel the eat though the EV suits.” <em>She had the brief moment of worry that her and Aaron’s metal limbs would heat up and give them burns. She shook the though off, that wouldn’t happen, right?</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 09:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="770043540356333639" id="message-770043540356333639">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>T&#39;Svai could feel the heat as well, which surprised her, even though it really should have occurred to her that a volcano would be uncomfortably warm.</em> &quot;Let us set up this device and leave, so that we are not exposed for too long.&quot; <em>She started twoards the Correct Spot™️.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/9340a0631b58bf578563f52b097e1f55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 09:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="770043868199649290" id="message-770043868199649290">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Maggie followed quickly behind. Hoping that this time, her luck with cliffs and falling would fuck off.</em>￼ </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/e8b90877cf600e546c77e403f504836a.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Ensign Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="770044273651351582" id="message-770044273651351582">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Capri nodded and followed towards the spot.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="770044295754416129" id="message-770044295754416129">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>She slowly followed as not to fall.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="770044559228403793" id="message-770044559228403793">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Between holding the cryodevice and trying not to fall in lava, T&#39;Svai had to admit she was perhaps not feeling the most confident she ever had in her life.</em> &quot;What is our current distance from the mysterious energy readings?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/d6b464e5371a719bde5ae4441b8fb002.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="770044930156003379" id="message-770044930156003379">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Jaime followed behind as well, making sure to keep their balance.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="770044978767331369" id="message-770044978767331369">
+                <div class="chatlog__content">
+                    <div class="markdown">“Let me check.” <em>She said checking her tricorder <s>and her player not knowing the distance we’ll time to wait for the gms</s></em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/f7b1548c85713c4f71065f6590e58fd0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Uhx&#39;Ameks#0000" data-user-id="770047262914379817" style="">Uhx&#39;Ameks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Oct-20 10:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="770047264201769040" id="message-770047264201769040">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Energy readings, now that is a pretty interesting phrase to use for our sacred birthplace. You must be the people who are here to direct our flow towards sacred grounds. But see, the bottom is a long way down, and you might need someone to guide you down there. Without the risk of falling to your certain doom of course.&quot; <em>The giant said, peering from behind them like a curious cat.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="770047522688204820" id="message-770047522688204820">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Oh, yes please. I really don&#39;t want us all to fall.&quot; <em>She said, looking at the new person.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/9340a0631b58bf578563f52b097e1f55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="770047789941391380" id="message-770047789941391380">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Maggie looked towards the COO.</em> 
+“When should we start climbing down Commander?” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/e8b90877cf600e546c77e403f504836a.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Ensign Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="770048595486310450" id="message-770048595486310450">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Capri nodded as well and motioned for them to help lead the group.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/f7b1548c85713c4f71065f6590e58fd0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Uhx&#39;Ameks#0000" data-user-id="770047262914379817" style="">Uhx&#39;Ameks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Oct-20 10:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="770050921928327198" id="message-770050921928327198">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Who is this commander that you speak of, it is a very interesting name for..... what did you say you are again?&quot; <em>He leaned in towards there heads, inspecting them. Like he was trying to figure out something.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="770051411115114496" id="message-770051411115114496">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;We called T&#39;Svai &#39;commander&#39; because that&#39;s her rank in Starfleet.&quot; <em>She explained to Uhx&#39;ameks.</em> &quot;What is your name?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/9340a0631b58bf578563f52b097e1f55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="770051483437498400" id="message-770051483437498400">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Maggie looked at the rock like man.</em> 
+“We are of various species. Human, Vulcan, Hybrid’s between multiple species￼. And yeah, that’s her rank.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="770052038351388692" id="message-770052038351388692">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Indeed.&quot; <em>T&#39;Svai confirmed. She had very tentatively begun the climb, still while carrying the device, only taking a couple of steps.</em> &quot;You are welcome to lead the way... what is your name?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/f7b1548c85713c4f71065f6590e58fd0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Uhx&#39;Ameks#0000" data-user-id="770047262914379817" style="">Uhx&#39;Ameks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Oct-20 10:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="770052729010651189" id="message-770052729010651189">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Well, my name is Uhx&#39;Ameks, but Uhx is fine. And as for the part where I lead the way, well, its going to get risky here. If you look down the barrel of this life giver, you can see that there is no path, so.&quot; <em>He dropped his hand down in front of the team, opening it up as a gesture.</em> &quot;There is only one way to go about this, and it all depends on your willingness.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="770052831591399465" id="message-770052831591399465">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Uhx. It is agreeable to meet you. What must be done?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="770052949384626237" id="message-770052949384626237">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;What do we have to do Uhx?&quot; <em>She asked, slightly concerned.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/e8b90877cf600e546c77e403f504836a.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Ensign Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="770053210609156106" id="message-770053210609156106">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Are we......are we going to just jump in?&quot; <em>He totally wasn&#39;t kind of eager to do so.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/d6b464e5371a719bde5ae4441b8fb002.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="770053327802728498" id="message-770053327802728498">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Are you expecting us to stand on your hand so you can carry us?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/f7b1548c85713c4f71065f6590e58fd0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Uhx&#39;Ameks#0000" data-user-id="770047262914379817" style="">Uhx&#39;Ameks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Oct-20 10:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="770053631541116939" id="message-770053631541116939">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Well that&#39;s one way to go about this, but I have to hold on to things, its more efficient if you grab on to the spikes on my back, bless the spirits for those.&quot; <em>He bellowed.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="770053839688564797" id="message-770053839688564797">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>T&#39;Svai looked around at the rest of the away team.</em> &quot;If any of you do not wish to do so, you will not be judged for it.&quot; <em>She paused.</em> &quot;I however do not take issue with the idea.&quot; <em>In truth, it sounded exciting.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/d6b464e5371a719bde5ae4441b8fb002.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="770053901382582372" id="message-770053901382582372">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I had a feeling it would be sonething like that.&quot; <em>Jaime said, shaking their head.</em> &quot;But if it&#39;s the easiest way...&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="770054157880262716" id="message-770054157880262716">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Hold on to the spikes on your back?&quot; <em>She said, a tinge shocked. Still, holding onto the spikes would be safer than rock climbing.</em> &quot;I&#39;ll do it.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/e8b90877cf600e546c77e403f504836a.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Ensign Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="770054246216237066" id="message-770054246216237066">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I volunteer as tribute.&quot; <em>He said with a smile.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/d6b464e5371a719bde5ae4441b8fb002.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="770054626883010570" id="message-770054626883010570">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Is that a 21st Century Pop Culture reference?&quot; <em>Jaime asked, turning to the one the others had called &quot;King&quot;.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/9340a0631b58bf578563f52b097e1f55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="770054819905798176" id="message-770054819905798176">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Maggie shook her head as she looked to the ￼ Commander.</em> 
+“I’m with you, all.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/e8b90877cf600e546c77e403f504836a.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Ensign Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="770054978177728513" id="message-770054978177728513">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;It is.&quot; He replied absently and walked up closer.* </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="770055178295574568" id="message-770055178295574568">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;We are... ready to board, Uhx.&quot; <em>Kind of a joke, mostly serious. She reached for a spike, awaiting permission.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/f7b1548c85713c4f71065f6590e58fd0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Uhx&#39;Ameks#0000" data-user-id="770047262914379817" style="">Uhx&#39;Ameks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Oct-20 10:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="770055790454636565" id="message-770055790454636565">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Hop on then, done be shy to cram yourself into a corner, try to get your grip in more than one place or else its death for you. Wouldn&#39;t it be nice though, to see your maker one last time before you die? Well, if not... then its just me I guess.&quot; <em>He chuckled, walking to the edge of the volcano and sitting down, letting his legs dangle on the edge.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/e8b90877cf600e546c77e403f504836a.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Ensign Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="770055976123760690" id="message-770055976123760690">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Capri chuckled a little as he climbed on, getting a good grip on the spikes with the others.</em> <span class="chatlog__edited-timestamp" title="25-Oct-20 10:47 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/9340a0631b58bf578563f52b097e1f55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="770056086777757727" id="message-770056086777757727">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Maggie nodded as she hopped onto the back of the rock man, grabbing the best grip she could muster. Trying to think happy thoughts.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="770056278608314450" id="message-770056278608314450">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>T&#39;Svai clung tightly to the cryo device with one arm and gripped a spike with the other, while bracing both legs on a third.</em> &quot;Your assistance is most appreciated, and it is an honor to see a site sacred to your species.&quot; <em>That seemed appropriate.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/d6b464e5371a719bde5ae4441b8fb002.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="770056298342776843" id="message-770056298342776843">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Jaime climbed aboard as well, making sure not to look down as they did so.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="770056338109104169" id="message-770056338109104169">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>She laughed awkwardly before climbing on and griping and wrapping herself around things to give herself the best chance she could of survival.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/f7b1548c85713c4f71065f6590e58fd0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Uhx&#39;Ameks#0000" data-user-id="770047262914379817" style="">Uhx&#39;Ameks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Oct-20 10:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="770057074516164638" id="message-770057074516164638">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;If that&#39;s everyone, should we begin the climb, those in favor say, I.&quot; <em>He said, slowly dragging himself off the edge, preparing for the climb.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="770057117288759326" id="message-770057117288759326">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="770057231306981416" id="message-770057231306981416">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/9340a0631b58bf578563f52b097e1f55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="770057573629427733" id="message-770057573629427733">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Maggie nodded.</em> 
+“I.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/d6b464e5371a719bde5ae4441b8fb002.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 10:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="770058923512168459" id="message-770058923512168459">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/f7b1548c85713c4f71065f6590e58fd0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Uhx&#39;Ameks#0000" data-user-id="770047262914379817" style="">Uhx&#39;Ameks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Oct-20 10:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="770059004616376350" id="message-770059004616376350">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Well then, hold on tight, this will become a bumpy ride soon enough.&quot; <em>As he said that, he dropped down, grabbing onto a ledge with a slight jolt, shaking everyone who was on his back, he progressively climbed down further into the volcano, grabbing onto each ledge, the EV suits would get hotter and hotter as they went down.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="770059156249378888" id="message-770059156249378888">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>T&#39;Svai was really starting to wish the cryo device had straps. She held on tighter as the heat increased.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="770061037101252628" id="message-770061037101252628">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>She held on tightly to guarantee she didn&#39;t fall. As they went deeper and deeper into the volcano the suit felt like it had become an oven. And Lithop realized that if they were down there two long that they could end up getting heatstroke or at worst death. She shook the thought off as they went deeper. They would only be here for a minute or two before they could go back up.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/9340a0631b58bf578563f52b097e1f55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="770063476445675530" id="message-770063476445675530">
+                <div class="chatlog__content">
+                    <div class="markdown">*Maggie took some deep breaths as they started to descend deeper and deeper into the volcano.^ 
+“Hot..”￼ </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/f7b1548c85713c4f71065f6590e58fd0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Uhx&#39;Ameks#0000" data-user-id="770047262914379817" style="">Uhx&#39;Ameks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Oct-20 11:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="770065005240254495" id="message-770065005240254495">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;More than just hot, its life giving. This feeling you feel is life, more than life, its.... its, I cant find the word for it. Its just.&quot; <em>He paused, still climbing down to the bottom, no abrupt interuptions, just... climbing.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/9340a0631b58bf578563f52b097e1f55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="770065161264300113" id="message-770065161264300113">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Maggie took a deep breath as she spoke.</em> 
+“￼Transcendent?” </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="⭕" title="⭕" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/2b55.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127345;️" title="&#127345;️" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/1f171.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127471;" title="&#127471;" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/1f1ef.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="770066570801709067" id="message-770066570801709067">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;There may no be a word for it.&quot; <em>She looked down at the bubbling lava, it could end life, but for these people, it created it. It was all so extestential.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="770067041511800832" id="message-770067041511800832">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;My species has a concept of something called a katra. The living essence of a Vulcan. That which contains our memories and collective experiences. It is not life-giving, but... self-defining in a particular sense. That-which-links. While I also lack appropriate descriptive words for that concept, I believe I understand.&quot; <em>T&#39;Svai remarked. Oh man, she was really wondering if she could meld with this volcano.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="770067280579002378" id="message-770067280579002378">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;It&#39;s like the volcano gives rocks a soul.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/f7b1548c85713c4f71065f6590e58fd0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Uhx&#39;Ameks#0000" data-user-id="770047262914379817" style="">Uhx&#39;Ameks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Oct-20 11:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="770067593905569823" id="message-770067593905569823">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Well then, whatever was described now is the term I will use for the rest of our time here.&quot; <em>He said, the green in his rocks glowing slightly as it grew closer to its life source, glowing hyopthetically of course. Once he finished talking, they reached the safety point.</em> &quot;So here we go, this is where it turns from hot to melting, even our people dare to go down these depths.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="770068624404512778" id="message-770068624404512778">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Thank you for taking us down here.&quot; <em>She shifted uncomfortably in the heat, the sooner they could get out the better. She was starting to get a headache and she didn&#39;t want that to lead to something worse down here.</em> &quot;How do we get the device to work?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="770068964507123742" id="message-770068964507123742">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>T&#39;Svai placed the device down on a reasonably flat area.</em> &quot;Place the stabilizers and use the control panel to link the trigger command to the PADD, then  begin the initialization process.&quot; <em>She explained, admittedly pleased to be somewhere reasonably stable.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="770070344290664498" id="message-770070344290664498">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Ok,&quot; <em>She breathed heavily and bent down to up the stabilizers in before standing up. She&#39;d probably need to go to sickbay to get her temperature down when this was all over.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="770070743756570634" id="message-770070743756570634">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Are you well, Ensign?&quot; <em>T&#39;Svai asked thoughtfully, noting Lithop&#39;s heavy breathing.</em> <span class="chatlog__edited-timestamp" title="25-Oct-20 11:46 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="770071093570043956" id="message-770071093570043956">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;We&#39;re in a volcano. It&#39;s pretty hot down here. Though I&#39;m thankful for the EV suit or else instead of feeling like i have the worst fever of my life, I&#39;d be dead.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/d6b464e5371a719bde5ae4441b8fb002.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="770071261657169960" id="message-770071261657169960">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Anything I can do to help?&quot; <em>Jaime asked, stepping forward, somewhat desperate for something to take their mind off the Molten Hot Magma just below their feet.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="770071540519403541" id="message-770071540519403541">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>T&#39;Svai took a stylus out of her pocket and started tapping on the console.</em> &quot;Stabilizers and diagnostics.&quot; </div>
+                </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="770071891704545350" id="message-770071891704545350">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Oh - do we have a visual on the energy pocket?&quot; <em>Maybe, at this depth...</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="770072269925384202" id="message-770072269925384202">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Let me check.&quot; <em>She pulled out the tricorder, which was doing it&#39;s best inside a volcano. She waited for the information it gave.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/9340a0631b58bf578563f52b097e1f55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="770072476889645126" id="message-770072476889645126">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Maggie stayed on the back of the man. Taking deep breaths as she awaited orders.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/e51450f562ea717deefd69ad63a55a07.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="770073051513487410" id="message-770073051513487410">
+                <div class="chatlog__content">
+                    <div class="markdown">[D]<em>Yes, the energy pocket was the same as it was before, smack dab in the center of the volcano.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="770073354266738719" id="message-770073354266738719">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Lieutenant Verne, will we be able to beam back to the shuttle from here?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/9340a0631b58bf578563f52b097e1f55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="770073565944610826" id="message-770073565944610826">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Maggie made a quick check of that on her tricorder, trying to see if they would be able to.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="770073611087380530" id="message-770073611087380530">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;No change that I can tell.&quot; <em>She told T&#39;Svai.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Oct-20 11:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="770073854982488104" id="message-770073854982488104">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Are we ready to deploy the device?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:00 AM</span>
+
+            <div class="chatlog__message " data-message-id="770074342251298836" id="message-770074342251298836">
+                <div class="chatlog__content">
+                    <div class="markdown">[D]<em>They would be able to.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/9340a0631b58bf578563f52b097e1f55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:01 AM</span>
+
+            <div class="chatlog__message " data-message-id="770074480500146267" id="message-770074480500146267">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Maggie looked over to T’Svai.</em> 
+“We’ll be able to beam out from here!” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:02 AM</span>
+
+            <div class="chatlog__message " data-message-id="770074766307885076" id="message-770074766307885076">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Let us do that, then, so we can trigger the device from there.&quot; <em>As fun as it would be to simultaneously burn and freeze. She once again looked towards the center of the volcano, where the signal had come from.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:02 AM</span>
+
+            <div class="chatlog__message " data-message-id="770074947296821288" id="message-770074947296821288">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Oh thank the universe.&quot; <em>She said, ready to beam to the shuttle and take of the oven she was wearing.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/f7b1548c85713c4f71065f6590e58fd0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Uhx&#39;Ameks#0000" data-user-id="770047262914379817" style="">Uhx&#39;Ameks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">26-Oct-20 12:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="770075042208940052" id="message-770075042208940052">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Beaming? what is this beaming exactly?&quot; <em>He said concerned for what would happen.</em> &quot;What is happening up there.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="770075164909764650" id="message-770075164909764650">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;We will be...teleporting to our destination.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/9340a0631b58bf578563f52b097e1f55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:04 AM</span>
+
+            <div class="chatlog__message " data-message-id="770075241081864242" id="message-770075241081864242">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Maggie nodded as she stood with T’Svai and Lithop.</em> 
+“We’ll be able to get back up without your help ￼basically.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:04 AM</span>
+
+            <div class="chatlog__message " data-message-id="770075328382107698" id="message-770075328382107698">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Teleportation, in the simplest terms. You should probably start climbing out of here, I&#39;m not sure we can beam you.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:11 AM</span>
+
+            <div class="chatlog__message " data-message-id="770077012911849493" id="message-770077012911849493">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Once we arrive... there is something I wish to check on the volcano exterior before we depart.&quot; <em>She said vaguely.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="770077398041100328" id="message-770077398041100328">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;What is it? does it have anything to do with the energy? I still can&#39;t find a good scientific explanation for it.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:13 AM</span>
+
+            <div class="chatlog__message " data-message-id="770077591428137001" id="message-770077591428137001">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I am uncertain.&quot; <em>She admitted.</em> &quot;Our data indicates it does not. The Baharien culture indicates it might.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/9340a0631b58bf578563f52b097e1f55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:13 AM</span>
+
+            <div class="chatlog__message " data-message-id="770077707614421042" id="message-770077707614421042">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Maggie nodded as she looked towards the COO.</em> 
+“You want, to see if it’s alive?” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="770077888425754634" id="message-770077888425754634">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>She hesitated before answering.</em> &quot;I recognize the low probability, but in the absence of any other answers it seems prudent.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="770077919250481202" id="message-770077919250481202">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;are you going to try to mind meld with the volcano?!&quot; <em>She asked in excitement.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="770078366845632543" id="message-770078366845632543">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>T&#39;Svai raised an eyebrow. Whether that was visible through the helmet was a mystery.</em> &quot;Shall we beam up?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/9340a0631b58bf578563f52b097e1f55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="770078555907948575" id="message-770078555907948575">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Maggie nodded as she looked towards the ￼Commander.</em>
+“I say so.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:18 AM</span>
+
+            <div class="chatlog__message " data-message-id="770078752935641109" id="message-770078752935641109">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;We need to get Uhx out of the volcano too.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/5fbfc2c690c4af76de20172e398d1721.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="birb#0890" data-user-id="384551551567659009" style="color: rgb(41,169,238)">Lt. JG. Amy Olson</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:18 AM</span>
+
+            <div class="chatlog__message " data-message-id="770078898809339944" id="message-770078898809339944">
+                <div class="chatlog__content">
+                    <div class="markdown">[Runabout computer]
+”Site-to-Site Transporter locked on.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="770079059886735381" id="message-770079059886735381">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;We cannot possibly do more damage to the Prime Directive than has already been done. Eight to beam up to the runabout.&quot; <em>That included Uhx.</em> </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="this" title="this" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/637075614834229248.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="770079181332676618" id="message-770079181332676618">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;You got that right.&quot; <em>She was ready for beam up.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/5fbfc2c690c4af76de20172e398d1721.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="birb#0890" data-user-id="384551551567659009" style="color: rgb(41,169,238)">Lt. JG. Amy Olson</span>
+
+
+        <span class="chatlog__timestamp">26-Oct-20 12:20 AM</span>
+
+            <div class="chatlog__message " data-message-id="770079298765586442" id="message-770079298765586442">
+                <div class="chatlog__content">
+                    <div class="markdown">[D]<em>The away team, including Uhx, beamed away to the runabout landing site.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/5b4e959255356402b7f8cb7c551cb5b3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="&#128375;&#128123;&#128128;HalloWoodster&#128128;&#128123;&#128375;#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Ensign Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">27-Oct-20 11:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="770784811103158274" id="message-770784811103158274">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>[D]Aaron had climbed the volcano after reaching the base of it, and had motioned for everyone else to follow.</em> ((GMs take over.)) </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/ea75b08dee8c2a527c2ad953ace4d671.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rocket&#128640;#1898" data-user-id="691334501019942913" style="color: rgb(212,156,2)">Lt. JG. Malcolm Parsons</span>
+
+
+        <span class="chatlog__timestamp">27-Oct-20 11:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="770785101637746708" id="message-770785101637746708">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Malcolm followed after Aaron shortly after into the Volcano wearing the proper protective gear, he wanted to make it home to Amy again.</em> </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/1f62d.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">27-Oct-20 11:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="770785233662246912" id="message-770785233662246912">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Lithop once again entered the volcano in her gear.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/5fbfc2c690c4af76de20172e398d1721.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="birb#0890" data-user-id="384551551567659009" style="color: rgb(41,169,238)">Lt. JG. Amy Olson</span>
+
+
+        <span class="chatlog__timestamp">27-Oct-20 11:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="770785486326988800" id="message-770785486326988800">
+                <div class="chatlog__content">
+                    <div class="markdown">[D]<em>Okay, so to make everyone’s lives easier the team reached their point at the top of the volcano.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/ea75b08dee8c2a527c2ad953ace4d671.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rocket&#128640;#1898" data-user-id="691334501019942913" style="color: rgb(212,156,2)">Lt. JG. Malcolm Parsons</span>
+
+
+        <span class="chatlog__timestamp">27-Oct-20 11:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="770787079809662988" id="message-770787079809662988">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Malcolm looked around this was certainly a fascinating place.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">27-Oct-20 11:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="770787277449199636" id="message-770787277449199636">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Lithop looked around searching for the Baharien.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/69a3e663993e521b87f79e7e9b5dbdbf.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Lurkin&#39;#7259" data-user-id="742130340046438402" style="color: rgb(245,182,10)">Lieutenant Krurin</span>
+
+
+        <span class="chatlog__timestamp">27-Oct-20 11:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="770787894779445268" id="message-770787894779445268">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Krurin scouted the area carefully, making sure that there wasn&#39;t anything dangerous around them. She paid little attention to the scientific interest of the area.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/a65a40b7a6b1bd333e75c877c9a28a9e.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Krek&#39;oiks#0000" data-user-id="770047262914379817" style="">Krek&#39;oiks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Oct-20 11:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="770788787776389148" id="message-770788787776389148">
+                <div class="chatlog__content">
+                    <div class="markdown">”Speak as a friend or stand challenged.”<em>He said stepping out in to the light.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">27-Oct-20 11:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="770789266355257364" id="message-770789266355257364">
+                <div class="chatlog__content">
+                    <div class="markdown">“We are Starfleet! We are hear to help in any way we can.” <em>She greeted looking at the being.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/5b4e959255356402b7f8cb7c551cb5b3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="&#128375;&#128123;&#128128;HalloWoodster&#128128;&#128123;&#128375;#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Ensign Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">27-Oct-20 11:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="770789639447380009" id="message-770789639447380009">
+                <div class="chatlog__content">
+                    <div class="markdown">“We speak as friends. Have you been visited by any winged people?!” <em>He shouted, not knowing whether the Titan could hear him.</em> <span class="chatlog__edited-timestamp" title="27-Oct-20 11:23 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/a65a40b7a6b1bd333e75c877c9a28a9e.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Krek&#39;oiks#0000" data-user-id="770047262914379817" style="">Krek&#39;oiks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Oct-20 11:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="770789804614221844" id="message-770789804614221844">
+                <div class="chatlog__content">
+                    <div class="markdown">”I know, it a joke. And of course we have, they came with interesting appeals. And we intend to see them through.” </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127480;" title="&#127480;" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/1f1f8.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127469;" title="&#127469;" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/1f1ed.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127470;" title="&#127470;" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/1f1ee.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127481;" title="&#127481;" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/1f1f9.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">27-Oct-20 11:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="770790686660231200" id="message-770790686660231200">
+                <div class="chatlog__content">
+                    <div class="markdown">“Ok,” <em>She said, what where the moths planing?</em> “We intend to accompany you on your journey, to protect you.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/a65a40b7a6b1bd333e75c877c9a28a9e.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Krek&#39;oiks#0000" data-user-id="770047262914379817" style="">Krek&#39;oiks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Oct-20 11:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="770791341684817950" id="message-770791341684817950">
+                <div class="chatlog__content">
+                    <div class="markdown">”Don’t bother! We need no protection! You starfleet have done enough and believe me.. we are thankful, but it is time we continue alone.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">27-Oct-20 11:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="770792188221063181" id="message-770792188221063181">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Lithop didn’t believe they didn’t need protection.</em> “Do you mind if we accompany you on your journey?” <em>She asked, if they could tag along they could protect.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/69a3e663993e521b87f79e7e9b5dbdbf.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Lurkin&#39;#7259" data-user-id="742130340046438402" style="color: rgb(245,182,10)">Lieutenant Krurin</span>
+
+
+        <span class="chatlog__timestamp">27-Oct-20 11:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="770792610985017375" id="message-770792610985017375">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Krurin frowned, talking wasn&#39;t exactly her strong suit but it was clearly necessary.</em> &quot;We&#39;re here to help by any means possible. Independence is wonderful, but are you absolutely sure we wouldn&#39;t be helpful even as backup whilst accompanying you?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/5b4e959255356402b7f8cb7c551cb5b3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="&#128375;&#128123;&#128128;HalloWoodster&#128128;&#128123;&#128375;#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Ensign Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">27-Oct-20 11:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="770793201090297866" id="message-770793201090297866">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Aaron quietly stepped off to the side and pressed his commbadge, turning off the UT in the process.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/a65a40b7a6b1bd333e75c877c9a28a9e.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Krek&#39;oiks#0000" data-user-id="770047262914379817" style="">Krek&#39;oiks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Oct-20 11:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="770793575788576778" id="message-770793575788576778">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>There can a deep sigh from him, they were just meddling and being nosey.</em>”Very well. If this is what you wish, your will is your own.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">27-Oct-20 11:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="770795990448865280" id="message-770795990448865280">
+                <div class="chatlog__content">
+                    <div class="markdown">“We promise to not be annoying or ask too many questions.” <em>She said readjusting the rifle slung over her shoulder.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/ea75b08dee8c2a527c2ad953ace4d671.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rocket&#128640;#1898" data-user-id="691334501019942913" style="color: rgb(212,156,2)">Lt. JG. Malcolm Parsons</span>
+
+
+        <span class="chatlog__timestamp">28-Oct-20 12:02 AM</span>
+
+            <div class="chatlog__message " data-message-id="770799569658445824" id="message-770799569658445824">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Yes, we will respect your wishes.&quot; <em>Malcolm said as he got ready to move out.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/a65a40b7a6b1bd333e75c877c9a28a9e.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Krek&#39;oiks#0000" data-user-id="770047262914379817" style="">Krek&#39;oiks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">28-Oct-20 12:02 AM</span>
+
+            <div class="chatlog__message " data-message-id="770799606505275404" id="message-770799606505275404">
+                <div class="chatlog__content">
+                    <div class="markdown">”Very well, then let us begin!”<em>He started to make his way down the volcano, much faster than the away team.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/a_8e34591b829219aad24380783cb88077.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">28-Oct-20 12:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="770802113990230056" id="message-770802113990230056">
+                <div class="chatlog__content">
+                    <div class="markdown">[Comms] &quot;Away team from Phoenix. One of the other groups have requested a transport to their required location. Would your group like the same? Let us know. Over.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/a65a40b7a6b1bd333e75c877c9a28a9e.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Krek&#39;oiks#0000" data-user-id="770047262914379817" style="">Krek&#39;oiks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">28-Oct-20 12:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="770803434424631296" id="message-770803434424631296">
+                <div class="chatlog__content">
+                    <div class="markdown">“Transporter..? Some sort of vehicle, that will make our journey much easier, although, many of us will wish to come.. can your tools handle the load..?” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/a_8e34591b829219aad24380783cb88077.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">28-Oct-20 12:18 AM</span>
+
+            <div class="chatlog__message " data-message-id="770803687786151977" id="message-770803687786151977">
+                <div class="chatlog__content">
+                    <div class="markdown">[Comms] &quot;We can transport multiple different times if required, don&#39;t worry. Cargo transport beams are quite strong. Let us know who and when, and we&#39;ll get it done. Out.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/f7b1548c85713c4f71065f6590e58fd0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Uhx&#39;Ameks#0000" data-user-id="770047262914379817" style="">Uhx&#39;Ameks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">28-Oct-20 12:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="770804365295878164" id="message-770804365295878164">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;What was that thing Krek? I just got back from some spiritual hearings, pretty impactful stuff.&quot; <em>He said as he climbed up from the volcano and flung himself over the edge, smacking himself on the ground with a thud.</em> &quot;Oh hello there.&quot; <em>he said realizing who he saw.</em> &quot;Friends.... that must be your overseer or whoever speaks to you from the ship I bet.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/a65a40b7a6b1bd333e75c877c9a28a9e.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Krek&#39;oiks#0000" data-user-id="770047262914379817" style="">Krek&#39;oiks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">28-Oct-20 12:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="770804785787437056" id="message-770804785787437056">
+                <div class="chatlog__content">
+                    <div class="markdown">“Ah friend Uhx. Are you prepared for the Journey..? That was the leader of the Phoenix, she was summoning to see if we were interested in transport, I’ve agreed to it.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/6d8cabc6f3f53ea00fbe9c67cf9aaac1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">28-Oct-20 12:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="770804982374989824" id="message-770804982374989824">
+                <div class="chatlog__content">
+                    <div class="markdown">“Yes, it will be much faster.” <em>She told them, and probably safer too she added mentally.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/f7b1548c85713c4f71065f6590e58fd0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Uhx&#39;Ameks#0000" data-user-id="770047262914379817" style="">Uhx&#39;Ameks</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">28-Oct-20 12:26 AM</span>
+
+            <div class="chatlog__message " data-message-id="770805643929452558" id="message-770805643929452558">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Well if your judgement is as wise as mine then I will agree to this &quot;transport&quot; as well. As long as its safe for us. This journey sounds interesting, I remember them telling us about it and was curious. Now I get to witness this first hand.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20GRAMEN%20-%20BAHARIEN%20-%20the-core%20%5B768556950614442024%5D.html_Files/a_8e34591b829219aad24380783cb88077.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">28-Oct-20 12:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="770805843368345601" id="message-770805843368345601">
+                <div class="chatlog__content">
+                    <div class="markdown">[D] <em>After a bit of discussion they were all organised and in different groups they de-materialised...</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 127 message(s)</div>
+</div>
+
+</body>
+</html>

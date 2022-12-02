@@ -1,0 +1,1954 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - city-streets</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+    .spoiler--hidden .spoiler-image:after {
+        content: "SPOILER";
+        color: #dcddde;
+        background-color: rgba(0, 0, 0, 0.6);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: 600;
+        /* padding: 0.5em 0.7em; */
+        padding: 100%;
+        /* This ruins those beutifully rounded buttons, but it's needed to prevent a FireFox bug with video and audio elemnts. */
+        /* The bug is that you can click trough the spoiler layer and play the video or audio, I could not identify the cause. */
+        /* I leave this here, in case someone is brave enough to venture in to madness that is undocumented browser behaviour. */
+        border-radius: 20px;
+        letter-spacing: 0.05em;
+        font-size: 0.9em;
+    }
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/a_5361c0bf380eb945fe0f2e7ee079ec5d-28F71.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Xoidia Prime / city-streets</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 12:01 AM</span>
+
+            <div class="chatlog__message " data-message-id="784570182303219712" id="message-784570182303219712">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The City streets were jam packed with people, walking around, doing their own thing. Talking amongst family and friends as they traveresed through their own neighborhoods, streets, towns. A few policeman with rather scary looking firearms paroozed around the place like watchdogs. But other than that, there was nothing else to the streets that was worth someones while.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="784570193842143283" id="message-784570193842143283">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/Concept-Art-Pawel-Turalski-City-Center-992-82E55.png">
+                                        <img class="chatlog__attachment-thumbnail" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/Concept-Art-Pawel-Turalski-City-Center-992-82E55.png" alt="Image attachment" title="Image: Concept-Art-Pawel-Turalski-City-Center-992x612.png (923.1 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 12:28 AM</span>
+
+            <div class="chatlog__message " data-message-id="784939191619420160" id="message-784939191619420160">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha looked around excitedly, taking it all in. She took note of everything. This place seemed so fantastical to her and she couldn&#39;t help but absorb all of it</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 12:28 AM</span>
+
+            <div class="chatlog__message " data-message-id="784939285526085674" id="message-784939285526085674">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The skyline of the city was something to be marveled at. Ciel had only ever been in a couple large cities, and none had architecture like this. It was beautiful!</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 12:32 AM</span>
+
+            <div class="chatlog__message " data-message-id="784940235473027093" id="message-784940235473027093">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie gasped as she looked around the city.</em> 
+“Oh my god, it’s like something out of the holodeck.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/4c6245ea171ef57b4ae84a98401fe46c-9A2B7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ishara Townmen#0000" data-user-id="784941213056499732" style="">Ishara Townmen</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">06-Dec-20 12:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="784941214117658624" id="message-784941214117658624">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Yes but you haven’t seen anything. Would you be interested to meet my leader now. The city hall isn’t far from here.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 12:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="784941580985434123" id="message-784941580985434123">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola was in awe as she walked alongside Ciel. The buildings reminded her a little of home.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="06-Dec-20 12:37 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 12:38 AM</span>
+
+            <div class="chatlog__message " data-message-id="784941710853537804" id="message-784941710853537804">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Sure!” <em>Lithop exclaimed, looking around the city. She was almost sure there was nowhere like this place anywhere else in the galaxy.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/a2a215705d57d95408286596d5813500-CD1CC.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="simpcakes#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 12:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="784942290757091380" id="message-784942290757091380">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;How old is this city?&quot; <em>Sara asked gently, readjusting her backpack.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 12:41 AM</span>
+
+            <div class="chatlog__message " data-message-id="784942460509224962" id="message-784942460509224962">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I can&#39;t wait! I have so many questions I wanna ask!&quot; <em>Kytha rocked back and forth on her heels.  She was just briming with energy</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 12:43 AM</span>
+
+            <div class="chatlog__message " data-message-id="784943171947200532" id="message-784943171947200532">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie looked towards their guide as they moved.</em> 
+“Please take us!”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/4c6245ea171ef57b4ae84a98401fe46c-9A2B7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ishara Townmen#0000" data-user-id="784941213056499732" style="">Ishara Townmen</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">06-Dec-20 12:46 AM</span>
+
+            <div class="chatlog__message " data-message-id="784943808147750933" id="message-784943808147750933">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Hundreds.. but it took a long time to build up to this point.”<em>She said walking along the sidewalk.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 12:49 AM</span>
+
+            <div class="chatlog__message " data-message-id="784944503764680734" id="message-784944503764680734">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha eagerly followed, she couldn&#39;t wait to meet the leader of this city and ask all her questions. Her enthusiasm was evident.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/a2a215705d57d95408286596d5813500-CD1CC.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="simpcakes#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 01:10 AM</span>
+
+            <div class="chatlog__message " data-message-id="784949884671361045" id="message-784949884671361045">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;So, this city is, all things considered, relatively recent?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 01:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="784954208163463208" id="message-784954208163463208">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>For clearer indication, the away team traversed up to the city hall in hopes to contact the leader.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/6fa04a25238bfcf9f0bf7807cabe180c-A7E1F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="birb#1215" data-user-id="384551551567659009" style="color: rgb(41,169,238)">Lt. JG. Amy Olson</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 09:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="785264115580796928" id="message-785264115580796928">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Now the away team was out onto the city streets, stepping into a light drizzle, the darkness shadowed over the team as they stepped out, their EV suit light was the only source. Not even any street lamps were illuminated. Just a head, there was a gate that surrounded the part of the city the away team was in, non claimable, the away team would have to find another way around, or perhaps find an openable gate somewhere.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="06-Dec-20 09:59 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="785264610408005662" id="message-785264610408005662">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;That is so weird.&quot; <em>Lithop commented in relation to the lack of lights and the gate.</em> &quot;Something weird has to be going on in this city.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="785264838032490556" id="message-785264838032490556">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;My sentiments exactly...&quot; <em>Jaime said, before turning towards T&#39;Svai,</em> &quot;What&#39;s our course of action, Commander?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/fa238c1351beaa71a26be53d16294989-D292A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="localcryptid#8122" data-user-id="730612298099720225" style="color: rgb(255,203,37)">Lieutenant Mera Aeonian</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="785265177674514472" id="message-785265177674514472">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>For better or for worse, Mera was on a little bit of an edge.</em> &quot;Well, if this is any indication Ensign,&quot; <em>She was talking to the science one.</em> &quot;It would seem the inhabitants are aware of the goings on at the very least. Seeing as they&#39;ve put this sector in isolation.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="785265313503379487" id="message-785265313503379487">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai hummed thoughtfully.</em> &quot;I would ordinarily suggest having the transporter room beam us back up and then past the gate, but without knowing why it is closed to start with that might be a poor choice. We shall look for either a person or a gate, whichever becomes known to us first.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="785265858184347698" id="message-785265858184347698">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Time to look for another gate.&quot; <em>Lithop sighed, turning around to try to find a different way out.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="785266002153701377" id="message-785266002153701377">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime nodded.</em> &quot;Understood, sir,&quot; <em>they said before starting to search for either of the two things that T&#39;Svai had suggested.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="06-Dec-20 10:07 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/6fa04a25238bfcf9f0bf7807cabe180c-A7E1F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="birb#1215" data-user-id="384551551567659009" style="color: rgb(41,169,238)">Lt. JG. Amy Olson</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="785267078596263957" id="message-785267078596263957">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Just then, there was a buzzing sound, then a door unlatching and opening. A guard was coming though, to set his patrols, the gate shut behind him.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="06-Dec-20 10:11 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="785267404451479572" id="message-785267404451479572">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai turned her head sharply to look at the guard.</em> &quot;Hello, and/or live long and prosper.&quot; <em>She called to the guard, holding up a ta&#39;al simply because it was so much clearer than waving.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="785267598136049704" id="message-785267598136049704">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop heard the door open and spun around to see the guard.</em> &quot;Change of plans! Commander, we all look human and Vulcan enough to pass as civilians, should we tell them who we are?&quot; <em>She whispered that last part to the commander.</em> &quot;We can find a way to excuse the suits.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="785267957621981185" id="message-785267957621981185">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime whipped around towards the buzzing sound and upon spotting the Guard, came to a stop and paid full attention to him and his every move.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/6fa04a25238bfcf9f0bf7807cabe180c-A7E1F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="birb#1215" data-user-id="384551551567659009" style="color: rgb(41,169,238)">Lt. JG. Amy Olson</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="785268421830246411" id="message-785268421830246411">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[The Guard] <em>The team couldn’t see his facial expressions under the helmet, but he wore jet black armor and carried around a painful looking weapon.</em>
+“What the hell are you people doing back here?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="785268797531095071" id="message-785268797531095071">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>It seems greetings had died along with logic.</em> &quot;We are travelers. Would you mind if we asked you some questions?&quot; <em>She tried, deciding to keep it vague for the time being. She let her hand drop.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/6fa04a25238bfcf9f0bf7807cabe180c-A7E1F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="birb#1215" data-user-id="384551551567659009" style="color: rgb(41,169,238)">Lt. JG. Amy Olson</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="785269303628660737" id="message-785269303628660737">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[The Guard] “Yes I <em>would</em> mind. Why aren’t you in the sewer system maintenance shaft with the rest of your team? For example.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="785270052089757696" id="message-785270052089757696">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Stepping forward, Jaime said (with a feigned confidence),</em> &quot;We&#39;re on the next shift, we&#39;re on our way to take over, now.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="785270667447631904" id="message-785270667447631904">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop had to think fast, what if they didn&#39;t have shifts?</em> &quot;Sorry, they&#39;re new to the job. We&#39;re actually backup sent from headquarters. We got a little lost, do you think you could show us the way to where we&#39;re supposed to be?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="785271115093245972" id="message-785271115093245972">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai, after a moment of careful pondering, decided to feign exasperation.</em> &quot;You see who I&#39;m working with?&quot; <em>She gestured vaguely at the rest of the away team. Maybe that would make the guard a touch less suspicious.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="785271543163781230" id="message-785271543163781230">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Deciding to &#39;act along&#39; whith the Commander, Jaime shook their head and muttered something nonsensical under their breath.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="785271726656192512" id="message-785271726656192512">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Now playing along Lithop shrugged and gave a look that said &quot;my co workers right?&quot;</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/6fa04a25238bfcf9f0bf7807cabe180c-A7E1F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="birb#1215" data-user-id="384551551567659009" style="color: rgb(41,169,238)">Lt. JG. Amy Olson</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="785272515634659339" id="message-785272515634659339">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[The Gaurd] “I don’t have time to show and tell. Do I look like a plumber to you?”<em>The man then took off for the rest of his patrol. Leaving the door unguarded.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="785272664322736129" id="message-785272664322736129">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai looked at the rest of the away team and pointed at the door.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="785273147783249950" id="message-785273147783249950">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime let out a short sigh of relief as the Guard walked away, before making their way over to the door. As the only Security Officer present, it was their responsibility to assess all risks and possible threats to the team. They pulled out a tricorder and scanned the door to see if it was electrified or was connected to any alarms.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="06-Dec-20 10:35 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="785273822306893845" id="message-785273822306893845">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Ok, let&#39;s just try to get out of the city now.&quot; <em>She said, ready to speed walk out of town when the gate was safe.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="785273909620244501" id="message-785273909620244501">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai walked after Lithop, checking behind the group as they went.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/6fa04a25238bfcf9f0bf7807cabe180c-A7E1F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="birb#1215" data-user-id="384551551567659009" style="color: rgb(41,169,238)">Lt. JG. Amy Olson</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="785274397027860503" id="message-785274397027860503">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The door, solid, made out of a strong tritanium secured by a fingerprint lock, no match for the tricorder.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="785274667132387388" id="message-785274667132387388">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime turned towards the Commander,</em> &quot;Fingerprint lock, sir... and I&#39;m betting our fingerprints won&#39;t be matches...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="785274886452412467" id="message-785274886452412467">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;So, how are we getting though?&quot; <em>She asked.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="785274982116229141" id="message-785274982116229141">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I do have a hyperspanner with me.&quot; <em>T&#39;Svai remarked, looking at the lock more closely to see if she could get a sense of the wiring.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/6fa04a25238bfcf9f0bf7807cabe180c-A7E1F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="birb#1215" data-user-id="384551551567659009" style="color: rgb(41,169,238)">Lt. JG. Amy Olson</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="785275664940007515" id="message-785275664940007515">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The lock was very simple by 25th century standards. Wires instead of EM conduits, and bio-neural circuitry.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="785276929799487519" id="message-785276929799487519">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Fascinating.&quot; <em>T&#39;Svai deadpanned, all feigned emotion now gone. She attempted to use the hyperspanner to effectively trigger the part of the circuitry that determined if the image the scanner was receiving &#39;matched&#39; saved values and thus convince the lock that the correct criteria existed for it to open.</em> &quot;If this does not work, does anyone possess tape or some other kind of substance with adhesive properties?&quot; <em>Plan B was to lift a print from the door if possible.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="06-Dec-20 10:50 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="785277390355300412" id="message-785277390355300412">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I didn&#39;t think we&#39;d need... tape... sir,&quot; <em>Jaime said, with a slight sarcasm to their voice...</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="785277737237479494" id="message-785277737237479494">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Once we get through the gate what&#39;s our pla of action. I can&#39;t tell if the direction we&#39;re going is into the city or out of it.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/6fa04a25238bfcf9f0bf7807cabe180c-A7E1F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="birb#1215" data-user-id="384551551567659009" style="color: rgb(41,169,238)">Lt. JG. Amy Olson</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 10:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="785279332871700481" id="message-785279332871700481">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The lock complied, there was a click from it.. defaulted into a.. programming mode. Which unlocked it, the door swung open. Revealing the <span class="mention">#outskirts</span>. And right away, street lights were switched to their on positions, putting out maximum amounts of light, there was an alarm coming from the door as well.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 11:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="785279937581023244" id="message-785279937581023244">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime redacted their earlier sigh of relief as the alarm sounded, then turned to T&#39;Svai.</em> &quot;We had best get moving, Commander.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="06-Dec-20 11:03 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 11:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="785280264615755796" id="message-785280264615755796">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Lets move. I want to be out of the city by sunrise.&quot; <em>Lithop commented, speedwalking through the gate.</em>\</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 11:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="785280438000287785" id="message-785280438000287785">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;With that alarm going off, it&#39;d probably be best if we were out of here, long before sunrise...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 11:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="785283540035436544" id="message-785283540035436544">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai speedwalked right after Lithop.</em> &quot;I do not envy the position of the guard who just abandoned their post.&quot; <em>She remarked as she hurried through the gate.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20city-streets%20%5B784566414040104960%5D.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 11:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="785283882093772840" id="message-785283882093772840">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Once everyone had gone through, Jaime ran through as well, stopping only to close the gate behing them.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="06-Dec-20 11:17 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 53 message(s)</div>
+</div>
+
+</body>
+</html>

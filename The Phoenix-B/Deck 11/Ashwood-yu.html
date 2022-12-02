@@ -1,0 +1,1301 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - ashwood-yu</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Deck 11: Ensign Quarters II / ashwood-yu</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/10876e13c1912222c9273c654fb806a1-FB6AD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kylo Ren#7102" data-user-id="770403160119836712" style="color: rgb(245,182,10)">Ensign Robert Ashwood</span>
+
+
+        <span class="chatlog__timestamp">06-Dec-20 08:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="785239744119963688" id="message-785239744119963688">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Robert was siting on his bed and reading a book</em> and he was <em>flicking</em>  <em>through the pages</em> and said  What a nice day it is today and <em>he got up</em> and <em>he left his room to go to the Medbay</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/58e68ae48275f8421f195fbbe1c527ab-CE4D8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="dazzlingtatch#1684" data-user-id="756216823833296926" style="color: rgb(215,52,42)">Ensign Syrrek</span>
+
+
+        <span class="chatlog__timestamp">13-Dec-20 08:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="787771120752394251" id="message-787771120752394251">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He had awoken to the sound of the alert, and was quite frantic on getting his uniform on</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/58e68ae48275f8421f195fbbe1c527ab-CE4D8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="dazzlingtatch#1684" data-user-id="756216823833296926" style="color: rgb(215,52,42)">Ensign Syrrek</span>
+
+
+        <span class="chatlog__timestamp">17-Dec-20 01:44 AM</span>
+
+            <div class="chatlog__message " data-message-id="788944582070894642" id="message-788944582070894642">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He entered his quarters and went straight to bed.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/8eb81bd35f15485596ff0b9a1b0e91b4-2516F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">22-Dec-20 01:44 AM</span>
+
+            <div class="chatlog__message " data-message-id="790756565547483196" id="message-790756565547483196">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Ding dong!</em>
+<em>Sara set a chocolate box by the door.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/10876e13c1912222c9273c654fb806a1-FB6AD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kylo Ren#7102" data-user-id="770403160119836712" style="color: rgb(245,182,10)">Ensign Robert Ashwood</span>
+
+
+        <span class="chatlog__timestamp">24-Dec-20 11:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="791806600880193546" id="message-791806600880193546">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He was looking at his PAAD and seeing his shift times and he heard the door bell ring</em>.   He said  &quot;who can that be&quot; and  he saw a box of chocolates at door*</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/a_525446c6b5f92017ac309c2e95f89ec2-52621.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">24-Dec-20 11:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="791806825426059265" id="message-791806825426059265">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Funnily enough, the door chimed again about five seconds after he had picked them up.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/10876e13c1912222c9273c654fb806a1-FB6AD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kylo Ren#7102" data-user-id="770403160119836712" style="color: rgb(245,182,10)">Ensign Robert Ashwood</span>
+
+
+        <span class="chatlog__timestamp">24-Dec-20 11:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="791807447408967681" id="message-791807447408967681">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He walked over and he opened the door</em>.  He said  &quot;Again I must be popular&quot;.    He opened the door and said &quot;Hello&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/9af82d66cf1351161d84c55a7aed73f5-31040.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="PO. &#39;Pat&#39; D&#39;Patkatol#0000" data-user-id="791807761243308032" style="">PO. &#39;Pat&#39; D&#39;Patkatol</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Dec-20 11:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="791807761821597727" id="message-791807761821597727">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Standing at the door - and again, pleasantly surprised by someone physically coming to open it - was the ship&#39;s resident post master. It was with the smile that he was so well known for that he spoke;</em> &quot;mornin&#39;, sir. Ave got a parcel for one Ensign Robert h&#39;Ashwood?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/10876e13c1912222c9273c654fb806a1-FB6AD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kylo Ren#7102" data-user-id="770403160119836712" style="color: rgb(245,182,10)">Ensign Robert Ashwood</span>
+
+
+        <span class="chatlog__timestamp">24-Dec-20 11:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="791808360496234526" id="message-791808360496234526">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;No need for the formality&#39;s  I know who you are I read your file,  You must be Pat&quot;.    &quot;I am Robert Ashwood its nice to meet you after hearing great things about you form others&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Dec-20 11:24 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/9af82d66cf1351161d84c55a7aed73f5-31040.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="PO. &#39;Pat&#39; D&#39;Patkatol#0000" data-user-id="791807761243308032" style="">PO. &#39;Pat&#39; D&#39;Patkatol</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Dec-20 11:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="791808960767459328" id="message-791808960767459328">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Romulan blinked, admittedly rather stunned. It wasn&#39;t often that anyone paid attention to the presence of the NCO and crewmen from Operations considering how they worked away in the background. It was even less often that someone</em> <em><strong>spoke</strong></em> <em>about any of them, and so this &#39;hearing great things about you&#39; came as a complete surprise. Was it a good thing? Perhaps? It was always difficult to tell.</em> 
+
+&quot;Oh, well, uh- thank you, sir, that&#39;s quite nice h&#39;of you. Now, ave this &#39;ere for you; believe it&#39;s one of them Secret Santas...&quot; 
+
+<em>Handed over was a small, tidy black box – within which was a simple but elegant watch. The faux leather strap and clock face was an obsidian black, with the stitching, rim, and clock hands all in a bright and metallic silver. Stylised stars and other astronomical objects are depicted in the same silver thread on the band and etched upon the metal rim of the clock; also etched at the bottom was the name &#39;Ashwood&#39; in a small italicised font. Underneath the glass pane, the face had sacrificed the usual circling numbers for an inside look on the black steel gears that tick round at various speeds. On one of the slower moving clockwork pieces, a miniscule and indecipherable scrawl of a signature could be seen - perhaps indicating towards a handmade nature.</em>
+
+<em>There was a message with it: ‘I don&#39;t believe we&#39;ve met, so I hope this present is to your liking! May you have a lovely season - your secret santa.’</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/10876e13c1912222c9273c654fb806a1-FB6AD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kylo Ren#7102" data-user-id="770403160119836712" style="color: rgb(245,182,10)">Ensign Robert Ashwood</span>
+
+
+        <span class="chatlog__timestamp">24-Dec-20 11:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="791809447743062026" id="message-791809447743062026">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Thank you Pat it does look rather nice and do tell the person who sent it thank you and happy Christmas and enjoy your Christmas Pat&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/9af82d66cf1351161d84c55a7aed73f5-31040.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="PO. &#39;Pat&#39; D&#39;Patkatol#0000" data-user-id="791807761243308032" style="">PO. &#39;Pat&#39; D&#39;Patkatol</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Dec-20 11:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="791809812865744937" id="message-791809812865744937">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;A&#39;ll be sure to tell &#39;em, sir. An&#39; a &#39;appy &#39;olidays to you too.&quot; <em>Another polite smile and he exited the man&#39;s quarters again.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/10876e13c1912222c9273c654fb806a1-FB6AD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kylo Ren#7102" data-user-id="770403160119836712" style="color: rgb(245,182,10)">Ensign Robert Ashwood</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 02:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="803273219498180658" id="message-803273219498180658">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Robert had arrived back form the Away Mission and he was pretty worried about the others as they were all pretty injured</em>.   Robert saw his PADD bleeping and he walked over then sat down on his bed and he saw it said new uniform regulation<em>.    Robert then walked to the replicators and then said   &quot;Please replicate the new  Security uniform, Rank Ensign&quot;.    *He saw it appear and he started changing into his new uniform and then stored the old one in the laundry basket</em> .    <em>He then saw a second bleep and he saw it form Captain  Syrezeaju.</em>    <em>Robert took his watch out form his drawer where he stored his personal affects like letters form home and pictures form SFA.</em>   He put the watch on his right wrist and then covered under his right sleeve.    Then he walked out heading to the bridge ramps to see the Captain as ordered  and he wanted to get there on time.</span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Jan-21 05:33 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/bf80ad29c41a73c09eb18d9925f090b4-7C595.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yuppi#8020" data-user-id="477542827107024897" style="">Yuppi</span>
+
+
+        <span class="chatlog__timestamp">27-Jan-21 09:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="804104418172993617" id="message-804104418172993617">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>After finishing a few chores, formalities and general things he had to set up, Sui stands up, looking at the quarters. He&#39;d neatly organized the room, and added some small, hardly noticeable personal touches. He didn&#39;t want to possibly get in trouble for altering the quarters, after all.
+
+He checks his to-do list: First would have been to get the medical exam, but apparently there was an emergency going on. He&#39;d have to go meet the head of his department first.
+
+He leaves out the door with small, quiet steps.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/bf80ad29c41a73c09eb18d9925f090b4-7C595.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yuppi#8020" data-user-id="477542827107024897" style="">Yuppi</span>
+
+
+        <span class="chatlog__timestamp">30-Jan-21 02:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="805089880291409970" id="message-805089880291409970">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Sui walked in, clumsily placing the plant in its table and almost immediately changing into more comfortable clothes as he fell down on the bed. He&#39;d need to relax for a good while now.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/bf80ad29c41a73c09eb18d9925f090b4-7C595.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yuppi#8020" data-user-id="477542827107024897" style="">Yuppi</span>
+
+
+        <span class="chatlog__timestamp">30-Jan-21 07:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="805151522417016862" id="message-805151522417016862">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>After a while doing almost nothing other than browsing random encyclopedia articles on various plants, he got up and put his uniform back on and left for the lift.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/bf80ad29c41a73c09eb18d9925f090b4-7C595.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yuppi#8020" data-user-id="477542827107024897" style="">Yuppi</span>
+
+
+        <span class="chatlog__timestamp">31-Jan-21 04:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="805288483555246091" id="message-805288483555246091">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Stumbling in, Hosui had barely pulled off his uniform before he flopped down on the bed and fell asleep after only a few minutes.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/bf80ad29c41a73c09eb18d9925f090b4-7C595.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yuppi#8020" data-user-id="477542827107024897" style="">Yuppi</span>
+
+
+        <span class="chatlog__timestamp">31-Jan-21 03:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="805460280666095636" id="message-805460280666095636">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The man woke up shivering. He&#39;d only pulled off the jacket, and had fallen asleep shirtless: way too little for the cold ship ventilation. After taking a quick shower, he put on a new uniform set before thinking about what he&#39;d do next.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/bf80ad29c41a73c09eb18d9925f090b4-7C595.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yuppi#8020" data-user-id="477542827107024897" style="">Yuppi</span>
+
+
+        <span class="chatlog__timestamp">31-Jan-21 04:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="805468621303578635" id="message-805468621303578635">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>After a while, he decided on going to the observation lounge and getting a cup of coffee. He walks out of his quarters.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/bf80ad29c41a73c09eb18d9925f090b4-7C595.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yuppi#8020" data-user-id="477542827107024897" style="">Yuppi</span>
+
+
+        <span class="chatlog__timestamp">02-Feb-21 10:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="806297647123136552" id="message-806297647123136552">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>After having left the flower down in the Lieutenant&#39;s quarters, he went to his own. Sitting down in the bed, he tried to focus on something else, but the only thing that came to mind was <strong>guilt</strong>. Guilt for having been so childish in his want to make a friend that he ended up not considering him at all, guilt for criticizing and demeaning him, calling him not good enough. How many times had his sisters - all four of them - told him he had to stop feeling insulted by rejection?
+He took one of his succulents. Bao, that was her name. He looked at it fixedly, as if he were looking at someone&#39;s eyes. It somewhat helped him, picturing company and advice in a plant, even if it was a little strange.</em>
+&quot;Don&#39;t let me forget, okay?&quot;
+<em>He said, before smiling softly and putting it back down on the shelf. He was still dissapointed in himself, trying to encourage himself to make it right. It didn&#39;t seem to work much, though.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="02-Feb-21 11:12 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2011_%20Ensign%20Quarters%20II%20-%20ashwood-yu%20%5B785198063647719474%5D.html_Files/a_525446c6b5f92017ac309c2e95f89ec2-52621.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">03-Feb-21 09:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="806639648964870165" id="message-806639648964870165">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">Dear <span class="mention" title="Kylo Ren#7102">@Ensign Robert Ashwood</span>, 
+</div>&gt; 
+<div class="quote">Efforts are underway to prepare the ship for further combat against the Iconians. It has been decided with Command that in order to supplement the Phoenix and Chimera’s efforts that we should also have a shuttlecraft fleet ready to deploy. 
+</div>&gt; 
+<div class="quote">During a red alert it may be requested that set officers deploy to the shuttlebay to launch crafts designated to them. As a trained shuttlecraft pilot, you have been designated Delta Flyer 04. 
+</div>&gt; 
+<div class="quote">If you have any questions please reply. 
+</div>&gt; 
+<div class="quote">- Cpt. Syrezeaju.</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 21 message(s)</div>
+</div>
+
+</body>
+
+</html>

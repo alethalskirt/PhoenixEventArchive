@@ -1,0 +1,2355 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - fms-orink</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Earth Spacedock - Docked Vessels / fms-orink</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 05:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="835919944993865768" id="message-835919944993865768">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Rams]<em>Rams had never been aboard a Ferengi ship in his life. So when he caught sight of the unfamiliar interior it was probably understandable that he was rather tense and on guard. Somehow he managed not to drop the grapes or his pet cockatiel. The latter would&#39;ve been messy of course.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/bbf5cbd9cf525ef695a6988b5cca6794-990EB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="4th Dimensional Being#6299" data-user-id="160155041158660096" style="color: rgb(175,36,27)">Lt. JG. Ainslie Glover</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 05:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="835920348951216148" id="message-835920348951216148">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ainslie looked around at his surroundings, as he had just been beamed up twice. Having arrived on the Ferengi ship, he smiled knowing that he was somewhat safe. He looked around for someone to greet.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 05:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="835920508553265212" id="message-835920508553265212">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The Ferengi ship was an absolute mess, and that was stating it mildly. Having been constructed with a nice, sturdy exterior but a woefully cheap interior, the metal was mismatched, the floor was uneven, and the cargo bay itself was so full of cargo ready to trade or sell that the space in the middle where something vaguely resembling a sickbay had been setup almost seemed like an afterthought. A very grumpy looking Ferengi looked the newly beamed in people over, then jutted his chin out at them.</em> &quot;Are any of you injured?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Cadet Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 05:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="835920885562867712" id="message-835920885562867712">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri was too stunned to say anything, looking around at his surroundings while he still clutched his jacket, looking at the others. He had to shake his head a few times to realise he wasn&#39;t seeing things as a relieved smile formed.</em> &quot;That was the single worst away mission mission I&#39;ve ever been a part of.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/bbf5cbd9cf525ef695a6988b5cca6794-990EB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="4th Dimensional Being#6299" data-user-id="160155041158660096" style="color: rgb(175,36,27)">Lt. JG. Ainslie Glover</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 05:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="835921199410053120" id="message-835921199410053120">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ainslie looks around at the ship&#39;s interior, before looking at Copernicus. He says, almost laughing,</em> &quot;Ferengi Rule of Acquisition 19, Satisfaction is not guaranteed.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Cadet Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 05:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="835921530323075122" id="message-835921530323075122">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He blinked a few times before slowly breaking into laughter as well.</em> &quot;I mean you&#39;re not wrong!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 05:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="835922118050054164" id="message-835922118050054164">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Rams]&quot;Please check him over. Especially his chest and back.&quot; <em>He immediately spoke up, indicating Ainslie of course.</em> &quot;He has wounds there which I have done my best to treat, mostly cuts and bruises.&quot; <em>Yes, probably not a sentence any Ferengi would hope to hear from the lips of a Jem&#39;hadar.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Apr-21 05:56 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 05:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="835922445655343184" id="message-835922445655343184">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop was beamed here on her sitting down. So she didn’t get the best view of the area, but based on the sheer number of Ferengi on the ship she had a pretty good guess for where she had ended up. Once making sure she had everything she she wanted to be beamed up with, she shifted some things around, and stood up. She crutched over to Capri, with Jeremy on her shoulder and Betty shoved under her arm.</em> “I was hoping for a federation ship so that I could have someone take Betty, but I guess this will do.” <em>If the Ferengi saw Lithop they would obviously see her moving around in her crutches which after almost a week of use; looked like they were about to fall apart.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 05:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="835922683081916437" id="message-835922683081916437">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] &quot;Ferengi Rule of Acquisition 57, good customers are as rare as Latinum.&quot; <em>The Ferengi grumbled back, taking out a very secondhand medical tricorder and scanning Ainslie over, then holding out a dermal regenerator.</em> &quot;Eh, you&#39;re fine. This&#39;ll be two slips of latinum to rent. Don&#39;t worry, I&#39;ll charge it to Starfleet Command later.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Cadet Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 05:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="835922839424073739" id="message-835922839424073739">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He looked over at Lithop and nodded, scooting a little closer to her.</em> &quot;Woukd you like to borrow my shoulder for a bit? Take some pressure off of your hands and arms from the crutches?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="835923332419026974" id="message-835923332419026974">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Rams]&quot;And lieutenant Howard.&quot; <em>He knelt at her side examining the crutches - and he found it pleasantly surprising that they&#39;d lasted as long as they had.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/bbf5cbd9cf525ef695a6988b5cca6794-990EB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="4th Dimensional Being#6299" data-user-id="160155041158660096" style="color: rgb(175,36,27)">Lt. JG. Ainslie Glover</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="835924129172422737" id="message-835924129172422737">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ainslie smiled, before he looked up and said,</em> &quot;Thank you very much, kind sir. Do you happen to have a dabo table anywhere around here? Or perhaps know where I can find one?&quot; <em>Ainslie began looking around, as he began to speak once more,</em> &quot;Before you answer that, however, where are the quarters?&quot;
+
+<em>Knowing the Ferengi, it wasn&#39;t probably anywhere nice. Likely the cargo bay itself if he was lucky, but he was very happy that he&#39;d be getting home soon.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Apr-21 06:05 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="835924438532227152" id="message-835924438532227152">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Lithop shook her head.* “It’ll be more work for the both of us if we did that.” <em>She told Capri. It was honestly the truth, with how much stuff she was carrying and only one leg she was able to use she would probably send them both tumbling to the ground. The crutches would be just fine until she could sit down.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/6420269d60ced8449cbaa7b8d3b63d8a-15064.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tilson#0000" data-user-id="835924508123856926" style="">Tilson</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 06:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="835924509147791370" id="message-835924509147791370">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>As Tilson materialised, she said just one sentence.</em> &quot;Oh god, not ferengi...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="ohno" title="ohno" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/668960662709338113-B9DE8.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="835924644271226941" id="message-835924644271226941">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] &quot;What kind of self-respecting officer sets up a dabo table on a merchant ship?&quot; <em>The ferengi complained.</em> &quot;Just sit on one of the beds over there behind the gravimetric field generators. Lieutenant Howard, what&#39;s your situation?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/bbf5cbd9cf525ef695a6988b5cca6794-990EB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="4th Dimensional Being#6299" data-user-id="160155041158660096" style="color: rgb(175,36,27)">Lt. JG. Ainslie Glover</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="835924706662023209" id="message-835924706662023209">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ainslie chuckled, before saying:</em> &quot;Oooh yes. This is going to be fun.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Cadet Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="835924774324142080" id="message-835924774324142080">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Do you want me to hold anything for you at least?&quot; <em>He cocked his head a bit and adjusted his jacket, opening it to see he&#39;d accidentally smashed some of the fruit against his body. Oops. Well maybe it would cover the smell a little?</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="835925357730856990" id="message-835925357730856990">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“You can take Betty, make sure she somehow gets to a federation ship.” <em>She told Capri handing over the jacket full of Betty, glad that Capri was also from cell 8 and wouldn’t ask questions. She turned to the Ferengi.</em> “Nothing you can do except give me actual crutches.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/bbf5cbd9cf525ef695a6988b5cca6794-990EB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="4th Dimensional Being#6299" data-user-id="160155041158660096" style="color: rgb(175,36,27)">Lt. JG. Ainslie Glover</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="835925437808508948" id="message-835925437808508948">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ainslie walked over to one of the beds, but not before he had walked over to Copernicus. Ainslie said courteously,</em>
+&quot;My name is Ainslie Glover, I don&#39;t believe we&#39;ve met. I am a member of the Starfleet Diplomatic corps, and judging from your uniform, you happen to be in the Intelligence department. It&#39;s a pleasure to meet you.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="835925839597142066" id="message-835925839597142066">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>And then Kniel materialized here, too. He still had half a watermelon in his lap.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Cadet Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="835926173653532682" id="message-835926173653532682">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Of course. I&#39;m glad she&#39;s going home too.&quot; <em>Capri took the jacket containing Betty and cradled it close, nodding at Lithop. He looked over as the man approached them.</em> &quot;Diplo--I mean, yes. Capri. I&#39;d shake your hand but mine are a bit full. Fruit?&quot; <em>He managed to unwrap his own jacket holding the fruit to offer whatever hadn&#39;t been too terribly smashed.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="835926590100602891" id="message-835926590100602891">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The Ferengi turned his head and shouted.</em> &quot;Hey! Crutches, humanoid, five foot... eh... eight! The good ones.&quot; <em>He barked to some other Ferengi chilling by the cargo bay entrance. That second Ferengi rummaged through a couple of crates, then walked over and handed them to the first Ferengi. The First Ferengi turned back to Lithop.</em> &quot;Ten strips of latinum.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="835927460210016256" id="message-835927460210016256">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop was a bit taken back by just how fast the Ferengi got her the perfect crutches. She was about to thank them when they asked for money, without missing a beat she replied.</em> “Put it on the Federation’s tab. And thank you.” <em>The crutches were much nicer then the makeshift ones. Sturdy and much more comfortable.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="835927540178092054" id="message-835927540178092054">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Rams]<em>Ramat nodded in approval.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="835927550269325322" id="message-835927550269325322">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She was beamed up too, watermelon in lap too.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="835928076168200292" id="message-835928076168200292">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>Matr screeched atop Rams&#39; head, possibly in shock.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="835928445895835698" id="message-835928445895835698">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The Ferengi let out a hearty laugh.</em> &quot;Ohohoho, I will - you have no idea what a tab you&#39;re running up! Agreeing to participate in this suicide mission was the best decision of my life. The riskier the road, the greater the profit! Rule 62.&quot; <em>He turned back to his equipment.</em> &quot;Next!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/6420269d60ced8449cbaa7b8d3b63d8a-15064.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tilson#0000" data-user-id="835924508123856926" style="">Tilson</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 06:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="835928973950451722" id="message-835928973950451722">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;How about rather than overpricing a pair of crutches that are probably worth, at most, 20 slips, you just help us out and sort payment out later...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/bbf5cbd9cf525ef695a6988b5cca6794-990EB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="4th Dimensional Being#6299" data-user-id="160155041158660096" style="color: rgb(175,36,27)">Lt. JG. Ainslie Glover</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="835929070919221248" id="message-835929070919221248">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ainslie smiled, before looking at Lt. King, and kindly refusing the fruit.</em> &quot;So, were you a member of the phoenix crew, or were you assigned to another vessel prior to being confined?&quot; <em>Ainslie remarked as he looked around.</em> &quot;and intelligence... that&#39;s an intriguing department, I hear it&#39;s invite only. Was it your original career choice?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Apr-21 06:23 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="835929302105194547" id="message-835929302105194547">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] &quot;No can do!&quot; <em>The Ferengi said to Tilson, shaking a finger at them.</em> &quot;Supply and demand, Risian, supply and demand.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/bbf5cbd9cf525ef695a6988b5cca6794-990EB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="4th Dimensional Being#6299" data-user-id="160155041158660096" style="color: rgb(175,36,27)">Lt. JG. Ainslie Glover</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="835929499999797259" id="message-835929499999797259">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ainslie pipes up saying,</em> &quot;Rule 18, A Ferengi without profit is no Ferengi at all,&quot; <em>while still awaiting a response from Copernicus.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Apr-21 06:26 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/6420269d60ced8449cbaa7b8d3b63d8a-15064.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tilson#0000" data-user-id="835924508123856926" style="">Tilson</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 06:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="835929546603757609" id="message-835929546603757609">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Tilson simply glowered at the Ferengi...</em> &quot;Listen... Ferengi, what&#39;s your name?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="835929808134733854" id="message-835929808134733854">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] &quot;Zramp.&quot; <em>The Ferengi grunted.</em> &quot;Who wants to know?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/6420269d60ced8449cbaa7b8d3b63d8a-15064.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tilson#0000" data-user-id="835924508123856926" style="">Tilson</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 06:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="835930671213445140" id="message-835930671213445140">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;The name&#39;s Tilson, of the Risian &#39;Tilson Spa and Leisure Retreat Company&#39;... Now, if you look me up on any Economic Database you&#39;ll find I&#39;ve been quite successful in my line of business... now... if your family ever wants a business deal, for example, maybe a dabo table or two in one of my establishments... you can forget it, unless you get these people the treatment they need...&quot; <em>She said all this as if he was explaining it to a child, then she simply smiled ominously at the ferengi.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Apr-21 06:30 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol">
+        </div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/bbf5cbd9cf525ef695a6988b5cca6794-990EB.png" alt="Avatar">
+                <span class="chatlog__reference-name" title="4th Dimensional Being#6299" style="color: rgb(175,36,27)">Lt. JG. Ainslie Glover</span>
+                <a class="chatlog__reference-link" href="#" onclick="scrollToMessage(event, &#39;835929070919221248&#39;)">
+                    <span class="chatlog__reference-content">
+<em>Ainslie smiled, before looking at Lt. King, and kindly refusing the fruit.</em> &quot;So, were you a member of the phoenix crew, or were you assigned to another vessel prior to being confined?&quot; <em>Ainslie remarked as he looked around.</em> &quot;and intelligence... that&#39;s an intriguing department, I hear it&#39;s invite only. Was it your original career choice?&quot;                    </span>
+
+                        <span class="chatlog__reference-edited-timestamp" title="25-Apr-21 06:23 PM">(edited)</span>
+                </a>
+        </div>
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Cadet Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="835930828042403902" id="message-835930828042403902">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He wrapped the jacket back up and looked back at Ainslie. It looked like Capri was studying him but was just watching for when he spoke.</em> &quot;Im a member of the Phoenix crew. And you? And....no. I&#39;d never planned on joining Intel. My original choice was to become a disabilities advocate in the Diplomatic Corps. I still hope to actually.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="835931569180377149" id="message-835931569180377149">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] &quot;Euuuuuugh... fine.. No charge.&quot; <em>Said out loud, anyway - he&#39;d just put it in the tab later.</em> &quot;Soooo sorry for the inconvenience, Tilson. Say, do you happen to need any dabo tables?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="835932007040548885" id="message-835932007040548885">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She simply looked around, and soon was overcome with joy upon seeing that this</em> wasn&#39;t <em>an Iconian-anything; at this, she looked at Kniel.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Apr-21 06:35 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/bbf5cbd9cf525ef695a6988b5cca6794-990EB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="4th Dimensional Being#6299" data-user-id="160155041158660096" style="color: rgb(175,36,27)">Lt. JG. Ainslie Glover</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="835932014263664660" id="message-835932014263664660">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I see you are pursuing a noble profession. I&#39;d be happy to have you meet with some fellow diplomats at my family&#39;s manor, if you&#39;re interested in entering the Diplomatic Corps. I&#39;m sure my father especially would be happy to help.&quot;
+<em>Ainslie glanced at what was going on in the background before saying,</em> &quot;As for me I wanted to pursue science, but it wasn&#39;t really my thing. I ended up joining the Diplomatic Corps right out of the academy and was working as a diplomatic representative onboard another ship when we were captured by the iconians.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/6420269d60ced8449cbaa7b8d3b63d8a-15064.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tilson#0000" data-user-id="835924508123856926" style="">Tilson</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 06:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="835932193796784199" id="message-835932193796784199">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Don&#39;t push it...&quot; <em>she said, looking at the ferengi.</em> &quot;We can discuss business later.&quot; <em>(She had no intention of doing so.)</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="835932371210600459" id="message-835932371210600459">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;By the Prophets&#39; grace we are saved. <em>Saved!</em>&quot; <em>Grinning, Kniel put his watermelon aside and hugged her tight. No kiss, though, not on this ship.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="835932589671448577" id="message-835932589671448577">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She just hugged him tightly, and began crying tears of joy.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="835932623624732693" id="message-835932623624732693">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] &quot;Injured people, injured people, c&#39;mon, we have the resources.&quot; <em>Zramp snapped irritably. He wanted that profit.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/6420269d60ced8449cbaa7b8d3b63d8a-15064.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tilson#0000" data-user-id="835924508123856926" style="">Tilson</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 06:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="835933158188384286" id="message-835933158188384286">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Tilson simply shook her head and walked away to explore the ship, ignoring any ferengi who tried to stop her.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="835934018452455515" id="message-835934018452455515">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Rams]<em>Rams opted to stand and look around for now. He’d dropped those magic grapes anyway.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol">
+        </div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/bbf5cbd9cf525ef695a6988b5cca6794-990EB.png" alt="Avatar">
+                <span class="chatlog__reference-name" title="4th Dimensional Being#6299" style="color: rgb(175,36,27)">Lt. JG. Ainslie Glover</span>
+                <a class="chatlog__reference-link" href="#" onclick="scrollToMessage(event, &#39;835932014263664660&#39;)">
+                    <span class="chatlog__reference-content">
+&quot;I see you are pursuing a noble profession. I&#39;d be happy to have you meet with some fellow diplomats at my family&#39;s manor, if you&#39;re interested in entering the Diplomatic Corps. I&#39;m sure my father especially would be happy to help.&quot;
+<em>Ainslie glanced at what was going on in the background before saying,</em> &quot;As for me I wanted to pursue science, but it wasn&#39;t really my thing. I ended up joining the Diplomatic Corps right out of the academy and was working as a diplomatic representative onboard another ship when we were captured by the iconians.&quot;                    </span>
+
+                </a>
+        </div>
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Cadet Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="835934703268921425" id="message-835934703268921425">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Really? They&#39;d be okay with that?&quot; <em>He smiled a little and shrugged, looking towards the beds for a moment before turning back.</em> &quot;I was originally a science officer, linguist, maintaining the UT, that sort of thing.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="835936232580186112" id="message-835936232580186112">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He paused for a second, then shook his head. He&#39;d take the migraine over trying to lip read. He took a step to the left and whistled at Zramp.</em> &quot;You got any hearing aids, friend?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="835936780774801418" id="message-835936780774801418">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] &quot;Whistle at me again and I&#39;ll steal your tongue and sell it to the highest bidder.&quot; <em>Zramp snapped back, before remembering this was some kind of diplomacy thing.</em> &quot;Yeah, I have hearing aids. What kind?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Cadet Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="835937113307349043" id="message-835937113307349043">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Sorry. And....good ones. High quality, made for Betazoid ears. Preferably the ones that just go in the ear and not over but I won&#39;t fuss on that much.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 06:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="835937710594195517" id="message-835937710594195517">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] &quot;I&#39;ve got an ahhhhhhhhhhhhhhhhhhhhhhh yep.&quot; <em>He rummaged around and came up with some suspiciously good quality hearing aids in a worryingly new-looking box considering the state of the rest of the cargo bay.</em> &quot;There ya go. These&#39;ll be...&quot; <em>Oh, right. Tilson.</em> &quot;No slips of latinum. None at all. Enjoy.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128540;" title="&#128540;" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/1f61c-6940D.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Cadet Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 07:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="835938361109250088" id="message-835938361109250088">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri smiled and took the box, nodding at the Ferengi.</em> &quot;Much appreciated, friend. You have no idea.&quot; <em>He didn&#39;t question where they came from, instead quickly replacing his one with the new pair and turning them on. He flinched from the rush of sound but...worth it. He looked back at Ainslie and shrugged.</em> &quot;We should sit.&quot;
+<span class="mention" title="4th Dimensional Being#6299">@Lt. JG. Ainslie Glover</span></span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Apr-21 10:04 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 07:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="835938996701495347" id="message-835938996701495347">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] &quot;Next! Next. I don&#39;t have all day. Well, I do, this is going to be a long journey, but that&#39;s not important! Time is money! Keep it moving! Next patient!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Cadet Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 07:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="835941612240109628" id="message-835941612240109628">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri nodded and went to sit on one of the beds, setting the jackets with fruit and Betty to the side while he looked absently at the floor.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 07:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="835943184395403264" id="message-835943184395403264">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She was still there, still hugging Kniel. What she did do was take some of the seeds from her watermelon and stuff them into her uniform&#39;s pocket. Maybe once they got home she could plant them.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Apr-21 07:20 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 07:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="835943419179565067" id="message-835943419179565067">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kniel patted her shoulder and stood with a sigh.</em> “Hey there! Um. Sorry. Are we free to explore the ship, or are we to remain here until we get home?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 08:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="835956007380975636" id="message-835956007380975636">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>As he stood and asked, she suddenly realized: she didn&#39;t have the chance to gather any belongings that might have survived the crash, or to say one last goodbye to Phoenix&#39;s engineering hub. This saddened her.</em>
+<em>The watermelons, and her uniform, were now the only things she had left of the USS Phoenix.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Apr-21 08:17 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Cadet Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 10:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="835984716552994828" id="message-835984716552994828">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri smiled and took the box, nodding at the Ferengi.</em> &quot;Much appreciated, friend. You have no idea.&quot; <em>He didn&#39;t question where they came from, instead quickly replacing his one with the new pair and turning them on. He flinched from the rush of sound but...worth it. He looked back at Ainslie and shrugged.</em> &quot;We should sit.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/bbf5cbd9cf525ef695a6988b5cca6794-990EB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="4th Dimensional Being#6299" data-user-id="160155041158660096" style="color: rgb(175,36,27)">Lt. JG. Ainslie Glover</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 10:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="835988636297592833" id="message-835988636297592833">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ainslie sat on the bed opposite to Lt. King, and crossed his legs, as he usually does when sitting. He started off by saying,</em> &quot;I&#39;m sure that I could arrange something, but you&#39;ll need to know this would just be networking. You&#39;d have to actually follow up on anything if they even give you something to follow up on. Finally there&#39;s just some basic etiquette to adhere too.&quot;
+
+&quot;I&#39;m sure, however, that with your goals you&#39;d make a fine addition to the Diplomatic Corps.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="835988716606062652" id="message-835988716606062652">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="emi-coyote#0294">@Cadet Copernicus King</span></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Cadet Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 10:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="835992886884827196" id="message-835992886884827196">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I understand that. First I&#39;d have to say if I would even be allowed to transfer over considering I&#39;ve been in Intelligence. And I certainly hope so.&quot; <em>He adjusted a bit and pulled a leg up to his chest, cocking his head a little.</em> &quot;What sort of etiquette?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Apr-21 10:43 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="what" title="what" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/598156759277895681-2D9B4.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/bbf5cbd9cf525ef695a6988b5cca6794-990EB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="4th Dimensional Being#6299" data-user-id="160155041158660096" style="color: rgb(175,36,27)">Lt. JG. Ainslie Glover</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 10:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="835995553879949322" id="message-835995553879949322">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well, I&#39;m sure they&#39;d be fine with you transferring, but to be completely honest, you would probably have to stop working for intelligence in its entirety. A diplomat is forbidden from undertaking or participating in any current intelligence operation, as doing so would be essentially be a grave insult to the host country, and could cause a diplomatic incident.&quot;
+
+&quot;As for the etiquette, it&#39;s just things like proper table manners, using polite language, and not cussing.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Cadet Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 10:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="835996299886592040" id="message-835996299886592040">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I am.....actually kind of okay with that. I dont want to be part of Inteeligemce forever. Don&#39;t get me wrong I really enjoy it but I dont want to do it for the rest of my life.&quot; <em>He blinked and nodded a little, listening quietly.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Apr-21 11:15 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20Docked%20Vessels%20-%20fms-orink%20%5B835909270423863346%5D.html_Files/a_525446c6b5f92017ac309c2e95f89ec2-52621.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(41,169,238)">Lieutenant Cherow</span>
+
+
+        <span class="chatlog__timestamp">26-Apr-21 01:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="836224770156658738" id="message-836224770156658738">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="pre pre--multiline nohighlight"> </div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 62 message(s)</div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,1481 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - conveyor-line-out</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Quality Assurance / conveyor-line-out</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 05:05 PM</span>
+
+            <div class="chatlog__message chatlog__message--pinned" data-message-id="825762551156965376" id="message-825762551156965376">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The line recombined here, gathering sorted scrap from each of the inmate stations. Here prisoners were stationed to move each pile either to quality assurance or the incinerator.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 12:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="827685709414137896" id="message-827685709414137896">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop walked up to the conveyor and immediately got to sorting. The room was hot, and the things she touched we sometimes disgusting, but she did it with a small smile on her face. Leting her mind wander as she did her work.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 12:47 AM</span>
+
+            <div class="chatlog__message " data-message-id="827690779434549248" id="message-827690779434549248">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Nedras had ended up in the conveyor line quite by chance, carrying his PADD as he had during his last field shift and doing his level best to use his acute hearing to pick out something... suspicious. Unfortunately, the closest he got was noticing, with some effort, that someone was standing alone and smiling - someone he&#39;d met only once before. The one with the leg. He looked around to make sure no guards were already watching, then walked over to her.</em> &quot;You seem unusually enthusiastic about sorting.&quot; <em>He observed.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 01:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="827697914180272178" id="message-827697914180272178">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Hmm?” <em>Lithop questioned, raising her head to see who spoke to her. Once she saw him however her smile dropped. It was Nedras. She knew of the Vorta’s reputation, though she wasn’t exactly sure why he gained it. Still, she didn’t want to get on his bad side.</em> “Sorry, I wasn’t smiling at the work.” <em>She debated on telling him what she was happy about. She decided to be a little vague.</em> “Something happened earlier, I’m just thinking about it.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 01:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="827698877360635934" id="message-827698877360635934">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras was really, really eager to hear some good news. His grip on the PADD tightened minutely, and not only because he only had one free hand at the moment.</em> &quot;There&#39;s no need to apologize.&quot; <em>He said quickly, leaning forwards ever so slightly.</em> &quot;May I ask what it is?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 01:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="827699625812557875" id="message-827699625812557875">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop prided herself on normal having a good read on people, but she could not read Nedras. She decided not to tell him everything, she wasn’t quite sure how the prison felt about an engagement happening within their walls. She gave him a small smile.</em> “I met up with my boyfriend for the first time since the Phoenix was destroyed.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 01:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="827700121876561970" id="message-827700121876561970">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He smiled politely.</em> &quot;That&#39;s good. It&#39;s always nice to hear people are reuniting with the people they love.&quot; <em>He said, though he couldn&#39;t really identify with the sentiment himself.</em> &quot;I&#39;d guess he&#39;s... well.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 01:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="827703278006566953" id="message-827703278006566953">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Seemed he was at least enjoying the story, so she continued, though she put some more focus on the sorting as she spoke.</em> “He is, I wasn’t even sure he was still alive, so to see him doing well was amazing.” <em>She couldn’t stop smiling, though it occurred to her that she didn’t even know his cell or job here, she would have ask them when they saw each other next.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 01:45 AM</span>
+
+            <div class="chatlog__message " data-message-id="827705231440740373" id="message-827705231440740373">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras tilted his head minutely to the side.</em> &quot;What&#39;s his name?&quot; <em>He quickly straightened up.</em> &quot;For no particular reason, it merely seems important to the story.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 01:50 AM</span>
+
+            <div class="chatlog__message " data-message-id="827706519008444446" id="message-827706519008444446">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Aaron.” <em>She said giving him a brief look, she hoped he was telling the truth.</em> “Aaron Miller, he’s the borg guy in engineering.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 01:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="827707313661280296" id="message-827707313661280296">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras&#39;s eyes lit up with recognition.</em> &quot;Oh, yes. I&#39;ve seen him before. Mainly on the cameras.&quot; <em>His brow furrowed slightly. He shook his head.</em> &quot;Under any circumstances I imagine that would be an odd thing to say. In any case, the implants are difficult to miss.&quot; <em>He eyed his PADD. Blessedly, by some miracle the quota was still being met.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 02:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="827711071627903037" id="message-827711071627903037">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She nodded.</em> “That makes sense, considering we’re in prison and all. Do you by any chance know what cell he’s in? We were interrupted by a guard before we could really catch up.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 02:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="827712160293453854" id="message-827712160293453854">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yes, of course. Cell...&quot; <em>He trailed off, shook his head again. He&#39;d been in Administrative Control for twenty-four hours straight, he&#39;d seen every person, every room, and the borg man had been in one of them, which one was it?</em> &quot;It&#39;s high security, it&#39;s...&quot; <em>He closed his eyes tightly, thinking.</em> &quot;I know he&#39;s working in the middle level of the pit.&quot; <em>He finally said, because even an implant constantly backing up his memories couldn&#39;t account for how warped and scrambled they&#39;d been at the time of storage.</em> &quot;That&#39;s all I can tell you, I&#39;m afraid. &quot; <em>He opened his eyes again, slightly woozy.</em> &quot;A little faster with the sorting, please.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 02:47 AM</span>
+
+            <div class="chatlog__message " data-message-id="827721050975764500" id="message-827721050975764500">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop nodded a little confused and then speed-ed up the sorting, now not even looking up at Nedras while he talked. Though something seemed off about him.</em> &quot;Nedras, are you ok? You seemed a little off just then.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 02:52 AM</span>
+
+            <div class="chatlog__message " data-message-id="827722179759833148" id="message-827722179759833148">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;ve had an eventful few days.&quot; <em>He summarized vaguely with a tight, strained, polite smile. Being that he had a sling around his left arm, he didn&#39;t feel compelled to add much verbal context to the situation.</em> &quot;So - your reunion. It must have been a good one.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 02:54 AM</span>
+
+            <div class="chatlog__message " data-message-id="827722730747985930" id="message-827722730747985930">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop understood, prison work was rough, probably even more so for an overseer who had to watch all the people they know struggle. She decided to tell Nedras the full truth about what happened, he seemed like he needed to hear something good. She smiled and looked up at him briefly while she spoke.</em> &quot;We got engaged.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 02:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="827723424666877992" id="message-827723424666877992">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Engaged?&quot; <em>He raised both eyebrows.</em> &quot;In... prison?&quot; <em>He hesitated a few seconds, masking his speechlessness by pretending to inspect his PADD very closely for a moment. Ah yes, the numbers displayed on it certainly were numbers.</em> &quot;Well, congratulations!&quot; <em>Even a field supervisor had to acknowledge that, so he was reasonably sure he could get away with not scowling at it.</em> &quot;Are you going to get...married? In prison?&quot; <em>He asked, confused.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127477;" title="&#127477;" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/1f1f5-E259F.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127473;" title="&#127473;" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/1f1f1-64DCB.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127487;" title="&#127487;" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/1f1ff-1E0A8.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 03:01 AM</span>
+
+            <div class="chatlog__message " data-message-id="827724548656332841" id="message-827724548656332841">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop just laughed.</em> &quot;I know right. It feels absurd, it <em>is</em> absurd. We we so caught up in seeing each other again and knowing that the other was alive- well it just kinda happened!&quot; <em>She didn&#39;t care that she was laughing while doing dirty prison work, she supposed that she would always laugh at the fact that they became engaged in prison.</em> &quot;And no, we won&#39;t be getting married until we&#39;re out of prison, and even after that we&#39;re planning to have a long engagement period.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 03:07 AM</span>
+
+            <div class="chatlog__message " data-message-id="827725895917633566" id="message-827725895917633566">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh. Yes. You&#39;re never getting out, you both will serve the whims of the Whole until your deaths... there was a third... thing. Yes, resistance will be met with swift and decisive action.&quot; <em>He said in a lackluster, unfocused sort of way, as if reading the words from a script. He waved his right hand dismissively, almost dropping the PADD as he did so.</em> &quot;But that&#39;s wonderful! I wouldn&#39;t ordinarily ask this, but somehow you seem to me like the sort of person who daydreams about wedding plans - do you have any?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/1f62d-FE9EC.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 03:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="827728207263694869" id="message-827728207263694869">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She gave one last laugh before refocusing her attention to sorting.</em> &quot;Ah yes, I keep forgetting that we&#39;ll be here until we die, in that case I just that yeah, eventually we will get married in prison.&quot; <em>She said it in a light heart-ed almost jokey way. She was convinced that they&#39;d get out of her eventually. She moved onto Nedras&#39;s next question, and after a moment of thought gave her reply.</em> &quot;I&#39;ve never thought about it seriously, of course I thought about having a big poofy dress when I was a kid, and I though about what my vows might be when I was older. But I&#39;m not one of those people how have their wedding all planned out before they even meet the one.&quot; <em>She glanced up at Nedras for a moment.</em> &quot;Say, I know Vorta aren&#39;t the most romantic of people, and the dominion isn&#39;t known for it flourishing relationships, but have you ever thought about getting married?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 03:28 AM</span>
+
+            <div class="chatlog__message " data-message-id="827731366287769611" id="message-827731366287769611">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He tilted his head to the side and frowned deeply.</em> &quot;You know, come to think of it, I have quite literally <em>never</em> thought about it.&quot; <em>He admitted, which was frustrating.</em> &quot;It&#39;s not often I encounter a completely new topic. I suppose I can do that now, can&#39;t I? For the duration of this lifetime at least.&quot; <em>The idea, frankly, disturbed him a little.</em> &quot;I don&#39;t think I&#39;d wear a poofy dress.&quot; <em>He said thoughtfully with the utmost seriousness.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 03:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="827733273664946267" id="message-827733273664946267">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She smiled at him, finding it cute that this Vorta seemed so distressed over never thinking about marriage. She found it really hard to believe that this was the same Nedras as the one with the bad reputation with most of the crew. He seemed too nice, a little award, but nice.</em> &quot;It&#39;s ok if you don&#39;t think about it, you don&#39;t have to get married.&quot; *She went back to the sorting. &quot;But if you ever do, nobody can say no to a nice suit.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 03:51 AM</span>
+
+            <div class="chatlog__message " data-message-id="827736923253768193" id="message-827736923253768193">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The more Nedras thought about it, the more he realized that he genuinely couldn&#39;t picture getting married. Being in love with someone. He decided it was probably best to dismiss the idea entirely.</em> &quot;Suits are nice. Easier to move in.&quot; <em>He commented.</em> &quot;But no, I love no-one but the Founders, I&#39;m afraid.&quot; <em>He added confidently.</em> &quot;And not, to be clear, romantically. But that isn&#39;t what we&#39;re talking about. What do you mean by your vows?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/1f62d-FE9EC.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 04:01 AM</span>
+
+            <div class="chatlog__message " data-message-id="827739594350919770" id="message-827739594350919770">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Thats ok, there a many types of love after all.&quot; <em>She thought back to earth history, and how the greeks have 7 words for love. She&#39;d have to refresh herself on all of them if- when she got out of here.</em> &quot;Vows are a tradition in human wedding ceremonies, and probably for some other species too but I can&#39;t remember right now. Anyway, are like mini speeches that you give to your partner about promises, promises to always be together, to love and protect each other, stuff like that. Most people nowadays write their own vows, and I&#39;m sure that the tradition has spread into other species cultures too.&quot; <em>She explained, though she didn&#39;t have the best knowledge on the topic, never really having research things about getting married, she hadn&#39;t even been engaged until today.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 04:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="827744818586714113" id="message-827744818586714113">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Something like &quot;I pledge my loyalty to the Founders, from now until death?&quot;&quot; <em>He quoted, before shuddering slightly.</em> &quot;Oh, I hope not. That would be monumentally unfair.&quot; <em>He amended, eyes back on the PADD. They still seemed on track to meet the quota, so blissfully, no interference was necessary - at least on his part.</em> &quot;Well. It all sounds wonderful. I&#39;m sure everyone will be excited to attend, when the time comes.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 04:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="827745325405700128" id="message-827745325405700128">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She nodded again, still trying to figure out what Nedras&#39;s deal was, how he could be so nice right now and apparently be so bad at other times,</em> &quot;Yes, eventually.&quot; <em>She smiled.</em> &quot;I should probably get back to focusing on sorting now, I don&#39;t want the guards to think I&#39;m slacking.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 04:28 AM</span>
+
+            <div class="chatlog__message " data-message-id="827746396672229377" id="message-827746396672229377">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He hummed in agreement.</em> &quot;Entirely correct. I&#39;ve seen more people hit in the head in the past four days than I have since my line&#39;s inception.&quot; <em>He said cheerfully.</em> &quot;And one surgery. Best not to add you to either figure. Good luck with the planning, and once again, congratulations!&quot; <em>He walked off to another part of the line.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="03-Apr-21 04:29 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20conveyor-line-out%20%5B825749103534407700%5D.html_Files/9c88496810d3f12c5433dc2f5a02b12b-F0C35.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 04:31 AM</span>
+
+            <div class="chatlog__message " data-message-id="827747073956773918" id="message-827747073956773918">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop grimaced at the countless people hit over the head, and the one surgery. She needed to avoid that at all costs.</em> &quot;Thank you, and see you later Nedras.&quot; <em>She said goodbye to him and returned her focus onto sorting, though her mind did still occasionally wander.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 28 message(s)</div>
+</div>
+
+</body>
+
+</html>

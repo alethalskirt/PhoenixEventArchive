@@ -1,0 +1,3824 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - security-hub-wreck</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Phoenix Wreckage / security-hub-wreck</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 07:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="831230817472741426" id="message-831230817472741426">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nev stepped inside the wreck of their former workplace. They refused to sit, instead fiddling with anything that seemed like it had the possibility of still working.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/015e24f7d770008401f424549820e765-51D19.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; cha&#39;DIch Rozamal#0000" data-user-id="831232245556576258" style="">Suvwl&#39; cha&#39;DIch Rozamal</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">12-Apr-21 07:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="831232246551412747" id="message-831232246551412747">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Rozamal stoped in after Nev. Walking around.</em> “It is good to know we have both made it this far.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 07:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="831232392504672327" id="message-831232392504672327">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They whipped around at hearing Rozamal&#39;s voice, and gave him a small grin.</em> &quot;Indeed it is. You&#39;re going to be back with your family in no time, yes?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/015e24f7d770008401f424549820e765-51D19.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; cha&#39;DIch Rozamal#0000" data-user-id="831232245556576258" style="">Suvwl&#39; cha&#39;DIch Rozamal</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">12-Apr-21 07:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="831232660860698644" id="message-831232660860698644">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Rozamal laughed as he walked in the hub. Trying to see if any consoles worked.</em> “Oh. I expect quite the chewing out from my husband￼ and eldest. Yes however, I plan to spend as much time as I can with them.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 07:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="831233506901884998" id="message-831233506901884998">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They were working on their own dilapidated console, but chuckled.</em> &quot;I&#39;ll be sure to let them know you served honorably. Though I&#39;m sure it will be a loving chewing out, if anything.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/015e24f7d770008401f424549820e765-51D19.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; cha&#39;DIch Rozamal#0000" data-user-id="831232245556576258" style="">Suvwl&#39; cha&#39;DIch Rozamal</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">12-Apr-21 07:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="831233676712214539" id="message-831233676712214539">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Oh I’m sure it will be. I don’t care what their reaction is, I will just be happy to see them. What are y￼￼our plans then?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 07:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="831234296269635604" id="message-831234296269635604">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They thought for a moment.</em> &quot;I&#39;ll likely be seeing my family as well. It&#39;s been too long since I&#39;ve seen them anyway, so now is a good a time as any. I expect I&#39;ll receive a similar reaction from them.&quot; <em>They said with a slight smirk.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/015e24f7d770008401f424549820e765-51D19.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; cha&#39;DIch Rozamal#0000" data-user-id="831232245556576258" style="">Suvwl&#39; cha&#39;DIch Rozamal</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">12-Apr-21 07:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="831238083370287175" id="message-831238083370287175">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Good. A family who chews you out about your safety is better then one that doesn’t care. Of course, that is all highly dependent￼ on if we make it past tomorrow.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 07:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="831239140531503145" id="message-831239140531503145">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;And we will.&quot; <em>They said confidently, cocking their head slightly.</em> &quot;I have no doubt about that.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7fb58cc2aff66fc3416a4a2840a38bb4-C2CD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="DarkElf06#3742" data-user-id="307607567750660097" style="color: rgb(245,182,10)">Ensign M&#39;Nala</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 07:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="831239502197686292" id="message-831239502197686292">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>M&#39;Nala made his way to the security hub, glad to see something resembling his old workspace again. He saw the two conversing and knocked on the doorframe to announce his presence.</em> &quot;Hope I&#39;m not interrupting...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/015e24f7d770008401f424549820e765-51D19.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; cha&#39;DIch Rozamal#0000" data-user-id="831232245556576258" style="">Suvwl&#39; cha&#39;DIch Rozamal</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">12-Apr-21 07:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="831240117649670256" id="message-831240117649670256">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Rozamal shook his head as he looked to the ensign.</em> “No please come in. We were just discussing family, you are more than welcome to enter.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 07:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="831240219382644796" id="message-831240219382644796">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They glanced up at the newcomer, an eyebrow quirking when they didn&#39;t recognize him.</em> &quot;Right. But I must say, I don&#39;t recognize you. Were you on the Phoenix?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/a6a058250735ba1e3741a44d418cb5a8-C83CD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Poseidon7307#1374" data-user-id="212634048118521857" style="color: rgb(245,182,10)">Cadet Edward Smith</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 07:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="831240228415995944" id="message-831240228415995944">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He entered quietly and slunk down against a bulkhead with a sigh happy to be in a familiar place for the moment. Though he knew there was much work yet to do.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7fb58cc2aff66fc3416a4a2840a38bb4-C2CD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="DarkElf06#3742" data-user-id="307607567750660097" style="color: rgb(245,182,10)">Ensign M&#39;Nala</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 07:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="831240837664342016" id="message-831240837664342016">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;No, my ship was the Noleski. It was destroyed in battle...&quot; <em>M&#39;Nala replied, still bitter about the Noleski&#39;s loss.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 07:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="831241086252220478" id="message-831241086252220478">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They hmphed and beckoned him over.</em> &quot;I&#39;m sorry to hear that. But it&#39;s good to have you with us nonetheless.&quot; <em>They said.</em> &quot;The more capable officers the merrier.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/015e24f7d770008401f424549820e765-51D19.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; cha&#39;DIch Rozamal#0000" data-user-id="831232245556576258" style="">Suvwl&#39; cha&#39;DIch Rozamal</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">12-Apr-21 07:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="831241291928567829" id="message-831241291928567829">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Rozamal nodded as he looked at the new arrival.</em> “My condolences Starfleet. How long have you been here.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7fb58cc2aff66fc3416a4a2840a38bb4-C2CD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="DarkElf06#3742" data-user-id="307607567750660097" style="color: rgb(245,182,10)">Ensign M&#39;Nala</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 07:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="831241749379809320" id="message-831241749379809320">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;A few days, maybe four? It was hard to keep track. I&#39;m Ensign M&#39;Nala.&quot; <em>He replied to the two.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/a6a058250735ba1e3741a44d418cb5a8-C83CD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Poseidon7307#1374" data-user-id="212634048118521857" style="color: rgb(245,182,10)">Cadet Edward Smith</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 07:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="831242254748090398" id="message-831242254748090398">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>After a moment or two he left however deciding to go help somewhere.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 08:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="831242504766619698" id="message-831242504766619698">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nev nodded in acknowledgement.</em> &quot;It&#39;s a pleasure to have you with us, Ensign. I&#39;m Lieutenant Rineva Sh&#39;zhyvin, ACOS- well, former ACOS on the Phoenix. Titles are somewhat irrelevant now, however, so Nev will do just fine.&quot; <em>They said.</em> &quot;Did any other members of your crew make it out with us?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7fb58cc2aff66fc3416a4a2840a38bb4-C2CD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="DarkElf06#3742" data-user-id="307607567750660097" style="color: rgb(245,182,10)">Ensign M&#39;Nala</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 08:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="831242889903210515" id="message-831242889903210515">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;If they have, I haven&#39;t seen them.&quot; <em>M&#39;Nala said with a sad look on his face. He didn&#39;t want to confront that reality just yet.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/015e24f7d770008401f424549820e765-51D19.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; cha&#39;DIch Rozamal#0000" data-user-id="831232245556576258" style="">Suvwl&#39; cha&#39;DIch Rozamal</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">12-Apr-21 08:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="831242923068751872" id="message-831242923068751872">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">*Rozamal. I served on a KDF ship that was with Phoenix. They are both destroyed, as you can see with one of them right now. I am sorry about your crew.”￼￼￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7fb58cc2aff66fc3416a4a2840a38bb4-C2CD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="DarkElf06#3742" data-user-id="307607567750660097" style="color: rgb(245,182,10)">Ensign M&#39;Nala</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 08:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="831243327088230400" id="message-831243327088230400">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Thank you, I&#39;m sorry about yours too. For now at least, it seems we&#39;re all each others&#39; replacement crew.&quot; <em>He didn&#39;t quite know what to think about that.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 08:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="831245078440706118" id="message-831245078440706118">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They let out a half-bitter chuckle.</em> &quot;It would seem that way, yes.&quot; <em>They replied.</em> &quot;I doubt any of us will be forgetting this for a long time, hmm?&quot; <em>They moved from the console and knelt down to the ground, speaking from there the next time.</em> &quot;I don&#39;t suppose you&#39;ve picked up anything useful along the way?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7fb58cc2aff66fc3416a4a2840a38bb4-C2CD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="DarkElf06#3742" data-user-id="307607567750660097" style="color: rgb(245,182,10)">Ensign M&#39;Nala</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 08:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="831245557669429279" id="message-831245557669429279">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Not unless you count a piece of metal to smack an Iconian with as useful.&quot; <em>M&#39;Nala said, holding out a jagged piece of metal he picked up from the pits before.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 09:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="831263471479423067" id="message-831263471479423067">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Karta poked his head in the Security peeps hub and began looking around the room.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="12-Apr-21 09:24 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 09:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="831265692044623914" id="message-831265692044623914">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He stepped in and took a quick look around for a replicator that was functional.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7fb58cc2aff66fc3416a4a2840a38bb4-C2CD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="DarkElf06#3742" data-user-id="307607567750660097" style="color: rgb(245,182,10)">Ensign M&#39;Nala</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 09:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="831267418143064144" id="message-831267418143064144">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The caitian whirled around at the glimpse of something at the corner of his eye. He sighed in relief that the figure wasn&#39;t Iconian.</em> &quot;You need something?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 09:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="831269106770116708" id="message-831269106770116708">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He was brought out of his focused search by a question, he turned to look at M&#39;Nala.</em> &quot;Yes, I&#39;m looking for a function replicator. Have you seen one at all?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7fb58cc2aff66fc3416a4a2840a38bb4-C2CD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="DarkElf06#3742" data-user-id="307607567750660097" style="color: rgb(245,182,10)">Ensign M&#39;Nala</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 09:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="831270435852517436" id="message-831270435852517436">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Feel free to check around the place, I need to find a phaser or something in case of any patrols. You two seen one?&quot; <em>M&#39;Nala turned and asked the former Assistant Chief and the gorn.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 09:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="831271240869216286" id="message-831271240869216286">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Thanks.&quot; <em>He continued searching around the hub.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 09:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="831271477327167518" id="message-831271477327167518">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They shook their head.</em> &quot;None yet. I doubt many survived the wreck, if any at all- and it&#39;d be a further stretch to find them in working condition.&quot; <em>They sighed.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 09:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="831272129592426507" id="message-831272129592426507">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Having not found the replicator he was looking for, he walked back out into the hallway beyond.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7fb58cc2aff66fc3416a4a2840a38bb4-C2CD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="DarkElf06#3742" data-user-id="307607567750660097" style="color: rgb(245,182,10)">Ensign M&#39;Nala</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 09:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="831272464524247090" id="message-831272464524247090">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;How&#39;s the state of the weapons onboard? You two find any phasers that aren&#39;t destroyed?&quot; <em>M&#39;Nala did feel the need to be packing a weapon in the crew&#39;s very precarious situation.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 12:34 AM</span>
+
+            <div class="chatlog__message " data-message-id="831311305117401128" id="message-831311305117401128">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai stepped into the security hub and looked around, inspecting the wreckage.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 12:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="831311795712032780" id="message-831311795712032780">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nev was splayed very ungracefully on the floor halfway under one of the ruined consoles when T&#39;Svai entered.</em> &quot;Commander.&quot; <em>They pulled themselves up and regarded her with a small grin.</em> &quot;What brings you down here?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="13-Apr-21 12:36 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 12:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="831312063921258536" id="message-831312063921258536">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>For a moment T&#39;Svai wondered, with a certain sense of detachment, if that was a corpse under the console. Then the corpse moved.</em> &quot;Lieutenant.&quot; <em>She greeted, concealing her relief.</em> &quot;I merely thought it logical to investigate all of the major surviving hubs. Could you provide me with a status report?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 12:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="831312592050978826" id="message-831312592050978826">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They crossed their arms and looked around the hub for the nth time, then back at T&#39;Svai.</em> &quot;Nothing much to report at all, unfortunately. No surviving weapons, consoles, or the like. We&#39;re a bit dead in the water down here. How are things elsewhere?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 12:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="831313352717762620" id="message-831313352717762620">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;The same. However, Operations has managed to bring a console back online, courtesy of Ensign Morgan.&quot; <em>T&#39;Svai explained, crossing her arms as well.</em> &quot;This is the first area I have checked. Have you heard anything else? Do you have injuries to report?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 12:46 AM</span>
+
+            <div class="chatlog__message " data-message-id="831314251313577995" id="message-831314251313577995">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They shook their head.</em> &quot;No injures, thank the gods, but we did seemingly pick up an Ensign from another ship. The Noleski, he says.&quot; <em>They gestured to M&#39;Nala, before pausing. The tone of their voice grew a hair softer.</em> &quot;Have you seen Commander Parlac?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7fb58cc2aff66fc3416a4a2840a38bb4-C2CD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="DarkElf06#3742" data-user-id="307607567750660097" style="color: rgb(245,182,10)">Ensign M&#39;Nala</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 12:46 AM</span>
+
+            <div class="chatlog__message " data-message-id="831314424643846164" id="message-831314424643846164">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>M&#39;Nala perked up at the sounds of talking as he was at the other end of the room.</em> &quot;Hello, I don&#39;t believe we&#39;ve been introduced?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 12:49 AM</span>
+
+            <div class="chatlog__message " data-message-id="831315042577154109" id="message-831315042577154109">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;The Commander is safe and well. He has escorted an injured officer to Sickbay, and should be joining you shortly.&quot; <em>T&#39;Svai turned the voice and inclined her head slightly, then held up a ta&#39;al.</em> &quot;Acting Captain T&#39;Svai. There is no immediate problem, I am merely obtaining status updates. I assume you are the new Ensign? I do not recall any recent files describing new Caitian arrivals to Security.&quot; <em>She asked neutrally.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7fb58cc2aff66fc3416a4a2840a38bb4-C2CD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="DarkElf06#3742" data-user-id="307607567750660097" style="color: rgb(245,182,10)">Ensign M&#39;Nala</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 12:51 AM</span>
+
+            <div class="chatlog__message " data-message-id="831315694346960906" id="message-831315694346960906">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;m Ensign M&#39;Nala, formerly of the USS Noleski. The ship was destroyed before I was imprisoned here. It&#39;s good to be a part of the crew, Captain.&quot; <em>He said with a dutiful nod.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 12:54 AM</span>
+
+            <div class="chatlog__message " data-message-id="831316274977570897" id="message-831316274977570897">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;It is agreeable to meet you.&quot; <em>By the Kir&#39;shara itself, that title felt wrong. It was an illogical feeling, so she quickly suppressed it.</em> &quot;I will be certain to include your presence in my report.  It is fortunate that you came with us.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 12:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="831316581710561311" id="message-831316581710561311">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They nodded.</em> &quot;I agree. And I&#39;m glad to hear the Commander is alright, I expect we&#39;ll have much to exchange when he arrives here.&quot; <em>They said.</em> &quot;Is there anything else I should be aware of? I trust we weren&#39;t followed out here.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 12:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="831317067599970334" id="message-831317067599970334">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I was present at the tunnel entrance myself after everyone evacuated, in order to detonate the explosive needed to seal it. We were not followed.&quot; <em>She replied with absolute confidence.</em> &quot;However, as the Heralds are capable of traveling via gateway, as some of the arboretum&#39;s plants are motile, and as we have limited data on this planet, some vigilance would still be logical. This is our ship, but it is also functionally equivalent to an away mission campsite on hostile terrain.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 01:01 AM</span>
+
+            <div class="chatlog__message " data-message-id="831318035867762759" id="message-831318035867762759">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Of course. Should I authorize patrol teams?” <em>They offered. The arboretum... this ship really was quite a trip.</em> “I’m aware we’re all a bit short on staff, so I’ll be first to ensure we remain safe.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 01:02 AM</span>
+
+            <div class="chatlog__message " data-message-id="831318417926783007" id="message-831318417926783007">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Affirmative - and work with the botanists to ensure you don&#39;t accidentally walk into dangerous areas.&quot; <em>She recommended.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7fb58cc2aff66fc3416a4a2840a38bb4-C2CD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="DarkElf06#3742" data-user-id="307607567750660097" style="color: rgb(245,182,10)">Ensign M&#39;Nala</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 01:06 AM</span>
+
+            <div class="chatlog__message " data-message-id="831319432512274432" id="message-831319432512274432">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Patrol teams... I like hearing that sound again.&quot; <em>M&#39;Nala said with a nostalgic grin</em> &quot;You have my full support, Captain. Not one Iconian will set foot on this ship.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 01:07 AM</span>
+
+            <div class="chatlog__message " data-message-id="831319562942677053" id="message-831319562942677053">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nev nodded, a bit concerned at that, but they’d go nevertheless.</em> “Right. Quite the ship we were flying, hmm? I learn something new about it everyday.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 01:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="831319794695405589" id="message-831319794695405589">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;It was...&quot; <em>She paused a moment, meditative, as she searched for an adequate word.</em> &quot;...complex.&quot; <em>She settled on.</em> &quot;I shall have to ask Science if they have recovered any tricorders.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 01:09 AM</span>
+
+            <div class="chatlog__message " data-message-id="831320199835025408" id="message-831320199835025408">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“I can only hope they have, but hope doesn’t hold much weight in a shipwreck.” <em>They remarked.</em> “If there’s anyone in the arboretum when I make my way there, I’ll be sure to find out what they know.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 01:11 AM</span>
+
+            <div class="chatlog__message " data-message-id="831320628987822100" id="message-831320628987822100">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She nodded.</em> &quot;And are you personally well, Lieutenant?&quot; <em>She asked carefully.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 01:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="831327110127550464" id="message-831327110127550464">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Confiding in T&#39;Svai would&#39;ve been nice- that is, if Nev had been anybody else and anywhere else. They simply nodded.</em> &quot;As well as I can be, under the circumstances. I have no complaints.&quot; <em>They replied, before turning the question on her.</em> &quot;And you?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="13-Apr-21 01:37 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 01:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="831327601477419060" id="message-831327601477419060">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Much the same.&quot; <em>She said neutrally, with just the slightest twitch of the eyebrows into a furrow to hint that she found this situation somewhat difficult.</em> &quot;If you have any updates, please inform me or Commander Parlac.&quot; <em>She instructed.</em> &quot;I will go investigate the other hubs.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 01:41 AM</span>
+
+            <div class="chatlog__message " data-message-id="831328180962852904" id="message-831328180962852904">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;ll be sure to do so.&quot; <em>They picked up on the movement of her eyebrows but refrained from commenting- she was, after all, acting captain, and even for a Vulcan that carried some level of heaviness.</em> &quot;Good luck.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 01:58 AM</span>
+
+            <div class="chatlog__message " data-message-id="831332459210997820" id="message-831332459210997820">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai held up a ta&#39;al and left the security hub.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 09:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="831631957442953286" id="message-831631957442953286">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The chief entered what was left of the deck and let out a sigh, looking around the hub with a weary expression before starting to pick through the rubble for anything of use.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 10:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="831635763010863164" id="message-831635763010863164">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They perked up at the sound, having been knee deep in scrap once more themselves, and regarded Parlac with a nod.</em> “Glad to see you’re alright, Commander.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 10:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="831635943554285658" id="message-831635943554285658">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He turned his head to follow the source of the noise, but the voice was immediately recognizable and he was already grinning.</em> &quot;Lieutenant! I&#39;m glad to see you as well. Sitrep?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 10:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="831637411796090920" id="message-831637411796090920">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nev sighed and shook their head, planting their hands firmly on their hips.</em> “Not great— at least in terms of supplies. Everyone I’ve seen come through here is physically alright, but when it comes to phasers and consoles— no such luck.” <em>They replied, vaguely gesturing around the area.</em> “How are things from what you’ve seen?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 10:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="831638517779791912" id="message-831638517779791912">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Pretty damn busted. We&#39;re going to need to reconvene with Tactical, I think. Gather everyone together and set up shifts. We blew the tunnels up behind ourselves but the Iconians obviously have gateway tech that doesn&#39;t care about tunnels, and we need to be prepared. If we have no phasers, we work with what we have. Let&#39;s start by trying to get any broken phasers or rifles collected and see if we can salvage enough parts to get something functional.&quot; <em>Well. It seemed mere minutes in the hub was enough to switch from despondent prisoner of war to Starfleet Officer and Chief of Security. That was good to know.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 10:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="831641916000567326" id="message-831641916000567326">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Right.&quot; <em>They said. If they could roll up their sleeves they would, but alas-- EV suits.</em> &quot;It&#39;s mostly scraps around here, but I haven&#39;t ventured far out of the hub-- or what&#39;s left of it, I suppose. I&#39;ll admit I was waiting for a few more personnel to show up, but it&#39;s been unsettlingly barren.&quot; <em>They absently moved aside a piece of scrap with their foot, before addressing Parlac again.</em> &quot;Commander T&#39;Svai stopped some time ago, but other than that... it&#39;s been almost radio silence.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 10:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="831642396641984584" id="message-831642396641984584">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He nodded in acknowledgement.</em> &quot;The arboretum is serving as a makeshift base for now, if you haven&#39;t had a chance to head up there I would recommend it. Get out of your EV suit for a few minutes. Most of the crew I&#39;ve seen are up there, seeking medical attention or resting. I can understand the desire, but unfortunately I don&#39;t think we have the luxury. We&#39;re not out of this yet.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 10:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="831646345746972742" id="message-831646345746972742">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;That we aren&#39;t.&quot; <em>They agreed.</em> &quot;I&#39;m sure it&#39;s lovely up there, but I can certainly wait. The armory is just waiting to be searched, hmm?&quot; <em>This was, of course, accompanied with a small grin.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 10:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="831647584162414592" id="message-831647584162414592">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I believe Tactical has searched their armory with no luck, but we might as well see what we can find in ours. I wonder...&quot; <em>he stopped speaking and looked back out at the vines in the hall,</em> &quot;There was an orchid in my office-- an Edosian orchid, from Cardassia-- a gift. If my office is accessible at all, I&#39;d be curious to see if she survived.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 10:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="831649936150888530" id="message-831649936150888530">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Midway through a large step over a lump of scrap, they turned back to Parlac. They gave him a genuine nod, unfortunately marred by their posture somewhat resembling a crab.</em> &quot;Sounds like a necessary trip to me.&quot; <em>They said.</em> &quot;It&#39;s a shame about Tactical, but you&#39;re right-- checking here couldn&#39;t hurt.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 11:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="831652095761055805" id="message-831652095761055805">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac knelt down and crawled over to join them, shuffling carefully through the debris and detritus.</em> &quot;Let&#39;s see if we can&#39;t pry this door open, hm?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 11:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="831654334382997566" id="message-831654334382997566">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They positioned themself in front of the door, squatting to ground themself. They gave Parlac a nod.</em> &quot;Let&#39;s. On your count?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 11:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="831657216385744926" id="message-831657216385744926">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Indeed. Three, two-- push!&quot; <em>He grunted and shoved his shoulder against the door with as much force as he could manage.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 11:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="831661464581308426" id="message-831661464581308426">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They huffed and pushed alongside Parlac.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 11:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="831662240406569011" id="message-831662240406569011">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>With much straining, the pair managed to slide the doors open about two feet.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">13-Apr-21 11:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="831663285304557618" id="message-831663285304557618">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They rebounded and crossed their arms, peering into the crack in the door.</em> &quot;Good to know we&#39;ve still got it.&quot; <em>They quipped.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="13-Apr-21 11:53 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 12:00 AM</span>
+
+            <div class="chatlog__message " data-message-id="831665158651641896" id="message-831665158651641896">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac grinned.</em> &quot;Likewise. All that work moving heavy scrap in the pits kept me in tip top shape I suppose,&quot; <em>the Cardassian said, tapping one arm for emphasis.</em> &quot;We make a good team. Do you think you can fit through that gap?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 12:06 AM</span>
+
+            <div class="chatlog__message " data-message-id="831666804958953512" id="message-831666804958953512">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nev took one more look at the space in the door, and nodded.</em> &quot;I think so, yes.&quot; <em>They replied, maneuvering themselves to the side.</em> &quot;Only one way to find out.&quot; <em>And with that, they attempted to slip into the armory.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 12:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="831669565662035999" id="message-831669565662035999">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>It was a tight fit, but they were ultimately successful.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="ballpit" title="ballpit" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/736981665745862666-DD213.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 12:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="831670517823438909" id="message-831670517823438909">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nice. Very nice. They popped into the armory with an OOF.</em> &quot;Is there anything in particular I should be on the lookout for?&quot; <em>They called back to Parlac.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 12:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="831672434951716895" id="message-831672434951716895">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Anything that can be salvaged. Phasers, rifles, parts of any weapons. Power cells. Whatever you think could be useful,&quot; <em>he called back.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 12:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="831672646642565212" id="message-831672646642565212">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They stuck a quick thumbs up back through the door, before retreating into the ruins of the armory to dig around and see what they could find.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 12:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="831678959263285259" id="message-831678959263285259">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Bits and pieces of weapons were scattered across the armory, and there was barely any light, but Nev was able to locate enough to piece together two phasers and a rifle.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 01:09 AM</span>
+
+            <div class="chatlog__message " data-message-id="831682622555684884" id="message-831682622555684884">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They slowly collected the usable pieces, pocketing them as they moved around. They went over the wreckage one more time, before making their way back to the door.</em> &quot;I&#39;m coming back through.&quot; <em>They announced, squeezing back through the gap.</em> &quot;And I bring gifts.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 01:18 AM</span>
+
+            <div class="chatlog__message " data-message-id="831684923286618112" id="message-831684923286618112">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;What have you got?&quot; <em>The Cardassian had immediately perked up at the notion of gifts-- this undoubtedly meant something useful from the wreckage. He&#39;d take whatever they could find, salvage, or piece together at this point.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 01:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="831686614283059210" id="message-831686614283059210">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They emptied their pockets onto a nearby flat-ish sheet of metal and gestured downwards.</em> &quot;Looks to be enough for... two, maybe three weapons. It&#39;s better than nothing.&quot; <em>They said.</em> &quot;A <em>lot</em> better.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 01:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="831693706163519518" id="message-831693706163519518">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;A hell of a lot better indeed, Lieutenant!&quot; <em>Parlac was clearly enthusiastic about the haul, immediately beginning to sort through the pieces.</em> &quot;Looks like... two phasers and a rifle maybe? A damn sight better than nothing, you are brilliant!&quot; <em>It wasn&#39;t like Nev was explicitly responsible for the parts existing, but he was going to praise them nonetheless.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 02:33 AM</span>
+
+            <div class="chatlog__message " data-message-id="831703715986931742" id="message-831703715986931742">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They couldn&#39;t help but crack a grin, and began regarding the pieces more as potential weapons than... well, pieces. Parlac&#39;s enthusiasm was infectious.</em> &quot;Well thank you, but all I did was fit through the door.&quot; <em>They replied.</em> &quot;The real test is going to be putting these back together.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 03:18 AM</span>
+
+            <div class="chatlog__message " data-message-id="831714905971097601" id="message-831714905971097601">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;If we&#39;re worth our salt as security officers, we should be able to do it. I&#39;ve taken a phaser apart and put it back together more times than I can count,&quot; <em>he chuckled, recalling the numerous and exceedingly repetitive weapons drills from the Academy and beyond.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 03:20 AM</span>
+
+            <div class="chatlog__message " data-message-id="831715630998355998" id="message-831715630998355998">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They laughed.</em> &quot;Fair point. I can think of more than a few people who would be overjoyed to hear I&#39;m putting my training to good use.&quot; <em>They remarked, picking up a few pieces and beginning to reconstruct the weapons.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 03:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="831716892871491624" id="message-831716892871491624">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>It took a fair amount of time-- many of the pieces were badly burned or twisted beyond repair-- but between the two of them, and their experience with the weapons in question, two function phasers and a functional rifle were put back together.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="phaser" title="phaser" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/802544252835332106-9BE05.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128170;" title="&#128170;" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/1f4aa-4A1A3.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 03:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="831717650345885717" id="message-831717650345885717">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They eyed the completed phaser in their hand with a look of slight pride.</em> &quot;I have to say, I feel much better about all of this now.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 03:34 AM</span>
+
+            <div class="chatlog__message " data-message-id="831718976433553409" id="message-831718976433553409">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I shouldn&#39;t, considering how we fared against the boarders, but I do as well,&quot; <em>Parlac conceded, hefted one of the phasers in his hand. It felt right-- comfortable, familiar. After two weeks of prison porridge, grueling work, and rickety cots, this one item gave him more confidence in their chances than he would have expected. He placed his other hand on Nev&#39;s shoulder in what he hoped was a comforting and fatherly gesture.</em> &quot;Now we just need to set up a perimeter and figure out shifts. Halfway there.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 03:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="831723908319019028" id="message-831723908319019028">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>One quiet, sharp intake of breath coupled with a mental curse for reacting at all later, Nev had managed to quell any further reaction to the touch and, against their hardwired judgement, simply let it happen. Maybe they were a bit more tense than usual, but that was for them to work out later. It was meant to be comforting and they picked up on that instantly, pushing it to the forefront of their brain.</em> &quot;Right. How wide does the wreck extend? I can&#39;t help but wonder how exposed we are.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 05:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="831936476400320542" id="message-831936476400320542">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I think we&#39;re going to need to walk the outside of the wreck to determine that,&quot; <em>he said, already slipping the phaser into the pocket of his EV suit and slinging the rifle over his shoulder.</em> &quot;We should reconvene with Commander Itesh and... Captain T&#39;Svai before we continue.&quot; <em>Thinking of T&#39;Svai as captain and not commander was still a struggle for the chief, as evidenced by the long pause in his speech.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 06:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="831940930578940005" id="message-831940930578940005">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They followed, sliding the other phaser into their pocket and nodding.</em> “Right.” <em>They paused as well, then.</em> “Captain T’Svai. I didn’t think that shift would happen so quickly after my boarding.” <em>Bluntly honest as always.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="14-Apr-21 06:51 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 06:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="831947809842003969" id="message-831947809842003969">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I didn&#39;t either. She&#39;s... exceptionally suited for the role, but it&#39;s not an adjustment I expected to have to make.&quot; <em>His throat tightened as he remembered what she&#39;d told him in the pits, about the bridge and being forced to leave Syre pinned to her chair. The words of an old Cardassian poem came to mind-- &#39;upon the bridge, the captain died&#39;-- and he was glad for the EV suit and the flickering lights so that Nev wouldn&#39;t see the glint of tears in his eyes.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/1f62d-FE9EC.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 07:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="831960642134999080" id="message-831960642134999080">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nev exhaled a long, sad sigh and nodded a single time. Solemn.</em> &quot;She is.&quot; <em>And that was it for the moment, at least until they had tilted their head enough to look at him properly.</em> &quot;I didn&#39;t know Captain Syrezeaju as well as you did. I only met her once, so of course I won&#39;t pretend to.&quot; <em>Hmm. This was harder than they very desperately wanted it to be.</em> &quot;But I understand. What it&#39;s like to... lose people. People that you- that <em>we</em> care about. So what I am trying to and very ungracefully succeeding in saying is, is that you are not alone in this. None of us are.&quot; <em>They finished.</em> &quot;We will work with T&#39;Svai to honor her, and all the others.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 07:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="831966748718137384" id="message-831966748718137384">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He nodded in affirmation, not yet ready to speak for fear that the emotions he was barely holding back would spill out in an unstoppable wave. Truth be told, he wasn&#39;t as close to the captain as he would have liked, but there was something inherently close about serving under a commanding officer. He couldn&#39;t have told you her favorite food, or her favorite color, or what she liked to do in her spare time-- not that she&#39;d had much of that. He hadn&#39;t spent hours in conversation with her, or even attended a single staff dinner where she was present. Yet the emotional ties he felt, the loyalty, the grief, the frustration, they all existed in tandem as though she had been a very dear friend. He&#39;d never lost a commanding officer before, and he was keenly aware that these emotions were threatening to overwhelm him if he focused on it for too long. Parlac nodded again, at a loss for words, and then climbed out through the half-broken door and into the hallway.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 08:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="831968759761469535" id="message-831968759761469535">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They blinked for quite a bit longer than they should have, eyes shut in a strange mix of guilt and frustration. It passed soon enough, however, like all of their worst emotions did, and they followed Parlac out into the hall.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7fb58cc2aff66fc3416a4a2840a38bb4-C2CD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="DarkElf06#3742" data-user-id="307607567750660097" style="color: rgb(245,182,10)">Ensign M&#39;Nala</span>
+
+
+        <span class="chatlog__timestamp">14-Apr-21 10:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="832011973411340317" id="message-832011973411340317">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>M&#39;Nala, taking a break from looking through the wreck, decided to head to the arboretum for some r&amp;r.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/a6a058250735ba1e3741a44d418cb5a8-C83CD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Poseidon7307#1374" data-user-id="212634048118521857" style="color: rgb(245,182,10)">Cadet Edward Smith</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 04:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="835544297981083729" id="message-835544297981083729">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Edward was idly fashioning some crude weapons from the wreckage.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Apr-21 05:03 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/ae8989c9a732e4badb5a42f89cb9bba7-675A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HoDHom W’ototo#0000" data-user-id="831232245556576258" style="">HoDHom W’ototo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Apr-21 05:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="835550191008219176" id="message-835550191008219176">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He ran in, catching his breath briefly before speaking in a rather loud voice.</em> &quot;We have incoming Iconians! Arm yourselves and prepare for battle!&quot; <em>He declared sternly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/a6a058250735ba1e3741a44d418cb5a8-C83CD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Poseidon7307#1374" data-user-id="212634048118521857" style="color: rgb(245,182,10)">Cadet Edward Smith</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 05:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="835550756991402045" id="message-835550756991402045">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Edward looked to the klingon briefly then grabbed a roughly fashioned pike.</em> &quot;Aye.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Apr-21 05:24 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 05:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="835551013347786802" id="message-835551013347786802">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>And in came Nev, gripping their phaser in one hand. They gave W’ototo a nod.</em> “Weapons report?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/ae8989c9a732e4badb5a42f89cb9bba7-675A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HoDHom W’ototo#0000" data-user-id="831232245556576258" style="">HoDHom W’ototo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Apr-21 05:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="835551485621174312" id="message-835551485621174312">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>His attention turned to Rineva, someone he never met before but assumed was meant to be here.</em> &quot;I am unaware of your stock.&quot; <em>He said, before promptly lifting up his makeshift blade.</em> &quot;I am armed, and I have seen someone else with a spear. I fear these will be useless.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/a6a058250735ba1e3741a44d418cb5a8-C83CD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Poseidon7307#1374" data-user-id="212634048118521857" style="color: rgb(245,182,10)">Cadet Edward Smith</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 05:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="835551863554310165" id="message-835551863554310165">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;We have three phasers to my knowledge.&quot; <em>Edward mentioned.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 05:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="835552024988745766" id="message-835552024988745766">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Ah, well I&#39;m glad to see you&#39;re armed.&quot; <em>They held up the phaser.</em> &quot;Our &#39;stock&#39; is as the Cadet mentioned- two phasers and one rifle. Commander Parlac posesses the other weapons.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 05:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="835552263736786995" id="message-835552263736786995">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Hefting the salvaged rifle, Parlac entered the hub.</em> &quot;Lieutenant, Cadet, HodHom,&quot; <em>he nodded to each in turn.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/a6a058250735ba1e3741a44d418cb5a8-C83CD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Poseidon7307#1374" data-user-id="212634048118521857" style="color: rgb(245,182,10)">Cadet Edward Smith</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 05:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="835552483421585418" id="message-835552483421585418">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Sir.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/ae8989c9a732e4badb5a42f89cb9bba7-675A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HoDHom W’ototo#0000" data-user-id="831232245556576258" style="">HoDHom W’ototo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Apr-21 05:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="835552532880818176" id="message-835552532880818176">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>His attention turned to the newcomer when his rank was called out. Finally, someone who knew who he was.</em> &quot;Commander Parlac, I assume.&quot; <em>He noted simply, giving him a slight nod as he did.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 05:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="835552984033001492" id="message-835552984033001492">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Correct,&quot; <em>he said, privately relieved that his guess on rank had been correct.</em> &quot;I have an additional phaser here, would you prefer your bladed weapon or...?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/ae8989c9a732e4badb5a42f89cb9bba7-675A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HoDHom W’ototo#0000" data-user-id="831232245556576258" style="">HoDHom W’ototo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Apr-21 05:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="835553283488612372" id="message-835553283488612372">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I will leave the shooting to your people. Unlike you, I am trained to use a blade, so it would be inadvisable to swap.&quot; <em>He commented simply.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 05:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="835553441195229264" id="message-835553441195229264">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Understood. Cadet!&quot; <em>He held out the remaining phaser towards Edward.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/a6a058250735ba1e3741a44d418cb5a8-C83CD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Poseidon7307#1374" data-user-id="212634048118521857" style="color: rgb(245,182,10)">Cadet Edward Smith</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 05:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="835553593435226122" id="message-835553593435226122">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Thank you.&quot; <em>He said taking the phaser.</em> &quot;Where do you want to deploy us, sir?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Apr-21 05:32 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 05:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="835554763412078642" id="message-835554763412078642">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;We need to head to the entrance and reconvene with Tactical. Won&#39;t do anyone much good down here, we need to be between the incoming Iconians and the rest of the crew sheltering in place.&quot; <em>Parlac had picked up a particularly nasty, jagged looking piece of short scrap and tucked it into the pocket of his EV suit.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 05:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="835555043041345537" id="message-835555043041345537">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They nodded.</em> &quot;Right. We&#39;ve outsmarted them before, let&#39;s do it again, hmm?&quot; <em>Nevermind the first time they got their asses kicked. Water under the bridge.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/a6a058250735ba1e3741a44d418cb5a8-C83CD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Poseidon7307#1374" data-user-id="212634048118521857" style="color: rgb(245,182,10)">Cadet Edward Smith</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 05:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="835555517513990144" id="message-835555517513990144">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Let&#39;s do it. I&#39;d prefer not to visit solitary again.&quot; <em>He agreed.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Apr-21 05:46 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/ae8989c9a732e4badb5a42f89cb9bba7-675A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HoDHom W’ototo#0000" data-user-id="831232245556576258" style="">HoDHom W’ototo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Apr-21 05:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="835556416897941515" id="message-835556416897941515">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;My focus will be close-quarters, for fairly obvious reasons.&quot; <em>He commented.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 05:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="835560221933436958" id="message-835560221933436958">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac nodded once again at the security crew that had gathered, then headed for the door.</em> &quot;Let&#39;s move out.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 05:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="835560318494179378" id="message-835560318494179378">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nev followed him.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/ae8989c9a732e4badb5a42f89cb9bba7-675A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HoDHom W’ototo#0000" data-user-id="831232245556576258" style="">HoDHom W’ototo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Apr-21 05:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="835560421674319883" id="message-835560421674319883">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He followed silently.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/a6a058250735ba1e3741a44d418cb5a8-C83CD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Poseidon7307#1374" data-user-id="212634048118521857" style="color: rgb(245,182,10)">Cadet Edward Smith</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 06:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="835561215832096799" id="message-835561215832096799">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He followed as well</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/7fb58cc2aff66fc3416a4a2840a38bb4-C2CD1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="DarkElf06#3742" data-user-id="307607567750660097" style="color: rgb(245,182,10)">Ensign M&#39;Nala</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 08:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="835966098021154869" id="message-835966098021154869">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>M&#39;Nala sat in the security hub when he heard a lot of transporter beams going off in the hall, he rushed to the door to see what the commotion was about.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Phoenix%20Wreckage%20-%20security-hub-wreck%20%5B831224259157950464%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 09:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="835969120679886959" id="message-835969120679886959">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>M&#39;Nala was beamed out.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Apr-21 09:02 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 121 message(s)</div>
+</div>
+
+</body>
+
+</html>

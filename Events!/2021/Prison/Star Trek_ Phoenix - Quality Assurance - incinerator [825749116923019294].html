@@ -1,0 +1,4191 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - incinerator</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Quality Assurance / incinerator</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 05:06 PM</span>
+
+            <div class="chatlog__message chatlog__message--pinned" data-message-id="825762861321551952" id="message-825762861321551952">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The incinerator room was a blazing hot, poorly lit, poorly ventilated space. At one side of the large, cavernous room was a door. On the other was a massive, roaring incinerator, which easily melted anything thrown into it.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 03:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="826104910663516170" id="message-826104910663516170">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath walked into the poorly lit room and was immediately assaulted by the intense heat coming from the incinerator. He squinted, looked around the room to see if there were any guards or cameras that would study their work. With a quiet, determined sigh, he made his way to the end of the conveyor belt that threw scraps into a large pile, and started loading the random pieces into a cart to bring to the incinerator.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Mar-21 03:50 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 04:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="826122736576888923" id="message-826122736576888923">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Prophets above, this room was <strong>hot</strong>. She wasn’t built for this. She shook the already forming sweat off her brow, before looking around at the other workers. Was that- she did recognize one of them! Moving over to the conveyor belt to work, she positioned herself across from him.</em> “Lieutenant Targesh?” <em>She said, just loud enough to be heard over the machines.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="826124044972851201" id="message-826124044972851201">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath&#39;s gaze lifted up from his work as he loaded a large, heavy piece of scrap metal on a cart. Sweat beaded on his ridged forehead, the heat from the incinerator and the constant heavy lifting already taking a toll on the Klingon.</em> &quot;Ensign Yardi.. I&#39;m surprised they assigned you here..&quot; <em>He answered in a low, quiet voice, with none of his usual, polite perkiness.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="826124864002981909" id="message-826124864002981909">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She was already breathing heavily, continuing to move pieces of scrap.</em> “I don’t think they care very much. One of the guards just kind of... shoved me in this direction.” <em>She replied, her voice taking on a bitter edge near the end.</em> “Have you seen anyone else? Anyone other of us from science?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="826130527081201694" id="message-826130527081201694">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath nodded absent mindedly.</em> &quot;Lieutenant Bj&#248;rge was a few persons behind me during processing.. So was Lieutenant T&#39;lith.&quot; <em>He shook his head and turned to push his loaded cart toward the incinerator, throwing the large, heavy scraps of metal inside before coming back to the conveyor.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="826130624263880744" id="message-826130624263880744">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The next thing to come off the conveyor belt was strange indeed. A toilet. Some of the more experienced inmates took one glance at it and left it for the newbies to handle.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128701;" title="&#128701;" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/1f6bd-C67DB.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="826131050417225743" id="message-826131050417225743">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She sighed.</em> &quot;That&#39;s good. I&#39;ve seen quite a few people already.&quot; <em>She remarked, before turning a seeing a damn toilet on the conveyer belt. Her brows furrowed.</em> &quot;Is that- is that what I think it is?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="826131889626546177" id="message-826131889626546177">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Karta appeared pushing a maintenance trolley and moved over to a nearby maintenance hatch. He took a tool out and then turned to the hatch, opening it and looked in</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="826132348676472844" id="message-826132348676472844">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath looked at the heavy piece of ceramic and nodded.</em> &quot;Seems like it..&quot; <em>He grumbled, as he reached for the heavy object, not wanting Cas to have to deal with such an.. unpleasant item. He set it down on his cart.</em> &quot;Who were you confined to in your cell?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="care" title="care" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/711609055021629502-E849D.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="826133235267403806" id="message-826133235267403806">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She gave Karta a small wave and watched as Lokath moved the toilet (seriously, whose toilet was that?), pausing to catch her breath before continuing the work.</em> &quot;Ota, Karta, Mattie, Dubrumal, and a Risian named Tilson.&quot; <em>She replied.</em> &quot;I&#39;m in Low Security. Who&#39;s in your cell?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="826134267712110592" id="message-826134267712110592">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He came back out and noticed Cas across the floor, working with a hulking Klingon. He returned her wave with a smile and retrieved a digital calibrating device and buried himself back into the hatch</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="826135672917983253" id="message-826135672917983253">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath was quiet for a moment, simply continuing to pile up scraps and refuses on his cart after Cas&#39;s question.</em> &quot;Another Klingon, from the nI&#39;raH I believe, as well as an android named Alice.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="826137785969934356" id="message-826137785969934356">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She hadn&#39;t even know the nI&#39;raH had sent so many over to the Phoenix. Prophets, what did she say now? Certainly there wasn&#39;t much chatter to be had over a roaring incinerator. She wiped her brow.</em> &quot;That&#39;s... I&#39;m sorry, I don&#39;t really know what to say.&quot; <em>She spared a glance over her shoulder to see if there was a guard nearby.</em> &quot;Or what I even <em>can</em> say.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="826139253699510273" id="message-826139253699510273">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He came back out, stopping behind the hatch, using it to half hide him so he could try and watch the guards behaviors and count here</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="826139502258159686" id="message-826139502258159686">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath shook his head</em> &quot;There isn&#39;t much to say just yet Ens.. Cas.&quot; <em>He said, deciding to skip on the rank. The Phoenix was no more after all.</em> &quot;For now.. we work. Until the time and opporrunity comes.&quot; <em>He finished quietly.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Mar-21 06:03 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="826140571080982528" id="message-826140571080982528">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Right.&quot; <em>She breathed out. Ugh, it even smelled of heat in here. These jumpsuits were definitely the worst thing they could be wearing- she felt like she was in an oven. She continued to work the line.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/7e3ad90e36b5065f571288bd4626f884-9AA96.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="826141483438309386" id="message-826141483438309386">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>God, this room was <strong>sweltering.</strong> Dayton was poorly adjusted to the heat naturally, and now to be in a room that is filled with heat was just painful. But oh well, what could one do about it? He squinted a little and spotted two figures scrapping metal into the incinerator, and he walked over to them.</em> &quot;Ensign Yardi? Lieutenant Targesh?&quot; <em>He spoke, as he started placing the useless metal and scrap into the incinerator.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="826141739403706378" id="message-826141739403706378">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Karta moved back to the maintenance trolley and messed around in there, trying to look busy organising stuff while continuing to glance about the incinerator, hoping to find any weak point in its construction</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="826142617132597289" id="message-826142617132597289">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri looked at them and winced, feeling the heat. Gods, this was hot! But he couldn&#39;t be distracted by that. He nodded at the others and went to work with the others, tossing scrap onto the belt.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="826143304369438751" id="message-826143304369438751">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Karta noted the two newcomers and smiled a greeting back at the Andorian as he passed. He returned to watching the guards movements and how they reacted to the two new workers.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="826144326475579433" id="message-826144326475579433">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Looath once again looked up from his work to see two more of his fellow officers. Had they all not been in prison, he would have let out a sigh of relief to see them in good health. But considering where theybwere stuck working, good health would not be lasting too long.</em> &quot;Lieutenant Finn, Lieutenant King..&quot; <em>He said quietly in greeting.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Mar-21 06:22 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="826144763040104488" id="message-826144763040104488">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri nodded at Lokath as he tossed another piece of scrap onto the conveyor. Occasionally he would look up to watch the guards or scan the surrounding area they were in.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="826146024316731482" id="message-826146024316731482">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He dived back into the maintenance hatch and adjusting the machine to make sure the thing ran smoothly. He came back out and closed the hatch. Karta then replaced some of the tools onto the trolley and moved in closer to the incinerator and where everyone was working.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Mar-21 06:29 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="826147677539794984" id="message-826147677539794984">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He took a small toolbox over to the conveyor and began to &quot;tweak&quot; at the running mechanism. Taking note of its construction and orientation.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/7e3ad90e36b5065f571288bd4626f884-9AA96.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="826149095268941894" id="message-826149095268941894">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He nodded at the greeting, as he continued to toss scrap into the incinerator for it to be burned. While he was burning due to the heat, he continued to do his job with tossing scrap into the incinerator for it to be melted.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="826149573813600317" id="message-826149573813600317">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>As if on cue, Cas ~glanced around~. She said nothing of what Karta was doing, and silently inspected the pieces on surveyor belt for anything she could conceiveably fit in her pocket.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="826149840844750888" id="message-826149840844750888">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri was somewhat thankful for the heat, though it did become uncomfortable quickly. He didn&#39;t take note of Kictor and really was silently praising the deities that he couldn&#39;t hear.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="826150903345053786" id="message-826150903345053786">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She paused for a moment, holding a piece of metal up to the light. Would that be the right size to smuggle out? She didn&#39;t know what she would do with it if she did, but maybe Karta would know later.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/0bb0b42b688577e507db26674259033e-C2E8A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Prison Guard#0000" data-user-id="826151152688169070" style="">Prison Guard</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 06:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="826151153884332076" id="message-826151153884332076">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>A guard suddenly gatewayed in right behind Cas in a flash of purple light.</em> &quot;<strong>Mechanic.</strong>&quot; <em>It was technically looking for Kictor, the placement was just convenient.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="826151294343184404" id="message-826151294343184404">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri occasionally looked up. He felt a little guilty that he was planning to look out for himself. He flinched upon seeing the guard and looked back to Kictor, suddenly worried for them.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="826151392241516604" id="message-826151392241516604">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She couldn&#39;t help it- she jumped, the metal still clutched in her hand.</em> &quot;Argh- yes?&quot; <em>She turned to look up at the looming face of the Iconian. She wouldn&#39;t rat out Karta, but why was there a guard there?!</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Mar-21 06:50 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/7e3ad90e36b5065f571288bd4626f884-9AA96.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="826151705111429173" id="message-826151705111429173">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Dayton jumped when he heard the Iconian Guard speak, and he temporarily stopped what he was doing. As he became a bit worried for whoever was unfortunate enough to catch the attention of the Iconians.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="826151720027553852" id="message-826151720027553852">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He stood and returned to the toolbox, replacing the tools and then returned the toolbox to the trolley.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/0bb0b42b688577e507db26674259033e-C2E8A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Prison Guard#0000" data-user-id="826151152688169070" style="">Prison Guard</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 06:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="826151987636731944" id="message-826151987636731944">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>It noticed the metal and turned to Cas.</em> &quot;<strong>Replace the item on the line.</strong>&quot; <em>Oh wait, a guy with a toolbox.</em> &quot;<strong>Mechanic. Remain here. What modification did you perform to the incinerator?</strong>&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="826152032531513385" id="message-826152032531513385">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri took a few steps away, keeping his head down and just continuing his work. He turned his head just enough to keep an eye on the others though.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="826152197447614505" id="message-826152197447614505">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She did so, but continued to look at the guard.</em> &quot;He was just fixing it. It wasn&#39;t performing... optimally.&quot; <em>She lied through her teeth.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="826152760687853630" id="message-826152760687853630">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Karta stood still and turned to the guard.</em> &quot;I adjusted the line mechanical linkage valve to ensure that the belt was working at optimal efficiency and the scrap could be processed in a timely manner. Was that not desired?&quot; <em>He looked back at the guard repsectfully</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Mar-21 06:58 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="picardyus" title="picardyus" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/653654387184369665-D0179.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="lwaxanawink" title="lwaxanawink" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/722857283788472320-A2A3B.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/7e3ad90e36b5065f571288bd4626f884-9AA96.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="826153057041645568" id="message-826153057041645568">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I can support her statement. It wasn&#39;t performing up to its expectations. It was a bit.. slow.&quot; <em>He piped up, since he didn&#39;t want to see Karta get into any conflict with the Iconians. They&#39;re Starfleet... they have to stick together... right? Through thick and thin.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Mar-21 06:59 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="phoenixheart" title="phoenixheart" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/769248729893961780-3D8C1.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="siskocheers" title="siskocheers" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/808801807945695263-0C207.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/0bb0b42b688577e507db26674259033e-C2E8A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Prison Guard#0000" data-user-id="826151152688169070" style="">Prison Guard</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 07:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="826154243605528577" id="message-826154243605528577">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;<strong>It is acceptable.</strong>&quot; <em>The guard said.</em> &quot;<strong>Show me your scans.</strong>&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="mildpanic" title="mildpanic" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/734519773932814377-BFF4D.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="826154904497291315" id="message-826154904497291315">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Karta went into the trolley and retrieved the calibration tool (that he had slightly unbalanced, only slightly so it would seem a little out of whack) and turned back to the guard. He presented it to the guard for inspection, standing there patiently for it to finish.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Mar-21 07:05 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="826155155502137414" id="message-826155155502137414">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath lifted his head and looked towards the Iconian with nothing but hatred and anger in his eyes. His hands clenched around a large, heavy piece of scrap metal, lifting it from the belt.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/637075614662393868-CC03F.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/0bb0b42b688577e507db26674259033e-C2E8A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Prison Guard#0000" data-user-id="826151152688169070" style="">Prison Guard</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 07:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="826155421122822194" id="message-826155421122822194">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The guard stared at the tool, then at Karta, then suddenly all the way around at Targesh. He pointed his staff at the Klingon.</em> &quot;<strong>Replace the item on the line.</strong>&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="826155556161978368" id="message-826155556161978368">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She looked over to Lokath with a half-concerned look, but at the same time her grip tightened around a particularly sharp piece of metal in tandem while continuing to sort.</em> &quot;He&#39;s just doing his job.&quot; <em>She muttered to the Iconian.</em> &quot;It&#39;s heavy.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="826155765198487572" id="message-826155765198487572">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri turned to watch the exchange, sorting the items still. He flinched at the sight and was suddenly wishing that he&#39;d learned Iconian when he had the chance.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="826155859520389180" id="message-826155859520389180">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath growled quietly, keeping the heavy piece of scrap in his hands for a few seconds before dropping it back down on the belt, denting the implement slightly.</em> &quot;As you wish.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Mar-21 07:08 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/7e3ad90e36b5065f571288bd4626f884-9AA96.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="826156130505326652" id="message-826156130505326652">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Dayton looked at Lokath and his eyes widened as he saw the Klingon carrying the piece of scrap metal as worry rushed in. Not wanting the man to get himself to trouble with the Guard, but worry turned into relief when he set it aside. Now&#39;s not the right time to get into trouble... they&#39;re just new. He glanced at the rest of his workmates before sighing.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/0bb0b42b688577e507db26674259033e-C2E8A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Prison Guard#0000" data-user-id="826151152688169070" style="">Prison Guard</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 07:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="826156449264435200" id="message-826156449264435200">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Satisfied, the guard inspected the calibration tool again.</em> &quot;<strong>The scans are acceptable. Return to work. We are watching.</strong>&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="826156638582997023" id="message-826156638582997023">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Yeah, watching was right. She tossed the metal back on the belt with a clatter and coughed, before going back to working.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/7e3ad90e36b5065f571288bd4626f884-9AA96.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="826156739200155668" id="message-826156739200155668">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He turned his gaze back to the scrap metal and resumed his work.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="826156761265733660" id="message-826156761265733660">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri deflated slightly in relief and looked back to the piece he&#39;d shoved over to spread out the items on the belt.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/0bb0b42b688577e507db26674259033e-C2E8A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Prison Guard#0000" data-user-id="826151152688169070" style="">Prison Guard</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 07:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="826156790504620113" id="message-826156790504620113">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Whoosh. The guard jabbed Lokath with the end of its staff, then gatewayed out.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="YOU" title="YOU" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/704859011228499971-20AAE.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="oof" title="oof" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/726923000221270118-7DC46.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="826157113143197786" id="message-826157113143197786">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath turned his attention back to the conveyor belt and shrugged.</em> &quot;The toilet would have been bet..&quot; <em>Before he could finish his sentence, he felt the staff jabbing into his back, sending him against the belt. He growled, but held himself back. He wondered just how hard it would be to rip off an Iconian&#39;s head, and he just could not wait to find out..</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Mar-21 07:13 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="826157128490287165" id="message-826157128490287165">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Karta replaced the the calibration tool and smiled at the guard.</em> &quot;Thank you........sir?&quot; <em>The guard was gone and Karta blinked at the spit where it was.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="826157406270390303" id="message-826157406270390303">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Lokath, are you okay?&quot; <em>She exclaimed, eyes widening once more, before she frowned.</em> &quot;What was <em>that</em> for? We weren&#39;t even doing anything!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/7e3ad90e36b5065f571288bd4626f884-9AA96.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="826157588314980382" id="message-826157588314980382">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Wait, what? As he was starting his work, he saw Lokath getting jabbed with the staff by the Iconian.</em> &quot;Are you okay?&quot; <em>He said to the Klingon, a modicum of concern in his tone as he checked up on him.</em> &quot;It&#39;s simple, they don&#39;t like us.. and we&#39;re their prisoners.&quot; <em>He murmured.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Mar-21 07:16 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="826158153870737449" id="message-826158153870737449">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath grumbled and nodded, pushing himself back upward. One puny jab to his back would not hold him down, his Klingon pride made sure of that.</em> &quot;petaQ, all of them...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="826158426299695164" id="message-826158426299695164">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;And we&#39;re new prisoners. They&#39;re gonna be watching us like hawks for a while. We can&#39;t take any risks just yet. Keep your head down, pretend to be submit, convince them you aren&#39;t a threat. And once they don&#39;t give a damn about us, then we can get shady.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="826158888578973726" id="message-826158888578973726">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He looked over at the rest of the crew making sure they looked out.</em> &quot;They definitely want to remind us who&#39;s in charge, but this has given me some useful info. Thanks guys. I&#39;ll be off, see you all at lunch.&quot; <em>He walked around the trolley and began pushing it back toward the doors out.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="826159626840047626" id="message-826159626840047626">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri saw Kictor loading the trolley and nodded at him before turning back to the line.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 09:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="826196015307685918" id="message-826196015307685918">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri occasionally looked up from the line to scan the room, looking for guards, cameras, anything to take note of.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 10:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="826205338146963537" id="message-826205338146963537">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>After hours of grueling work, she finally was escorted out for whatever replicator production would be serving as lunch for that day.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 10:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="826205708172918856" id="message-826205708172918856">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri was escorted out as well later on, silently thanking the gods for getting away from that fire pit. Hopefully he didn&#39;t have to return to it.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/7e3ad90e36b5065f571288bd4626f884-9AA96.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 10:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="826206410500866088" id="message-826206410500866088">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Dayton was also escorted out of the incinerator, as the time for lunch has set in.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">30-Mar-21 06:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="826510183001620513" id="message-826510183001620513">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She stepped inside the incinerator room, the blasting heat once again succeeding in its mission to feel like a dunk in hot lava. She sighed, then surveyed the room. Okay- Nedras had said stick to brightly lit areas, which meant the darker areas of the room must be harder to see on the cameras. She carefully selected one of the more isolated spots along the line- one where she thought she might be out of sight the most- and set to working, all the while inspecting the pieces as they came along for anything useful.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/7e3ad90e36b5065f571288bd4626f884-9AA96.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">30-Mar-21 06:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="826510833667407933" id="message-826510833667407933">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The sweltering environment of the incinerator still hit Dayton every time. He wasn&#39;t acclimated to it at all, and he&#39;ll probably never will be. Noticing that Cas was working in the incinerator, he started picking up the useless scrap metal and tossed it into the incinerator for it to be melted away, as he began working the line.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">30-Mar-21 09:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="826558811673460746" id="message-826558811673460746">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She paused for a moment, wiping her forehead with one hand and discreetly sliding a small piece of metal up her sleeve with the other. She knew deep down this probably a mistake, but she had to. Everything that had happened over the past day was only proof they had to get out of this place as soon as possible, and that required an escape plan. And an escape plan required materials.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 11:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="826942429596876871" id="message-826942429596876871">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Her shift had since ended, but during it she&#39;d gotten a good feel for the layout of the room and how easy it was to make certain moves despite her head pounding from the heat. She was escorted out of the room, the new pieces of metal weighing heavy in her pocket and on her thoughts.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="02-Apr-21 12:11 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 08:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="827630402201321533" id="message-827630402201321533">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>It had almost become a routine already, the Klingon pretty much losing track of day. A few hours of sleep in his cell, time in the incinerator, an hour to eat at the canteen, then back into this sweltering hot room for more incinerator work. If he was lucky, he wouldn&#39;t have any interactions with the Iconian guards, and then he&#39;d manage a few more hours of sleep. He could not really tell how much time had passed since they had first come here by now, the constant heat and lack of companionship in his cell slowly driving him mad.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 09:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="827635158982983731" id="message-827635158982983731">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Sara had walked in, her escort have flitted off somewhere, leaving her to her own devices as she meandered inside the incineration room. Ugh. Of course she would choose the hottest room in the complex to explore first. At least there was a tall figure she recognized, allfather alive, Lokath! She walked over to him eagerly, pleased he&#39;d made it out alive.</em>
+&quot;Lokath! My friend, I have found you!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="phoenixheart" title="phoenixheart" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/769248729893961780-3D8C1.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 09:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="827636135533608970" id="message-827636135533608970">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The cheerful sound was so out of place, even had he not heard his name, he would have immediately looked up from his work. The Klingon&#39;s brow furrowed as he immediately recognized the accent and the woman that had walked in, despite the dim light in the room. He quickly looked around to make sure the guards were not paying too much attention, then walked to the CSO.</em> &quot;Sara.. What are you doing here? I&#39;ve never seen you down..&quot; <em>He shook his head and smiled a bit.</em> &quot;I&#39;m glad to see you&#39;re alive.. I heard people saying you were, but not much otherwise..&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 09:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="827638032886136864" id="message-827638032886136864">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>There was little room for grace as she briskly embraced the much taller Klingon&#39;s hands in both of hers, holding them tightly in greeting in front of her.</em> &quot;I am so glad to see you are well! I have not heard much from anyone, honestly- other than what I have seen with my own eyes. As far as I have been able to find, nearly everyone from science made it out.&quot; <em>She released his hands after a moment, though she still continued to hold her own in a clasp in front of her as she spoke, looking over the Klingon with sharp eyes to see if he was truly as well as he looked on first contact.</em>
+&quot;Do not worry, I am experimenting. They do not tell me where to go, but they do escort me, so I am seeing how far they will let me go, and if they will let me go on my own to certain places.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 09:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="827638853937922099" id="message-827638853937922099">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Klingon somehow felt terrible when Sara took his hands in her own, as they were covered in soot and grime from the incinerator, but the simple contact and hushed conversation was more than enough to make things much better for him. He nodded, and looked around the room once more.</em> 
+
+&quot;They&#39;re a lot more trusting with you lot than with us.. I&#39;m surprised we haven&#39;t had a guard barge in just yet. We&#39;ve been experimenting with taking trinkets from the belt back to our cell but.. We only get scraps here, nothing really useful..&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 09:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="827640848161439795" id="message-827640848161439795">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Sara gave a sudden &#39;shhh&#39; as she looked up to Lokath&#39;s eyes, her expression rather alarmed.</em> &quot;-You might just get your wish if you say things like that aloud, my friend.&quot; <em>Sara murmured, glancing up quickly to where she knew the cameras were before looking back to Lokath.</em> &quot;They are sensitive..&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="02-Apr-21 09:29 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 09:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="827641507569729577" id="message-827641507569729577">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath looked at the incinerator, then back at Sara.</em> &quot;Sensitive, maybe.. But with the ambient noise in this room, we only have issues with guards who are here physically..&quot; <em>He said as quietly as he could underneath the constant clanging of metal parts being thrown into the roaring fires of the Incinerator.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 09:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="827642078141087795" id="message-827642078141087795">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Then I will be brief. No one has spoken to me much, I cannot discern why.. Are there..actions happening? If so, who do I go to?&quot; <em>She cast a quick look to the guards in the distance, taking a step closer to Lokath to keep her face mostly hidden from view of them.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 09:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="827642593898004510" id="message-827642593898004510">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath shook his head.</em> &quot;I do not know.. My cellmates are not the most.. Talkative. They&#39;re all from the Klingon ship..&quot; <em>The Klingon shrugged.</em> &quot;You would have a lot more luck finding out what&#39;s happening than I, Lieutenant.. I have not been at my best here, nor at my greatest behavior. Captivity tends to.. Bring out the Klingon in me, it seems.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="02-Apr-21 09:36 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 09:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="827644055927652352" id="message-827644055927652352">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;That is good, you should have it idling nearby when the time comes..so in a way, a valuable thing to have that part of you geared up and ready, no?&quot; <em>She offered with a small smile and a tilt of her head. She felt bad for her dear assistant, he had gone through so much it seemed..</em> &quot;Once I know of anything, I will come to you. I am sure there must be something in motion..I just do not know who and what. I do know that Nedras has turned coat though, so if you do find anything? Keep him from it, ja?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 09:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="827644724499447818" id="message-827644724499447818">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath nodded, but only in response to her final observation.</em> &quot;I shall do just that. Thank you for the warning. I would say if I do hear anything, I will do my best to make it known to you.. But high security&#39;s schedule is not the easiest to work around with.&quot; <em>He shook his head.</em> &quot;I&#39;ll do my best however. That is the Starfleet way after all, hmm?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 09:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="827645748916125716" id="message-827645748916125716">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Always. I will try to visit you more as I can, I am still &#39;testing the leash&#39; as it were. How are you otherwise than just having a blast in the Klingon cell?&quot; <em>She asked as she gave him another once over. Goodness the poor guy was a mess.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="02-Apr-21 09:49 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 09:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="827646848265093130" id="message-827646848265093130">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath nodded.</em> &quot;Please try not to put yourself in harms way.. At least not too much. We have yet to see the extent of our captor&#39;s cruelty.&quot; <em>He shrugged and shook his head.</em> &quot;Days go by, that&#39;s all I can really say. But if we are working on.. Something.. Then there&#39;s hope. I can work with hope.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 09:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="827647814527090698" id="message-827647814527090698">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I will do my best, I do not exactly want to end up a martyr for the cause, you know. I have big plans for when things are back to normal~&quot; <em>Her small smile went wider, exposing the whites of her teeth.</em> &quot;I think once everyone is thoroughly in agreeance, things will expedite <strong>rapidly</strong>. So until then, we must simply adhere to our given jobs and help one another..speaking of which, is there anything I can do, Lokath? I just..I know there is not much, but?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 09:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="827648500727808051" id="message-827648500727808051">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath smiled a bit and nodded.</em> &quot;There is. Stay safe, stay sane, and stay alive.. That&#39;s all I can ask for. Do not worry much about me Lieutenant. Every Klingon here are simply... Biding their time.&quot; <em>He grinned.</em> &quot;If you hear anything, or need anything done, you know where to find me, hmm?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 10:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="827649810928500766" id="message-827649810928500766">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;What a silly thing to say.&quot; <em>She murmured with furrowed brows, but otherwise her expression stayed much the same.</em> &quot;I will <em>always</em> worry for you. You&#39;re my friend? My crewmate? And while I do not usually swing my title around, even when I was CSO- but you have an overseer in your corner, remember this as well for your benefit. I will help in whatever way I can.&quot; <em>This felt so bittersweet in a way, reassuring each other that things would soon change, that they had each others backs. These were terrible times, but her conversation with Lokath had most certainly instilled a bit of hope in her as well where previously, she&#39;d begun to falter.</em>
+&quot;But I will keep your promise in mind. Stay safe?&quot; <em>She looked towards the door, posing her intent to leave and explore more if she could.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 10:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="827650855309934673" id="message-827650855309934673">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Klingon smiled and bowed his head respectfully. Despite their situation, it did feel good to hear these words. At her final request, however, Lokath simply shrugged and grinned.</em> &quot;That&#39;s a promise I can&#39;t keep.&quot; <em>He said, almost smirking now. He was actually surprised they had managed to keep up such a long conversation without any work being done without one of the guards butting in to stop it. But if he could not stay safe, he would sure as ghe&#39;tor that no Iconians would be safe around him either.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 10:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="827652037465866301" id="message-827652037465866301">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I suppose I cannot ask much else- See you soon-&quot; <em>She returned the head bow with her own, closing her eyes as she did so, before opening them once more and turning heel to head out the door. No biggie, no big deal, she was just an overseer who&#39;d had a quick conversation with a prior work associate. Just to see how things had been going- no cause for concern here.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="02-Apr-21 10:14 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 02:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="829168726376448030" id="message-829168726376448030">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She took her spot along the conveyor belt, the effects of the heat getting to her now more than ever before. She cleared her throat and continued to work, the back of her mind still occupied with Maggie and their escape plan.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/67ea233a6ad9a8f5114a5f6537b8e636-AFE4A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CYJSam#4589" data-user-id="588417174171811860" style="color: rgb(41,169,238)">Lt. JG. Ramat&#39;iklan</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 02:48 AM</span>
+
+            <div class="chatlog__message " data-message-id="829170685108158504" id="message-829170685108158504">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ramat wandered in and took place behind the incinerators on duty. Cas was on duty - which was unsurprising. She seemed to be busy with her work, so he decided not to interfere. And the heat... oh, the heat. It made his scales prickle. One wonders if the idea of scale care for reptilians exists.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 02:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="829173088058081331" id="message-829173088058081331">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She turned her head as Ramat entered, at first not registering that it was even him at all, before she did a double take and met his eyes.</em> &quot;Ramat?&quot; <em>She said, careful not to speak too loud while brushing her hair out of her face. It was pretty much a fruitless gesture, as it slapped right against her forehead again, but at least she tried.</em> &quot;S&#39;that you?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/67ea233a6ad9a8f5114a5f6537b8e636-AFE4A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CYJSam#4589" data-user-id="588417174171811860" style="color: rgb(41,169,238)">Lt. JG. Ramat&#39;iklan</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 03:01 AM</span>
+
+            <div class="chatlog__message " data-message-id="829173942018768906" id="message-829173942018768906">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yeah.&quot; <em>Rams gave a smile back. A crack of a smile, but it was there. At least she was okay. That was good in his eyes. Again his medic&#39;s trained eyes looked her over, especially her leg.</em> &quot;I&#39;m pleased to see that you&#39;re alright and well.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 03:10 AM</span>
+
+            <div class="chatlog__message " data-message-id="829176202853351435" id="message-829176202853351435">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She looked him over as well, but less with a medic&#39;s eye and more with one of &#39;I&#39;m glad you&#39;re still alive&#39;.</em> &quot;I&#39;m alright.&quot; <em>She agreed- physically she was, so at least it wans&#39;t a lie. A headache was nagging at the back of her skull, but she ignored it.</em> &quot;It&#39;s good to see you. Really good.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/67ea233a6ad9a8f5114a5f6537b8e636-AFE4A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CYJSam#4589" data-user-id="588417174171811860" style="color: rgb(41,169,238)">Lt. JG. Ramat&#39;iklan</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 03:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="829176781314850817" id="message-829176781314850817">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Any day. Find anything interesting?&quot; <em>Rams tried not to spend too long talking lest the guards suspect that something was up.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 03:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="829177901223378955" id="message-829177901223378955">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Well, where did she start with that? It was an interesting day- it always seemed to be an interesting day, and she never seemed to be able to do anything <strong>about</strong> it.</em> &quot;Maggie.&quot; <em>She went with.</em> &quot;She- she got hurt, but she&#39;s okay now.&quot; <em>The whole &#39;Entity revival process&#39; was left out, because... how was she supposed to explain that?</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/67ea233a6ad9a8f5114a5f6537b8e636-AFE4A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CYJSam#4589" data-user-id="588417174171811860" style="color: rgb(41,169,238)">Lt. JG. Ramat&#39;iklan</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 03:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="829178536774074458" id="message-829178536774074458">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I know.&quot; <em>Ramat answered. Cas probably wasn&#39;t expecting him to say that.</em> &quot;I got her up to the recreation room and healed her comparatively less serious injuries myself. Lieutenant Drake did the surgery to stabilize her.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="07-Apr-21 03:19 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 03:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="829180665744195604" id="message-829180665744195604">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Her breath hitched and she shook her head, half out of disbelief and half to try and clear that image from her head.</em> &quot;I&#39;m- I-&quot; <em>She sighed and pinched the bridge of her nose.</em> &quot;She didn&#39;t say- if she was lucid enough to even know.&quot; <em>A pause, and then:</em> &quot;I&#39;m sorry.&quot; <em>She didn&#39;t even know what she was apologizing for, but it just felt... right? Everything felt like it was, in some way, her fault recently.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/67ea233a6ad9a8f5114a5f6537b8e636-AFE4A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CYJSam#4589" data-user-id="588417174171811860" style="color: rgb(41,169,238)">Lt. JG. Ramat&#39;iklan</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 03:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="829181090715140116" id="message-829181090715140116">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;No, no, no, no. Yardi, you have nothing to apologize for.&quot; <em>He took a moment to come up to her and gently squeeze her shoulder for assurance.</em> &quot;I don&#39;t know if she was lucid enough and even if I did I cannot say. It&#39;s not your fault. Don&#39;t apologize.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 03:34 AM</span>
+
+            <div class="chatlog__message " data-message-id="829182341762514965" id="message-829182341762514965">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She wanted nothing more than to hug him at that moment, but she knew there were guards- and maybe even overseers- watching, so she just reached up and touched his hand before continuing to sort scrap as it made its way down the belt.</em> &quot;I just- we need to get out of here. People keep getting hurt.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/67ea233a6ad9a8f5114a5f6537b8e636-AFE4A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CYJSam#4589" data-user-id="588417174171811860" style="color: rgb(41,169,238)">Lt. JG. Ramat&#39;iklan</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 03:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="829183775182422016" id="message-829183775182422016">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I know.&quot; <em>Ramat tried to sound reassuring. He knew that she needed support. Plenty of it. All of which he was willing to give with every scaly fiber of his being - just not now when the risk and lack of value in being punished for trying that put both their lives in jeapordy. In a softer tone now,</em> &quot;We will. I&#39;ll- I&#39;ll take you somewhere nice. Earth, or, or, somewhere... then. Anywhere. I promise. Just us and our friends if you want.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="07-Apr-21 03:40 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 03:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="829187011251273809" id="message-829187011251273809">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She nodded.</em> &quot;Yeah- yes, that would be nice.&quot; <em>She said, still following the scrap. Watching them move made her eyes hurt. Her brain latched onto friends and went down a rabbit hole.</em> &quot;Do you think Starfleet knows by now? That they&#39;ve told our friends and- and families?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/67ea233a6ad9a8f5114a5f6537b8e636-AFE4A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CYJSam#4589" data-user-id="588417174171811860" style="color: rgb(41,169,238)">Lt. JG. Ramat&#39;iklan</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 03:54 AM</span>
+
+            <div class="chatlog__message " data-message-id="829187283876839425" id="message-829187283876839425">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I can&#39;t say. They&#39;ve probably noticed that the Phoenix has dropped off the radar and are sending others to search.&quot; <em>He guessed.</em> &quot;Hopefully.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 04:07 AM</span>
+
+            <div class="chatlog__message " data-message-id="829190607045132349" id="message-829190607045132349">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Hopefully it doesn&#39;t take too long.&quot; <em>She murmered, weakly tossing a piece of scrap further down the line.</em> &quot;I don&#39;t know how much longer some of us are going to last here.&quot; <em>&#39;Some of us&#39; being seemingly only her closest friends, but she neglected to tack that on.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/1f62d-FE9EC.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/67ea233a6ad9a8f5114a5f6537b8e636-AFE4A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CYJSam#4589" data-user-id="588417174171811860" style="color: rgb(41,169,238)">Lt. JG. Ramat&#39;iklan</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 04:11 AM</span>
+
+            <div class="chatlog__message " data-message-id="829191683442606100" id="message-829191683442606100">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;That&#39;s the point. To break us, make sure we don&#39;t want to escape because it&#39;s apparently too much effort. When the Iconians get that they win.&quot; <em>Rams ignored the blistering heat prickling at the back of his head and on his scales. A little discomfort was nothing to a Jem&#39;hadar - and all the more worth it if he kept the flame inside of the one he cared for the most alive.</em> &quot;So we&#39;ll keep fighting. Somehow. Promise? We&#39;re all here for each other, you know that. Your pillars of support.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 04:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="829195047891238943" id="message-829195047891238943">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Right.&quot; <em>She said, giving him a small, quick smile.</em> &quot;We&#39;re not going to stop. I&#39;m not going to stop, I promise. I- I needed to hear that. Thank you.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/67ea233a6ad9a8f5114a5f6537b8e636-AFE4A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CYJSam#4589" data-user-id="588417174171811860" style="color: rgb(41,169,238)">Lt. JG. Ramat&#39;iklan</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 04:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="829196311395041300" id="message-829196311395041300">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Good.&quot; <em>Rams squeezed her hand and stepped back slightly from her.</em> &quot;I wonder what the date is.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 04:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="829199313283711056" id="message-829199313283711056">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I couldn&#39;t tell you.&quot; <em>She replied, wiping her forehead before continuing.</em> &quot;It&#39;s been at least a week, but... I haven&#39;t been keeping track.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/67ea233a6ad9a8f5114a5f6537b8e636-AFE4A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CYJSam#4589" data-user-id="588417174171811860" style="color: rgb(41,169,238)">Lt. JG. Ramat&#39;iklan</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 04:44 AM</span>
+
+            <div class="chatlog__message " data-message-id="829199989615493130" id="message-829199989615493130">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Neither have I.&quot; <em>Rams admitted.</em> &quot;Whatever. We&#39;ll get out soon enough and we can go back to worrying about that then, hm?&quot; <em>Ramat cracked a smile - which he hoped looked reassuring. It did not. No matter how hard he tried. Maybe it&#39;s a function of being a Jem&#39;hadar.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 04:56 AM</span>
+
+            <div class="chatlog__message " data-message-id="829202983166017536" id="message-829202983166017536">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She nodded.</em> &quot;Honestly, it might make me crazy if we were keeping track. In my cell, there&#39;s- there&#39;s some marks on the wall where someone tried to keep track before.&quot; <em>She shuddered a bit at the story Tilson had told her was behind them, and her voice lowered.</em> &quot;It&#39;s more than bit disturbing.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/67ea233a6ad9a8f5114a5f6537b8e636-AFE4A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CYJSam#4589" data-user-id="588417174171811860" style="color: rgb(41,169,238)">Lt. JG. Ramat&#39;iklan</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 04:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="829203204503765073" id="message-829203204503765073">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;How many marks...?&quot; <em>Ramat looked into her eyes.</em> &quot;...if you want to say. If not I understand.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 04:59 AM</span>
+
+            <div class="chatlog__message " data-message-id="829203621211144233" id="message-829203621211144233">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I didn&#39;t count.&quot; <em>She said, shaking her head.</em> &quot;They were, um- they were in blood. I don&#39;t look at them for too long when I&#39;m there- not that I&#39;m even there very often.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/67ea233a6ad9a8f5114a5f6537b8e636-AFE4A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CYJSam#4589" data-user-id="588417174171811860" style="color: rgb(41,169,238)">Lt. JG. Ramat&#39;iklan</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 06:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="829219832955404319" id="message-829219832955404319">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Ahhh.&quot; <em>Ramat gave her a hug, guards be damned. She needed one. It was plastered all over her face.</em> &quot;I&#39;m-&quot; <em>You&#39;ve got nothing to apologize for, you big lug, it&#39;s not your fault...</em> &quot;-okay. Just hold on a bit longer. Okay? I wonder if we can visit each other&#39;s cells...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 06:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="829223054584315944" id="message-829223054584315944">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She turned away from the conveyor belt for a second, just long enough to close her eyes for a moment and fully accept the hug. But she pulled away then, knowing exactly what would happen if the guards caught them slacking off. She gave him an apologetic look and eyed the guards in the room.</em> &quot;I doubt it. Especially considering you&#39;re in high security. It&#39;s lucky you&#39;re a medic and allowed to get around fairly easily.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/67ea233a6ad9a8f5114a5f6537b8e636-AFE4A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CYJSam#4589" data-user-id="588417174171811860" style="color: rgb(41,169,238)">Lt. JG. Ramat&#39;iklan</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 06:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="829223280174694410" id="message-829223280174694410">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Of course.&quot; <em>He stepped away fully, allowing her to return to work.</em> &quot;Well. I&#39;m here if you need me. Just call if you do, okay?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 06:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="829224394631020554" id="message-829224394631020554">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She nodded. She truly was grateful for him being there, attention-grabbing as their interactions might be. Guards be damned.</em> &quot;I will. Hopefully this shift is uneventful.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/67ea233a6ad9a8f5114a5f6537b8e636-AFE4A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CYJSam#4589" data-user-id="588417174171811860" style="color: rgb(41,169,238)">Lt. JG. Ramat&#39;iklan</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 06:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="829224773707104278" id="message-829224773707104278">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ramat nodded and returned to his position behind the workers in silence.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 05:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="829398938980974603" id="message-829398938980974603">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Karta had entered to sweltering heat of the Incinerator and went straight to the access hatch he had visited about a week earlier.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 06:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="829403324573810749" id="message-829403324573810749">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He grabbed the calibration tool from the toolbox and then returned to the hatch.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 06:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="829412111426781255" id="message-829412111426781255">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He resurfaced and replaced the tool. He then shut the hatch door and returned to his trolley, pushing to the location where the guard had previously stopped him. He look at the spot where it had appeared and then over at where he had stood, and then continued to push the trolley on toward the exit.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 11:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="829480914975195156" id="message-829480914975195156">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Her shift was coming to an end, and Prophets it was possibly... the most exhausting one yet. Knowing Ramat was there behind her helped a great amount, though, and she gave him a weary smile as she left to be escorted back to her cell.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/67ea233a6ad9a8f5114a5f6537b8e636-AFE4A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CYJSam#4589" data-user-id="588417174171811860" style="color: rgb(41,169,238)">Lt. JG. Ramat&#39;iklan</span>
+
+
+        <span class="chatlog__timestamp">08-Apr-21 06:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="829765194343251998" id="message-829765194343251998">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Rams left shortly after her.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-21 02:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="830793110812229693" id="message-830793110812229693">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>She had since left the canteen, and now returned to the darkest and most hidden away side of the conveyor belt to scour for parts. So as not to draw suspicion, she only tucked something away every so often, but soon enough she had collected some more small parts- more scrap, wires, similar things of the like. The plan was moving along.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-21 02:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="830795516111093780" id="message-830795516111093780">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>Three crates trundled along the conveyor belt, each with a note slapped onto the side. &#39;BADGES, ASSORTED.&#39; A guard was nearby, watching the other inmates work.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/637075614662393868-CC03F.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-21 02:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="830797570312765450" id="message-830797570312765450">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She eyed the crates, knowing full well how useful they could be- for communications and for trading- and quickly turned her gaze to the guards for a brief second. Finally she bit the bullet, and as she was sorting used another piece of scrap to pop the crate open. A few badges- accidentally, of course- made their way into her hands and then her pockets, before she quickly closed the crate again and slide it back down along the line. Hopefully with having taken Nedras’s advice and staying in the darker sides of the belt that hadn’t drawn too much attention.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-21 02:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="830798094308081744" id="message-830798094308081744">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The guard quickly looked over at Cas, startled by a noise. Dismissing it as having been on shift too long, it went back to harassing a poor inmate.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="picardyus" title="picardyus" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/653654387184369665-D0179.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/7e3ad90e36b5065f571288bd4626f884-9AA96.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-21 03:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="830809928029306934" id="message-830809928029306934">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Dayton was working the scrap line, donning an EV suit and tossing scraps of metal into the incinerator for melting. After working in the incinerator multiple times, he&#39;d become adjusted to heat-- but that doesn&#39;t mean he liked it. He observed Cas and slowly made his way closer to her. While still collecting scrap as he began speaking.</em> &quot;Hey, would you like me to collect some scrap?&quot; <em>He said, rather quietly at that.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-21 03:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="830811496979103785" id="message-830811496979103785">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She resisted the instinct to turn and look at the other person, but recognizing the voice as Dayton’s she gave him a small nod.</em> “Yes, that’d be good. We need anything we can get, I think. I’ve gotten my hands on some wires and some-“ <em>She was already whispering, but here she lowered her voice even more.</em> “-commbadges.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/7e3ad90e36b5065f571288bd4626f884-9AA96.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-21 04:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="830830892929908837" id="message-830830892929908837">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh, I see. That&#39;s good-- we can potentially use these for the EMP components.&quot; <em>He said in a hushed voice, glancing around the incinerator for a bit. He began to slowly take pieces of metal, wires and whatever he deemed useful and put them into his pockets- but at separate times as an attempt to not attract any attention.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-21 07:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="830868044939132948" id="message-830868044939132948">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She nodded, then went about the rest of the shift in relative silence- she was not keen to push her luck after obtaining the commbadges. She had managed to nip a few more parts before the shift was over, and she gave Dayton a little nudge.</em> “Time to go?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/7e3ad90e36b5065f571288bd4626f884-9AA96.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-21 07:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="830869450995269673" id="message-830869450995269673">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He was gathering as much as he could and stuffing them into his pockets before he was nudged, and he looked towards Cas in response to it.</em> &quot;Well- sure. We&#39;d need to see what we collected in total.&quot; <em>He said quietly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-21 07:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="830870109861970030" id="message-830870109861970030">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She nodded.</em> &quot;Right.&quot; <em>She whispered, glancing cautiously at the guards as the shift change commenced.</em> &quot;And somehow get it all to Malcolm and Capri.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/7e3ad90e36b5065f571288bd4626f884-9AA96.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-21 07:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="830870494131519548" id="message-830870494131519548">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;That&#39;d be the hardest- finding them and managing to give it to them without being caught.&quot; <em>He murmured.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-21 07:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="830872358331613234" id="message-830872358331613234">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She began walking out of the room, careful not to place her hands in her pockets lest it draw any unwanted attention. She gave Dayton a small nod.</em> &quot;Exactly. What cell block are you in?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/7e3ad90e36b5065f571288bd4626f884-9AA96.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-21 07:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="830872565529575504" id="message-830872565529575504">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Cell Twelve. What about you?&quot; <em>He asked, as he started following her out of the incinerator room.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/4ec6fb30b0f80e69c65c468cafd6e3ec-2B432.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-21 07:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="830873265588666458" id="message-830873265588666458">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She cursed under her breath.</em> &quot;Cell nine. We&#39;re not on the same block.&quot; <em>She said, stepping on <span class="mention">#quality-assurance-walkways</span> . There they would no doubt be escorted by guards, and that meant an end to all escape talk.</em> &quot;We should meet up in a bit, yes?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Quality%20Assurance%20-%20incinerator%20%5B825749116923019294%5D.html_Files/7e3ad90e36b5065f571288bd4626f884-9AA96.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-21 07:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="830876779253596190" id="message-830876779253596190">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;It&#39;d probably be wise to meet up at some point. See what we collected, and figure out how to get them to Malcolm and Capri.&quot; <em>Dayton said in a whisper, before he stepped onto the walkways, following Cas out.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 134 message(s)</div>
+</div>
+
+</body>
+
+</html>

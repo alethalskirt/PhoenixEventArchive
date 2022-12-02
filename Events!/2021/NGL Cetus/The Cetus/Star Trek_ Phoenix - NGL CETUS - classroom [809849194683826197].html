@@ -1,0 +1,2451 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - classroom</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">NGL CETUS / classroom</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Lt. JG. Ciel</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="810317442294218772" id="message-810317442294218772">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The sick children were lying together in a group in one of the corners of the classroom. Three older children were tending to them. The others were in another corner keeping the younger children busy with toys. The young Cardassians were all bundled up in winter clothes, and some of them were still shivering!</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="14-Feb-21 01:15 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f21ceb0c9e8f12eed1b843dffc885cea-AFC19.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(215,52,42)">Commander Yllescas Itesh</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="810318375955595304" id="message-810318375955595304">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Itesh studied the room and looked around.</em> “Lieutenant Jex will tend to the sick children. How long has it been since the ship was hit?” <em>He asked Lorian. If anyone knew, he guessed it would be him.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/a2cbac4b422086d35088301e550144f4-E993C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="810318552812224572" id="message-810318552812224572">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She entered the room, scanning and gathering info in the meantime while the Commander spoke.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="810318770731745361" id="message-810318770731745361">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola was in shortly after, her medical tricorder already out.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/8de8e3d55eef7917873cecf54427810a-E3AD0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Lorian#0000" data-user-id="810318802150490222" style="">Lorian</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">14-Feb-21 01:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="810318802986336296" id="message-810318802986336296">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;It has been a little over two days. The other children woke up about 43 hours ago.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/55f8f530cf0385003db6bf31506de96d-6C43B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Roka Kerr#0000" data-user-id="810318802150490222" style="">Roka Kerr</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">14-Feb-21 01:20 AM</span>
+
+            <div class="chatlog__message " data-message-id="810319448682266634" id="message-810319448682266634">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Over here, doctor lady!&quot; <em>Roka grabbed Lola&#39;s hand and dragged her over to where the sick children were. He knelt beside one little girl and gently petted her forehead.</em> &quot;Tell me she&#39;ll be alright.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f21ceb0c9e8f12eed1b843dffc885cea-AFC19.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(215,52,42)">Commander Yllescas Itesh</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="810319938950397962" id="message-810319938950397962">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“We need to get to the Bridge and restore auxiliary power to environmental controls before the Cardassian children freeze. Do you know why the door to the Bridge was electrocuted?” <em>He asked Lorian.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="810319974199328798" id="message-810319974199328798">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola alloweded herself to be dragged over to the little girl and immediately began scanning the little girl.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/8de8e3d55eef7917873cecf54427810a-E3AD0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Lorian#0000" data-user-id="810318802150490222" style="">Lorian</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">14-Feb-21 01:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="810320353954889768" id="message-810320353954889768">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;We did that so the... aliens could not come back and take the ship anywhere. You can still access it through the maintenance tunnels.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Lt. JG. Ciel</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="810320802124791808" id="message-810320802124791808">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Lola&#39;s scan showed that this particular little girl was only mildly irradiated. But the boy asleep beside her was worse.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f21ceb0c9e8f12eed1b843dffc885cea-AFC19.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(215,52,42)">Commander Yllescas Itesh</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="810321274387300373" id="message-810321274387300373">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Itesh nodded. It was understandable.</em> “We’ll have to go up there. Any other fun traps we can look forward to while we climb up?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/6248f00f5a7e2c53b29a015fe72c8cf2-2BFB1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:28 AM</span>
+
+            <div class="chatlog__message " data-message-id="810321435537047622" id="message-810321435537047622">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lyras was alittle miffed about being ignored, but they had more important things to deal with.</em> &quot;We should probably try and clear out some of the traps to clear the way if we take them aboard the Chimera. We will probably have to carry the sicker ones.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="14-Feb-21 01:28 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/8de8e3d55eef7917873cecf54427810a-E3AD0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Lorian#0000" data-user-id="810318802150490222" style="">Lorian</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">14-Feb-21 01:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="810321976782356550" id="message-810321976782356550">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He motioned for one of the older children to come over. As she approached, They could see that it was the little girl who had shrieked in the hall earlier. She stared up at them timidly.</em> &quot;Camie, I want you to lead our new friends up to the bridge. Be sure they do not touch the device.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/260f8cb5db12f585faee5b51cd6f47d1-3E1CA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Camille Alvero#0000" data-user-id="810318802150490222" style="">Camille Alvero</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">14-Feb-21 01:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="810322085984993321" id="message-810322085984993321">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Alright.&quot; <em>She agreed quietly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:32 AM</span>
+
+            <div class="chatlog__message " data-message-id="810322507374002237" id="message-810322507374002237">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola frowned. She knew this would happen, but she did not have to like it.</em> &quot;I can give them both radiation inoculations but they will continue to get worse unless we remove them from this ship. Now, how should I transport the sicker ones.... Oh, I can carry one or so of you in one in my backpack, and another in my arms....&quot; 
+
+<em>Lola was muttering to herself as she pulled out the hypospray she needed, only to figure out that she already had one in her hands. She addressed the young sick young girl with the boy next to her.</em> &quot;Oh, right. So I am going to press this gently to your neck and it will help you feel better. We still need to get you off the ship and get some food into your bellies.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="14-Feb-21 01:35 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/a2cbac4b422086d35088301e550144f4-E993C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:34 AM</span>
+
+            <div class="chatlog__message " data-message-id="810322942901616680" id="message-810322942901616680">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She asked the Commander:</em> &quot;Should I follow her&quot;-<em>referring to Camille</em>-&quot;to the bridge? I think I can get the environmental controls back up.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/55f8f530cf0385003db6bf31506de96d-6C43B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Roka Kerr#0000" data-user-id="810318802150490222" style="">Roka Kerr</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">14-Feb-21 01:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="810323428329783327" id="message-810323428329783327">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;They are going to help us, Tish.&quot; <em>He leaned down and planted a kiss on her cheek.</em>
+<em>Tish looked up at Lola fearfully for a moment before her brother reassured her.</em>
+&quot;I&#39;m hungry.&quot; <em>She whispered.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="Purplehearts" title="Purplehearts" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/784039486727127040-62045.gif">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="sadteto" title="sadteto" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/747250615767400469-D4346.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/260f8cb5db12f585faee5b51cd6f47d1-3E1CA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Camille Alvero#0000" data-user-id="810318802150490222" style="">Camille Alvero</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">14-Feb-21 01:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="810323710279942164" id="message-810323710279942164">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;It&#39;s this way.&quot; <em>Camille went over to an open panel in the bulkhead and waited.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/6248f00f5a7e2c53b29a015fe72c8cf2-2BFB1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:38 AM</span>
+
+            <div class="chatlog__message " data-message-id="810324086617276467" id="message-810324086617276467">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Lyras] &quot;I was just saying that exact same thing, Lieutenant Jex. Do you think we could make something to help transport them all?&quot; <em>She looked around the room for anything useful.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="14-Feb-21 01:43 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="810325009813864459" id="message-810325009813864459">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;This was a school, right? There must be backspacks, trolleys, anything really. I don&#39;t believe a wagon would work though, now that I&#39;m thinking about it. We can&#39;t haul it up a ladder.&quot; <em>Lola gently pressed the inoculation to the little girl&#39;s neck, then to the little boy beside her. She beckoned for the little leader to come forth to get his inoculation done as well.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/6248f00f5a7e2c53b29a015fe72c8cf2-2BFB1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:45 AM</span>
+
+            <div class="chatlog__message " data-message-id="810325865991766067" id="message-810325865991766067">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Lyras] &quot;If we can somehow get the lifts working. Otherwise, we will probably need to make multiple trips.&quot; <em>She sighed.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f21ceb0c9e8f12eed1b843dffc885cea-AFC19.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(215,52,42)">Commander Yllescas Itesh</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:46 AM</span>
+
+            <div class="chatlog__message " data-message-id="810326061887782922" id="message-810326061887782922">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“We’d need transporter enhancers to cut through the polaric radiation. I don’t think we brought those.” <em>He said to Lyras as he looked over at Ota.</em> “Ensign Virol and myself will go to the Bridge to try and get power back online to environmental controls and lifts. Lieutenants T’Khael and Jex, stay here and help them. Jex, did you pack any rations in your bags?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/a2cbac4b422086d35088301e550144f4-E993C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:47 AM</span>
+
+            <div class="chatlog__message " data-message-id="810326225809047553" id="message-810326225809047553">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She went to Camie waiting at the bulkhead, and waited herself for Itesh.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="14-Feb-21 01:47 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:49 AM</span>
+
+            <div class="chatlog__message " data-message-id="810326784574357574" id="message-810326784574357574">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I did! I brought extra med kits, extra hyposprays, hyposprays for different things, really everything I could bring I brought it. We need to get the sickest ones out of here though, namely these two. They&#39;ve been inoculated so they won&#39;t get any worse but they need to get out of this environment. I&#39;d give her my helmet if I thought it was going to be of any help to her.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/6248f00f5a7e2c53b29a015fe72c8cf2-2BFB1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:49 AM</span>
+
+            <div class="chatlog__message " data-message-id="810326897103077416" id="message-810326897103077416">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Lyras] &quot;Lieutenant, this is your expertise. What can I do to assist?&quot; <em>Lyras walked over to her.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f21ceb0c9e8f12eed1b843dffc885cea-AFC19.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(215,52,42)">Commander Yllescas Itesh</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:52 AM</span>
+
+            <div class="chatlog__message " data-message-id="810327512878022657" id="message-810327512878022657">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Itesh walked over to Ota and Camille.</em> “Okay, Ensign. Ms. Camie, would you please lead the way to the Bridge?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="810327737046532176" id="message-810327737046532176">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Pass these out to every child, any child who has a problem eating rations bars can come to me. They need to keep their strength up. I have enough hypos to inoculate every child but to really get the radiation out of their system it will take several days of hypos. That&#39;s why we need to get everyone out as soon as possible.&quot; <em>Lola handed the security officer a large handful of rations bars.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="14-Feb-21 01:53 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/6248f00f5a7e2c53b29a015fe72c8cf2-2BFB1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 01:56 AM</span>
+
+            <div class="chatlog__message " data-message-id="810328467811598366" id="message-810328467811598366">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Lyras] &quot;Understood. Please let me know if I can be of further assistance.&quot; <em>She nodded and began passing the bars out to the children, making sure to pay attention if she saw anyone struggling to eat.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 02:32 AM</span>
+
+            <div class="chatlog__message " data-message-id="810337724799254558" id="message-810337724799254558">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola nodded and began going around and giving inoculations to each child.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Lt. JG. Ciel</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 02:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="810340196326834197" id="message-810340196326834197">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Lorian got everyone lined up into two lines, one for hypos and one for food. It didn&#39;t take very long to get everyone outfitted with an inoculation and a ration bar.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 02:54 AM</span>
+
+            <div class="chatlog__message " data-message-id="810343113330655262" id="message-810343113330655262">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola nodded, satisfied, then sat down. She patted the ground next to her to indicate to the children they should sit beside her.</em>
+
+&quot;Alright. I&#39;m going to comm my commanding officer and tell him what&#39;s going on, then we can talk.&quot;
+
+<em>Lola tapped her comm badge.</em> &quot;Lieutenant Jex to Commander Itesh.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Lt. JG. Ciel</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 02:56 AM</span>
+
+            <div class="chatlog__message " data-message-id="810343736646696980" id="message-810343736646696980">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The children gathered around her, munching on the ration bars and listening to what she said eagerly.</em>
+&quot;Can we talk to your commander too?&quot;
+&quot;Why do you have to tell him stuff?&quot;
+&quot;What is a commanding officer?&quot;
+<em>A chorus of questions spilled from them.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="ILOVEITSOMUCH" title="ILOVEITSOMUCH" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/781271814629621830-A0996.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f21ceb0c9e8f12eed1b843dffc885cea-AFC19.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(215,52,42)">Commander Yllescas Itesh</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 02:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="810343897258524734" id="message-810343897258524734">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Comms] “Yllescas here. Go ahead, Lieutenant.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 03:00 AM</span>
+
+            <div class="chatlog__message " data-message-id="810344570972930088" id="message-810344570972930088">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Comms] &quot;I&#39;ve inoculated all the children except the one(s) with you. I&#39;ve also given them plenty of rations. Is there any news on getting them out of here?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f21ceb0c9e8f12eed1b843dffc885cea-AFC19.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(215,52,42)">Commander Yllescas Itesh</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 03:01 AM</span>
+
+            <div class="chatlog__message " data-message-id="810344969960292382" id="message-810344969960292382">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Comms] “We’re climbing up to the Bridge right now. Nothing new yet.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/6248f00f5a7e2c53b29a015fe72c8cf2-2BFB1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 03:06 AM</span>
+
+            <div class="chatlog__message " data-message-id="810346240705036318" id="message-810346240705036318">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Lyras] &quot;Miss Jex is busy, Children. Her conversation with the Commander is important. We have to communicate to find out what is going on. A commanding officer is like our boss. He tells us what to do and we have to listen.&quot; <em>Lyras did her best to attempt to sate the children&#39;s curiousity while Lola talked with the Commander.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="14-Feb-21 03:11 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 03:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="810346634671292427" id="message-810346634671292427">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Comms] &quot;Alrighty, then. Copy that, just let us know if anything comes up! Lieutenant Jex out!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="810347491957407764" id="message-810347491957407764">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola turned back to the kids, but not before giving Lieutenant T&#39;Khael a grateful look.</em> &quot;She&#39;s right, kids! You know how you guys listen to the adults around you? Well, a commanding officer is like an adult <em>for</em> adults. They help keep us in line and help keep things as calm as possible.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Lt. JG. Ciel</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 03:13 AM</span>
+
+            <div class="chatlog__message " data-message-id="810347872021119066" id="message-810347872021119066">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Of course, more questions followed:</em> 
+&quot;Why are you wearing those funny suits?&quot; 
+&quot;You look like my goldfish in his bowl.&quot; <em>Accompanied by a puffing out of the cheeks, as if to demonstrate what the goldfish looked like</em>
+&quot;Roka said you lot are aliens. What kind of aliens are you?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/6248f00f5a7e2c53b29a015fe72c8cf2-2BFB1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 03:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="810348420966645844" id="message-810348420966645844">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Lyras] &quot;These suits keep us safe from the radiation. They protect us. I am a Vulcan Hybrid.&quot; <em>Lyras answered. She would allow Lola to explain her own heritage. She didn&#39;t feel like it was her place to answer for her.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 03:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="810350040479432774" id="message-810350040479432774">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola grinned and giggled at the little imitation of the goldfish the child was doing. These kids were adorable, and she wanted to keep all of them.</em> &quot;And I am a Denobulan! We dont leave our planet too often, so if youbhavent heard of me that&#39;s perfectly fine. Let&#39;s see, do you guys have more questions for us?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Lt. JG. Ciel</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 03:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="810350756023894017" id="message-810350756023894017">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Where did you come from?&quot; <em>One of the little Cardassians asked, scooting closer in excitement.</em>
+&quot;How did you find us?&quot;
+&quot;Where did the other aliens take our parents? Lorian won&#39;t tell us!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/6248f00f5a7e2c53b29a015fe72c8cf2-2BFB1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 03:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="810351469684719638" id="message-810351469684719638">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Lyras] &quot;We came from the U.S.S. Phoenix. We found you because if a distress call your ship was putting out. We have not figured out where your parents are yet, but we will find them soon enough.&quot; <em>They didn&#39;t know for sure yet anyway and it was illogical to make this situation harder for them then it already was.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Lt. JG. Ciel</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 03:46 AM</span>
+
+            <div class="chatlog__message " data-message-id="810356171130404916" id="message-810356171130404916">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Are you and Lorian related?&quot; <em>One of the children asked Lyras.</em>
+&quot;Don&#39;t be silly! Of course they&#39;re not! There are lots of Vulcans all over the place!&quot; <em>Another snipped back.</em>
+&quot;But they talk the same way!&quot; <em>The first child said defensively.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/6248f00f5a7e2c53b29a015fe72c8cf2-2BFB1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 03:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="810359118367424572" id="message-810359118367424572">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Lyras] &quot;I do not know his heritage, so I would not be able to answer that. No need to fight. How about we talk about something else instead.&quot; <em>She spoke calmly. They probably were not related, but she didn&#39;t want the two to argue. This way neither would feel in the wrong.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Lt. JG. Ciel</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 04:02 AM</span>
+
+            <div class="chatlog__message " data-message-id="810360175348416532" id="message-810360175348416532">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>While T&#39;Khael hadn&#39;t really been paying attention, one of the little Cardassians had come up beside her. She was one of the youngest there, and she was all wrapped up like a burrito in a thick blanket. She sat down next to T&#39;Khael and grabbed her arm, cuddling close. T&#39;Khael could feel her little body shivering.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/1f62d-FE9EC.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="care" title="care" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/711609055021629502-E849D.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="phoenixheart" title="phoenixheart" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/769248729893961780-3D8C1.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="♥️" title="♥️" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/2665-D9AA0.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="peachy" title="peachy" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/729458327041474601-2E636.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="pandahug" title="pandahug" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/784817175730192394-E2B24.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="ILOVEITSOMUCH" title="ILOVEITSOMUCH" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/781271814629621830-A0996.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="Purplehearts" title="Purplehearts" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/784039486727127040-62045.gif">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/2338f460f3a2438d831a0c1ce276fa6f-0426A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="RemiReverie#6878" data-user-id="689877665888469033" style="color: rgb(245,182,10)">Lt. JG. Lyras T&#39;Khael</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 04:05 AM</span>
+
+            <div class="chatlog__message " data-message-id="810360961730084924" id="message-810360961730084924">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lyras was startled and turned to look at the young girl. She carefully picked the girl up and held her close. She remembered what it was like to be that age. She had been distent from her siblings and had yerned for this type of affection many times. Vulcans were not supposed to be overly affectionate like this. However, she couldn&#39;t help but feel for this young girl. She didn&#39;t think much body heat came out of the suit, but she was going to do her best to warm the poor child. Even though it wasn&#39;t very Vulcan of her to express emotion, she wanted to give what comfort she could. She guessed she was slowly coming to terms with being emotionally expressive.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="14-Feb-21 04:12 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129402;" title="&#129402;" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/1f97a-338D5.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="care" title="care" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/711609055021629502-E849D.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="phoenixheart" title="phoenixheart" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/769248729893961780-3D8C1.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="peachy" title="peachy" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/729458327041474601-2E636.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="♥️" title="♥️" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/2665-D9AA0.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="ILOVEITSOMUCH" title="ILOVEITSOMUCH" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/781271814629621830-A0996.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 04:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="810367169400406016" id="message-810367169400406016">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola wanted to coo at the cute little vulcan but didn&#39;t want to make her feel uncomfortable. Instead, she donned a smile and said,</em> &quot;Alrighty, anyone want to tell me one thing that makes them smile? A happy memory, a toy, a loved one, food, anything!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Lt. JG. Ciel</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 04:35 AM</span>
+
+            <div class="chatlog__message " data-message-id="810368509254434818" id="message-810368509254434818">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>A chorus of:</em> &quot;Oooh! Oooh! Pick me!&quot; <em>followed immediately after Lola had asked the question. Hands flew into the air, and the children bounced excitedly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="pandahug" title="pandahug" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/784817175730192394-E2B24.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="squishypan" title="squishypan" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/615716491911888896-736B5.gif">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="rooAwwZoom" title="rooAwwZoom" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/503324448108314644-F5E92.gif">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="care" title="care" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/711609055021629502-E849D.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 04:54 AM</span>
+
+            <div class="chatlog__message " data-message-id="810373312265584681" id="message-810373312265584681">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola grinned happily. Really, she loved children. She picked on a child that was sitting directly in the back.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f21ceb0c9e8f12eed1b843dffc885cea-AFC19.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(215,52,42)">Commander Yllescas Itesh</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 04:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="810373574493863946" id="message-810373574493863946">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Comms] “Yllescas to Jex.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 04:56 AM</span>
+
+            <div class="chatlog__message " data-message-id="810373863916961822" id="message-810373863916961822">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh, hang on just one moment kids. This is Jex, what&#39;s happening, sir?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f21ceb0c9e8f12eed1b843dffc885cea-AFC19.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(215,52,42)">Commander Yllescas Itesh</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 04:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="810374243089907782" id="message-810374243089907782">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Comms] “Due to the amount of radiation coming from several devices embedded in the ship, we’re going to have to transport all the children to the Chimera’s sickbay for treatment.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/2338f460f3a2438d831a0c1ce276fa6f-0426A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="RemiReverie#6878" data-user-id="689877665888469033" style="color: rgb(245,182,10)">Lt. JG. Lyras T&#39;Khael</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 05:02 AM</span>
+
+            <div class="chatlog__message " data-message-id="810375459706896453" id="message-810375459706896453">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Upon over hearing this, Lyras whispered to the small girl in her arms.</em> &quot;We are going to be transported to the shuttle okay? It might get alittle bright and scary, but it will be okay. I will be here, as well as Lieutenant Jex and so will all of your friends.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="14-Feb-21 05:05 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="care" title="care" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/711609055021629502-E849D.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 05:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="810375721804759070" id="message-810375721804759070">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Comms] &quot;Sounds perfectly splendid, Commander! Let me get the kids ready, and then I&#39;ll let you know. Jex out.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="810376108964446238" id="message-810376108964446238">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola stood up and held her hands out.</em> &quot;Alright kids, we&#39;re about to be sent over to our ship so I as well as my team can treat you better. Let&#39;s all hold hands so the transport is made a little easier on everyone, okay? If you don&#39;t want to hold hands, hold wrists.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Lt. JG. Ciel</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 05:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="810376826026852353" id="message-810376826026852353">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The children began to talk excitedly as they followed instructions.</em>
+&quot;Are we really gonna leave the ship?&quot;
+&quot;Just like on vacation!!&quot;
+&quot;Where are we going?&quot;
+&quot;Will it feel funny like the Cardassian transporters do?&quot;
+<em>Lorian gently picked up one of the really sick children piggyback style and they joined the circle. Roka picked up the other, and held his little sister&#39;s hand.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 05:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="810378019835346955" id="message-810378019835346955">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola tapped her com. Badge.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/2338f460f3a2438d831a0c1ce276fa6f-0426A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="RemiReverie#6878" data-user-id="689877665888469033" style="color: rgb(245,182,10)">Lt. JG. Lyras T&#39;Khael</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 05:13 AM</span>
+
+            <div class="chatlog__message " data-message-id="810378084577837087" id="message-810378084577837087">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola seemed to be much better at dealing with groups of children then Lyras. She decided she would let Lola handle to others and simply focus on the trembling child in her arms. She was just begining to embrace her emotions herself. She felt more at peace with that decision as she looked at the little girl.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Lt. JG. Ciel</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 05:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="810378416137437205" id="message-810378416137437205">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The little girl held on to Lyras and shivered. She didn&#39;t really seem to be aware of what was going on around them. Her eyes were closed tightly now.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/1f62d-FE9EC.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129402;" title="&#129402;" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/1f97a-338D5.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/2338f460f3a2438d831a0c1ce276fa6f-0426A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="RemiReverie#6878" data-user-id="689877665888469033" style="color: rgb(245,182,10)">Lt. JG. Lyras T&#39;Khael</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 05:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="810379027322765343" id="message-810379027322765343">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lyras simply embraced her tightly. The combination of the temperature and the radiation was taking it&#39;s toll on the poor girl. She was going to make sure she made it.</em> &quot;It will be okay, I promise.&quot; <em>She whispered.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="14-Feb-21 05:17 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="care" title="care" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/711609055021629502-E849D.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Lt. JG. Ciel</span>
+
+
+        <span class="chatlog__timestamp">14-Feb-21 05:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="810379181627670550" id="message-810379181627670550">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The whole group was whisked away in a flurry of sparkles to <span class="mention">#d2-sickbay</span>!</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="picardyus" title="picardyus" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/653654387184369665-D0179.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="✨" title="✨" src="Star%20Trek_%20Phoenix%20-%20NGL%20CETUS%20-%20classroom%20%5B809849194683826197%5D.html_Files/2728-9BF59.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 62 message(s)</div>
+</div>
+
+</body>
+
+</html>

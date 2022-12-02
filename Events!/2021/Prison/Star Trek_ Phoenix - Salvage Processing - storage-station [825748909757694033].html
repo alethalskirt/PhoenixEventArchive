@@ -1,0 +1,1322 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - storage-station</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Salvage Processing / storage-station</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 04:57 PM</span>
+
+            <div class="chatlog__message chatlog__message--pinned" data-message-id="825760482652192769" id="message-825760482652192769">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>This was the final resting place of starship salvage, placed on here by the inmates, entire stacks of crates were beamed up to ships in high orbit, ready to take it to the fronts to become weapons of war.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">30-Mar-21 04:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="826293169595088906" id="message-826293169595088906">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He returned to the trolley in its cabinet and left silently and unassumingly. He turned and went out back onto the walkways</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">30-Mar-21 06:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="826504960644481076" id="message-826504960644481076">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Karta returned to the station to collect his maintenance trolley and took the time to briefly check around the storage station. He check for any guard presence. He push the trolley out into the station proper and took note what was being stored and transfered here.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">30-Mar-21 06:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="826507840276922378" id="message-826507840276922378">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He maneuvered between the stacks and inspected outlet terminals and conduits. When he was sure no guard was looking he moved a piece of scrap into his trolley and placed the toolbox ontop of it.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">30-Mar-21 06:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="826511286845309019" id="message-826511286845309019">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Karta pushed his trolley back around and out of the station moving into the other areas around</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 01:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="827156751413411876" id="message-827156751413411876">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Karta found his way thru the entrance to the storage station and on to where he&#39;d left his trolley. He grabbed the toolbox from it and carried to a ladder which lead to the roof of the station. He shouldered it and hoisted himself up the steps to the roof.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 01:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="827158546839240755" id="message-827158546839240755">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Reaching the roof, he lowered the toolbox onto the landing and looked about momentarily. He assess the area, trying to locate where a power source would be. He located a nearby exterior Spotlight which shone down onto the storage compound during the night. He grabbed a diagnostic and calibration tool and began isolating the conduit from the light and followed it to where it ran, hoping to find a secluded area where he could ascertain the power output of the conduit at that point.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="827159405371064351" id="message-827159405371064351">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He found a fairly good area and sat himself there, testing the Conduit&#39;s output.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="827160994395717652" id="message-827160994395717652">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">* Marking the location, and being satisfied with the levels, he stood back up and  and moved back to the spotlight. He checked the housing and its interior briefly, then moved back to his toolbox.*</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 01:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="827163424038584330" id="message-827163424038584330">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He replaced the tools and picked the toolbox again, then climbed back down to the ground. He moved over to his trolley and put the toolbox back, then pulled the trolley out of the station and onto the walkways.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 04:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="827206690255667230" id="message-827206690255667230">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">*He entered to station and maneuvered the trolley back into its alcove and then walked back out</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/4f18bdbb2031d8acd538b661158c5875-3842C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Birb#7040" data-user-id="384551551567659009" style="color: rgb(175,36,27)">Lieutenant Mino</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 07:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="827245710692974593" id="message-827245710692974593">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Mino found herself here after meeting with the group. Sorting random parts, filling out inventory request. Whatever the job may entail. She was a pilot, not a librarian.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="care" title="care" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/711609055021629502-E849D.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127474;" title="&#127474;" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/1f1f2-C2511.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="ℹ️" title="ℹ️" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/2139-90A5D.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127475;" title="&#127475;" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/1f1f3-08F96.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127476;" title="&#127476;" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/1f1f4-6C4DE.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="thumbsupyoda" title="thumbsupyoda" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/789626265493307403-10893.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">04-Apr-21 06:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="828322301522083891" id="message-828322301522083891">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Capri had been pulled from sorting for some reason and was instead working on storage, stacking and moving the containers for the last few hours.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/fed5527710b494e0cae9dd4ed3e1dc5e-51278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 07:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="828696722170445865" id="message-828696722170445865">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Eventually Capri left.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/a6a058250735ba1e3741a44d418cb5a8-C83CD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Poseidon7307#1374" data-user-id="212634048118521857" style="color: rgb(245,182,10)">Cadet Edward Smith</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 12:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="829312496400596992" id="message-829312496400596992">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He picked up where the last one left off. Starting by checking the log before taking it with him as he began putting things away in their sequenced locations.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 02:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="829342119969423362" id="message-829342119969423362">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Karta had picked up his trolley and pushed it out of the station and back up onto the walkways.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">08-Apr-21 01:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="829511348441710693" id="message-829511348441710693">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Karta had entered the station, return his trolley and left, glad to be finished for the day.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/a6a058250735ba1e3741a44d418cb5a8-C83CD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Poseidon7307#1374" data-user-id="212634048118521857" style="color: rgb(245,182,10)">Cadet Edward Smith</span>
+
+
+        <span class="chatlog__timestamp">08-Apr-21 06:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="829585752815435826" id="message-829585752815435826">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He finished a double and wandered out of there like a zombie.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/5a5bb7bf5f8f68969f9986a009b21543-92F1D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 05:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="831198611970064415" id="message-831198611970064415">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He took up a place here, sorting anything that came in, waiting for the signal.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 06:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="831216147982057482" id="message-831216147982057482">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Karta arrived at the storage station and collected his trolley as he always did. He checked it over and began maneuvering its toward the exit.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/5a5bb7bf5f8f68969f9986a009b21543-92F1D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 06:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="831216916810432513" id="message-831216916810432513">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>When the signal came in over the Universal Translator, Xeya all but ran from the station and out onto the walkways.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/6f75096053de1d623af7874bc7a7b242-0BBC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Mad_Dropbear#9428" data-user-id="145451772687679489" style="color: rgb(255,203,37)">Ensign Karta Kictor</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 06:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="831217373527932979" id="message-831217373527932979">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He stopped at a nearby access terminal to run a minor systems diagnostic......it was then that he thought he had seen his old superior rush from the station......he frowned and returned to his trolley, quickly pushing it out of the station trying to see whether it was him.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="12-Apr-21 06:22 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Salvage%20Processing%20-%20storage-station%20%5B825748909757694033%5D.html_Files/4f18bdbb2031d8acd538b661158c5875-3842C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Birb#7040" data-user-id="384551551567659009" style="color: rgb(175,36,27)">Lieutenant Mino</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 06:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="831223868081045526" id="message-831223868081045526">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Mino had decided to complete her final tasks here. Before she made her way out of the storage areas.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 23 message(s)</div>
+</div>
+
+</body>
+
+</html>

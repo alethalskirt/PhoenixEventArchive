@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - starfleet-command</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/6c6374bad0b0b6d204d8d6dc4a18d820.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/e8acd7d9bf6207f99350ca9f9e23b168.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/3bdef1251a424500c1b3a78dea9b7e57.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/be0060dafb7a0e31d2a1ca17c0708636.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/8e12fb4f14d9c4592eb8ec9f22337b04.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    white-space: pre-wrap;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.spoiler {
+    width: fit-content;
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image img {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 0.5em 0.7em;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="https://cdn.discordapp.com/icons/629656123091451934/741f79395701523dd2db7c22f691220d.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Earth - Starfleet / starfleet-command</div>
+
+        <div class="preamble__entry preamble__entry--small"></div>
+
+        <div class="preamble__entry preamble__entry--small">
+                Between 23-Jun-20 12:00 AM and 25-Jun-20 12:00 AM
+        </div>
+    </div>
+</div>
+
+<div class="chatlog">
+    <div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/c56cba7ccbde4fd686c0a6171b7eb715.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rear Admiral Eroe#0000" data-user-id="676457503118065686" >Rear Admiral Eroe</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 12:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="724943776703053876" id="message-724943776703053876">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;. . .Let&#39;s see, we&#39;ve gone through the temporal problems that have arised, yes. Thirty-One agents and trials, yes. Record checking, yes-&quot; <em>Their eyes continued to scan the PADD in front of them, listing off topic after topic that the Admiral&#39;s had been put to discuss. Eroe&#39;s eyes came to the one of the last few points to cover.</em> &quot;Next is the current predicament of the USS Phoenix.&quot; <em>With a couple taps of the screen, an image of Dunamis&#39; most updated personnel file appeared.</em>
+
+&quot;As we all know, Captain Dunamis was a victim of Section Thirty-one&#39;s assaults, wreaking havoc on his crew against his will. Currently, he&#39;s being kept in the hands of our Medical division.&quot; <em>They began, opting to let someone with far more information on the topic to take it away.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/d72cd803ba5db1e27c650ec35b761a3b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fleet Admiral Phenna Ephrix#0000" data-user-id="676457503118065686" >Fleet Admiral Phenna Ephrix</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 12:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="724950604358746183" id="message-724950604358746183">
+                <div class="chatlog__content">
+                    <div class="markdown">”His recovery is taking its time, unfortunately,” <em>she spoke up from the head of the table. Left hand was placed upon the surface of her PADD, fingertips tracing over braille dots which raised to depict Eroe’s speech. Her right was very firmly grasped around the handle of a cup of coffee. She would have fallen asleep almost instantaneously without it.</em> “Which is to be expected, all things considered. It’s this alternate consciousness which is causing difficulty. I think we might have to go to telepathic intervention to handle it – I can’t see any other way.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/1e005fdce3256793ffce69c3843901d7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Lynnora#0000" data-user-id="676457503118065686" >Vice Admiral Lynnora</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 12:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="724955952779886663" id="message-724955952779886663">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Lips pressed into a solemn line, expression unwavering, the woman&#39;s eyes drifted to Phenna situated at the table&#39;s head.</em> &quot;Condition notwithstanding, we ought to thoroughly reconsider Captain Dunamis&#39; capability to command his ship. Even if you <em>are</em> able to rehabilitate him fully, the glaring issue of miscommunication remains; a simple, <em>vital</em> feat that the Captain was unable to uphold in even a fit state.&quot; <em>A brow arched, the severity of Lynnora&#39;s features remained unchanged.</em> &quot;I know it may appear harsh given the circumstances, but this is not the first time we&#39;ve been alerted of such shortcomings on his part.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="676457503118065686" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 01:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="724957144168005662" id="message-724957144168005662">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Vuuhn paused for a moment, carefully listening to what the others had to say.</em> &quot;It would also be important to note, despite his success in the past, Dunamis has no formal command training. He hasn&#39;t gone through the command training program, he barely spend that long as a first officer. And clearly, it&#39;s beginning to show. This complete lack of any communication between his senior staff almost resulted in the complete breakdown of his ship. We would be wise to find a replacement captain for the time being.&quot; <em>He said with a deep sigh.</em> &quot;He&#39;s clearly going to take a fair amount of recovery time anyway.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/d72cd803ba5db1e27c650ec35b761a3b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fleet Admiral Phenna Ephrix#0000" data-user-id="676457503118065686" >Fleet Admiral Phenna Ephrix</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 01:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="724957722289766471" id="message-724957722289766471">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Do you really think that&#39;s fair?&quot; <em>Came her reply, tone lowering ever so slightly. She never truly sounded angry though. It was all but impossible.</em> &quot;After everything he&#39;s done to ensure the safety of the Federation you would just brush him aside? It was Dunamis who started the mutiny. Without him our old colleague would have had us at war with the Breen - straight into an act of genocide.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="676457503118065686" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 01:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="724958756181377104" id="message-724958756181377104">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He looked back at Phenna.</em> &quot;I&#39;m not suggesting we throw him from the fleet, Ephrix. But you&#39;ve got to admit that the stress of the job is clearly getting to him. He&#39;s not perfoming his duties well enough, and one day, he <em>will</em> get himself and everyone onboard <em><strong>killed.</strong></em>&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/c56cba7ccbde4fd686c0a6171b7eb715.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rear Admiral Eroe#0000" data-user-id="676457503118065686" >Rear Admiral Eroe</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 01:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="724959787829166150" id="message-724959787829166150">
+                <div class="chatlog__content">
+                    <div class="markdown">“Please note that this is not the first incident where he has. . killed his own officers.” <em>Eroe added in.</em> “We cannot guarantee the safety of his crew with such a record.” <em>The J’naii then brought up several recounts of the events of that week, along with multiple complaints spanning from then all the way to a few months ago.</em> “I’ve also provided you all with more information over this.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/1e005fdce3256793ffce69c3843901d7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Lynnora#0000" data-user-id="676457503118065686" >Vice Admiral Lynnora</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 01:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="724960872979496970" id="message-724960872979496970">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Despite the grim nature of her disposition, the older woman appeared relatively impassive. Pale eyes glazing over the provided data, her jaw became clenched, and Lynnora exhaled a sigh of resignation.</em> &quot;Agreed. Past triumphs aside, there is no sense in allowing him to continue with such a likelihood of further misjudgements. The risk is too high.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/d72cd803ba5db1e27c650ec35b761a3b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fleet Admiral Phenna Ephrix#0000" data-user-id="676457503118065686" >Fleet Admiral Phenna Ephrix</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 01:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="724961217772519434" id="message-724961217772519434">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;You say that as if he has personally murdered his own officers, Eroe,&quot; <em>was another protest, the irritation actually managing to seep through into her tone.</em> &quot;How is he supposed to learn from his mistakes and progress if you remove him from the position? A disciplinary should be enforced, yes, but not - not <em>this.</em> It is hardly fair.&quot;</div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="🔕" title="🔕" src="https://twemoji.maxcdn.com/2/72x72/1f515.png">
+                            <span class="chatlog__reaction-count">1</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="676457503118065686" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 01:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="724961915578876006" id="message-724961915578876006">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He glanced back at phenna again.</em> &quot;And what about another 6 months down the line, when he snaps and murders more of his officers with them blasted <em>spike launchers?</em> What then, will you fix him up and put him right back in the captain&#39;s seat again? I wont allow that man to keep murdering his officers and getting away with it.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/d72cd803ba5db1e27c650ec35b761a3b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fleet Admiral Phenna Ephrix#0000" data-user-id="676457503118065686" >Fleet Admiral Phenna Ephrix</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 01:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="724962442655957032" id="message-724962442655957032">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;He did <em>not</em> snap. He was <em>altered</em> by Section 31. It is a form of psychological conditioning and he was not to blame - nor was he in control. Your accusation is akin to saying that an android, hacked and being controlled by someone else, is the one actually conducting any form of damage they cause. It&#39;s the same thing but with an <em>organic</em> creature. It wasn&#39;t him.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/c56cba7ccbde4fd686c0a6171b7eb715.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rear Admiral Eroe#0000" data-user-id="676457503118065686" >Rear Admiral Eroe</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 01:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="724963262545788951" id="message-724963262545788951">
+                <div class="chatlog__content">
+                    <div class="markdown">“He is a victim but not the only one. What of the families who have had to receive letters stating that their loved one is dead? And that the person who killed them still continues to be a major figure in Starfleet.”
+
+“I can understand, no, no, I can <em>see</em> that Dunamis should not be at fault. But will not be able to allow him to continue to be a Captain due to what has been tied to him.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/1e005fdce3256793ffce69c3843901d7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Lynnora#0000" data-user-id="676457503118065686" >Vice Admiral Lynnora</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 01:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="724963810242330645" id="message-724963810242330645">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;This is beside the <em>point</em>,&quot; <em>she huffed, fingers coming to massage her temple.</em> &quot;Regardless of his current condition, the issue is first and foremost his incapability regarding <em>Command.</em> Poor choices and repeated failures, that may well have been <em>just</em> as lethal as damned spike launchers. As Eroe is saying, he poses a threat in such a position.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="676457503118065686" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 01:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="724963895919247390" id="message-724963895919247390">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Just like he was controlled by your mirror counterpart? What happens when the next hostile creature enters his clearly weak mind, All the stress and strain his role is put on him just leaves him useless and <em>weak.</em> He cant run a starship when he&#39;s <em>not</em> reconditioned, and when he is, he turns into a murderous creature. I&#39;m being generous by not kicking him out of the fleet for his incompetence.*  <em>He said, sounding quite angry now.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/d72cd803ba5db1e27c650ec35b761a3b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fleet Admiral Phenna Ephrix#0000" data-user-id="676457503118065686" >Fleet Admiral Phenna Ephrix</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 01:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="724966750193451099" id="message-724966750193451099">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;And what <em>would</em> you do as opposed to attempting to remove him from the fleet, Vuuhn? Seeing as how you are so hellbent upon punishing an <em>innocent</em> man who merely needs to learn from his mistakes...&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="676457503118065686" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 01:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="724967925190230136" id="message-724967925190230136">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Demoted, at the very least. He should be made to attend the command training program again, before we consider allowing him his old position back. In the mean time, I&#39;m sure we could find space for him...&quot; <em>He looked over Dunamis&#39; file.</em> &quot;CTO, He has the experience, and the current CTO has just stepped down from their position as well. It would give him a senior position onboard the Phoenix, but be adequate punishment for his actions, which although not entirely his fault, still endangered his crew. If he proves himself, he can work his way back up to Captain again.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/d72cd803ba5db1e27c650ec35b761a3b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fleet Admiral Phenna Ephrix#0000" data-user-id="676457503118065686" >Fleet Admiral Phenna Ephrix</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 01:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="724969573178146886" id="message-724969573178146886">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>She sighed and set her mug down upon the table, idly tapping at the ceramic.</em> &quot;I still think this is rather unfair on him, but fine... Considering there were issues outside of him being reconditioned. Do not-&quot; <em>a harsh gaze was set upon Vuuhn then. Well, an attempt was made. The general direction was pinpointed but her glare was more right past his head than anything.</em> &quot;-try to use that point against him again, by the way. Because he has shown issue <em>before</em> this incident then a change in position may be prudent.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/c56cba7ccbde4fd686c0a6171b7eb715.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rear Admiral Eroe#0000" data-user-id="676457503118065686" >Rear Admiral Eroe</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 01:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="724971240451866665" id="message-724971240451866665">
+                <div class="chatlog__content">
+                    <div class="markdown">“Then if we are to remove him from command. We will need replacements. Depending on his First Officer’s experience, there can be a promotion set in motion. If not, we’ll have the task of assigning yet <em>another</em> Captain to the Phoenix.”
+
+“If, his First is to be promoted, then our sights must be on getting an XO .”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="676457503118065686" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 01:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="724971452578660352" id="message-724971452578660352">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I&#39;m glad you agree, Ephrix.&quot; <em>He motioned over to Eroe.</em> &quot;Can you bring Commander Kunzo&#39;s profile on the screen please?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/d72cd803ba5db1e27c650ec35b761a3b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fleet Admiral Phenna Ephrix#0000" data-user-id="676457503118065686" >Fleet Admiral Phenna Ephrix</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 02:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="724972248829788192" id="message-724972248829788192">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>&#39;Bring Commander Kunzō&#39;s profile on the screen.&#39; Ah yes, very helpful... Vuuhn was one of few officers who could irritate her. At least he had the decency to say &#39;please&#39; to Eroe.</em> &quot;According to crew reports his first officer <em>did</em> conduct the majority of the work up until the time he was injured. He stopped the away team from beaming down into an area devoid of all oxygen when they were not equipped with environmental suite, apparently... I believe he has adequate experience and we would have reason to promote him.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/c56cba7ccbde4fd686c0a6171b7eb715.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rear Admiral Eroe#0000" data-user-id="676457503118065686" >Rear Admiral Eroe</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 02:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="724974810555482213" id="message-724974810555482213">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Displaying now on the main viewer was the Acamarian’s personnel profile. Eroe’s face completely neutral as they did.</em> “There have been other situations before, ones that we have commended, I can agree with his promotion.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/1e005fdce3256793ffce69c3843901d7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Lynnora#0000" data-user-id="676457503118065686" >Vice Admiral Lynnora</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 02:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="724980273741299712" id="message-724980273741299712">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Agreed,&quot; <em>she spoke again, having been silent in contemplation. The woman&#39;s brows arched once more, and she gave a curt nod upon peering over the viewer&#39;s display.</em> &quot;He has shown to be more competent than Dunamis within an incredibly brief period. I think he shall do quite well, seeing how he handled this entire fiasco.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="676457503118065686" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 02:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="724980281618202634" id="message-724980281618202634">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;They show very good potential, unlike Dunamis, he&#39;s <em>actually</em> been through the command training program, and has spent a decent amount of time as a first officer. I agree with your decision to promote Commander Kunzo. He can serve as acting captain for the time being at the very least.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/d72cd803ba5db1e27c650ec35b761a3b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fleet Admiral Phenna Ephrix#0000" data-user-id="676457503118065686" >Fleet Admiral Phenna Ephrix</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 02:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="724982015367315476" id="message-724982015367315476">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;If we are to promote him to the rank of captain then the role of <em>acting</em> captain is all but pointless. He would require his own command anyway.&quot; <em>What department was Vuuhn again? Ah yes. Tactical. One of the divisions which remained firmly within the rank structure at all times. You would have thought that he would know this sort of thing. At this point she was beginning to think that he was being a general annoyance on purpose.</em> &quot;And besides, there isn&#39;t anyone to take his place. We&#39;ve had a deficit of officers trained to CO level since the war with the Klingons. Everyone available is back out in the field.&quot;</div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="https://cdn.discordapp.com/emojis/638063538723618825.png">
+                            <span class="chatlog__reaction-count">7</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="676457503118065686" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 02:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="724982608575987833" id="message-724982608575987833">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Yes, you do make a fair point, Ephrix. Promote the man up and give him the Phoenix, he deserves a chance to take the seat.&quot; <em>He said with a nod.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/1e005fdce3256793ffce69c3843901d7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Lynnora#0000" data-user-id="676457503118065686" >Vice Admiral Lynnora</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 02:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="724985293962346628" id="message-724985293962346628">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>She&#39;d huffed, sparing a dry glance in Vuuhn&#39;s direction. It wasn&#39;t long before Lynnora had returned her gaze to Phenna at the table&#39;s head, still entirely composed.</em> &quot;Of course, that once again leaves a glaring <em>gap</em> in regards to the Phoenix&#39;s executive officer. I believe it may be wise to consider one Agent A&#39;aehrel, however unconventional that may seem. Given her prior postings <em>and</em> recent contributions, it doesn&#39;t seem entirely outlandish to suggest she may be suited for the role.&quot;</div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="sully" title="sully" src="https://cdn.discordapp.com/emojis/722855131254882404.png">
+                            <span class="chatlog__reaction-count">6</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="this" title="this" src="https://cdn.discordapp.com/emojis/637075614834229248.png">
+                            <span class="chatlog__reaction-count">5</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="676457503118065686" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 02:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="724985878677815387" id="message-724985878677815387">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;The spooky vulcan, seriously? I mean, to be fair... She did do a very good job on the phoenix during the whole Woyo, incident... And you say she&#39;s experienced enough for the role?&quot;</div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="😆" title="😆" src="https://twemoji.maxcdn.com/2/72x72/1f606.png">
+                            <span class="chatlog__reaction-count">1</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/d72cd803ba5db1e27c650ec35b761a3b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fleet Admiral Phenna Ephrix#0000" data-user-id="676457503118065686" >Fleet Admiral Phenna Ephrix</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 02:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="724986114649096242" id="message-724986114649096242">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Are you trying to suggest that an Intelligence officer be placed in a command position upon one of our own vessels? Is that wise - especially considering her past affiliations..?&quot;</div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="🇾" title="🇾" src="https://twemoji.maxcdn.com/2/72x72/1f1fe.png">
+                            <span class="chatlog__reaction-count">5</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="🇪" title="🇪" src="https://twemoji.maxcdn.com/2/72x72/1f1ea.png">
+                            <span class="chatlog__reaction-count">5</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="🇸" title="🇸" src="https://twemoji.maxcdn.com/2/72x72/1f1f8.png">
+                            <span class="chatlog__reaction-count">5</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="676457503118065686" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 02:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="724986541931233331" id="message-724986541931233331">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He brought her file open up on his PADD</em> &quot;Tal Shiar, <em>Zhat Vash?</em> You honestly cant be serious Lynnora? This is the woman you&#39;d trust as XO of a federation starship?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/1e005fdce3256793ffce69c3843901d7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Lynnora#0000" data-user-id="676457503118065686" >Vice Admiral Lynnora</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 03:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="724989618986156132" id="message-724989618986156132">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Please, <em>listen</em> for just a moment.&quot; <em>Again, a steely glance was shot in Vuuhn&#39;s direction, lips still drawn into a solemn line.</em> &quot;Given what has recently transpired in regards to the Phoenix&#39;s second <em>and</em> third officers, I don&#39;t believe it would be fair to consider either as candidates. Phenna, we ought to take her recent involvement as consolidation that she has her morals straight, past endeavours notwithstanding. Without her, we may as well not be <em>sat here</em> having this conversation. Should Kunzō at some point take issue with the concept, I trust he will enact necessary changes. I simply see no harm in at least <em>proposing</em> the idea; she&#39;s sure as hell fit for it.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/d72cd803ba5db1e27c650ec35b761a3b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fleet Admiral Phenna Ephrix#0000" data-user-id="676457503118065686" >Fleet Admiral Phenna Ephrix</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 03:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="724990057814949981" id="message-724990057814949981">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;...Alright. We put forward the idea - but we let Kunzō decide for himself. If he is against the idea then that is quite alright. We shall have to get in touch with Intelligence as well... Normally it&#39;s them taking officers from <em>our</em> divisions, not the other way around.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="676457503118065686" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 03:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="724990930649612298" id="message-724990930649612298">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Well, she sure does have the qualifications... Fine. I&#39;ll agree to this. The agent can be asked for her opinion as well as the commander. Are we all in agreement? Dunamis shall step down from CO, Kunzo promoted to CO and Agent A&#39;aerhel considered for replacement XO?&quot;</div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="👀" title="👀" src="https://twemoji.maxcdn.com/2/72x72/1f440.png">
+                            <span class="chatlog__reaction-count">3</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/1e005fdce3256793ffce69c3843901d7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Lynnora#0000" data-user-id="676457503118065686" >Vice Admiral Lynnora</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 03:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="724995066686341170" id="message-724995066686341170">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I believe so. However drastic of a change, it shouldn&#39;t be anything the crew is unable to acclimatise to. Similarly, I think Dunamis shall fare well taking a step back from command himself; these arrangements will allow for his personal betterment, and that of the Phoenix as a whole, I hope. A new leaf, per se.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/d72cd803ba5db1e27c650ec35b761a3b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fleet Admiral Phenna Ephrix#0000" data-user-id="676457503118065686" >Fleet Admiral Phenna Ephrix</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 03:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="724998462399053987" id="message-724998462399053987">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;That sounds reasonable enough. Might I ask one of you to have a word with Kunzo. I can speak with Dunamis and see what he thinks...&quot; <em>And hopefully he wouldn&#39;t protest and attempt to resign. It was no secret that he had been contemplating it for the duration of the month. It was difficult to tell if that was a conscious decision or if it was being influenced by that alternate conscience&#39;s negative emotion.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/1e005fdce3256793ffce69c3843901d7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Lynnora#0000" data-user-id="676457503118065686" >Vice Admiral Lynnora</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Jun-20 04:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="725003626560618496" id="message-725003626560618496">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Of course; I shall see to it that he is presented with what we have discussed.&quot; <em>Then, a curt smile that looked entirely foreign upon such icy features. Mind, the gesture stemmed merely from formality — better her than Kaaros and his penchant for tirades. This crew had been through enough.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/609850455627005953/c8db2e50a0db388381e7a00db1db0763.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fern&#127800;#9014" data-user-id="609850455627005953"  style="color: rgb(175, 36, 27)" >Commander A&#39;aehrel ShiKahr</span>
+
+
+        <span class="chatlog__timestamp">23-Jun-20 08:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="725070995089522768" id="message-725070995089522768">
+                <div class="chatlog__content">
+                    <div class="markdown">[D] <em>Because we kind of forgot about them, the meeting was adjourned.</em></div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="https://cdn.discordapp.com/emojis/638063538723618825.png">
+                            <span class="chatlog__reaction-count">13</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="🇸" title="🇸" src="https://twemoji.maxcdn.com/2/72x72/1f1f8.png">
+                            <span class="chatlog__reaction-count">11</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="🇲" title="🇲" src="https://twemoji.maxcdn.com/2/72x72/1f1f2.png">
+                            <span class="chatlog__reaction-count">11</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="🇭" title="🇭" src="https://twemoji.maxcdn.com/2/72x72/1f1ed.png">
+                            <span class="chatlog__reaction-count">10</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="YOU" title="YOU" src="https://cdn.discordapp.com/emojis/704859011228499971.png">
+                            <span class="chatlog__reaction-count">7</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 10:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="725460667003568158" id="message-725460667003568158">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>The Acamarian materialized at Command&#39;s main center. Officers bustled about that he gladly weaved in and out of. Passing by the receptionist, Kun gave a quick ask about the direction of Lynnora&#39;s officer before setting off further into the building. It didn&#39;t take long at all to appear at the rather boring door, giving it a chime.</em><span class="chatlog__edited-timestamp" title="24-Jun-20 10:21 PM">(edited)</span></div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="💯" title="💯" src="https://twemoji.maxcdn.com/2/72x72/1f4af.png">
+                            <span class="chatlog__reaction-count">8</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/1e005fdce3256793ffce69c3843901d7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Lynnora#0000" data-user-id="676457503118065686" >Vice Admiral Lynnora</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jun-20 10:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="725461790393237596" id="message-725461790393237596">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Come in,&quot; <em>the woman called, sparing a brief glance to her terminal as if to truly scrutinise his timing. She hadn&#39;t moved much, still sat rigid like some sort of irritated, uncomfortable statue.</em></div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="👀" title="👀" src="https://twemoji.maxcdn.com/2/72x72/1f440.png">
+                            <span class="chatlog__reaction-count">5</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 10:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="725462465323728897" id="message-725462465323728897">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Divines, she looked like a stickler for rules, awful aura. Nonetheless, his kind smile was just always at home on his lips. With his hair tied back into a bun, he finally fixed his posture. Standing in front of her desk, he stood at attention with a firm &#39;Admiral&#39; before taking a seat.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/1e005fdce3256793ffce69c3843901d7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Lynnora#0000" data-user-id="676457503118065686" >Vice Admiral Lynnora</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jun-20 10:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="725467939356147844" id="message-725467939356147844">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Again, there was that polite smile, albeit it glaringly unnatural in comparison to the young Commander&#39;s.</em> &quot;Thank you for coming down,&quot; <em>Lynnora mused, taking a moment to glance over the PADD set before her with a painstaking precision.</em> &quot;If you don&#39;t mind my asking, Commander, I&#39;d like to hear about your general experience serving as Captain Dunamis&#39; executive officer. Please, do not feel the need to sugarcoat any grievances you might have regarding his capability,&quot; <em>within seconds, the smile had reverted to a steely, nonchalant neutrality,</em> &quot;or <em>lack</em> thereof.&quot;</div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="🥺" title="🥺" src="https://twemoji.maxcdn.com/2/72x72/1f97a.png">
+                            <span class="chatlog__reaction-count">7</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="yes" title="yes" src="https://cdn.discordapp.com/emojis/704858777706561605.png">
+                            <span class="chatlog__reaction-count">8</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 11:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="725471686161596456" id="message-725471686161596456">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Had it not been for the formal situation he was caught in, he would’ve let out a sigh out of pure relief to see a smile.</em>  “My, <em>experiences.</em>” <em>Kun eyed the woman for a moment, just hoping it didn’t come off as rude in any form. Just the question in general and how she worded it obviously spoke one thing to him.</em>
+
+“I would not consider him, prime Captineering but - there’s a lot to keep in mind when you speak of the Phoenix.” <em>While he didn’t do much research up the ship when he got transferred, some events that took place on the ship were rather well known in the Fleet.</em> “But based on how you’re talking to me, I don’t think you want me to acknowledge that right now.” <em>His smile was replaced a thin lipped expressions, head giving a tilt.</em>  “There are a lot of, smaller problems that came up as I served as a right hand. Problems that didn’t become an <em>actual</em> issue until just recently. Many of them being difficulties in communication with me and the crew— some of which I could understand considering he was without a First for sometime, but at a certain point, I couldn’t let it slide.”
+
+“There also was the image of himself in general. I don’t mean to say Captains must be totally emotionless, but when you are frequently displaying your personal stress and worry to the crew, you put them on edge. I can recall times where I <em>did</em> have to point it out to him.” <em>In this time, his eyes had slowly drawn away from the Admiral’s gaze. It was rather awful to paint the Captain in a light, he had the skills they were just. . unpolished, too naive.</em> “I can go on, Admiral, but I don’t believe that’s necessary.”<span class="chatlog__edited-timestamp" title="24-Jun-20 11:06 PM">(edited)</span></div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="pressf" title="pressf" src="https://cdn.discordapp.com/emojis/637081696105267207.png">
+                            <span class="chatlog__reaction-count">7</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="rosenswirl" title="rosenswirl" src="https://cdn.discordapp.com/emojis/720803862294036500.png">
+                            <span class="chatlog__reaction-count">4</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/1e005fdce3256793ffce69c3843901d7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Lynnora#0000" data-user-id="676457503118065686" >Vice Admiral Lynnora</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jun-20 11:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="725475133732421722" id="message-725475133732421722">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>As expected. Lynnora only nodded along, lips pushed outward in a pensive sort of pout. Upon the Acamarian&#39;s elaboration, her features had fallen into a frown, doing the general severity of her countenance no favours at all. Not that she was surprised by any of what she was hearing; witnessing the recollection from Kunzō himself was simply all the more harrowing.</em>
+
+&quot;Of course.&quot; <em>The grimace was gone within an instant, icily grey eyes flitting up from her PADD,</em> &quot;Given all of what you have just said, I assume you will understand our wish to have Dunamis step <em>down</em> from his role as Captain, not only for his personal betterment, but that of the Phoenix&#39;s as a whole. Speaking of necessities . . quite frankly, Commander, we believe him <em>unfit</em> to remain as the ship&#39;s commanding officer.&quot;</div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="👀" title="👀" src="https://twemoji.maxcdn.com/2/72x72/1f440.png">
+                            <span class="chatlog__reaction-count">8</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="heck" title="heck" src="https://cdn.discordapp.com/emojis/565002036517797888.png">
+                            <span class="chatlog__reaction-count">8</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 11:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="725476948943569037" id="message-725476948943569037">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>There it was, it would have been nice if she had just come out straight and said it. But, he could understand the need to gage his opinions before. Clasping his hands into his lap, there came his mere response.</em> &quot;I can understand that, I assume recovery is also a big component to all of this. And to be frank, I don&#39;t think I could have continued to be his First Officer after what. . <em>transpired</em> on our bridge.&quot; <em>The man&#39;s lips pulled back. Kun was sure she&#39;d understand.</em> &quot;Then, I would appreciate knowing Admiralty&#39;s decision on who would be replacing him?&quot;</div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="yes" title="yes" src="https://cdn.discordapp.com/emojis/704858777706561605.png">
+                            <span class="chatlog__reaction-count">7</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="😭" title="😭" src="https://twemoji.maxcdn.com/2/72x72/1f62d.png">
+                            <span class="chatlog__reaction-count">8</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="🇺" title="🇺" src="https://twemoji.maxcdn.com/2/72x72/1f1fa.png">
+                            <span class="chatlog__reaction-count">9</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="winkwonk" title="winkwonk" src="https://cdn.discordapp.com/emojis/704858311790690337.png">
+                            <span class="chatlog__reaction-count">6</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/1e005fdce3256793ffce69c3843901d7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Lynnora#0000" data-user-id="676457503118065686" >Vice Admiral Lynnora</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jun-20 11:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="725481056152715304" id="message-725481056152715304">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Another curt nod, and surprisingly, a softening in expression of sorts once the Acamarian had finished speaking. Albeit a fractional increase in warmth, it was noticeable all the same.</em> &quot;Yes, we believe that a step back would be similarly beneficial to his rehabilitation, too.&quot; <em>Evidenced by the rather jarring shift in his demeanour, the topic ought to be left there. Lynnora thus declined to comment further, head of silver-blonde hair inclined neatly to the side.</em> &quot;How would you feel about taking on the position?&quot;</div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="🇾" title="🇾" src="https://twemoji.maxcdn.com/2/72x72/1f1fe.png">
+                            <span class="chatlog__reaction-count">9</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="🇪" title="🇪" src="https://twemoji.maxcdn.com/2/72x72/1f1ea.png">
+                            <span class="chatlog__reaction-count">9</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="🇸" title="🇸" src="https://twemoji.maxcdn.com/2/72x72/1f1f8.png">
+                            <span class="chatlog__reaction-count">9</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="🤔" title="🤔" src="https://twemoji.maxcdn.com/2/72x72/1f914.png">
+                            <span class="chatlog__reaction-count">5</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="xtodoubt" title="xtodoubt" src="https://cdn.discordapp.com/emojis/704858940269264946.png">
+                            <span class="chatlog__reaction-count">3</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/211941348977147904/a_e1a7414d2cfbef63e2da5126ef63632e.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904"  style="color: rgb(175, 36, 27)" >Captain Kunzō</span>
+
+
+        <span class="chatlog__timestamp">24-Jun-20 11:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="725482495637848166" id="message-725482495637848166">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>It was his turn for his rather unamused expression to fall into one of surprise. I mean, he had been through the Command training program, knew the crew. All in his mind, it was a perfectly rational choice - but in reality? It had him totally shocked. Even if he didn&#39;t admit it, getting to this point in his life was one of his biggest goals and dreams. Though, he didn&#39;t think he would get it in this way.</em> &quot;I- I would love to take the position. I, while I&#39;m still new to the ship, the crew knows who I am and I really want to know them all even more.&quot; <em>Kun&#39;s smile reappeared, held back by an array of guilt.</em> 
+
+&quot;I suppose the question is, who&#39;s going to be <em>my</em> First Officer?&quot;</div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="👍" title="👍" src="https://twemoji.maxcdn.com/2/72x72/1f44d.png">
+                            <span class="chatlog__reaction-count">7</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="this" title="this" src="https://cdn.discordapp.com/emojis/637075614834229248.png">
+                            <span class="chatlog__reaction-count">7</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/676457503118065686/1e005fdce3256793ffce69c3843901d7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Lynnora#0000" data-user-id="676457503118065686" >Vice Admiral Lynnora</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jun-20 11:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="725485262477459497" id="message-725485262477459497">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>And then, she herself finally smiled a smile with some sincerity behind it. Admittedly an awkward, almost outlandish gesture, but the sentiment was genuine; one thing they had all agreed on was that Kunzō was more than deserving. Still, for the time being Lynnora declined to present him with the famed little box, opting to wait until the third and final proposition.</em>
+
+&quot;I suppose it is,&quot; <em>she answered, the slight twitch in her lips translating to a knowing, thoughtful glint within pale eyes.</em> &quot;Now, I have reason to believe you may be slightly more welcoming of this suggestion than my peers initially were. Please know that the ultimate decision will, of course, be up to you in your newfound <em>captaincy</em>, although I think it would be wise to seriously consider Agent A&#39;aehrel as a contender.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 46 message(s)</div>
+</div>
+
+</body>
+</html>

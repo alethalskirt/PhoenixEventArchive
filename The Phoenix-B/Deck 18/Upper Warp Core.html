@@ -1,0 +1,2467 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - upper-warp-core</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Deck 18: Upper Engineering / upper-warp-core</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/55744585decf91897552b473b5d6d36a-C344A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jshoey18#0698" data-user-id="610647397613436979" style="">jshoey18</span>
+
+
+        <span class="chatlog__timestamp">19-Jan-20 01:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="668262561455669254" id="message-668262561455669254">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>john walked up to the core reading the dials and readouts recording it as he went</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/55744585decf91897552b473b5d6d36a-C344A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jshoey18#0698" data-user-id="610647397613436979" style="">jshoey18</span>
+
+
+        <span class="chatlog__timestamp">19-Jan-20 01:54 AM</span>
+
+            <div class="chatlog__message " data-message-id="668271925465841695" id="message-668271925465841695">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>giving them one last look John went down the stairs</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/7d38b4cfa0251846a1e0929b12c23fad-7ABD2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">19-Jan-20 07:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="668543556054548481" id="message-668543556054548481">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Shansa had gone to the core, delegating repairs to the others and working to manually maintain the core.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/55744585decf91897552b473b5d6d36a-C344A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jshoey18#0698" data-user-id="610647397613436979" style="">jshoey18</span>
+
+
+        <span class="chatlog__timestamp">21-Jan-20 07:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="669261572769579008" id="message-669261572769579008">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="Richie#3774">@Richie</span> “here you go” [D] inside there was a light blue glow coming from the core. Unfortunately there wasn’t a whole lot to see except the two terminals that line up for the reactor</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/a_e1ef551534176ca2483d5b4575f82636-088B3.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Richie#3774" data-user-id="64150443432882176" style="">Richie</span>
+
+
+        <span class="chatlog__timestamp">21-Jan-20 07:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="669262292927643648" id="message-669262292927643648">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I dunno friend, looks pretty good to me!&quot; <em>he&#39;d smile</em> &quot;Crazy to be standing so close to so much power!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/55744585decf91897552b473b5d6d36a-C344A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jshoey18#0698" data-user-id="610647397613436979" style="">jshoey18</span>
+
+
+        <span class="chatlog__timestamp">21-Jan-20 07:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="669263496180924435" id="message-669263496180924435">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Yeah it’s fun I guess. As I’m sure you have discovered it loses its magic after a couple years”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/a_e1ef551534176ca2483d5b4575f82636-088B3.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Richie#3774" data-user-id="64150443432882176" style="">Richie</span>
+
+
+        <span class="chatlog__timestamp">21-Jan-20 07:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="669264023799332865" id="message-669264023799332865">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I wouldn&#39;t know sir. I&#39;m fresh out of the Academy.&quot; <em>he&#39;d chuckle</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/55744585decf91897552b473b5d6d36a-C344A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jshoey18#0698" data-user-id="610647397613436979" style="">jshoey18</span>
+
+
+        <span class="chatlog__timestamp">21-Jan-20 07:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="669264229232017414" id="message-669264229232017414">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Haven’t you done stuff with photons in the academy”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/a_e1ef551534176ca2483d5b4575f82636-088B3.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Richie#3774" data-user-id="64150443432882176" style="">Richie</span>
+
+
+        <span class="chatlog__timestamp">21-Jan-20 07:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="669264812852641803" id="message-669264812852641803">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Actually I worked mostly in quantum mechanics and chemistry, I still find it fascinating!&quot; <em>he&#39;d smile wide at the fellow Ensign</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/55744585decf91897552b473b5d6d36a-C344A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jshoey18#0698" data-user-id="610647397613436979" style="">jshoey18</span>
+
+
+        <span class="chatlog__timestamp">21-Jan-20 07:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="669266852530094090" id="message-669266852530094090">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“I mostly did warp core technology and high level maintenance”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/a_e1ef551534176ca2483d5b4575f82636-088B3.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Richie#3774" data-user-id="64150443432882176" style="">Richie</span>
+
+
+        <span class="chatlog__timestamp">21-Jan-20 07:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="669268624162291722" id="message-669268624162291722">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Did you have Professor Molhaney for Warp Theory perchance?&quot; <em>he&#39;d chuckle</em>
+
+(i&#39;m afraid I have to go my friend as I need to leave the house!)</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/55744585decf91897552b473b5d6d36a-C344A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jshoey18#0698" data-user-id="610647397613436979" style="">jshoey18</span>
+
+
+        <span class="chatlog__timestamp">21-Jan-20 07:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="669269626605273109" id="message-669269626605273109">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“I did as a matter of fact” ((yep no problem))</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/55744585decf91897552b473b5d6d36a-C344A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jshoey18#0698" data-user-id="610647397613436979" style="">jshoey18</span>
+
+
+        <span class="chatlog__timestamp">21-Jan-20 09:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="669292722716409876" id="message-669292722716409876">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Johns PADD blips with a notification but it disappears before he could see it. Paying it no mind he continued to show Keanu the warp core</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="669294377268543498" id="message-669294377268543498">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Alrighty you need to get to your station and I need to prep the core. I’ll see you around” <em>he turned and left going to the main core station</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/0-EB806.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Deleted User#0000" data-user-id="456226577798135808" style="">Deleted User</span>
+
+
+        <span class="chatlog__timestamp">09-Feb-20 08:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="676158520718262330" id="message-676158520718262330">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>V&#39;Lyr, at the moment, was conducting maintenance on the warp core&#39;s tertiary coolant conduit. She was suspended from the ceiling by a set of wiring, hanging upside down, goggles on, holding a phase welding torch steady in both hands. The white-hot beam was welding together a deep crack in the casing which had begun leaking coolant. The Vulcan seemed completely at home hanging from the top of the warp core, upside down; perhaps she had done something similar in the past.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="Think3d" title="Think3d" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/483647314368397332-623D2.gif">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/0-EB806.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Deleted User#0000" data-user-id="456226577798135808" style="">Deleted User</span>
+
+
+        <span class="chatlog__timestamp">09-Feb-20 08:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="676161210575749150" id="message-676161210575749150">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Even from right at the top of the warp core, and over the ambient noise, her vulcan hearing still managed to pick up the sound of the heavy doors to engineering sliding open. Moving the welding torch to hold it secure under one arm she looked down, managing to pick out the two people below. Placing both feet upon the strip of casing which ran down the outside of the warp core, she magnetised her boots and strode down the warp core - completely horizontal.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/a_525446c6b5f92017ac309c2e95f89ec2-52621.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">15-Feb-20 08:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="678330670975680533" id="message-678330670975680533">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>There was a vague hissing sound from the top of the warp core, like the beginning of a coolant leak...</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/55744585decf91897552b473b5d6d36a-C344A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jshoey18#0698" data-user-id="610647397613436979" style="">jshoey18</span>
+
+
+        <span class="chatlog__timestamp">15-Feb-20 08:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="678331500344639559" id="message-678331500344639559">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>John came closer the sound getting louder he looked trying to find the source</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/3ca96b01231279902cd6ba4951fb7eee-4AA76.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Desti#4209" data-user-id="281542803605946368" style="">Desti</span>
+
+
+        <span class="chatlog__timestamp">15-Feb-20 08:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="678331703248289803" id="message-678331703248289803">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He followed and took the other side of the warp cores, listening our for the sound.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/a_525446c6b5f92017ac309c2e95f89ec2-52621.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">15-Feb-20 08:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="678331785049800707" id="message-678331785049800707">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Looks like a break in the casing had started to crack again, despite it having been repaired only the day before.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/55744585decf91897552b473b5d6d36a-C344A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jshoey18#0698" data-user-id="610647397613436979" style="">jshoey18</span>
+
+
+        <span class="chatlog__timestamp">15-Feb-20 08:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="678332038725632060" id="message-678332038725632060">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Oh shit...” <em>He ran to the railing</em> “TURN OFF THE CORE!!!”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/3ca96b01231279902cd6ba4951fb7eee-4AA76.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Desti#4209" data-user-id="281542803605946368" style="">Desti</span>
+
+
+        <span class="chatlog__timestamp">15-Feb-20 08:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="678332849757356065" id="message-678332849757356065">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Fuck fuck fuckity fuck.&quot;
+<em>He looked around for a repair kit so that they could apply a temporary repair until they could get it properly fixed.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="this" title="this" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/637075614834229248-F5F87.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/a_525446c6b5f92017ac309c2e95f89ec2-52621.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">15-Feb-20 08:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="678334058224287765" id="message-678334058224287765">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>It started venting coolant, slowly...</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/55744585decf91897552b473b5d6d36a-C344A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jshoey18#0698" data-user-id="610647397613436979" style="">jshoey18</span>
+
+
+        <span class="chatlog__timestamp">15-Feb-20 08:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="678334228567556106" id="message-678334228567556106">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“That’s not good.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/3ca96b01231279902cd6ba4951fb7eee-4AA76.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Desti#4209" data-user-id="281542803605946368" style="">Desti</span>
+
+
+        <span class="chatlog__timestamp">15-Feb-20 08:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="678334610249089064" id="message-678334610249089064">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Not at all.&quot;
+<em>He found a tool kit that had been laying around and picked it up.</em>
+&quot;Could we use a toolkit to do something about it?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/a_525446c6b5f92017ac309c2e95f89ec2-52621.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">15-Feb-20 08:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="678334729694740502" id="message-678334729694740502">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>And then it started hissing more. Louder...</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="15-Feb-20 08:20 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/55744585decf91897552b473b5d6d36a-C344A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jshoey18#0698" data-user-id="610647397613436979" style="">jshoey18</span>
+
+
+        <span class="chatlog__timestamp">15-Feb-20 08:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="678334847403687988" id="message-678334847403687988">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Run. Now!”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/3ca96b01231279902cd6ba4951fb7eee-4AA76.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Desti#4209" data-user-id="281542803605946368" style="">Desti</span>
+
+
+        <span class="chatlog__timestamp">15-Feb-20 08:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="678335025854283800" id="message-678335025854283800">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yep.&quot;
+<em>He drops the kit and runs down the stairs, being careful not to fall.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">15-Feb-20 08:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="678335030656761861" id="message-678335030656761861">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Comms] &quot;This is Walsh, what is going on up there John!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/55744585decf91897552b473b5d6d36a-C344A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jshoey18#0698" data-user-id="610647397613436979" style="">jshoey18</span>
+
+
+        <span class="chatlog__timestamp">15-Feb-20 08:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="678335218716770384" id="message-678335218716770384">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>John takes off after Owain</em> “Not now Jayne. Trying not to die”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/a_525446c6b5f92017ac309c2e95f89ec2-52621.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">15-Feb-20 08:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="678339259006189599" id="message-678339259006189599">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Thankfully, upon further inspection, teams would find that it was an easy repair... But how the damage had been caused was another question entirely.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/17be5439e7a9e0a45c58fd9a7f764c4b-F2D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">04-Apr-20 06:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="696044637894475876" id="message-696044637894475876">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Aaron runs in and begins heating the injectors</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="696045597781655585" id="message-696045597781655585">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Computer, engage a maximum warp burst, 30 seconds&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="696046752373145600" id="message-696046752373145600">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;YES!!!!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/a_525446c6b5f92017ac309c2e95f89ec2-52621.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">15-Apr-20 12:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="699943091406241833" id="message-699943091406241833">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">｡･::･ﾟ<img class="emoji " alt="★" title="★" src="https://twemoji.maxcdn.com/2/72x72/2605.png">,｡･::･ﾟ<img class="emoji " alt="☆" title="☆" src="https://twemoji.maxcdn.com/2/72x72/2606.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 04:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="751104535224909885" id="message-751104535224909885">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="pre pre--inline">                                                                                                                     </span></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="751105112071602257" id="message-751105112071602257">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Amanda woke up early and decided to get a start to her day by working on the upper warp core. The destroyed nacelle was rebuilt and she wanted to start working on the connections from the warp core to the nacelle. She had done complete warp core restorations in the past, and she knew it would be a lot of work, so why not start while some of the other engineers were still on shore leave? In reality, Amanda was just avoiding her planned visit to her parents, telling them she needed to get this done before she could come see them.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="03-Sep-20 04:43 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/dc623c84816ae06143865b61e04c2197-C0453.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="3ll3ll3ll#8118" data-user-id="696346291722125313" style="">3ll3ll3ll</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 04:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="751107717338234951" id="message-751107717338234951">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Flynn had started his day in a state of nerves. It had been suggested to him that he take the shore leave given to the other crewmembers, but by the second day of staying in his room and only leaving occasionally for food he&#39;d begun to feel restless and uneasy. Nothing could be as bad as what he&#39;d experienced on the Spectator, but that didn&#39;t make him any less uneasy about the possibility of the bullying continuing here. With that in mind, along with the information that the Chief Engineer had yet to leave the ship, Flynn decided to see where it was that he would be working. When he arrived, engineering was empty, save for a lone figure working at the warp core. The Chief Engineer, Flynn concluded. He let the closing door behind him signal his arrival and hopefully get her attention.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="03-Sep-20 05:09 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 04:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="751108243148898434" id="message-751108243148898434">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Amanda heard the door open and close and stood up from hunching over the warp core controls, her height now very apparent. She turned to see the young man and immediately noticed his implants, her own on full display as her blond hair was swooped over to the right side, the left side of her head covered in an implant.</em> &quot;Hello Ensign, I don&#39;t think we&#39;ve met before. Are you new to Engineering?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/dc623c84816ae06143865b61e04c2197-C0453.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="3ll3ll3ll#8118" data-user-id="696346291722125313" style="">3ll3ll3ll</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 04:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="751109091765518348" id="message-751109091765518348">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Flynn&#39;s eyes widened when she turned. She was ex-Borg. A smile found its way onto his face before he could stop it. Perhaps this ship <em>would</em> be better for him. He schooled his expression quickly. &quot;No, I&#39;ve just been reassigned to the Phoenix. Ensign Flynn Conway.&quot;</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="03-Sep-20 05:09 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 05:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="751109597460168795" id="message-751109597460168795">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She took the few steps towards him and extended her hand, her own smile crossing her features.</em> &quot;Lieutenant Commander Amanda Higgins, apparently I&#39;m your new boss. Welcome to the Phoenix Ensign, I hope you&#39;ll enjoy it here.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/dc623c84816ae06143865b61e04c2197-C0453.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="3ll3ll3ll#8118" data-user-id="696346291722125313" style="">3ll3ll3ll</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 05:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="751111500219023364" id="message-751111500219023364">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Thank you, Commander. I hope I will, too.&quot; <em>Flynn looked around, at the rest of engineering, before his eyes came to rest on the console Higgins had been working at. </em>&quot;Is there anything I can help you with?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="03-Sep-20 05:12 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 05:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="751115534048690177" id="message-751115534048690177">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She looked back at the console and thought for a moment.</em> &quot;I&#39;m not sure if you were brought up to speed on the ship but she obviously was in a bad battle. We lost an entire nacelle and it was just replaced so I&#39;m redoing the warp connections. Are you familiar with that?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/dc623c84816ae06143865b61e04c2197-C0453.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="3ll3ll3ll#8118" data-user-id="696346291722125313" style="">3ll3ll3ll</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 05:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="751117339461681234" id="message-751117339461681234">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Somewhat. It&#39;s been a while, but I&#39;ve worked on a ship that had similar damage.&quot; <em>Flynn looked back at her.</em> &quot;I can leave you to it, if you&#39;d rather I did that.&quot; <em>Part of him hoped she would, so he could familiarise himself with the section properly, though he also wanted a chance to prove that he was capable of getting spontaneous jobs done.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 05:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="751118068092240046" id="message-751118068092240046">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well, why don&#39;t we work on it together and I can walk you through the parts you have difficulty with? No one&#39;s here yet so you can get some learning done and you&#39;ll know what to do on your own next time. Sound good?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/dc623c84816ae06143865b61e04c2197-C0453.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="3ll3ll3ll#8118" data-user-id="696346291722125313" style="">3ll3ll3ll</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 05:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="751118288813293671" id="message-751118288813293671">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Flynn grinned and nodded.</em> &quot;Sounds good, commander.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 05:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="751119359945998460" id="message-751119359945998460">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She beckoned him over to the console and pointed to her work.</em> &quot;Why don&#39;t you continue from where I left off and if you get stuck I&#39;ll help you out? And don&#39;t worry, I don&#39;t assimilate ensigns.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/dc623c84816ae06143865b61e04c2197-C0453.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="3ll3ll3ll#8118" data-user-id="696346291722125313" style="">3ll3ll3ll</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 05:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="751122205282402374" id="message-751122205282402374">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Flynn&#39;s mouth pulled itself into a small smile.</em> &quot;That&#39;s good.&quot; <em>Subconsciously, he traced a metal tendon as he looked over what Higgins had been doing. It seemed like she&#39;d finished most of it already, and it looked to be a simple enough job. He started work on the connections, using what Higgins had already done as a base for his technique.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 05:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="751122811854258266" id="message-751122811854258266">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She stood back and watched him from afar, crossing her arms and leaning against a bulkhead.</em> &quot;So...how long?&quot; <em>She trailed off, but he would know what she was asking, how long was he in the collective?</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="03-Sep-20 05:53 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/dc623c84816ae06143865b61e04c2197-C0453.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="3ll3ll3ll#8118" data-user-id="696346291722125313" style="">3ll3ll3ll</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 05:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="751123107837640845" id="message-751123107837640845">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He swallowed, trying to keep his focus on the job.</em> &quot;Three years.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 05:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="751124310416031877" id="message-751124310416031877">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She watched his reaction and shook her head.</em> &quot;Sorry...same for me. I won&#39;t bring it up again.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/dc623c84816ae06143865b61e04c2197-C0453.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="3ll3ll3ll#8118" data-user-id="696346291722125313" style="">3ll3ll3ll</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 06:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="751125047070163044" id="message-751125047070163044">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He glanced up at her with a slightly strained smile.</em> &quot;It&#39;s fine, you didn&#39;t mean any harm by it.&quot; <em>Before beckoning her back over, he checked over what he&#39;d done.</em> &quot;How&#39;s this looking?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 06:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="751125590920396830" id="message-751125590920396830">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She walked over quietly and looked over his shoulder,</em> &quot;pretty good if I do say so myself. Just remember to double lock the connections so we don&#39;t have a cascade failure. Ready to try something harder?&quot; <em>She gave him a grin.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/dc623c84816ae06143865b61e04c2197-C0453.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="3ll3ll3ll#8118" data-user-id="696346291722125313" style="">3ll3ll3ll</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 06:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="751126005875474482" id="message-751126005875474482">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Flynn did what she reminded him to do, before giving her a grin with a glint in his eyes.</em> &quot;Always.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 06:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="751126396402925682" id="message-751126396402925682">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She moved over to another console.</em> &quot;Let&#39;s see how good your math and physics are. Try and realign the magnetic constrictors. We can&#39;t get hotter than 3 million kelvin though so be careful.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/dc623c84816ae06143865b61e04c2197-C0453.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="3ll3ll3ll#8118" data-user-id="696346291722125313" style="">3ll3ll3ll</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 06:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="751128685440008313" id="message-751128685440008313">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>With his tongue between his teeth in concentration, he stared at the alignments completely focused as he did the necessary calculations to put them back into place. He caught his own miscalculation quickly, luckily before he&#39;d completely realigned the constrictors.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 06:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="751131556147494912" id="message-751131556147494912">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She looks over his calculations and nods, giving him a beaming smile.</em> &quot;Very good, now the actual hard part is marrying the two together without blowing up the ship. You realigned the constrictors and the warp connections are stable, now you have to inject the plasma flow and not set engineering on fire, no pressure.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/dc623c84816ae06143865b61e04c2197-C0453.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="3ll3ll3ll#8118" data-user-id="696346291722125313" style="">3ll3ll3ll</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 06:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="751133955557818450" id="message-751133955557818450">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He chuckled.</em> &quot;No, none at all.&quot; <em>Turning his focus back to the task, he found the screen controlling the injection and carefully adjusted it, knowing that even the most minuscule and unnoticeable of mistakes could end in disaster. He pressed the injector power itself, and watched with baited breath.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 06:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="751134886361956514" id="message-751134886361956514">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She chuckled as the screen flashed red before shutting down,</em> &quot;don&#39;t start looking for your lieutenant&#39;s pips yet, you made a common error. You didn&#39;t run a check on the injector before you ran it and the manifold needs purging. Residue builds up and can cause an overload like we just had. Luckily we have failsafes built it to shut things down before we go boom.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/dc623c84816ae06143865b61e04c2197-C0453.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="3ll3ll3ll#8118" data-user-id="696346291722125313" style="">3ll3ll3ll</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 06:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="751136932636917772" id="message-751136932636917772">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He turned to her with an embarrassed smile.</em> &quot;Right. Yeah. Good thing that&#39;s there.&quot; <em>His hands found each other again as he returned to look back over the panels on the computer. He found the manifold controls and purged it, before running a check to find out if there might have been something Higgins had withheld from him as a test. Nothing came up, so he injected the plasma flow.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 06:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="751137402348634273" id="message-751137402348634273">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Much better Ensign, you&#39;ll be taking my job before too long,&quot; <em>she gave another chuckle and looked down to the lower floor at her office.</em> &quot;You want some coffee?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/dc623c84816ae06143865b61e04c2197-C0453.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="3ll3ll3ll#8118" data-user-id="696346291722125313" style="">3ll3ll3ll</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 06:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="751138892056363169" id="message-751138892056363169">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Flynn blinked in surprise. His relationships with his previous commanding officers had been incredibly professional, and after spending 7 months on a ship with one friend amongst so many who hated him, he wasn&#39;t used the kindness he&#39;d already been shown by Higgins, let alone anything more. However, he found it refreshing, no matter how wary he might be. He shouldn&#39;t be anyway, it would be incredibly hypocritical of her to hate him for being ex-Borg.</em> &quot;I&#39;d like that, if you&#39;re sure you want my company.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 07:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="751139877323538553" id="message-751139877323538553">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I wouldn&#39;t have asked if I didn&#39;t want your company,&quot; <em>she said as she started to descend towards the <span class="mention">#ceo’s-office</span> .</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/dc623c84816ae06143865b61e04c2197-C0453.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="3ll3ll3ll#8118" data-user-id="696346291722125313" style="">3ll3ll3ll</span>
+
+
+        <span class="chatlog__timestamp">03-Sep-20 07:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="751140040217853972" id="message-751140040217853972">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Smiling, he followed.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/9808615dc10b54fb3e3054b3c5262735-328BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="phoenixsys0706#2435" data-user-id="317726236321513473" style="color: rgb(212,156,2)">Ensign Cassidy Greenfield</span>
+
+
+        <span class="chatlog__timestamp">27-Oct-20 09:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="770756192049561620" id="message-770756192049561620">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Still fumbling with the toolbelt, Cassidy walked to one of the consoles and began to monitor the readings.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/9808615dc10b54fb3e3054b3c5262735-328BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="phoenixsys0706#2435" data-user-id="317726236321513473" style="color: rgb(212,156,2)">Ensign Cassidy Greenfield</span>
+
+
+        <span class="chatlog__timestamp">27-Oct-20 10:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="770781995009179669" id="message-770781995009179669">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>After a few hours of checking the upper warp core status and making adjustments as needed, she headed to the Jeffries Tube to head to the deck below</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="27-Oct-20 10:53 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/5727b7f5381c0824967e550ba98d437b-6E40C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-21 08:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="820391941753667615" id="message-820391941753667615">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>More images of Tony abounded.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/11460a3da4a8271d8c09844c06d39ee7-50C90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-21 09:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="820411697067065364" id="message-820411697067065364">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Entering, she was greeted with a ton of projections of the same rabbit. She tapped her combadge.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/11460a3da4a8271d8c09844c06d39ee7-50C90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-21 10:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="820422132592803872" id="message-820422132592803872">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>After receiving the last order, she walked to the walkways.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2018_%20Upper%20Engineering%20-%20upper-warp-core%20%5B630380999876018176%5D.html_Files/11460a3da4a8271d8c09844c06d39ee7-50C90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-21 12:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="820450914921349130" id="message-820450914921349130">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She walked into the hub.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 70 message(s)</div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,2508 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - central-map-room</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Fena III - Observation Post / central-map-room</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 04:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="850763465891119134" id="message-850763465891119134">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The map room was a mess, the computer screens around the walls had been cracked, debris littered the floor and the main central map table was flickering, however it was all still functional. Small dents were everywhere; on the walls, the floor, the consoles. Bullet holes.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Jun-21 07:48 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/4a6fc34a9bc60546ef4690ba1b6a9a92-71EBA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="warlocksdoitbetter#7048" data-user-id="806348213665529876" style="color: rgb(255,203,37)">Lieutenant Hesria Valar</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 07:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="850806032955736134" id="message-850806032955736134">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Hesria stepped in and began a new set of scans, angling the tricorder around to get as much of the room as possible.</em> &quot;Commander, I... I think those are bullet holes? Some kind of projectile, definitely. I&#39;m not tactical, so I can&#39;t be sure, but...&quot; <em>she trailed off, her voice catching in her throat as she spoke.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/59078e2b64de7d31952f348724f5dadd-E4443.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 07:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="850806208348422204" id="message-850806208348422204">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She frowned, following Hesria in.</em> “The residue <em>was</em> lead.” <em>She added, scanning the room as an afterthought.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5955fa8480de766da4f8787583d7ba61-04872.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(41,169,238)">Lieutenant Cilim Chex</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 07:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="850806317312114708" id="message-850806317312114708">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>As he stepped in, Chex took out his tricorder and also started scanning.</em> &quot;This place is littered with dents, just like the hallways.&quot; <em>He said.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 07:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="850807474855346206" id="message-850807474855346206">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The map in the middle showed a massive main settlement about 50km in diameter. The readouts of the city showed there was nearly a billion people living there. Near the edge of the city was a large red dot that said &#39;You are here&#39; on it.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5c8ae71ab9b54adbde1d2ac8ef1689a8-37C0E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 07:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="850809039528919061" id="message-850809039528919061">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Amanda ran her fingers over the bullet holes.</em> &quot;I think we can surmise that the people of the city did this. They&#39;re pre-warp, so it could be inferred that they have combustible weapons and not phasers.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/4a6fc34a9bc60546ef4690ba1b6a9a92-71EBA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="warlocksdoitbetter#7048" data-user-id="806348213665529876" style="color: rgb(255,203,37)">Lieutenant Hesria Valar</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 07:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="850809061724127282" id="message-850809061724127282">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She moved away from the map to the computers around the edges of the room. Cracked screens aside, her scans showed they were still functional. Tentatively, she powered one on.</em> &quot;Let&#39;s see what we can find...&quot; <em>she muttered.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 07:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="850809289319907398" id="message-850809289319907398">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The screen flickered to life, showing a list of video logs.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/4a6fc34a9bc60546ef4690ba1b6a9a92-71EBA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="warlocksdoitbetter#7048" data-user-id="806348213665529876" style="color: rgb(255,203,37)">Lieutenant Hesria Valar</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 07:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="850809412657479730" id="message-850809412657479730">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Commander, video logs from the crew,&quot; <em>Hesria said, turning to look at Amanda with wide eyes.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5c8ae71ab9b54adbde1d2ac8ef1689a8-37C0E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 07:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="850809515372707840" id="message-850809515372707840">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Let&#39;s see them,&quot; <em>Amanda said as she went over to where Hesria was standing.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/4a6fc34a9bc60546ef4690ba1b6a9a92-71EBA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="warlocksdoitbetter#7048" data-user-id="806348213665529876" style="color: rgb(255,203,37)">Lieutenant Hesria Valar</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 07:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="850810051269754932" id="message-850810051269754932">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She pulled the first one up and hit play.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/e957e74ade88a57ddede85e6126700da-A7BB9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Scientist Jack Reed#0000" data-user-id="850810195864584234" style="">Scientist Jack Reed</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Jun-21 07:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="850810197118287872" id="message-850810197118287872">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The screen flickered to life, showing a man about 30 years old. The date at the bottom of the screen read ‘Stardate 155169.3.’ The man was fumbling around with the camera for a few seconds before stepping back and admiring his handiwork.</em>
+
+“Alright, we good? I think we’re good. Not <em>entirely</em> sure how to open this but here we are! My name is Jack Reed and we have just opened for business! Fena III, apparently called ‘Thaara’s nest’ by the natives. We have no idea why it’s called that but it’s why we’re here isn’t it?” <em>He laughed to himself.</em> “You know it’s already been three days and Martha has already tried every single bit of new technology we have. I swear that woman works at warp speed.” <em>Another laugh.</em> “Myself? I’ve spent the last three days getting settled into our quarters. I’m sharing a bunk with Daar, so it remains to be seen how much sleep I’ll be getting with a Tellarite snoring above me.&quot; <em>He paused, staring into space.</em> &quot;If this log ever reaches you Jana, I miss all of you. I&#39;ll be home before you know it.” 
+
+<em>Jack was eventually called to help unpack, and he accidentally left the camera running. Fast forwarding the footage would only show another person seeing the camera and stop recording.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5c8ae71ab9b54adbde1d2ac8ef1689a8-37C0E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 07:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="850810477960757308" id="message-850810477960757308">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Let&#39;s see if there are any more, and I&#39;d prefer if there are many to see maybe the last five first.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/59078e2b64de7d31952f348724f5dadd-E4443.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 07:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="850810669535854602" id="message-850810669535854602">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She wrapped her arms around her torso— Prophets, this was just getting quite sad. Hopefully these people were all alright and this was all some kind of misunderstanding.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5955fa8480de766da4f8787583d7ba61-04872.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(41,169,238)">Lieutenant Cilim Chex</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 07:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="850810979012575293" id="message-850810979012575293">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Chex remained silent, his brows furrowed as he watched the first video log. Seeing that the scientists were simply minding their businesses and doing their ordered duties made him feel sad, especially when he saw the man introducing himself.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/4a6fc34a9bc60546ef4690ba1b6a9a92-71EBA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="warlocksdoitbetter#7048" data-user-id="806348213665529876" style="color: rgb(255,203,37)">Lieutenant Hesria Valar</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 07:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="850811000868438076" id="message-850811000868438076">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Hesria nodded and started sifted through the logs, searching for the latest ones. Fifth from last, there. She selected it and pulled it up for display.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/e957e74ade88a57ddede85e6126700da-A7BB9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Scientist Jack Reed#0000" data-user-id="850810195864584234" style="">Scientist Jack Reed</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Jun-21 08:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="850813071101657098" id="message-850813071101657098">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Again stood Jack, now with a bit of a haircut and in full science getup. He was excited and practically jumping up and down. The Stardate at the bottom read &#39;Stardate 155333.7.</em> 
+
+&quot;We&#39;ve found it out! We know where the volunteers go! Daar followed a group of them, as planned, and discovered where and why they disappeared.&quot; <em>He paused, suddenly thinking that the news wasn&#39;t as happy as he made it out to be.</em> &quot;They&#39;re being taken to a- ritual of sorts; a weekly ceremony where they pledge their lives to Thaara. Droves of them enter a section of the temple and never come back out...&quot; <em>Another, slightly longer pause.</em> &quot;...Because they get sacrificed.&quot; <em>He sighed, his mood definitely lower than the start of the log.</em> &quot;We believe they do it to try and summon Thaara, who, as we all know, appears at the end of someone&#39;s life. What we&#39;re doing now is trying to find out why Thaara doesn&#39;t come anymore.&quot; 
+
+<em>He stared into space a bit longer, and ended the log.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/59078e2b64de7d31952f348724f5dadd-E4443.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="850813298826936411" id="message-850813298826936411">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She gulped. Sacrificed?</em> “What’s— does ‘Thaara’ mean anything to anyone?” <em>She murmured.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5955fa8480de766da4f8787583d7ba61-04872.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(41,169,238)">Lieutenant Cilim Chex</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="850814095858728978" id="message-850814095858728978">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He watched the screen with a worried expression on his face. So the natives attacked them possibly due to religious reasons? This situation was becoming more and more unsettling.</em> &quot;I don&#39;t know.. Perhaps it&#39;s a religious figure of some sort to the natives?&quot; <em>He said.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5c8ae71ab9b54adbde1d2ac8ef1689a8-37C0E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="850814451372392449" id="message-850814451372392449">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;d venture to say so, though I&#39;m no xenobiologist. Let&#39;s see the newest log, since I would love to guess that the natives would not like a scientist following in on their cult sacrifices.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/4a6fc34a9bc60546ef4690ba1b6a9a92-71EBA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="warlocksdoitbetter#7048" data-user-id="806348213665529876" style="color: rgb(255,203,37)">Lieutenant Hesria Valar</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="850814649167249448" id="message-850814649167249448">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The knot in her stomach worsened and Hesria worked to stop her hands shaking as she tried to bring up the latest log.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="850814713621512242" id="message-850814713621512242">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The newest log was corrupted along with various others in the list.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/4a6fc34a9bc60546ef4690ba1b6a9a92-71EBA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="warlocksdoitbetter#7048" data-user-id="806348213665529876" style="color: rgb(255,203,37)">Lieutenant Hesria Valar</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="850815167724912680" id="message-850815167724912680">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She picked the most recent one that was not corrupted.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/d8db23255fcaebd238cfad3772746e68-DE112.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Scientist Daar#0000" data-user-id="850810195864584234" style="">Scientist Daar</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Jun-21 08:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="850817095368704060" id="message-850817095368704060">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The face of a Tellarite was visible as Hesria turned on the log. He was agitated, visibly so, and staring with narrowing eyes at what eerily seemed to be right at the away team. This was the Daar that Jack had mentioned.</em>
+
+“No point in formalities.” <em>He grumbled.</em> “Nothing nice about this at all. We’re locking it down— with us inside.” <em>He paused, then picked up a PADD and quickly waggled it in front of the screen. It seemed to have some sort of scan on it, but whatever it was was waved so swiftly it wasn’t decipherable.</em> “Jack says it’s a necessary precaution. I say it’s the stupidest thing I’ve ever heard— we should leave, report our findings. Martha hasn’t said much at all.” <em>He shook his head.</em> “Good thing this station was made to be secured. I have no doubt we’ll be fine.”
+
+<em>Another grumble, a glance at the PADD, and the log ended.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Jun-21 08:28 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/4a6fc34a9bc60546ef4690ba1b6a9a92-71EBA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="warlocksdoitbetter#7048" data-user-id="806348213665529876" style="color: rgb(255,203,37)">Lieutenant Hesria Valar</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="850817637054414889" id="message-850817637054414889">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;If they locked this place down, it might explain why they stopped reporting in... Maybe they&#39;re still here, but hidden somewhere?&quot; <em>Hesria asked hopefully,</em> &quot;Especially if they were trying to hide, that could be why they aren&#39;t showing up on scans, either, if they figured out a way to hide completely?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5c8ae71ab9b54adbde1d2ac8ef1689a8-37C0E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="850817853531619378" id="message-850817853531619378">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Obviously the natives got in though, there&#39;s evidence of that. Maybe they were taken, or maybe they were killed, hard to say.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/59078e2b64de7d31952f348724f5dadd-E4443.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="850818083534405673" id="message-850818083534405673">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;But maybe the scientists fought them off.&quot; <em>She speculated, a bit nervous at the concept of anything else.</em> &quot;They were armed, right? They could probably protect themselves.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5955fa8480de766da4f8787583d7ba61-04872.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(41,169,238)">Lieutenant Cilim Chex</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="850818853977325610" id="message-850818853977325610">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Perhaps, but it still raises the question on where did they go. If there were causalities, wouldn&#39;t we&#39;ve spot them?&quot; <em>The Betazoid piped up. This whole situation was just... ominous. Especially with the mention of the natives being religious and with evidence of the engagement here. He hoped they were still alive... somehow. He didn&#39;t want to think of them as dead.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/4a6fc34a9bc60546ef4690ba1b6a9a92-71EBA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="warlocksdoitbetter#7048" data-user-id="806348213665529876" style="color: rgb(255,203,37)">Lieutenant Hesria Valar</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="850819760333914162" id="message-850819760333914162">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;We should check everywhere in this outpost first, right? Just in case?&quot; <em>The Trill looked extremely nervous, but was trying to keep it together.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5c8ae71ab9b54adbde1d2ac8ef1689a8-37C0E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="850819834346471424" id="message-850819834346471424">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;They could be alive, but don&#39;t forget, there are a billion people in that city. Outnumbered isn&#39;t even the word,&quot; <em>she said softly. She began looking through the data logs for any mention of this Thaara and any religion the natives might have.</em> &quot;Lieutenant Valar, can you contact the ship and report in? Also please send them the video logs if possible. We might be able to find something in Startfleet&#39;s database if the research team was reporting in.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="850822024556970016" id="message-850822024556970016">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>There were faint footsteps getting closer.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/59078e2b64de7d31952f348724f5dadd-E4443.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="850822367126618135" id="message-850822367126618135">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She whipped around, eyes going wide.</em> “What was that? Everyone else heard those, right?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5955fa8480de766da4f8787583d7ba61-04872.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(41,169,238)">Lieutenant Cilim Chex</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="850822632978382898" id="message-850822632978382898">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yes, I heard those, too.&quot; <em>He murmured, becoming anxious as there was nobody else but them- so the footsteps were not welcome.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5c8ae71ab9b54adbde1d2ac8ef1689a8-37C0E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="850822674560188476" id="message-850822674560188476">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Shit...arm yourselves and take cover...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/59078e2b64de7d31952f348724f5dadd-E4443.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="850824389447516160" id="message-850824389447516160">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She followed Amanda’s instructions, willing her hands to be still as she unholstered her phaser and ducked against one of the computers.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5955fa8480de766da4f8787583d7ba61-04872.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(41,169,238)">Lieutenant Cilim Chex</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="850824518569033728" id="message-850824518569033728">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He nodded as he armed himself with the phaser and took cover against one of the consoles.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/4a6fc34a9bc60546ef4690ba1b6a9a92-71EBA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="warlocksdoitbetter#7048" data-user-id="806348213665529876" style="color: rgb(255,203,37)">Lieutenant Hesria Valar</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="850824729131745340" id="message-850824729131745340">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Hesria had been about to comm the bridge and froze, before following orders as well, finding cover and unholstering her phaser.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/d0201280e2bb371d3a19c2c897cd154f-67CA4.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ugh#0000" data-user-id="850810195864584234" style="">Ugh</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Jun-21 08:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="850824929820540928" id="message-850824929820540928">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Marine entered the map room, saw everyone taking cover and practically screeched (translated).</em> &quot;<em><strong>DEMON.</strong></em>&quot; <em>The words rang out through the halls. He ducked behind cover.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5c8ae71ab9b54adbde1d2ac8ef1689a8-37C0E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 08:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="850825081588285521" id="message-850825081588285521">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Fuckkkkk whyyyy...Amanda thought to herself.</em> &quot;We&#39;re not demons, we come in peace!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/d0201280e2bb371d3a19c2c897cd154f-67CA4.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ugh#0000" data-user-id="850810195864584234" style="">Ugh</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Jun-21 08:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="850825740164923402" id="message-850825740164923402">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The alien ignored Amanda and began to give suppressing fire, sparks flying as the bullets hit the far wall.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/951655ffd565dd0c16813d4adab65ec1-5D20C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Priest Ogh#0000" data-user-id="850810195864584234" style="">Priest Ogh</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Jun-21 08:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="850825872046161971" id="message-850825872046161971">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Waltzing in behind Ugh was the pale, looming figure of Ogh. He was flanked on both sides by similar looking marines.</em> “<strong>YOU MEAN TO CAUSE HARM TO THE AZANTI.</strong>” <em>He boomed.</em> “<strong>SURRENDER YOURSELVES.</strong>”</span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Jun-21 08:58 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/d0201280e2bb371d3a19c2c897cd154f-67CA4.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ugh#0000" data-user-id="850810195864584234" style="">Ugh</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Jun-21 08:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="850826225449435146" id="message-850826225449435146">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ugh stood up to take his place in the platoon, still giving suppressing fire.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5c8ae71ab9b54adbde1d2ac8ef1689a8-37C0E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 09:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="850826378827661312" id="message-850826378827661312">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Double fuuuuckkk.</em> &quot;We don&#39;t want to cause any harm! We&#39;re just explorers!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/951655ffd565dd0c16813d4adab65ec1-5D20C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Priest Ogh#0000" data-user-id="850810195864584234" style="">Priest Ogh</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Jun-21 09:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="850827170288631848" id="message-850827170288631848">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“<strong>YOU EXPLORE BEYOND YOUR BOUNDS.</strong>” <em>Ogh shouted. Though maybe that was just his default volume.</em> “<strong>SURRENDER THIS HELL PLACE NOW.</strong>”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5c8ae71ab9b54adbde1d2ac8ef1689a8-37C0E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 09:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="850827787374952549" id="message-850827787374952549">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Please we really mean no harm at all, stop firing at us!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 09:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="850829743422439434" id="message-850829743422439434">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>Several more Azanti appeared behind the away team, weapons raised.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5c8ae71ab9b54adbde1d2ac8ef1689a8-37C0E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 09:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="850830346559029249" id="message-850830346559029249">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Oh today...enough of this...Amanda grunted and hit her comm badge.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/59078e2b64de7d31952f348724f5dadd-E4443.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 09:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="850830721139474433" id="message-850830721139474433">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She whipped around, still gripping her phaser tightly and staring wide eyed at the members of the species. Could they even beam out in front of all these prewarp people?</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/d0201280e2bb371d3a19c2c897cd154f-67CA4.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ugh#0000" data-user-id="850810195864584234" style="">Ugh</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Jun-21 09:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="850832640773062656" id="message-850832640773062656">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Azanti soldier stopped firing and spoke with a booming voice.</em> &quot;<em>ARTICULATES WHERE WE CAN SEE THEM.</em>&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5c8ae71ab9b54adbde1d2ac8ef1689a8-37C0E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 09:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="850833026815754280" id="message-850833026815754280">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>With a beamout not coming quickly, Amanda had to make a decision. She called out to her away team.</em> &quot;Ok, drop your stuff and let&#39;s surrender.&quot; <em>She would stash her kit and phaser under a console and raise her hands.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/59078e2b64de7d31952f348724f5dadd-E4443.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 09:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="850833068121128970" id="message-850833068121128970">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She raised her hands slowly, trying to nudge her tricorder behind her in the process. It was an awkward maneuver, but these people didn’t need to see anymore than they already had.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/4a6fc34a9bc60546ef4690ba1b6a9a92-71EBA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="warlocksdoitbetter#7048" data-user-id="806348213665529876" style="color: rgb(255,203,37)">Lieutenant Hesria Valar</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 09:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="850833115810234378" id="message-850833115810234378">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Hesria followed suit, holstering her phaser and raising her hands in surrender.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5955fa8480de766da4f8787583d7ba61-04872.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(41,169,238)">Lieutenant Cilim Chex</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 09:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="850833354428383253" id="message-850833354428383253">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He put his phaser, medical kit, and tricorder on the ground and raised his hands to surrender.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 09:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="850833550832173087" id="message-850833550832173087">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>One of the soldiers walked up to each of them and pulled off their badges while another took the phasers.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Jun-21 09:31 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="mildpanic" title="mildpanic" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/734519773932814377-BFF4D.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5c8ae71ab9b54adbde1d2ac8ef1689a8-37C0E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 09:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="850833670944456704" id="message-850833670944456704">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Swell,&quot; <em>Amanda muttered, she just got out of the Iconian prison and now she was captured by a scary cult.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/951655ffd565dd0c16813d4adab65ec1-5D20C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Priest Ogh#0000" data-user-id="850810195864584234" style="">Priest Ogh</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Jun-21 09:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="850838509874970634" id="message-850838509874970634">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The away team was led by force to the <span class="mention">#temple-holding-cells</span> .</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/3698f0d51047f135ae1b409f989fede1-0AA37.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Lt. JG. Nedras</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 11:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="850858480809934849" id="message-850858480809934849">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras walked in, as the d4 determined, and started once again looking for either computers or people. It was really all about information in his opinion. He did hear Maleb, but that was quite literally the furthest topic from his mind.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Jun-21 11:08 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 11:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="850858828828639262" id="message-850858828828639262">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The giant map in the centre of the room was still on.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/3698f0d51047f135ae1b409f989fede1-0AA37.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Lt. JG. Nedras</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 11:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="850859056570171403" id="message-850859056570171403">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Perfect! He sighed sharply and tried to look for some kind of cultural database or comms unit on the heavily damaged console.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 11:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="850859295947751444" id="message-850859295947751444">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>There was a large list of all the landmarks in the city. (As well as the &#39;you are here&#39; dot.)</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Jun-21 11:11 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/3698f0d51047f135ae1b409f989fede1-0AA37.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Lt. JG. Nedras</span>
+
+
+        <span class="chatlog__timestamp">05-Jun-21 11:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="850860453726781490" id="message-850860453726781490">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Well, at least there was that. He took a few seconds to memorize as much as he could of the map, then gave accessing the database another unsuccessful try before heading into the hall once more.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/22f0ea69c9181596ea984b2c160a943f-C8AA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Roode</span>
+
+
+        <span class="chatlog__timestamp">06-Jun-21 12:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="850875361923039263" id="message-850875361923039263">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie walked into the map room, before walking towards the map and taking it in.</em> “Right, here’s the closest city. They must be here....”</span>
+
+                                <span class="chatlog__edited-timestamp" title="06-Jun-21 12:14 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/608482a4eea2f6a8a1fb210c6df403e0-D7B89.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ob2lander961#9650" data-user-id="226526243363749890" style="color: rgb(245,182,10)">Ensign Serapia Albitina</span>
+
+
+        <span class="chatlog__timestamp">06-Jun-21 12:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="850875856624418827" id="message-850875856624418827">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Serapia followed after and looked at where Maggie pointed.</em> &quot;What makes you say that Lieutenant?&quot; <em>She asked curiously.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/22f0ea69c9181596ea984b2c160a943f-C8AA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Roode</span>
+
+
+        <span class="chatlog__timestamp">06-Jun-21 12:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="850876485030903878" id="message-850876485030903878">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie crossed her arms.</em> “It’s just a  educated guess. It’s the nearest spot to this place, and it looks large enough to hold a prison. Of course we should look around more to see if we can   confirm that, but my money’s on that.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/608482a4eea2f6a8a1fb210c6df403e0-D7B89.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ob2lander961#9650" data-user-id="226526243363749890" style="color: rgb(245,182,10)">Ensign Serapia Albitina</span>
+
+
+        <span class="chatlog__timestamp">06-Jun-21 12:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="850877140874559537" id="message-850877140874559537">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She nodded.</em> &quot;It&#39;s more than what we had a minute ago. Though leaving the Commander and the Lieutenant isn&#39;t something I favor.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/5dcd144b930a46f718f998a5f657f8ad-348DC.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(41,169,238)">Lt. Cdr. Hurkath</span>
+
+
+        <span class="chatlog__timestamp">06-Jun-21 12:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="850877272725782559" id="message-850877272725782559">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] *Hurkath&#39;s voice was loud and clear in the small space, &quot;Everyone meet in the hallway.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/22f0ea69c9181596ea984b2c160a943f-C8AA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Roode</span>
+
+
+        <span class="chatlog__timestamp">06-Jun-21 12:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="850877402732036126" id="message-850877402732036126">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie heard the voice, before heading into the hallway.</em> “Yeah, let’s go meet up with them.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/608482a4eea2f6a8a1fb210c6df403e0-D7B89.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ob2lander961#9650" data-user-id="226526243363749890" style="color: rgb(245,182,10)">Ensign Serapia Albitina</span>
+
+
+        <span class="chatlog__timestamp">06-Jun-21 12:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="850877543555923996" id="message-850877543555923996">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Serapia would follow after her into the hallway</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Fena%20III%20-%20Observation%20Post%20-%20central-map-room%20%5B850759323117289472%5D.html_Files/7859a16a7064ca3af78a2fdb4ad722b0-400CB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">06-Jun-21 12:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="850877582245101578" id="message-850877582245101578">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Having been here for a short while, she then exited back into the hallway.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 69 message(s)</div>
+</div>
+
+</body>
+
+</html>

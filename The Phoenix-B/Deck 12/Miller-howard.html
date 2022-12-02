@@ -1,0 +1,2159 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - miller-howard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Deck 12: Lieutenant Quarters I / miller-howard</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">01-Jan-21 01:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="794375365736136714" id="message-794375365736136714">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop entered and looked around. Both if their belongings had been taken to the quarters. She immediately started to put things away. She was smiling so widely. this was all so great! A promotion and moving in with Aaron! She was so happy!</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/0a98ed443c8301a39fb49ca786235416-54506.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">01-Jan-21 02:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="794385348087644181" id="message-794385348087644181">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Ding!</em>
+<div class="quote">To: Lt. JG. Lithop Howard
+From: Lt. Cmdr T&#39;Svai
+</div>&gt; 
+<div class="quote">Lieutenant,
+</div>&gt; 
+<div class="quote">Though many requests for space re-allocation pass through the Operations department on any given day, this is one that was particularly satisfying to make note of. Congratulations on your recent promotion. You unquestionably deserve it. 
+</div>&gt; 
+<div class="quote">Celebration would of course be entirely illogical, as recognition for one&#39;s skill in the form of timely promotion should really not be considered an extraordinary event so much as a desired outcome and a sign of a balanced feedback system, but if the thought of celebrating has not yet come to mind, please do give it consideration anyway. Very strong consideration.
+</div>&gt; 
+<div class="quote">Sincerely,
+Lt. Cmdr. T&#39;Svai</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/8eb81bd35f15485596ff0b9a1b0e91b4-2516F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 12:33 AM</span>
+
+            <div class="chatlog__message " data-message-id="803059949709557801" id="message-803059949709557801">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] Ding!
+
+    To: Lt. Jg. Lithop Howard
+    Cc: Lt. Lokath Targesh
+
+<div class="quote">Good morning Lt. Jg. Howard, I&#39;m messaging you to inform you that you&#39;ve been assigned to shadow Cmdr. Dunamis on two days of their choice during the work week, I will be altering work schedules to reflect their preference in the coming days. In light of the upcoming war and the general unease of science having idle hands, I thought it best to add some additional skills to my staff to help both mentally and emotionally. I hope you enjoy your shadow time and that it improves your day-to-day.
+</div>&gt; 
+<div class="quote">    Best!
+    -Lt. Sara A. Bj&#248;rge, CSO
+    USS Phoenix, Starfleet</div></span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Jan-21 12:33 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 03:54 AM</span>
+
+            <div class="chatlog__message " data-message-id="803110442691330099" id="message-803110442691330099">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop entered her room and got changed before collapsing into the bed, Aaron was on a late shift tonight, so she&#39;d hopefully see him in the morning. She pulled out her PADD and was immediately shocked. She had been expecting that something would happen with science to make them more useful, and the shadowing idea was honestly a really good one. Lithop was just shocked that out of all the people on the ship, she had been paired with Commander Dunamis, the first officer. She thought through how this could have happened. Sure she was bridge trained, and yeah she had said she wanted to spend more time on the bridge but seriously? The first officer? She sent a message to Sara.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/8eb81bd35f15485596ff0b9a1b0e91b4-2516F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 04:01 AM</span>
+
+            <div class="chatlog__message " data-message-id="803112388253057054" id="message-803112388253057054">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Ding!</em>
+
+<div class="quote">Hello Lithop!
+</div>&gt; 
+<div class="quote">No my message is quite correct. I picked Commander Dunamis for you because you&#39;ve expressed interest in command and spending more time on the bridge. I thought you might like to get a taste of how it feels to shadow those types of responsibilities. 
+Are you displeased?
+</div>&gt; 
+<div class="quote">- Sara <img class="emoji " alt="🌻" title="🌻" src="https://twemoji.maxcdn.com/2/72x72/1f33b.png"></div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/8eb81bd35f15485596ff0b9a1b0e91b4-2516F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 04:13 AM</span>
+
+            <div class="chatlog__message " data-message-id="803115211674353694" id="message-803115211674353694">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] Ding!
+
+<div class="quote">You&#39;ll do amazing, Lithop! I would not have put this on you if I did not trust your capabilities to impress the command staff completely and utterly. You are a very intelligent, communicative young woman and I know Dune and Syre will be best pleased to have you around.
+</div>&gt; 
+<div class="quote">    Believe in yourself, I do!
+</div>&gt; 
+<div class="quote">    -Sara <img class="emoji " alt="🌻" title="🌻" src="https://twemoji.maxcdn.com/2/72x72/1f33b.png"></div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="803116461753106472" id="message-803116461753106472">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Ding!</em>
+
+<div class="quote">You always do~ Sleep tight Lithop.
+</div>&gt; 
+<div class="quote">-Sara <img class="emoji " alt="🌻" title="🌻" src="https://twemoji.maxcdn.com/2/72x72/1f33b.png"></div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 04:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="803121133674561546" id="message-803121133674561546">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop smiled to herself about the situation, she though about it for a while, stressing a bit but mostly happy. She then heard the announcements new uniform and stood up to take a look at them. On a basic level, she knew it waa because they were at war, but they looked really pretty, and it would be good to have a change. Speaking on change, Lithop thought, looking at a piece of her hair, she went into the bathroom. She studied herself, with this new promotion, the work with Dunamis, the new uniforms, she had an idea. She smiled to herself and then replicated a pair of scissors. She spend a few minute playing with her hair before starting.</em>
+<em>it took her half an hour, but eventually, she had managed to cut her previously long hair into a short bob. She knew it wasn&#39;t perfect, but she liked how it looked, she liked how she looked. She planned on going to get it professionally styled in the morning before work, but for now, she was pretty happy with it. A roomba came out of the walls then, to clean up her mess. Lithop smiled at it before heading back to the main room, collapsing into bed, and falling asleep.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="care" title="care" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/711609055021629502-E849D.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="✨" title="✨" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/2728-9BF59.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/17be5439e7a9e0a45c58fd9a7f764c4b-F2D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 03:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="803286393899188296" id="message-803286393899188296">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>[D]The smell of pancakes filled the entire quarters.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 03:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="803289197917896745" id="message-803289197917896745">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop woke up to the smell of pancakes and propped herself up on the bed, her hair even more of a mess this morning due to the fact it was now short.</em> &quot;G-morning.&quot; <em>She said groggily.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/17be5439e7a9e0a45c58fd9a7f764c4b-F2D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 03:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="803291701649211412" id="message-803291701649211412">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Aaron was already wearing the new uniform, happily failing to successfully flip a pancake. On hearing Lithop he turned round, his eyes showing surprise upon seeing the short hair.</em> &quot;Morning. I like what you&#39;ve done with the hair!&quot; <em>He said as he put the slightly crispy pancake on a plate.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 04:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="803294400863797248" id="message-803294400863797248">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Thank you.&quot; <em>She said smiling and running her fingers through her hair in an attempt to calm it.</em> &quot;I cut it last night, decided I needed a change.&quot; <em>She said, getting her leg on and standing up.</em> &quot;You look <em>very</em> handsome this morning.&quot; <em>She went over to where he was cooking and wrapped her arms around his waist for behind.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/17be5439e7a9e0a45c58fd9a7f764c4b-F2D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 04:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="803295307596431370" id="message-803295307596431370">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I can&#39;t wait to see yours, the blue must work really well with the ginger. What do you want on your pancake?&quot; <em>He poured in the batter for the next one and turned around, giving a little peck on her forehead.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 04:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="803299916893650954" id="message-803299916893650954">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Mm.&quot; <em>She said before nuzzling him slightly.</em> &quot;Plain pancakes with syrup are good enough for me.&#39; <em>She said, watching him make the pancakes.</em> &quot;I&#39;m going to go get changed now.&quot; <em>She let go of him and walked to the bathroom.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/17be5439e7a9e0a45c58fd9a7f764c4b-F2D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 04:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="803300711348961325" id="message-803300711348961325">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He turned back around to focus on the pancakes, grabbing the syrup and pouring it on top.</em> &quot;Can&#39;t wait!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 04:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="803303835233157160" id="message-803303835233157160">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop came back in a moment later in the new uniform.</em> &quot;For a wartime uniform, they look really cute.&quot; <em>She did a little twirl, she was really happy with her appearance today. She walked over to Aaron and the pancakes.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/17be5439e7a9e0a45c58fd9a7f764c4b-F2D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 04:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="803304887219126294" id="message-803304887219126294">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He turned back around, plate of pancakes in hand.</em> &quot;...&quot; <em>He slowly set the pancakes down on the table, not breaking eye contact.</em> &quot;WOW! You look brilliant! The blue works so well!&quot; <em>He wrapped Lithop in a hug, resting his chin on her head.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 04:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="803305897581215744" id="message-803305897581215744">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Speak for yourself handsome.&quot; <em>She said, moving to sit at the table.</em> &quot;The pancakes look really good.&quot; &quot;You&#39;re hair&#39;s getting pretty long, soon enough our hiar will be the same length!&quot; <em>She teased, picking up a fork.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/17be5439e7a9e0a45c58fd9a7f764c4b-F2D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 04:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="803306969343459389" id="message-803306969343459389">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Aaron ruffled his hair so that the front was hanging down past his nonexistent eyebrows. She was right, the hair went down to just above his cheeks.</em> &quot;Should I get it cut? It hasn&#39;t been since I got liberated.&quot; <em>He picked up another fork and sat down with his plate of pancakes.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 05:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="803308278703849493" id="message-803308278703849493">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I don&#39;t mind.&quot; <em>She took a bite into the pancakes and her eyes lit up they were good! She ate more.</em> &quot;If it&#39;s important that you keep it, keep it, and if you want it cut, then get it cut.&quot; <em>She shrugged, she knew that the hair could be important to him, considering the ex borg/liberation thing.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 05:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="803310702969618482" id="message-803310702969618482">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>A message from Lithop, from Dune:</em> 
+<div class="quote">To: Lt. JG Lithop Howard
+From: Cmdr.  Dunamis 
+</div>&gt; 
+<div class="quote">Dear Lieutenant Howard, 
+</div>&gt; 
+<div class="quote">I am honored to be given this opportunity to mentor you. With reference to your schedule, Thursday and Friday are perfectly fine. Please come to my ready room after your tabled shifts then. I look forward to this opportunity to teach you.
+</div>&gt; 
+<div class="quote">Thank you.</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/17be5439e7a9e0a45c58fd9a7f764c4b-F2D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 05:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="803311729664065549" id="message-803311729664065549">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Eh, who knows, maybe it could go in a bun?&quot; <em>He laughed.</em> &quot;So who are you shadowing? Sara was talking about it on the chatroom.&quot; <em>He ate his crispy pancake.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Jan-21 05:14 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 05:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="803312123580645426" id="message-803312123580645426">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh yeah!&quot; <em>Looked at him, remembering the last nights events.</em> &quot;I&#39;ll be shadowing Commander Dunamis!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/17be5439e7a9e0a45c58fd9a7f764c4b-F2D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 05:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="803315130036912218" id="message-803315130036912218">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oooh! Shadowing one of the big cheeses of the ship, how does it feel?&quot; <em>He tugged at the collar of his uniform.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 05:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="803318277170266213" id="message-803318277170266213">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;uh, nervous.&quot; <em>She laughed slightly, before continuing to eat.</em> &quot;I don&#39;t want to disappoint him, or anyone for that matter.*</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/17be5439e7a9e0a45c58fd9a7f764c4b-F2D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 05:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="803320069094244383" id="message-803320069094244383">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;You&#39;ll be fine Lithop, I have complete faith in you. You won&#39;t disappoint anyone at all. Besides, Dune is both understanding <em>and</em> forgiving, you&#39;re in good hands.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 05:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="803321427863928842" id="message-803321427863928842">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She took a deep breath.</em> &quot;Hopefully!&quot; <em>Lithop said cheerfully, taking another bit of food.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/17be5439e7a9e0a45c58fd9a7f764c4b-F2D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 06:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="803331123417186367" id="message-803331123417186367">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I should get going, Engineering is a bit hectic with the war and such.&quot; <em>He finished his plate and recycled it in the replicator.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 06:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="803331629657227274" id="message-803331629657227274">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well, good luck!&quot; <em>Lithop said, finishing up her own plate and recycling it.</em> &quot;My shift starts a bit later,&quot; <em>She commented, giving him a kiss and then waving as he headed out the door.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">27-Jan-21 01:20 AM</span>
+
+            <div class="chatlog__message " data-message-id="803796611931176974" id="message-803796611931176974">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop had returned from her ship and from getting her hair professionally styled. She came back, freshened up a bit before heading out to door to meet with Dunamis.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">30-Jan-21 05:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="804939822610907186" id="message-804939822610907186">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop entered her quarters feeling very good about herself. She replicated herself a small dinner and sat down to eat it.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/a_525446c6b5f92017ac309c2e95f89ec2-52621.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">03-Feb-21 09:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="806640880903651338" id="message-806640880903651338">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">Dear <span class="mention" title="Woodster#4268">@Lt. JG. Aaron Miller</span>, 
+</div>&gt; 
+<div class="quote">Efforts are underway to prepare the ship for further combat against the Iconians. It has been decided with Command that in order to maximise repair times aboard the Phoenix, we should begin to utilise the three workerbee crafts that are stored within the shuttlebay.  
+</div>&gt; 
+<div class="quote">During a red alert it may be advised by your Chief Engineering Officer that you remotely pilot these workerbee crafts to aid in repair efforts. Your designated craft is workerbee 01.  
+</div>&gt; 
+<div class="quote">If you have any questions please reply. 
+</div>&gt; 
+<div class="quote">- Cpt. Syrezeaju.</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/a_525446c6b5f92017ac309c2e95f89ec2-52621.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">03-Feb-21 10:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="806646282680401950" id="message-806646282680401950">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">Dear <span class="mention" title="Night Owll#8733">@Lt. JG. Lithop Howard</span>,
+</div>&gt; 
+<div class="quote">Efforts are underway to prepare the ship for further combat against the Iconians. The ship’s housing of civilians has been drawn to my attention. In order to preserve civilian lives, it may be prudent for the ship to undertake saucer separation. With the regular bridge crew moving to the battle bridge, it means that another crew is required to lead the saucer section – housing evacuated civilians – to safety. 
+</div>&gt; 
+<div class="quote">A designated bridge crew for the separation has now been created. You have been assigned as the saucer section’s designated science officer. Full information on all full postings to the vessel shall be made available shortly. 
+</div>&gt; 
+<div class="quote">If you have any further questions please reply. 
+</div>&gt; 
+<div class="quote">- Cpt. Syrezeaju.</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Feb-21 02:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="807078681137905685" id="message-807078681137905685">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>A few days had passed since Lithop had her confrontation with Dune and all things considered, she was ok. During that time she had also gotten word that she would be the designated science officer in the event of saucer separation, which honestly made her rather nervous. Now it was time for her to have another day of Shadowing Dune, as Lithop got dressed and headed out she could only hope it would go better than the last time.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/17be5439e7a9e0a45c58fd9a7f764c4b-F2D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">08-Feb-21 05:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="808390377165815818" id="message-808390377165815818">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>Discord ping sound</em>
+<div class="quote">Hey Lithop! 
+</div>&gt; 
+<div class="quote">We haven&#39;t done anything in ages! 
+Meet me at the holodecks if you&#39;re free?
+-Aaron &lt;3</div></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">08-Feb-21 05:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="808396189850402847" id="message-808396189850402847">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop had once again been abandoned in the void, so she was back in her quarters again when she got Aaron message. Having not hung out with him outside of a few meals between shifts, Lithop replyed back excitedly and headed out the door.</em>
+<div class="quote">On my way!
+&lt;3 Lith</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/17be5439e7a9e0a45c58fd9a7f764c4b-F2D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">10-Feb-21 05:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="809116803526819931" id="message-809116803526819931">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Aaron and Lithop walked in.</em> &quot;So what <em>did</em> you mean in sickbay?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/637075614662393868-CC03F.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="thetea" title="thetea" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/704858386973589625-D7717.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">10-Feb-21 05:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="809120169514237973" id="message-809120169514237973">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop entered the quarters, door shutting behind them. She looked at at Aaron when he asked the question and with this odd combination of a smirk and a blush.</em> &quot;I&#39;ll show you.&quot; <em>And with that, we will fade to black.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="bonk" title="bonk" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/737004715379785728-467E4.png">
+                                <span class="chatlog__reaction-count">9</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">12-Feb-21 10:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="809908136131428373" id="message-809908136131428373">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>In the morning Lithop got up, showered, changing into her uniform and headed out to work, thought thoughts of last night wouldn&#39;t leave her mind, she smiled as she left.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="care" title="care" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/711609055021629502-E849D.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/9af82d66cf1351161d84c55a7aed73f5-8D821.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="MCPO. &#39;Pat&#39; D&#39;Patkatol#0000" data-user-id="810641331532988456" style="">MCPO. &#39;Pat&#39; D&#39;Patkatol</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">14-Feb-21 10:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="810641332397670450" id="message-810641332397670450">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>A small envelope was slid under the door. Inside was a small and simple piece of paper, upon a single sentence was written. &#39;Go to where we first met and you&#39;ll see the next message. - A.&#39;</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/0a98ed443c8301a39fb49ca786235416-54506.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-Feb-21 08:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="810963754287628348" id="message-810963754287628348">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Ding!</em>
+<div class="quote">To: Commander Yllescas Itesh, Lt. JG. Lyras T&#39;Khael, Ensign Virol Ota, Lt. JG. Zulola Jex, Lt. JG. Lithop Howard
+From: Commander T&#39;Svai
+Subject: Debrief
+</div>&gt; 
+<div class="quote">Attention Away Team,
+</div>&gt; 
+<div class="quote">Once you are cleared by Medical and have gone through decontamination, please meet me in the deck two conference room at your earliest convenience for debrief and submit your reports in a timely manner.
+</div>&gt; 
+<div class="quote">Sincerely, 
+Commander T&#39;Svai</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">16-Feb-21 09:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="811344417885519882" id="message-811344417885519882">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ding!</em>
+<div class="quote">Hey Aaron,
+Sorry I wasn&#39;t able to come home last night. We got in late with the children from the Cetus and I stayed there to watch over them, there were so many.  And now, we got notice that we might have been contaminated by something and I&#39;ll need to stay there for longer, Don&#39;t worry though, I feel fine, I just probably won&#39;t be home for a while.
+I love you,
+Lithop</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/17be5439e7a9e0a45c58fd9a7f764c4b-F2D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">16-Feb-21 09:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="811345646845952000" id="message-811345646845952000">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]Discord ping noise.
+<div class="quote">Hey, It&#39;s okay I understand. Do you want me to beam anything over while you&#39;re in sickbay? Also what does Jeremy eat I&#39;ve never taken care of a frog before
+Hope you get out soon, I love you
+-Aaron</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">16-Feb-21 09:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="811346634943889449" id="message-811346634943889449">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Ding!
+
+<div class="quote">Lt. JG Miller,
+</div>&gt; 
+<div class="quote">I have to quarantine with Ensign Skye and others due to what happened on the mission. You&#39;re in charge of Engineering until I get back.
+</div>&gt; 
+<div class="quote">Don&#39;t set anything on fire,
+</div>&gt; 
+<div class="quote">Lt. Cmdr. Higgins</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">16-Feb-21 09:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="811347122951684148" id="message-811347122951684148">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">Thanks for understanding. If you could beam down one of my leg liners that would be great, I&#39;ve been wearing this one for over 24 hours now and it&#39;s getting a little sweaty. Other than that i don&#39;t need anything I can&#39;t replicate down here. And Jeremy should be fine, I fed him before I left for the mission, so unless I&#39;m not back in a week you should be fine. If I am, I&#39;ll send instruction (you&#39;ll need to feed him a live Gutharian mouse i&#39;m sorry) But you don&#39;t need to worry about that right now. Maybe just take him out of his case for a little while, that should be all you need. Thank you for the concern, I love you.
+-Lithop</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/17be5439e7a9e0a45c58fd9a7f764c4b-F2D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">16-Feb-21 09:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="811348355636396053" id="message-811348355636396053">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He read the message and winced a little at the &#39;live&#39; part. That was going to be a hell of a struggle. He put down the PADD and got a leg liner, beaming it over to Sickbay.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cmdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">16-Feb-21 09:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="811350999972446279" id="message-811350999972446279">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Ding!
+
+<div class="quote">Sure, Ota is here too. It&#39;s literally you and like....all the ensigns and Tal. Good luck.</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">19-Feb-21 06:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="812397589319778354" id="message-812397589319778354">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">Aaron,
+we got shot here, but good kind of shot. I be out of here soon if works. If not work you know where I am.</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/17be5439e7a9e0a45c58fd9a7f764c4b-F2D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">19-Feb-21 07:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="812399895599775764" id="message-812399895599775764">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">Oh that a relief! I&#39;m sorry I haven&#39;t written much, Amanda made me acting CEO while she was in quarantine so I&#39;m up to my neck in paperwork. <img class="emoji " alt="🤢" title="🤢" src="https://twemoji.maxcdn.com/2/72x72/1f922.png"> Have you been eating well? I know from experience that when you&#39;re isolated your regular patterns degrade.
+</div>&gt; 
+<div class="quote">See you soon!
+-Aaron
+</div>&gt; 
+<div class="quote">(P.S. I&#39;ve been feeding Jeremy and I think he likes me now)</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/b1107fb5da9b914b60fa013e4ca0409a-36978.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">19-Feb-21 07:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="812400321116504148" id="message-812400321116504148">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">Good, ate food. don&#39;t remember what it called, replicator understood. it was good
+-Lithop</div></span>
+
+                                <span class="chatlog__edited-timestamp" title="19-Feb-21 07:09 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20miller-howard%20%5B794367756581208074%5D.html_Files/17be5439e7a9e0a45c58fd9a7f764c4b-F2D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">23-Feb-21 05:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="813832250755776552" id="message-813832250755776552">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>Ding! Message for Lithop.</em>
+
+<div class="quote">It&#39;s Alice&#39;s first day of school!
+-Aaron
+</div><em>Attached was a picture of Alice standing in smart clothes with a smile on her face.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 51 message(s)</div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,1229 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - visitation-room</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Maximum%20Security%20Penal%20Colony%2012%20-%20visitation-room%20%5B835977350281822258%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Maximum Security Penal Colony 12 / visitation-room</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Maximum%20Security%20Penal%20Colony%2012%20-%20visitation-room%20%5B835977350281822258%5D.html_Files/14bf4840f0eed784c7a730875db1f48b-4AD6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Theodosia Coleridge#0000" data-user-id="835988207778791434" style="">Theodosia Coleridge</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 10:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="835988208600481842" id="message-835988208600481842">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>It was with a perhaps uncharacteristic silence that Theo moved through the corridor, her heels traded for flats (as per the rules) and careful effort being put into quick, efficient movement. She was here for one purpose and one purpose only - not to dawdle or delay for any reason whatsoever.</em>
+
+<em>A late night in her office, mulling over the situation, had turned into an investigation - this one private, her own, off the record, so to speak - and that had turned into facts she couldn’t deny about previous events and herself and, most importantly, the Iconians. She didn’t trust them to be consistent (they were the enemy, after all, and seemed to change their tactics with every encounter), but she was familiar enough with the basic facts about them to know that something didn’t quite line up. Something that had <strong>serious</strong> consequences.</em>
+
+<em>Her movements went unrestricted by the nearby guards, a quick glance at each of them making it evident that she was <strong>not</strong> an escaping prisoner. Not that she was wearing anything like what a prisoner would be wearing, but with the history of some of the people held in this facility? They couldn’t be blamed for being paranoid. Hell, Coleridge herself was paranoid, even if in her mind it was just thoroughness.</em>
+
+“Coleridge, Theodosia M.” <em>Identity verified by voiceprint, she stepped into the visitation room and sat on the provided chair, crossing her legs neatly as she pulled out a notebook - an actual, physical notebook, made of paper. You couldn’t be too careful when the enemy - well, not enemy anymore, she supposed - had a history of hacking even in circumstances where hacking shouldn’t have been possible.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="reecat" title="reecat" src="Star%20Trek_%20Phoenix%20-%20Maximum%20Security%20Penal%20Colony%2012%20-%20visitation-room%20%5B835977350281822258%5D.html_Files/784816956628009000-A45D1.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Maximum%20Security%20Penal%20Colony%2012%20-%20visitation-room%20%5B835977350281822258%5D.html_Files/d1148726e277dd451ba52315c16415b6-5C0EA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Jericho Giles#0000" data-user-id="835988207778791434" style="">Jericho Giles</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 10:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="835997095500447755" id="message-835997095500447755">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The arrival of the prisoner that Coleridge was here to see was announced by the flickering to life of a holofield which cut the table directly in half. The only indication of its activity was the faint hum of energy as it powered on – it was rather lucky that Coleridge had opted to stick to her own side of the table, considering how it would have activated at the presence of any misplaced fingers. Despite the armed guards who stood at each entrance – one entrance at the officer’s side of the room, one entrance at the prisoner’s – precautions were still taken. You couldn’t expect less from a prison designated as maximum security, really.</em> 
+
+<em>The activation of the holofield was followed by the dull click of doors unlocking and the hydraulic hiss of them then opening. It was flanked by another two guards that the ‘enemy’, as Coleridge seemed determined to think of him as, entered the visiting room. Clad in the white prison uniform which was designed to contrast with the gunmetal grey of the building’s interior, the ‘enemy’ looked more akin to a ghost than anything. The uniform almost seemed to be the same colour of his skin, pallor even worse than usual, and standing out were numerous dark bruises which lined both sides of his face.</em> 
+
+<em>It was hardly the refined look that he was used to conveying, Harris tweed and a neatly trimmed beard swapped out for an appearance which was decidedly ragged, but the least that he could do was keep his posture as perfect as possible as he crossed the distance between the door and the long table which dominated the otherwise empty area of the visiting room. It was with his back straight and hands held neatly upon the table that he took his seat, tired eyes somehow still conveying an analytical gaze as he looked to the person who had arrived to visit – and how he would have loved to have the first word, but the presence of the armed guards behind him made him well aware that he should do otherwise.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129402;" title="&#129402;" src="Star%20Trek_%20Phoenix%20-%20Maximum%20Security%20Penal%20Colony%2012%20-%20visitation-room%20%5B835977350281822258%5D.html_Files/1f97a-338D5.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Maximum%20Security%20Penal%20Colony%2012%20-%20visitation-room%20%5B835977350281822258%5D.html_Files/14bf4840f0eed784c7a730875db1f48b-4AD6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Theodosia Coleridge#0000" data-user-id="835988207778791434" style="">Theodosia Coleridge</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 11:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="836012731508850718" id="message-836012731508850718">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Mister Giles,” <em>Coleridge said, cocking her head and drawing out her vowels in an expression of something between arrogance and civility just as soon as he sat down. Ordinarily, she would have jumped straight to the point, alerted him of what she’d found and the implications of it and all, but there was a bit of investigating to do, to read the man’s character. This was an opportunity to get a good, long look at his body language. (Coincidentally, she’d started staring, analyzing every detail from the specifics of the pattern of his spots to his posture, to his breathing pattern, and was cross-referencing them with her memory of the footage from the museum). Theo smiled that mostly-fake, condescending smile.</em> “I trust that they’ve treated you well?”
+
+<em>It wasn’t that she didn’t actually care or was willingly ignoring the evidence, of course. Like she always insisted, she wasn’t a savage. But the niceties were very much so a delay as she focused more on the bruises and the pallor than the conversation, and she put little effort into hiding it. There wasn’t a pattern to the marks… They weren’t inflicted by fists, that was certain. The angle wasn’t right for them to be self-inflicted, and they were too broad, anyway. Various ages.... Theo computed the details, quite quickly arriving at the conclusion that no one had bothered to catch him when he had had seizures. Had they not cared enough to so much as use a dermal regenerator? Really, why was he put in potentially dangerous situations? That wasn’t how the Federation was supposed to treat their prisoners. That was inhumane.</em>
+<img class="emoji " alt="divider" title="divider" src="https://cdn.discordapp.com/emojis/777719270389973043.png"></span>
+
+                                <span class="chatlog__edited-timestamp" title="26-Apr-21 12:03 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="836012746939039745" id="message-836012746939039745">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>That would have to be dealt with later, though. Coleridge made a few notes in her notebook, not so much supplementing her memory as taking down evidence, before turning her razor-sharp gaze back to the Trill, less focused on the details this time. She hadn’t been wrong, not really - she’d come to appropriate conclusions based on the evidence available at the time, and the evidence <strong>had</strong> been perfectly damning - but that didn’t mean that there wasn’t a certain sense of shame that came with returning to the case, especially with the consequences for Mr. Giles.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Maximum%20Security%20Penal%20Colony%2012%20-%20visitation-room%20%5B835977350281822258%5D.html_Files/d1148726e277dd451ba52315c16415b6-5C0EA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Jericho Giles#0000" data-user-id="835988207778791434" style="">Jericho Giles</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">26-Apr-21 12:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="836020529286742077" id="message-836020529286742077">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>From the moment they had met, Giles had decided that he very much did not like the way that Coleridge enunciated her words. It was some sort of ingrained trick of deception, he was certain, utilised so a person’s tone never conveyed how they actually felt. Even for him and his former years in the field it seemed almost impossible to pick apart Coleridge’s tone. In normal circumstances it would have thoroughly annoyed him. Today two other states overrode that proclivity for frustration: tiredness, firstly, and curiosity for a second – curiosity in regards to exactly what the division head of MADD was doing here. He was certain that this was hardly a social call.</em> 
+
+<em>To the guards in the room this interaction may have been either entirely amusing or completely perplexing considering how the two seemed so intent upon an in-depth analysis of the visual appearance of one another, determined that surface appearances could tell you far more than what you could initially see. That cloy smile of Coleridge’s was picked up upon, as was the way that she noted something down in her notepad – physical paper, he would have called her pretentious if it wouldn’t have turned him into a hypocrite – and despite him picking out as many details as possible, it hardly answered the question of why the woman was here. …How dire.</em> 
+
+<em>It was with a voice which was perhaps somewhat gravelly or scratchy that he replied, and it was with distaste that he found himself doing so. Giles was well aware that any little detail such as that would be picked up upon and he had no doubts that Coleridge had her analytical skills sharpened to a fine point; she would likely instantaneously pick up on the evidence that he had barely spoken during his duration of time here. When you were put against someone such as Coleridge in the Intelligence field then existence became a convoluted game of investigation and stoicism – and so far, Giles was undeniably losing.</em>
+<img class="emoji " alt="divider" title="divider" src="https://cdn.discordapp.com/emojis/777719270389973043.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="836020540275687436" id="message-836020540275687436">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">”Ms. Coleridge,” <em>he started, words accented by a polite dip of his head.</em> “A pleasure. I can hardly fault the care of our fine prison staff; the Federation only employ the finest, after all.” <em>That faintly glowing, blue-eyed gaze flitted over Coleridge’s shoulder at that and fell upon the two guards to the sides of the doorway instead.</em> “I must say, your visit is rather unexpected – company <em>is</em> rather scarce, considering how no one desires to take a trip all the way <em>here</em> of all places. Might I ask what I have done to warrant such a visit..?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Maximum%20Security%20Penal%20Colony%2012%20-%20visitation-room%20%5B835977350281822258%5D.html_Files/14bf4840f0eed784c7a730875db1f48b-4AD6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Theodosia Coleridge#0000" data-user-id="835988207778791434" style="">Theodosia Coleridge</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">26-Apr-21 04:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="836258571397890178" id="message-836258571397890178">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Human squinted just slightly, making the split-second decision of whether to answer or not. Not, she concluded, would be better for the time being. There was something fascinating about the little battles of wit she and Giles always managed to find themselves in, and there was more information to be gathered. It seemed, for example, that the man had hardly said a word in weeks or months, judging by the state of his voice, or that he desperately needed a glass of water - she would have considered the latter more deeply if it weren’t for the fact that she was certain that prisoners were never deprived of enough food and water, even if they were evidently not treated appropriately after having seizures. Was she certain? Another moment was taken to visually scan him, looking for signs of dehydration or malnutrition. It wasn’t motivated by guilt, of course. Absolutely not. There was no reason to feel guilty. It was simply ensuring that Federation regulations were being upheld.</em>
+
+“As I’m sure you’re well aware,” <em>she finally began,</em> “I can’t force you to share the details of Laika’s training, or the tasks she performs. What I <em>can</em> do, however, is ask you, Mr. Giles.” <em>Coleridge paused to find a particular page in her notebook, reading the details inside as she elaborated.</em> “I spoke with a member of your staff some time ago, and they explained that, at one point, they suffered a fainting spell. They also claimed that Laika utilized her training to prevent them from being injured. Is this something that Laika is capable of?” <em>she asked, keeping up that same vague tone and offering no reason whatsoever for her questions, verbal or otherwise. Theo had gotten his attention simply by being there, and he was wondering why - that was apparent just from his body language, the way he was studying her right back despite seeming to be exhausted. Perfect. Coleridge was in control, and she knew it.</em>
+<img class="emoji " alt="divider" title="divider" src="https://cdn.discordapp.com/emojis/777719270389973043.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="836258579119734844" id="message-836258579119734844">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>It occurred to her, of course, that Giles could simply lie, if he <strong>had</strong> been at the museum and had seen what had happened. Then again, Laika hadn’t so much as looked away - she may have been well-trained, but she was still a dog, <strong>and</strong> if he said that Laika couldn’t help people other than her handler, it meant that one of the people working for Giles had lied, and if his staff member had lied, then it would warrant a whole separate (unofficial) investigation. More of a look-see, really. Christ, the web of facts and to-do’s was getting complex. It wasn’t anything she couldn’t handle, but it was still plenty to keep track of while watching for any sign of dishonesty from Giles.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Maximum%20Security%20Penal%20Colony%2012%20-%20visitation-room%20%5B835977350281822258%5D.html_Files/d1148726e277dd451ba52315c16415b6-5C0EA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Jericho Giles#0000" data-user-id="835988207778791434" style="">Jericho Giles</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">26-Apr-21 05:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="836271657185574964" id="message-836271657185574964">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>In all truthfulness he had expected some sort of further interrogation to be launched into. You could hardly expect anything else considering it was Coleridge who had arrived – both her status as MADD’s division lead and her own reputation made it easy to jump to that conclusion. Giles had been more than ready for some sort of rapid-fire question-and-answer session of everything that hadn’t been said during the initial investigation back upon Earth. Maybe something had happened and they had decided that he was a suspect in the matter, and so this visitation was set to be an effort to implicate him further in more crimes that definitely were not conducted by himself.</em> 
+
+<em>He would hardly have known if something had happened upon Earth – or anywhere in the Federation for that matter. For some, punishment came from the lack of freedom; the basic amenities, the being bored out of your skull of seeing the same four walls day in and day out. For some it was the lack of social interaction that was not fraught with danger, considering how there was always someone ready to fight (in a maximum security prison such as this one there was no getting away from the brutes, it seemed). For Giles, punishment had largely came in the fact that he was so out of the loop. For someone who prided themselves on the acquisition of foreign Intelligence and always knowing what was going on, not even knowing what was happening within the Federation’s own walls had been a complete and utter nightmare.</em>
+<img class="emoji " alt="divider" title="divider" src="https://cdn.discordapp.com/emojis/777719270389973043.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="836271661027557401" id="message-836271661027557401">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The start to this interrogation of Coleridge’s was hardly the beginning that he had imagined. Giles did not bother to conceal his look of surprise which rather swiftly devolved into a look of confusion, brow furrowed at the question. Laika? Why was she talking about the dog? It was rather thankful that Giles managed to reel in his emotions considering the sudden proactive bout of anger. If Coleridge had hurt that dog then he didn’t know what he would do – it would be something that would land him in trouble with the guards, he was certain. Hoping to refrain from that he opted to answer, but it was with a joking, ever so slightly sarcastic response.</em>
+
+“Laika is more than capable of tasks such as that, yes. In general terms she is trained to assist <em>me,</em> but there have been instances where she has aided passers-by. She can alert for others, for example.” <em>The Trill paused and offered a smile that had to be fake, or cloying, or decidedly not a standard, good old, happy smile.</em> “I had no idea that you were interested in the work of service dogs, Ms. Coleridge. I <em>am</em> still an advocate for one of our charities should you wish for me to put you in touch with them.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Maximum%20Security%20Penal%20Colony%2012%20-%20visitation-room%20%5B835977350281822258%5D.html_Files/14bf4840f0eed784c7a730875db1f48b-4AD6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Theodosia Coleridge#0000" data-user-id="835988207778791434" style="">Theodosia Coleridge</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">26-Apr-21 09:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="836341557526790164" id="message-836341557526790164">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She returned the sarcastic smile, keeping that pretense of civility.</em> “Well, in that ca-” <em>No, wait. Acknowledge what you saw. She sighed and leaned back in her chair just slightly, a hint of disbelief on her face. Ordinarily, Coleridge wouldn’t have cared what Giles thought of her, but this was completely ridiculous.</em> “<strong>Mr. <em>Giles</em></strong>, you don’t really think I would hurt <em>a dog</em>, do you?” <em>she asked sarcastically before mumbling something similar to, ‘I swear to God, this is madness,’ - it was hard to tell, with her voice slightly muffled by the holofield - and shaking her head.</em> “Laika is <strong>perfectly</strong> safe.”
+
+<em>Rather than keep elaborating on what she’d been intending to say, Theo pulled out a small PADD she’d tucked away in the inner pocket of her coat.</em> “Upon revisiting the investigation into your case, I had the opportunity to view footage I hadn’t had access to at the time- Drop the field,” <em>she explained, interrupting herself to address the guards behind her with a bit of impatient annoyance.</em> “Yes, I’m sure. Drop the field.” <em>With that done, she slid the device onto the other side of the table, leaving it square in the middle; Coleridge had seen what she needed to see and didn’t particularly expect to be attacked. On the screen was the footage Giles had already seen, <strong>and</strong> an additional camera angle not seen by the Trill before. The latter quite clearly showed a young woman tripping and falling maybe five meters away from the Trill and his dog… and Laika not reacting in the slightest.</em> “Does this strike you as unusual?”
+<img class="emoji " alt="divider" title="divider" src="https://cdn.discordapp.com/emojis/777719270389973043.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="836341688141086720" id="message-836341688141086720">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>If she’d been observing Giles a moment ago, she was <strong>scrutinizing</strong> him now, gaze jumping from the PADD to his face to his posture to whether his hands were in sight or not. The question itself meant very little - if Giles knew what was good for him, he’d say it was unusual, the rest of the investigation had already been done, and innocent until proven guilty and all that - but it was important to say something, to keep control of the conversation and to get the chance to analyze his reaction.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Maximum%20Security%20Penal%20Colony%2012%20-%20visitation-room%20%5B835977350281822258%5D.html_Files/d1148726e277dd451ba52315c16415b6-5C0EA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Jericho Giles#0000" data-user-id="835988207778791434" style="">Jericho Giles</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 09:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="836696682212098058" id="message-836696682212098058">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">”I do believe that you might endorse the harm of an innocent creature in order to get under the skin of your opponents, yes,” <em>he mused coolly – and almost instantly as a quick-fire retort – when Coleridge sounded entirely unimpressed and sarcastic at the topic of her purposefully harming the dog. It wasn’t even the thought of Laika being harmed that got under his skin; it was Coleridge’s mannerisms and wording and</em> <em><strong>everything</strong></em> <em>that she did. Words could not express how much this woman frustrated him – but that was likely the whole point, was it not, just part of her technique. The sooner you annoyed a person so much that they broke, the sooner that you got results.</em> 
+
+<em>He would have continued his retort had it not been for the woman calling for the holofield to be dropped. This brought multiple layers of surprise; for one, that she was trusting him enough to lower the field – had she not been so vehemently against him and intent upon having him locked away for the remainder of this lifetime? For two, there was the fact that she had ‘revisited’ his case. Why would she do that in the first place? Had Coleridge had her doubts from the start? If anyone knew anything about Giles it was the fact that he could be very easily drawn in – curiosity was his flaw – and it was as such that he pushed aside the frustration and dislike and found himself intrigued.</em> 
+
+<em>Squinting a little (how he missed his glasses, having lost them at some stage and not having had the gall to ask if they could be replaced) he watched the footage upon the PADD. The location was obvious; his old place of ‘employment’ within that museum on Rigel III had hardly changed over the years. He watched the image of himself but not himself for a moment before he took in the wider details, looking at the people around them – and then he watched the woman fall. So</em> <em><strong>that</strong></em> <em>was the reason why Coleridge was so interested – she had noticed a discrepancy.</em> <em><strong>Finally.</strong></em>
+<img class="emoji " alt="divider" title="divider" src="https://cdn.discordapp.com/emojis/777719270389973043.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="836696688445882399" id="message-836696688445882399">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He continued watching until the footage cut out. Where he had been determined to keep up the perfect posture before he now sat back, calmer than he had been for the entirety of this conversation.</em> “It’s more than certainly unusual, yes,” <em>he stated while folding his arms across his chest in a move that might have seemed uncharacteristic. It seemed to accent just how unrefined he looked compared to his usual.</em> “Generally, Laika responds to any sort of harm that comes to a person. As I say, she’s trained for it – and you’ve witnessed evidence of such. Her not reacting is hardly within her usual behavioural pattern- But you already know that, hence why you are here. I am glad to see that, despite our differences, you do not despise me <em>too</em> much that it might cloud your judgement. Even you know how to identify a discrepancy – is that correct, Ms. Coleridge?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Maximum%20Security%20Penal%20Colony%2012%20-%20visitation-room%20%5B835977350281822258%5D.html_Files/14bf4840f0eed784c7a730875db1f48b-4AD6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Theodosia Coleridge#0000" data-user-id="835988207778791434" style="">Theodosia Coleridge</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">28-Apr-21 03:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="836979339841110088" id="message-836979339841110088">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Part of her wanted to continue arguing on the subject of her willingness to harm Laika - that was a level of cruelty even Theo, in all of her games and scheming, wouldn’t stand for. But, frankly, Giles could think what he wanted - she didn’t care, or she told herself she didn’t care. She did her job and she did it well, and that was all that mattered. If the Trill was so determined to paint her as an enemy, then, to be perfectly honest, <strong>so what?</strong> Why should she care? Giles annoyed Coleridge as much as she did him. (He did have that tendency to match her retorts and snark.)</em> 
+
+“Clearly, I <em>do</em> know how to, given that I’m here to coordinate your release,” <em>she said plainly, condescension implied rather than made explicit by tone. She intended to remain civil, after all, even if he did seem to be calmed <strong>and</strong> intrigued by her discovery. The change in his posture was fascinating - and slightly guilt-inducing, though Coleridge didn’t let that show. In their previous conversations, she’d seen him angry, argumentative, and annoyed, among other things, but never had she noted anything that made him seem <strong>ragged</strong>. Maybe that was a trait common among ex-Section 31 agents, the front of strained manners covering a far more gritty persona and a willingness to get one’s hands dirty to get a job done. Then again, maybe the Trill was just tired - that made sense too, given where he’d been for the past few months, and the fact that he looked and sounded so. A note was taken (mentally, not physically) to look for other signs in the future, to build a better sense of just <strong>who</strong> this man was, as opposed to who he presented himself as.</em>
+<img class="emoji " alt="divider" title="divider" src="https://cdn.discordapp.com/emojis/777719270389973043.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="836979356890955827" id="message-836979356890955827">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“The dog in the video isn’t Laika, which means that the man in this video is <em>not</em> you.” <em>She didn’t comment on the fact that it not being Giles meant that she had been wrong, instead moving straight to the next set of facts.</em> “But it is someone who looks exactly like you, and a dog who’s identical to Laika. Speaking of whom-” <em>She turned and nodded at the guard who’d previously dropped the field. Subsequently, they opened the door, and a certain (completely safe) Collie was gently led in by yet another guard, then released so that she could join her handler at his side of the table.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129402;" title="&#129402;" src="Star%20Trek_%20Phoenix%20-%20Maximum%20Security%20Penal%20Colony%2012%20-%20visitation-room%20%5B835977350281822258%5D.html_Files/1f97a-338D5.png">
+                                <span class="chatlog__reaction-count">11</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128054;" title="&#128054;" src="Star%20Trek_%20Phoenix%20-%20Maximum%20Security%20Penal%20Colony%2012%20-%20visitation-room%20%5B835977350281822258%5D.html_Files/1f436-F364D.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Maximum%20Security%20Penal%20Colony%2012%20-%20visitation-room%20%5B835977350281822258%5D.html_Files/d1148726e277dd451ba52315c16415b6-5C0EA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Jericho Giles#0000" data-user-id="835988207778791434" style="">Jericho Giles</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Apr-21 06:11 AM</span>
+
+            <div class="chatlog__message " data-message-id="837194425872154644" id="message-837194425872154644">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He offered no argument to her retort, finding no reason to carry on with their word games considering that (at present,) Coleridge was somewhat on his side. In their previous interaction when this investigation had been ongoing, the woman had seemed hell-bent upon sending him to jail and determined that the footage could not have lied. It was almost odd to see that she had completely changed her vote now. Giles could hardly complain about such a thing considering how it was a step in the right direction (and a step closer to him getting out,) but the contrast in viewpoints that the MADD division head had held and once held was… Striking, to say the least.</em> 
+
+<em>He would have at least commented on the latter statements had he not been interrupted by a dog rather rapidly darting towards him from across the room. No efforts at stoicism or keeping up a certain fa&#231;ade were going to be retained right now – instead it was with a legitimate smile that he regarded the dog as she drew near. For a moment it seemed as if Laika may have jumped up with paws straight to his shoulders, but despite her energy she was well trained and knew better. Instead she almost immediately placed her head upon Giles’s knee, whimpering softly as if to chastise him for having been gone for that length of time.</em> 
+
+<em>It was in between quick and quiet statements to the dog – the usual “whose a good girl,” “I’ve missed you,” – coupled with the ruffling of Laika’s fur and constantly providing her with attention that he did glance back to Coleridge to reply.</em> “The issue is, then- how exactly this footage and its false image was created. When I looked over the footage myself the system picked on no indication that it was holographically generated, but somehow it seems entirely realistic. Finding out the method of  how it was falsified is a matter of Federation security, now.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Maximum%20Security%20Penal%20Colony%2012%20-%20visitation-room%20%5B835977350281822258%5D.html_Files/14bf4840f0eed784c7a730875db1f48b-4AD6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Theodosia Coleridge#0000" data-user-id="835988207778791434" style="">Theodosia Coleridge</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">30-Apr-21 03:58 AM</span>
+
+            <div class="chatlog__message " data-message-id="837523177155330058" id="message-837523177155330058">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>If Giles had had the chance to raise the point of her apparent 180-degree shift in point of view, Coleridge would have calmly explained that her views aligned with the evidence, and there was now direct evidence that contradicted what she’d previously believed. Given that he was interrupted by the Collie’s arrival, however, she stuck to her previous plan of ignoring that she’d come to the wrong conclusion in the first place. As the dog came rushing in, Theo took the opportunity to analyze, instead of reacting directly to the joyful-looking reunion. An excitable-but-disciplined dog, as well trained as initially assumed to be, Laika was clearly sly the way to Giles’ heart, given the earlier surge of protectiveness, and the way his whole attitude seemed to become a little more personable once the dog had arrived. The reverse seemed to be true as well, though that information was obviously not as useful as the one that came before it.</em>
+<img class="emoji " alt="divider" title="divider" src="https://cdn.discordapp.com/emojis/777719270389973043.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="837523193153323008" id="message-837523193153323008">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>But Coleridge couldn’t keep her full attention on the pair forever, of course. The Trill was right - whatever the not-Giles was, it had actually been there. The footage hadn’t been doctored, and, as he’d pointed out, it wasn’t a hologram.</em> “Given your <em>history</em>, Mr. Giles,” <em>she said, trying to refer to Section 31 without saying the words,</em> “it’s possible that it could be a clone, but it would have taken a <em>hell</em> of a lot of work to secure Laika’s DNA, and train the dog to be as obedient, not to mention that their stances and gait are identical, as well. There’s also the possibility that they’re Changelings, Undine, Sulibans, any of numerous energy and non-corporeal life-forms, Devidians, Chameloids, Wraiths, Vendorians, Kelvans, Silver Blood, et cetera, et cetera, et cetera.” <em>She paused to let the dire fact hang in the air for a moment, having recited the list from memory, before she let her tone turn from stating to her habitual slight condescension.</em> “Obviously, I already have agents investigating, and I’m working through all the facts and reports to try to narrow down the list.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Maximum%20Security%20Penal%20Colony%2012%20-%20visitation-room%20%5B835977350281822258%5D.html_Files/d1148726e277dd451ba52315c16415b6-5C0EA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Jericho Giles#0000" data-user-id="835988207778791434" style="">Jericho Giles</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">03-May-21 01:56 AM</span>
+
+            <div class="chatlog__message " data-message-id="838579681271873537" id="message-838579681271873537">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The way how Giles had gone from the determined stoic front to conveying emotion that wasn’t falsified was quite the contrast… But perhaps it was a testament to how things were</em> <em><strong>supposed</strong></em> <em>to be. Within the ranks of Starfleet Intelligence he had found people who he could trust. Gone were the days of having to constantly be on your guard around Section 31, and gone were the days of fearing the same at Intelligence. When he had first joined – joined couldn’t really be counted considering it was more of a ‘sought refuge’ – everyone had the potential to be an enemy despite them being in the same organisation. Over the years this had changed. Giles had found that he no longer had to keep up the continuous stoic front, the subtle lies and constant deceptions. He trusted those within Intelligence – and he</em> <em><strong>should</strong></em> <em>have been able to trust Coleridge from the start.</em> 
+
+<em>In that case, perhaps the issue was not with him, but it was with</em> <em><strong>her.</strong></em> <em>Had she never found that sense of peace amongst her peers, the one that he had managed to settle into over years of running the department? Was it because she was new, because she felt she had something to prove – or was it because of that shared aspect of their past, one that she hadn’t been able to shake? Whilst ruffling Laika’s fur atop her head between the ears, Giles found himself experiencing a surprising pang of guilt – and upset – not towards Coleridge, but</em> <em><strong>for</strong></em> <em>her.</em>
+<img class="emoji " alt="divider" title="divider" src="https://cdn.discordapp.com/emojis/777719270389973043.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="838579687822589963" id="message-838579687822589963">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Whoever it was, I’m certain that we’ll be able to pinpoint them,” <em>he started, still looking down at the dog.</em> “This discovery in itself is a lead. We can pull further footage from the museum, run bio-scans… If this person – if they are a person – went into storage or any archive unit then perhaps we can gather evidence from there. We’ll find their methods… And then their motives will still be the question. It’s to sow distrust, I presume, to stir things behind the scenes and start to splinter the foundations of what keeps Starfleet going during the war. I’m well aware that we don’t know for certain if their involvement <em>is</em> related to the war – are they Iconian, are they some other opportunistic faction, are they entirely unrelated – but… Given circumstances, I think it’s safe to say that the war aspect makes the most sense. I’ll have to increase our research into foreign communications transmissions. We might have missed something indicating that another faction wanted in on it all-“ 
+
+ <em>The cryptologist cut himself off, aware that he was rambling.</em>  “We shouldn’t talk about it here. It’s been too long since I was within my own office, evidently – these walls are not secure in the way we require them to be.” <em>He stopped there and finally tore his gaze away from Laika who was attempting to lick at his wrists. Looking to Coleridge, he offered a very slight, but distinctly sheepish smile. It was a fair contrast to the emotion of before… And more than certainly an improvement. Whether Coleridge also followed suit in that improvement was up to her. It wouldn’t have surprised him if she met his amusement with some form of snark – and despite their usual dislike of one another, Giles found he could hardly complain.</em> “We have a fair amount of work to do.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 21 message(s)</div>
+</div>
+
+</body>
+
+</html>

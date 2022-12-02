@@ -1,0 +1,2281 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - richmond</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Earth Planetside - Civilian / richmond</div>
+
+            <div class="preamble__entry preamble__entry--small">Requested by Virol.</div>
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 03:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="836606463601541130" id="message-836606463601541130">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>By this point, both she and Kniel had beamed down and had made their way to her parents&#39; home, and were on the front lawn, walking towards the house.</em>
+<em>The house itself was situated in a neighborhood just outside of Richmond. There wasn&#39;t a whole lot about it that was noteworthy - it was a single-story brick house, painted different shades of brown, had more than a few windows, with a porch and the front door at... well, the front. In front of the house was a very green lawn, which the backyard also had. In front of the porch was a tree, which held two flags - one of United Earth, another of the Federation.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 03:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="836608059010318386" id="message-836608059010318386">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Your parents&#39; house is nice.&quot; <em>Kniel remarked, fidgeting with his d&#39;ja pagh. How would her parents react to someone from their own home world, which they hadn&#39;t seen in a while, he thought.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 03:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="836608423968768052" id="message-836608423968768052">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She blushed and smiled.</em> &quot;Yeah,&quot; <em>she replied, as she continued up the lawn towards the front door.</em> &quot;When they came here they just picked this house out. They really liked the colors, that and the weather here&#39;s nice.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 03:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="836609060228169768" id="message-836609060228169768">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;You know what? I agree with them.&quot; <em>He quipped.</em> &quot;I&#39;d love to live here, actually.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 03:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="836609594204749874" id="message-836609594204749874">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She nodded in agreement, smiling widely, as she stepped up on the red and brown porch.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 03:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="836609733061640202" id="message-836609733061640202">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Want me to do the honors?&quot; <em>He stepped up next to her and took her hand. The other reached for the doorbell, hovering just short of the device itself.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 03:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="836609786429571113" id="message-836609786429571113">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She nodded affirmatively.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 03:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="836610509365051474" id="message-836610509365051474">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kniel chimed the doorbell.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/9ebe7210a70d9b929b4c62f90cfedbac-266BB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Mottu#0000" data-user-id="836615187276496976" style="">Virol Mottu</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 03:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="836615188214972476" id="message-836615188214972476">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>After he chimed the doorbell, footsteps and people talking could be heard from inside, and in a few moments, the door opened.</em>
+<em>The person who answered was a Bajoran man in his mid-fifties, wearing a blue-and-white striped polo shirt, gray pants, and a pair of shoes; he had brown eyes and gray hair. He was wearing his d&#39;ja pagh on his right ear.</em>
+
+<em>As the door opened, a somber look sat on his face at first.</em> &quot;Yes, hello, may I he-&quot; <em>he started, before recognizing the woman standing in front of him. At this, he fell silent, and stared in surprise and shock.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 03:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="836615407963078697" id="message-836615407963078697">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Go on. Hug him.&quot; <em>Kniel let go of her and nudged her forward.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 03:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="836615795638927451" id="message-836615795638927451">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She was nervous. Having not seen her father since graduating from the Academy, she wasn&#39;t sure how to proceed with this. After a few seconds of deliberation, however, she went up and hugged her father tightly, tears beginning to well up.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 04:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="836618677092220969" id="message-836618677092220969">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kniel stood back and let the two hug in silence - though he was smiling. It was heartwarming to see father and daughter reunite.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/9ebe7210a70d9b929b4c62f90cfedbac-266BB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Mottu#0000" data-user-id="836615187276496976" style="">Virol Mottu</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 04:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="836619334385401896" id="message-836619334385401896">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He was still in shock when she hugged him, as he hugged her back just as tightly, tears welling up for him as well. He hadn&#39;t expected to see his daughter alive, not so soon after hearing about how the ship she was posted to had gone missing in the middle of a war.</em>
+
+&quot;Ota, you&#39;re... you&#39;re alive, sweetie,&quot; <em>he began, both relief and incredulity in his voice, burying his head in her hair and trying to hold back tears, still not having noticed Kniel.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 04:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="836621872581443634" id="message-836621872581443634">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">((Go ahead and reply with her first</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 04:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="836623660936593457" id="message-836623660936593457">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;m alive... I&#39;m alive, dad,&quot; <em>she replied, clearly emotional. She maintained the hug for a good while, tears of joy streaming down her cheeks.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 04:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="836626562266300416" id="message-836626562266300416">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yes, she is.&quot; <em>Kniel looked at the older Bajoran and bowed lightly.</em> &quot;Sir.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/9ebe7210a70d9b929b4c62f90cfedbac-266BB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Mottu#0000" data-user-id="836615187276496976" style="">Virol Mottu</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 04:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="836627430487359499" id="message-836627430487359499">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He then looked up upon hearing Kniel speak, and he realized that he had never met this man before.</em> &quot;I don&#39;t think we&#39;ve met before,&quot; <em>he began, smiling, letting go of Ota for a moment, and extended his hand for a handshake</em> &quot;Virol Mottu. You?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 04:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="836628379389394974" id="message-836628379389394974">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Drevas Kniel, sir.&quot; <em>Kniel smiled softly and shook the offered hand.</em> &quot;Prophets&#39; blessing upon you. I&#39;m your daughters&#39; crewmate and boyfriend.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/9ebe7210a70d9b929b4c62f90cfedbac-266BB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Mottu#0000" data-user-id="836615187276496976" style="">Virol Mottu</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 04:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="836629187984490536" id="message-836629187984490536">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Prophets&#39; blessing upon you too, Mr. Drevas,&quot; <em>he replied while shaking his hand; he raised an eyebrow upon Kniel&#39;s mentioning of &quot;boyfriend&quot;.</em> &quot;You&#39;re her boyfriend, eh?&quot; <em>he then asked lightheartedly, smiling, then proceeding to turn to Ota.</em> &quot;Well, how is he? Is he a good boyfriend?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 04:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="836629497263423499" id="message-836629497263423499">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She nodded her head excitedly, smiling widely and blushing; at this, she took up Kniel&#39;s hand in hers and squeezed it.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/9ebe7210a70d9b929b4c62f90cfedbac-266BB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Mottu#0000" data-user-id="836615187276496976" style="">Virol Mottu</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 04:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="836629830639419403" id="message-836629830639419403">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He couldn&#39;t help but smile; she certainly seemed to love him. He then turned back to Kniel, and asked,</em> &quot;How long have you two known each other, if you don&#39;t mind me asking?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 04:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="836630347898552339" id="message-836630347898552339">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;A few months, sir.&quot; <em>Kniel bowed again.</em> &quot;I think I am and I try to be - although only Ota herself can provide a proper assessment. She&#39;s a wonderful person, I assure you of that.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 05:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="836635364684070912" id="message-836635364684070912">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She nodded, adding,</em> &quot;And he&#39;s a wonderful person, too.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/9ebe7210a70d9b929b4c62f90cfedbac-266BB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Mottu#0000" data-user-id="836615187276496976" style="">Virol Mottu</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 05:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="836636015912681493" id="message-836636015912681493">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;That&#39;s good to hear,&quot; <em>he replied.</em> &quot;She&#39;s a good kid, I can assure you of that, and you seem like a good boyfriend.&quot; <em>He then breathed in and asked,</em> &quot;Want to come inside? It&#39;s quite warm out here.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 05:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="836636481736671243" id="message-836636481736671243">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;That would be appreciated, sir.&quot; <em>Kniel nodded.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 05:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="836636939540889660" id="message-836636939540889660">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She nodded in agreement; it was definitely quite warm outside at the moment.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/9ebe7210a70d9b929b4c62f90cfedbac-266BB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Mottu#0000" data-user-id="836615187276496976" style="">Virol Mottu</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 05:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="836643560827650088" id="message-836643560827650088">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He then led both of them inside the house, waiting for them to follow in.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 05:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="836645183860899891" id="message-836645183860899891">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kniel took his partner’s hand again and walked inside with her.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/9ebe7210a70d9b929b4c62f90cfedbac-266BB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Mottu#0000" data-user-id="836615187276496976" style="">Virol Mottu</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 05:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="836647503436578816" id="message-836647503436578816">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The interior consisted of a carpeted floor, with beige walls. The door led into a small hallway, which exited into the living room; a fireplace sat at the far left, as did the entry into the kitchen. There was a table in the living room, next to one of the walls and in front of a large window that led to the backyard, that had various pictures of Ota; as an infant, toddler, child, in gradeschool, at the Academy, etc.</em>
+
+<em>As he led the two into the house, he asked,</em> &quot;Can I get you two something?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 05:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="836647820214796288" id="message-836647820214796288">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Just some tea will do, sir, hot, please.” <em>Kniel replied. He took a look around the house - not very Bajoran, he noted. Very much like a human family that might’ve lived here on Earth. Which wasn’t a bad thing, mind.</em> “You have a beautiful home, sir.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/9ebe7210a70d9b929b4c62f90cfedbac-266BB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Mottu#0000" data-user-id="836615187276496976" style="">Virol Mottu</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 06:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="836648695558307872" id="message-836648695558307872">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Thanks,&quot; <em>he replied, smiling.</em> &quot;It was one of the first my wife and I found when we came here to Earth; we decided to move in here. Nice colors, big yard...&quot; <em>He then moved into the kitchen where a replicator was and got hot tea for Kniel, and then walked back, tea in hand.</em> &quot;Here&#39;s your tea.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 06:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="836650130504941590" id="message-836650130504941590">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Thank you!” <em>Kniel accepted the warm cup and sat on the sofa, though not too comfortably because he hadn’t exactly been told to make himself at home.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/9ebe7210a70d9b929b4c62f90cfedbac-266BB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Mottu#0000" data-user-id="836615187276496976" style="">Virol Mottu</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 06:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="836650926096777306" id="message-836650926096777306">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Make yourselves comfortable,&quot; <em>he beamed, smiling, and went to the replicator and got himself black coffee; he&#39;d developed a taste for the Earth beverage since he moved to the planet 25 years ago.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 06:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="836651050160750602" id="message-836651050160750602">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Hearing that, she sat on the sofa herself, close to Kniel.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 06:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="836653512682766376" id="message-836653512682766376">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Thank you.” <em>Kniel smiled gently and took a sip of tea.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 06:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="836655936512851978" id="message-836655936512851978">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Seeing him smile made her smile; she didn&#39;t ask for anything herself, given that she had gotten something to drink back on ESD earlier.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/74d322a3f730d8f0572852e15ac704c9-AE8CE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Daya#0000" data-user-id="836615187276496976" style="">Virol Daya</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 06:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="836657648208183307" id="message-836657648208183307">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>It was at this moment that she decided to go into the living room to see who Mottu was speaking with.</em>
+<em>She opened her mouth to ask Mottu who the newcomers were when she noticed her daughter sitting on the couch. Just like Mottu, she stood in surprise and disbelief; her daughter, whom she had heard had gone missing along with the rest of the Phoenix&#39;s crew, was right there, alive and well.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 06:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="836657891082502234" id="message-836657891082502234">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“That your mother?” <em>He nudged Ota.</em> “Go on. Go to her. She’s gotta be worried about you.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 06:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="836658207681151089" id="message-836658207681151089">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Upon looking up and seeing her mother, she shot up, hurried to her, and hugged her as tightly as she did her father.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 06:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="836658997771501658" id="message-836658997771501658">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kniel smiled and watched them in silence. He wanted to give them this moment - a moment which had been a long time coming and truthfully might not come again.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/74d322a3f730d8f0572852e15ac704c9-AE8CE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Daya#0000" data-user-id="836615187276496976" style="">Virol Daya</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 06:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="836659466442244116" id="message-836659466442244116">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Just like Mottu, she found it hard to hold back the tears that were forming. She embraced Ota in silence for a few moments, then let go and looked her in the eyes.</em> &quot;Is.... is it really you, my baby girl?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 06:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="836660508064481320" id="message-836660508064481320">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She nodded in response.</em> &quot;It&#39;s me, mom,&quot; <em>she then replied, emotional as well.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/74d322a3f730d8f0572852e15ac704c9-AE8CE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Daya#0000" data-user-id="836615187276496976" style="">Virol Daya</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 06:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="836662703673573436" id="message-836662703673573436">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Relieved at hearing that, she continued to hug Ota for a little while longer, and then noticed Kniel on the sofa.</em> &quot;Who might you be, sir?&quot; <em>she asked Kniel, letting go of Ota.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 06:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="836662966567960587" id="message-836662966567960587">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Drevas Kniel. Ota’s crewmate and partner.” <em>Kniel stood up and held out a hand for her to shake.</em> “I presume you must be her mother - Prophets’ blessings upon you, ma’am.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/74d322a3f730d8f0572852e15ac704c9-AE8CE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Daya#0000" data-user-id="836615187276496976" style="">Virol Daya</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 07:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="836664799910952971" id="message-836664799910952971">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Prophets&#39; blessing upon you too, Mr. Drevas,&quot; <em>the woman, who was also in her mid fifties, replied, as she shook his hand as well.</em> &quot;I presume you&#39;ve been a good partner to Ota?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 07:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="836665219190227004" id="message-836665219190227004">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kniel chuckled and replied similarly to how he had her father:</em> “I hope I am, and I definitely try to be. I think your daughter deserves nothing less.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/74d322a3f730d8f0572852e15ac704c9-AE8CE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Daya#0000" data-user-id="836615187276496976" style="">Virol Daya</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 07:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="836668174560526377" id="message-836668174560526377">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She smiled warmly at him; he definitely seemed like a good partner for her daughter.</em> &quot;Well, how have you two been today? Have you been accommodating our guest, Mottu?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/9ebe7210a70d9b929b4c62f90cfedbac-266BB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Mottu#0000" data-user-id="836615187276496976" style="">Virol Mottu</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 07:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="836668495827173426" id="message-836668495827173426">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I got tea for Mr. Drevas, as he requested,&quot; <em>he replied. He then turned to Kniel and asked,</em> &quot;Have you been enjoying the tea?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 07:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="836669032899412038" id="message-836669032899412038">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“I have - thank you kindly, sir, ma’am. For your hospitality and your welcome.” <em>Kniel replied humbly.</em> “I am well.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/74d322a3f730d8f0572852e15ac704c9-AE8CE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Daya#0000" data-user-id="836615187276496976" style="">Virol Daya</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 07:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="836669827825401896" id="message-836669827825401896">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;m glad to hear,&quot; <em>she replied.</em> &quot;Can I get you two something to eat? You seem hungry.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 07:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="836670405859213372" id="message-836670405859213372">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Sure,&quot; <em>she replied.</em> &quot;You, Kniel?&quot; <em>she then asked, looking up at him.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 07:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="836672589551370300" id="message-836672589551370300">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Grolanda stew?” <em>He suggested.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/9ebe7210a70d9b929b4c62f90cfedbac-266BB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Mottu#0000" data-user-id="836615187276496976" style="">Virol Mottu</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 07:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="836673048626987030" id="message-836673048626987030">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;ll get it for you,&quot; <em>he interjected, nodding, and then went back to the replicator and got a bowl of grolanda stew, and, getting a spoon, he then walked back into the living room, handing it and the spoon to Kniel.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="01-May-21 11:55 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/36e954cb642340cb37c8230bee1bf56e-808C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(215,52,42)">Lt. JG. Drevas Kniel</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 07:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="836675382089482280" id="message-836675382089482280">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Thank you. It’s much appreciated.” <em>He looked at Ota - he wasn’t about to start eating until she’d gotten what she wanted.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/9ebe7210a70d9b929b4c62f90cfedbac-266BB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Mottu#0000" data-user-id="836615187276496976" style="">Virol Mottu</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 07:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="836675733400584232" id="message-836675733400584232">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Can I get anything for you, sweetie?&quot; <em>he asked Ota.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 07:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="836675804481323099" id="message-836675804481323099">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Just a sandwich,&quot; <em>she replied.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/9ebe7210a70d9b929b4c62f90cfedbac-266BB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Mottu#0000" data-user-id="836615187276496976" style="">Virol Mottu</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 07:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="836675952562012236" id="message-836675952562012236">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nodding, he went back to the replicator and replicated a sandwich on a plate, and then proceeded to bring the plate to her.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 07:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="836676201438904340" id="message-836676201438904340">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Thanks,&quot; <em>she replied, smiling at her father and then Kniel before sitting on the sofa.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/9ebe7210a70d9b929b4c62f90cfedbac-266BB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Virol Mottu#0000" data-user-id="836615187276496976" style="">Virol Mottu</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Apr-21 07:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="836676287057494046" id="message-836676287057494046">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;You&#39;re welcome, both of you,&quot; <em>he replied, also smiling.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20richmond%20%5B835951341661585469%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-21 08:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="836686398403641365" id="message-836686398403641365">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>After some more talking and eating between the four and embracing between Ota and her parents, she and Kniel left to return to Earth Spacedock.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="27-Apr-21 09:26 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 60 message(s)</div>
+</div>
+
+</body>
+
+</html>

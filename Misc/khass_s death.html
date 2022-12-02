@@ -1,0 +1,3246 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - sickbay</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discord.com/assets/6c6374bad0b0b6d204d8d6dc4a18d820.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discord.com/assets/e8acd7d9bf6207f99350ca9f9e23b168.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discord.com/assets/3bdef1251a424500c1b3a78dea9b7e57.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discord.com/assets/be0060dafb7a0e31d2a1ca17c0708636.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discord.com/assets/8e12fb4f14d9c4592eb8ec9f22337b04.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    white-space: pre-wrap;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.spoiler {
+    width: fit-content;
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image img {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 0.5em 0.7em;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/a_5361c0bf380eb945fe0f2e7ee079ec5d.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Deck 6: Medical / sickbay</div>
+
+
+            <div class="preamble__entry preamble__entry--small">
+Between 13-Mar-20 12:00 AM and 15-Mar-20 12:00 AM            </div>
+    </div>
+</div>
+
+<div class="chatlog">
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 12:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="688003973554503691" id="message-688003973554503691">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Kennox had been assisting as per usual - well, by &#39;assisting&#39; it was more bossing people around and taking clinical lead - and at present was was sizing an endotracheal tube for intubation. His hands worked swiftly without him looking, eyes watching the monitors for all of the readings.</em> &quot;C&#39;mon, d-d-don&#39;t do this,&quot; <em>he murmured as he saw the heart rate begin to waver, biobed wailing its alerts through the room. Respiratory arrest, oh god, multi-organ failure, leading into a cardiac. Oh, no, please no...</em> <em><strong>Crashing.</strong></em> 
+
+&quot;I...P-P-one alpha in p-p-progress, c-code blue!&quot; <em>He called.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/a_309b5b989b7597684c7756b8b72816be.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 01:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="688012435994705941" id="message-688012435994705941">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>As soon as those words had been spoken into the room- he practically felt his heart drop, this was it wasn’t it? This was jt. God damn it! His mind suddenly shifted gears and was almost sprinting in that Sickbay to get to Khassid’s biobed. There was no hesitation in the eye contact between him in Kennox.</em> “Ken- “ <em>Catching sight of the monitors like this, he could only assume that the ‘cancer’ had most likely done its course on almost all her body systems.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 01:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="688022019173777429" id="message-688022019173777429">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;It&#39;s... B-Bad, s-s-sir. Respiratory ar-rest turned c-c-cardiac, multiple organ f-f-failure. I&#39;m t-t-taking over manual ventilation, we n-need 30ccs of c-cordrazine, adrenaline in, a c-cortical stimulator... B-But I don&#39;t know how we&#39;re g-g-going to account for the organ f-f-failure.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/a_309b5b989b7597684c7756b8b72816be.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 02:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="688024738450112707" id="message-688024738450112707">
+                <div class="chatlog__content">
+                    <div class="markdown">“Let’s get on the oxygen right?” <em>He knew it was bad. And he also knew that even in their century- MODS survival rate was.. extremely minimal. Even if she survived she would almost never be the same and her recovery would be just too much for her to undertake. Not to mention with that virus.. they couldn’t risk it sprouting up at a time like this.</em> “I can start whatever medication I can. Anything to get to the bottom line to this. Our goal is to keep her alive for as long as we can to have a concrete solution-“ <em>His voice was unusually calm as Clark placed the cortical stimulator on her forehead. And the next moment he was reaching for the necessary hypos.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 02:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="688026725510021166" id="message-688026725510021166">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I&#39;ve got O2 s-s-sorted, sir,&quot; <em>he replied whilst removing the i-gel and guiding the ETT in, starting on mechanical ventilation.</em> &quot;We uh... C-C-Could try a r-rapid onset s-stem-cell treatment to t-try to undo the organ d-damage - we&#39;re v-v-vtach, sh-shockable rythm, c&#39;m-mon people we can d-d-do this-&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/a_309b5b989b7597684c7756b8b72816be.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 02:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="688028673042808832" id="message-688028673042808832">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Clark pressed a hypo into her neck. As well going along and inserting an IV into her arm. The solution he put in was a antibiotic. It wasn’t the best but they could do but it could start making way to the root of the problem.</em> “We can most certainly give a shot. Let’s focus on one organ at a time?” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 02:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="688029654971449385" id="message-688029654971449385">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I h-h-have airway handled, s-s-sir, s-start with the h-heart. S-Stand clear for f-first shock,&quot; <em>he stated after another medic had reached thirty and he kept on with the ventilation before stepping back, hands going to the console ready.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/a_309b5b989b7597684c7756b8b72816be.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 02:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="688036999600406588" id="message-688036999600406588">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He stepped back, allowing Kennox to continue. As he did so, he began the replication of the stem cells. If they got there fast enough...</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/8185eadf56d3333e3a03bf8cebd0296a.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Cliamain#5731" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Ensign Tevraal Krallarch</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 03:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="688053632062586884" id="message-688053632062586884">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Tevraal retrieved a small container and took a Blood-gas Infuser free from it. The Tellarite plodded over and offered to attach the device to the Cardassian’s head.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 04:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="688055623606468639" id="message-688055623606468639">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Stand <em>c-clear,</em>&quot; <em>the Cadet stated firmly at seeing the Ensign approach, and then immediately jumped back to work at the first shock being delivered.</em> &quot;And I&#39;ve already g-g-got airway s-sorted.&quot; <em>With another officer counting up to thirty he wrenched his gaze up to the monitors and almost snarled at what he saw.</em> &quot;S-S-Still v-v-vtach, d-dropping. Another 10ccs of c-c-cordrazine and <em>wh-where</em> is that ad-d-drenaline, please?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/a_309b5b989b7597684c7756b8b72816be.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 04:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="688057089565655065" id="message-688057089565655065">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>In a second he pressed another hypo of cordrazine. And in quick succession, another hypospray of adrenaline.</em> “Got it,” <em>He couldn’t show it but his mind was racing faster than light with this. She could die. Almost every doctor in that room knew that, and all of them knew the consequences of organ dysfunction.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/68a46f34b80ffde6c7f61d6a3078ca67.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ash!#0223"data-user-id="635608785196679188" style="color: rgb(41,169,238)">Lt. Lylla sh'Avoness</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 04:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="688064132620091396" id="message-688064132620091396">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>jogging up, lylla brought a set of fully charged hypos to them</em> &quot;what happened?&quot; <em>She asked, grabbing whatever she could to help them</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 04:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="688064713833185301" id="message-688064713833185301">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;M-M-Multiple organ f-f-failure,&quot; <em>he stated.</em> &quot;R-R-Respiratory arrest turned c-c-cardiac.&quot; <em>Eyes kept watching the monitor - no improvement.</em> &quot;No r-r-response to any form of d-d-drug, nor d-defibrillation.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/a_309b5b989b7597684c7756b8b72816be.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 04:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="688066113782939708" id="message-688066113782939708">
+                <div class="chatlog__content">
+                    <div class="markdown">“None of this is working..” <em>He hissed under his breath. Clark’s eyes kept going from Khassid to the monitors.</em> “Could we replace something? Anything?” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 04:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="688066780719087638" id="message-688066780719087638">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I...&quot; <em>He swallowed thickly, paling at the realisation as he looked over to the Commander.</em> &quot;I... I don&#39;t think we would have t-t-time, sir...&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/68a46f34b80ffde6c7f61d6a3078ca67.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ash!#0223"data-user-id="635608785196679188" style="color: rgb(41,169,238)">Lt. Lylla sh'Avoness</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 04:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="688067966889361415" id="message-688067966889361415">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>she was thinking. Thinking... thinking...</em> &quot;There has to be something we haven&#39;t tried. Sodium bicarbonate?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 04:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="688068282711932969" id="message-688068282711932969">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;D-Don&#39;t know if an antacid w-w-would h-help r-r-right now, ma&#39;am... Can we s-s-stand clear for another sh-shock, please.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/a_309b5b989b7597684c7756b8b72816be.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 04:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="688068714620387373" id="message-688068714620387373">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Dev simply nodded, taking a step back from the biobed. His job wasn’t to be so pessimistic but this time it was the truth. There was no way she could make it. Not with the amount of damage every single organ has suffered. Even if they did stabilize her- it would leave her in shambles.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/68a46f34b80ffde6c7f61d6a3078ca67.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ash!#0223"data-user-id="635608785196679188" style="color: rgb(41,169,238)">Lt. Lylla sh'Avoness</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 05:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="688070899638992904" id="message-688070899638992904">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>she took a step back, frowning. There has to be something they could do</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 05:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="688077787294335022" id="message-688077787294335022">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Once again he took over airway management, sighing to himself.</em> &quot;Uhm, d-doctor sh&#39;Avoness, ma&#39;am? P-Perhaps you would l-l-like to c-contact Captain Dunamis. I... I th-think he would w-want to be here, ma&#39;am.&quot; </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="ohno" title="ohno" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/668960662709338113.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(194,59,50)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 05:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="688081575505952774" id="message-688081575505952774">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He sprinted in a few minutes later, having to grip the doorframe tightly to slow himself down before making his way to her bedside.</em> &quot;How is she? What- what happened to her? Oh dear, I&#39;ve been so occupied with the relief efforts...&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 05:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="688082063831728233" id="message-688082063831728233">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;If you could s-s-say back, please, s-s-sir,&quot; <em>the young cadet spoke.</em> &quot;She&#39;s... N-Not doing great. Organ f-failure, respiratory arrest, then c-cardiac arrest. We&#39;re trying, sir... B-But...&quot; </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128064;" title="&#128064;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f440.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(194,59,50)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 05:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="688082625491238926" id="message-688082625491238926">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;But? Will she live...?&quot; <em>He backed away, hands trembling, threatening to drop the PADD in his hands. Inside he knew the answer, with so many failures... no, no no no... please let her live...</em> </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128064;" title="&#128064;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f440.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 06:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="688084241808228353" id="message-688084241808228353">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I... I&#39;ll be truthful, sir.&quot; <em>He stepped aside, letting another one of the medics take over on airway management. The cadet walked over and tugged off blue latex gloves which had been marred with brown blood, tossing them in the biowaste so he could then run his hands through his hair, gazing onwards at the scene to keep acting as clinical lead. Somehow, his voice didn&#39;t waver - the stutter almost gone.</em> &quot;I&#39;ll be t-truthful. I don&#39;t think she&#39;s going to make it, sir.&quot; </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="ohno" title="ohno" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/668960662709338113.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/637075614662393868.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="eyeshake" title="eyeshake" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/422358943600345088.gif">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(194,59,50)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 06:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="688085146171473995" id="message-688085146171473995">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>I don&#39;t think she&#39;s going to make it. The PADD in his hands, already held as tightly as possible with someone with his strength, snapped clean in two, the screen flickering out as the device broke. The two pieces fell from his slackened grip and hit the floor, shattering with a sickening crack - just like the Kelpien&#39;s heart. Drawing a deep breath, he felt himself get slightly light-headed, forcing him to lean against the wall for support. He said nothing else - his body language said, no, positively <strong>screamed</strong> it all in entirety.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 06:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="688086090489528337" id="message-688086090489528337">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I...&quot; <em>The Denobulan had flinched at the sound of the PADD being snapped and then clattering to the floor, gaze going back and forth between the cardiac management and Dunamis.</em> &quot;P-please, sir. Take a seat. We&#39;re g-going to try our hardest... But we thought you would want to know. If... If there&#39;s anything you would w-want to say, sir, then I&#39;d recommend saying it now. I can&#39;t guarantee she would hear, but... We can hope.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(194,59,50)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 06:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="688089959831568449" id="message-688089959831568449">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He nodded, collapsing into a chair at Khassid&#39;s bedside and reaching out to gently lay a hand on hers - hers was cold, clammy... lifeless almost. It scared him to realize that in this moment, he had no words to say...</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/61be5866041d35cf966ffd6dac42b2cb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(194,59,50)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 06:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="688090051095429205" id="message-688090051095429205">
+                <div class="chatlog__content">
+                    <div class="markdown">[D] <em>A message came in from Lieutenant Roode to Dune’s PADD. With it came a video of Tor’s interrogation of the Tal Shiar agent, including all the time Dune was there, and ending with the Grand reveal of the master plan.</em> 
+
+<div class="quote">Captain. Commander Tor wants your advisement on this. 
+</div>
+<em>And yes! This was really bad timing</em> </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128064;" title="&#128064;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f440.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(194,59,50)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 06:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="688090212210835552" id="message-688090212210835552">
+                <div class="chatlog__content">
+                    <div class="markdown">[D]<em>He didn&#39;t see it - his PADD was in two pieces on the floor, shattered. The device was inoperative.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/61be5866041d35cf966ffd6dac42b2cb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(194,59,50)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 06:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="688090967579951114" id="message-688090967579951114">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>A call came in from Maggie on his badge...</em> 
+[Comms] “Sir... did you receive my message about Commander Bellators Discovery?” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(194,59,50)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 06:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="688091843518398498" id="message-688091843518398498">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He didn&#39;t respond to that either - he was simply too emotional to do so for now.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/61be5866041d35cf966ffd6dac42b2cb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(194,59,50)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 06:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="688092186528841800" id="message-688092186528841800">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Something must’ve happened on the other end...as Maggie hung up on him with what sounded like the beginnings of tears starting on the other end...</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 06:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="688092560513695755" id="message-688092560513695755">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Kennox spoke instead, still at Dune&#39;s side and close enough that his voice would be picked up.</em> &quot;It&#39;ll h-&quot; <em>and then the caller hung up and he couldn&#39;t help but sigh, tugging on yet another pair of gloves.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/68a46f34b80ffde6c7f61d6a3078ca67.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ash!#0223"data-user-id="635608785196679188" style="color: rgb(41,169,238)">Lt. Lylla sh'Avoness</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 06:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="688094183235387395" id="message-688094183235387395">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>she gave dune a somber look. Everyone here was hurting.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(194,59,50)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 06:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="688094307252568133" id="message-688094307252568133">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>And sob he did, bitterly; the news had been all it took to break that dam behind which he kept all that pain, that sadness... and he&#39;d held them back by sheer willpower alone til now. Sorrowful, wailing sobs filled the room, before petering out slowly into sniffling as he simply opted to cry into his sleeves, soaking them wet with salty tears.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/68a46f34b80ffde6c7f61d6a3078ca67.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ash!#0223"data-user-id="635608785196679188" style="color: rgb(41,169,238)">Lt. Lylla sh'Avoness</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 06:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="688096624500932687" id="message-688096624500932687">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>had she not been busy stabilizing her, lylla would have pulled him into a deep hug, but the commodore needed her more at the moment. She wanted to cry as well, the emotional shockwave from him sapping at her will to be strong.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1feff327e4abc03da01961c9cd65ef40.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="the-invalid-user#1141" data-user-id="640681046702161980" style="color: rgb(194,59,50)">Lt. Cmdr. Bellator</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 06:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="688097804974817286" id="message-688097804974817286">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>You want horrible timing? Perfect, because this was when Tor walked in. Tor grimaced as he looked at the scene, but slowly approached them.</em> &quot;.. Apologies. I know I&#39;m interrupting, but I need to borrow the Captain.&quot; <em>Tor spoke quietly.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(194,59,50)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 06:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="688098528479805500" id="message-688098528479805500">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Hearing Tor&#39;s voice, the younger Kelpien forced himself to knit together a mask of professionalism and don it. On shaking hooves and legs he stood up, wiping the tears from his honey golden eyes and spinning round to face him.</em> &quot;Yes, commander - how may I be of assistance...?&quot; <em>His voice was hoarse, and the tone itself watery overall.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1feff327e4abc03da01961c9cd65ef40.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="the-invalid-user#1141" data-user-id="640681046702161980" style="color: rgb(194,59,50)">Lt. Cmdr. Bellator</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 06:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="688098876070428742" id="message-688098876070428742">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Sir.&quot; <em>Tor tried to be as quick as he could.</em> &quot;I got Valdain to confess, but... We need to act quickly. He&#39;s sparking a civil war in an attempt to allow the Star Empire to rise again. I need to know, what exactly you found in the hideout.&quot; <em>Tor told him.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="688099341356892244" id="message-688099341356892244">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Kennox just bristled in irritation but didn&#39;t comment and then went back to doing all he could - which, at this stage, wasn&#39;t much. It rather felt like they were trying for nothing, now. It might have been more humane to just let things happen...</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/a_309b5b989b7597684c7756b8b72816be.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="688099846875643940" id="message-688099846875643940">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Seeing the Captain cry was more than enough for him to feel the burn behind his blue orbs. Giving one look to Kennox- he was sure the boy was thinking the same thing. They couldn’t do anything, could they? Not responding to oxygen.. it was in inevitable that he knew- and everyone else in the room knew.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(194,59,50)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="688100431427272871" id="message-688100431427272871">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He drew a deep breath, staring at the pieces of his broken PADD on the floor.</em> &quot;Give me your tricorder.&quot; <em>He ordered.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ea473e43851aa16fe2b118279b8119e0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Luce#6884" data-user-id="199285818097926145" style="color: rgb(41,169,238)">Lt. JG. AMROSA 21 </span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="688100795345928315" id="message-688100795345928315">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>21 saw the dark scene, even hearing the Captain&#39;s crying was took much. She walked over with a heavy heart, flashes of death echoed throughout the Android&#39;s mind.</em> &quot;I think we all know it&#39;s time, it&#39;ll be easier to just let the inevitable play out. There is nothing more we can do for her, and it&#39;ll hurt everyone if we keep trying. I hate it more then anything to say it, but I think we all know what the best answer is.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/68a46f34b80ffde6c7f61d6a3078ca67.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ash!#0223"data-user-id="635608785196679188" style="color: rgb(41,169,238)">Lt. Lylla sh'Avoness</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="688101002184097928" id="message-688101002184097928">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>she looked down at the floor</em> &quot;she&#39;s right.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1feff327e4abc03da01961c9cd65ef40.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="the-invalid-user#1141" data-user-id="640681046702161980" style="color: rgb(194,59,50)">Lt. Cmdr. Bellator</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="688101135113912333" id="message-688101135113912333">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Tor took his out, grimacing as he listened to the others talk. He&#39;d only briefly met the Commodore, but he knew people held her dear... And here he was, ignoring her very death.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="688101398985834604" id="message-688101398985834604">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Alright,&quot; <em>he spoke up as the clinical lead, nodding to 21.</em> &quot;J-Joint decision. Anyone <em>not</em> in favour of stopping, speak now. I want a full ag-g-greement.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/a_309b5b989b7597684c7756b8b72816be.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="688101751681056779" id="message-688101751681056779">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Clark had been simply staring down at her, a glisten to his eyes, a shake to his hands. His lips were sealed shut. The Doctor- No the young man couldn’t begin to comprehend anything that was going on.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ea473e43851aa16fe2b118279b8119e0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Luce#6884" data-user-id="199285818097926145" style="color: rgb(41,169,238)">Lt. JG. AMROSA 21 </span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="688101905322213442" id="message-688101905322213442">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;If any of you want to back out and for this to be on my hands, I can take it, my conscience already has over three hundred, I can handle the guilt for this. I think it&#39;s time we let her find her peace in what lies beyond life.&quot; <em>She looked at the Commodore.</em> &quot;No need to leave the struggle of being in between to hurt everyone she cares about and herself.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/63d8e239f307458eeb38d09c7742aee3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="XƎ˥∀#1234" data-user-id="208942891941232641" style="color: rgb(41,169,238)">Vulcan Nurse</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="688101997513408701" id="message-688101997513408701">
+                <div class="chatlog__content">
+                    <div class="markdown">[D] <em>A nurse in the background seemingly wanted to say something, wanted to object, but just burst into tears and ran out sickbay.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(194,59,50)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="688102053066834053" id="message-688102053066834053">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He took the tricorder from Tor and headed out of sickbay to the hallway without another word.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/68a46f34b80ffde6c7f61d6a3078ca67.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ash!#0223"data-user-id="635608785196679188" style="color: rgb(41,169,238)">Lt. Lylla sh'Avoness</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="688102180565155863" id="message-688102180565155863">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>she removed her hands but stayed by the Commodores side</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="688102206288691405" id="message-688102206288691405">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Lieutenant T-Twenty-one, ma&#39;am? <em>Shut up.</em> You haven&#39;t been here for <em>any</em> of her treatment. This is on <em>me,</em> as your clinical lead. If we are in agreement, then stay <em>silent,</em> please.&quot; </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="this" title="this" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/637075614834229248.png">
+                                <span class="chatlog__reaction-count">9</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="❤️" title="❤️" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/2764.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="saPikoh" title="saPikoh" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/609941948555460608.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(194,59,50)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="688102770376573048" id="message-688102770376573048">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He walked back into sickbay and held the tricorder out to Bellator.</em> &quot;Data on what we found on the ground. Admiral Valdain&#39;s personal files that he made the mistake of keeping on a terminal. All details you require are there...&quot; <em>That done, he crossed back to Khassid&#39;s bedside, keeping his silence. Perhaps it <strong>was</strong> best for the pain, the suffering, to end...</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1feff327e4abc03da01961c9cd65ef40.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="the-invalid-user#1141" data-user-id="640681046702161980" style="color: rgb(194,59,50)">Lt. Cmdr. Bellator</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="688103046999310355" id="message-688103046999310355">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Tor blinked as Dune walked out, and was about to follow, before Dune came waltzing back in. He was unsure now, how he should proceed, but... He took the tricorder and left the Captain to his grief, heading outside to the hallway</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ea473e43851aa16fe2b118279b8119e0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Luce#6884" data-user-id="199285818097926145" style="color: rgb(41,169,238)">Lt. JG. AMROSA 21 </span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="688104125061529612" id="message-688104125061529612">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>21 gritted her teeth.</em> &quot;I was merely trying to spare you the pain, <em>Cadet</em>. Everyone is emotional at the moment, it&#39;s never easy to make this decision. For giving you an out, someone to blame, I was offering a mercy. I apologize if it seemed insulting.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="688104315579007070" id="message-688104315579007070">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Ma&#39;am? Respectfully? I have asked for silence. This is <em>not</em> the place nor time for your continual incessant ch-ch-chatter. Please leave.&quot; </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="this" title="this" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/637075614834229248.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128293;" title="&#128293;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f525.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ea473e43851aa16fe2b118279b8119e0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Luce#6884" data-user-id="199285818097926145" style="color: rgb(41,169,238)">Lt. JG. AMROSA 21 </span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="688104784829612033" id="message-688104784829612033">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>21 remained silent as she stepped back.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(194,59,50)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="688105005659848721" id="message-688105005659848721">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He opted to remain silent - no use blowing up, especially as such a crucial time and in front of the rest of the crew.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="688106046308220937" id="message-688106046308220937">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>There was a moment where he looked over the group - and then also stepped back. Without a thought he reached over and silenced the biobed&#39;s tone: setting it to only alert once it picked a drop down to asystole or some sort of miraculous improvement. Upon looking back to the others that lilting accent somehow sounded somber as ever.</em>
+
+&quot;Thank you, sirs, for all of your work here today. Once things have come to a conclusion I will handle a d-d-debrief. I will remain for the t-time being: please, do feel free to take a welfare break if required, or head off shift early. I would like to kindly ask that you keep the news of what transpired here to yourself; once we have a conclusion, a s-statement will be put out to the crew. Thank you.&quot; </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="❤️" title="❤️" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/2764.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(194,59,50)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="688107292171698178" id="message-688107292171698178">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>That was all the permission he needed. He simply turned on his hoof and walked out of sickbay, bending to collect the pieces of his PADD along the way.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ea473e43851aa16fe2b118279b8119e0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Luce#6884" data-user-id="199285818097926145" style="color: rgb(41,169,238)">Lt. JG. AMROSA 21 </span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="688108816356605956" id="message-688108816356605956">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>21 sighed and looked at the body and said something in a foreign language before walking away and tended to other patients.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/68a46f34b80ffde6c7f61d6a3078ca67.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ash!#0223"data-user-id="635608785196679188" style="color: rgb(41,169,238)">Lt. Lylla sh'Avoness</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 07:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="688113632076496919" id="message-688113632076496919">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>she tossed her gloves in the bin, wordlessly going to wash her hands and exited after Dune. She was angry and rightfully so. It wasn&#39;t fair. They had done so much to make sure she would be ok. She didn&#39;t want to lose her.</em> <span class="chatlog__edited-timestamp" title="13-Mar-20 07:58 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 10:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="688153935818653727" id="message-688153935818653727">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Kennox let the others go and stood batch to watch them leave... All, apparently, except from Clark. Wordlessly he stepped forwards with a hand outstretched in sympathy, just to place upon the Trill&#39;s shoulder. Kennox had seen the amount of time that he had spent with Khassid and Carlisle by extension; this must be agonising for him to see. And for Carlisle, too. Did... Did she know? Maybe the alert hadn&#39;t gone off in her office. He headed over just to... Just to make sure she was aware of what was happening here.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/a_309b5b989b7597684c7756b8b72816be.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 11:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="688166650918600933" id="message-688166650918600933">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He had tensed as Kennox touched him. Clark wanted to scream at him but the hand didn&#39;t stay long as the Cadet had walked away towards Blanche&#39;s office. As he reached out to take Khassid&#39;s hands, he notice their shake. How in his reflection- he looked so pale. Taking her hand, it just felt so.. cold.. that warmness that it had once had was gone. Now they were waiting for the inevitable.. every single second was another second he thought that the terrible chime would fill the empty room.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/10a9c7eeaa8f4c0ca19a92e24df1fa9c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fern&#127800;#9014" data-user-id="609850455627005953" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">13-Mar-20 11:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="688171541007302671" id="message-688171541007302671">
+                <div class="chatlog__content">
+                    <div class="markdown">[D] <em>The young cadet stood aside in order to let Carlisle past, merely watching. Medical had gone quiet, now; undisturbed in sound as they had silenced all of the monitoring equipment. All there was was the vague scratchy sound of a half-there, wheezed inhale, and that was it. The ETT, cortical stimulator, all of the equipment had been removed - it was just Khassid, now, grey skin stood out against the stark white of the sheets.</em> 
+
+[Kennox] “We... Came to a j-joint decision to stop trying, ma’am. It was causing more harm than good... We’re just... W-Waiting now.” </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f62d.png">
+                                <span class="chatlog__reaction-count">9</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128148;" title="&#128148;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f494.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/0a8ff773b6c0a63187b35b9da94ea63e.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#7790" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 12:04 AM</span>
+
+            <div class="chatlog__message " data-message-id="688175655409549372" id="message-688175655409549372">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>The CMO had all but come to a halt after emerging through the doors of her office. There it was again, that look of childlike bewilderment that rendered blue eyes wide, mouth slightly agape. Blanche stood motionless for what felt like an eternity, gaze glassy as it adhered to Clark beside the woman. The frail, meagre woman that she had hoped to never see again. Slowly, Carlisle neared the biobed herself, brows drawing into a slight frown upon a face entirely drained of its jovial colour.</em>
+
+&quot;<em>Waitin&#39;?&quot;</em> <em>Of course, the doctor understood. Blanche, however, refused to.</em> &quot;I&#39;d—, forgive me, Cadet, I—&quot; <em>was close to trembling? Fighting off the beginnings of tears, searing her throat and stinging her eyes? With desperation expertly masked, she looked between the two with what remained of her fractured composure.</em> &quot;How severe is the internal damage?&quot; <span class="chatlog__edited-timestamp" title="14-Mar-20 12:05 AM">(edited)</span></div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f62d.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="❤️" title="❤️" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/2764.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/10a9c7eeaa8f4c0ca19a92e24df1fa9c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fern&#127800;#9014" data-user-id="609850455627005953" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 12:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="688176651477188620" id="message-688176651477188620">
+                <div class="chatlog__content">
+                    <div class="markdown">[Kennox] “She’s been v-tach for about twenty minutes. Was in r-respiratory arrest, clawed her w-way back, but then there’s the issue of f-further multiple organ failure and...” <em>The poor cadet cut off, giving Carlisle a look of intense sympathy - quite literally feeling her pain. If he had been a better empath he could have at least helped to take the pain away for her and Clark, but he wasn’t even able to do that. Instead, he was just resigned to watch them suffer.</em> “I... I’m going to just be over h-here, ma’am. I’ll g-give you three a... a m-m-moment.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/a_309b5b989b7597684c7756b8b72816be.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 12:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="688178874106118171" id="message-688178874106118171">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>As soon as Blanche came closer- Dev had burst into tears, nothing he could do could stop him from holding in hot, salty tears that had threatened to fall for a while now. Wobbly legs pulled him to the floor, still clutching to Khass’ soulless and freezing hands. His sobs rang out in the silent sickbay. It sounded like a child throwing a tantrum, and in many ways he</em> <strong>was</strong> <em>a child.  And all this young man could think about was the fact that his new-found..</em> <em><strong>mother</strong></em> <em>,was dying. And even after all these years of medical training he couldn’t do anything. Dev was useless- only left to watch as the one person he cared for the most was being ripped away from him.</em>
+
+<em>No longer could he see through fat tears rolling down his cheeks. Even if he tried to speak they came out in incoherent babbles. Why? Why her!? She didn’t deserve any of this.. none of this!</em> <span class="chatlog__edited-timestamp" title="14-Mar-20 12:19 AM">(edited)</span></div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f62d.png">
+                                <span class="chatlog__reaction-count">12</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128148;" title="&#128148;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f494.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/bbfc8505891db3e3bed20135e7a9bdc6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Starwheat#3281" data-user-id="666357461933883394" style="color: rgb(41,169,238)">Random Medic</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 12:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="688179955929972907" id="message-688179955929972907">
+                <div class="chatlog__content">
+                    <div class="markdown">[D] <em>One of the medics looked away from the scene, wishing they could have done more</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/0a8ff773b6c0a63187b35b9da94ea63e.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#7790" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 12:34 AM</span>
+
+            <div class="chatlog__message " data-message-id="688183129327796248" id="message-688183129327796248">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Mind alight with a million thoughts, it was all Blanche could do to watch on horrified as Dev collapsed in a terrible heap, raked with sobs that had obliterated the woman&#39;s composure entirely. What else was there to be done? She had forced the worst of scenarios to the very back of her thoughts, and had been so fervent in encouraging Khassid to do the same. It was this notion that prompted Carlisle&#39;s face to crumple entirely, choking out a strained sob as she turned away from the scene before her. Inhaling sharply, Blanche&#39;s chest rose and fell violently as she attempted to maintain some semblance of togetherness, unavailingly so.</em>
+
+<em>Had this not been her own doing? Her failure to keep the woman under constant monitoring, despite the pain her protest caused? Surely, if she had been more diligent with their leads on this damned mess, there would be a woman laying there, and not a shell. Not a young man, destroyed at her absence. Gingerly, Blanche reached out for Dev&#39;s shoulder, coming to kneel beside the distressed Trill. If there was anything left to be done, it was to cradle this broken man, despite the fact that he would never mend entirely. No one would.</em> </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f62d.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128148;" title="&#128148;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f494.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/10a9c7eeaa8f4c0ca19a92e24df1fa9c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fern&#127800;#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Commodore Rejema Khassid</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 12:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="688183708380954629" id="message-688183708380954629">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Things has remained quiet, almost... Peacefully so. The Cardassian certainly seemed content, finally. Every line which had been permanently etched into her skin as part of a constant grimace was gone - the pain seemed to have dissipated. And with the two here - the two that she trusted so much, the ones whom she loved - she felt as if it were okay.</em>
+
+<em>Steps had been taken to ensure the safety of the crew. Everything was going to be okay. She would become one with the stardust again, and perhaps burn as part of some sort of nebula, or become some tiny microbe on a brave new world. Maybe she would see Nela again. Matter cannot be created nor destroyed, anyway. ...She would never truly be gone.</em>
+
+<em>Sensing the two there she managed, by some miracle, to flick open those ice-blue eyes. There was the slightest hint of a lopsided smile as she looked between the two doctors. Her beings of stardust... Oh god, she hoped this would not harm them so. It would be alright. They would be alright.</em> “Ver’tek... turessin aj...” <em>She managed to whisper out, voice hoarse, just intelligible through the rattle of her last inhale and the strength it took to convey one last message.</em> ‘Sorry... And thank you.’*
+
+<em>There was the last shudder of an exhale, then. The monitor chimed out that single monotone sound of confirmation; asystole at last. Icy eyes flitted upwards, still open - staring heavenwards; gaze to the stars.</em> </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="❤️" title="❤️" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/2764.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f62d.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="spaceheart" title="spaceheart" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/651233433623724043.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f496.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/3886e23ae54c3d2f17c36d530d259add.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lt. JG. Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 12:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="688185318800752643" id="message-688185318800752643">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Oskar just stared. It was all he could manage, really. His blue and steel eyes watched the monitor flatline and his ears perked when the monitor made that dreaded sound. That one pitch that turned his life in the opposite direction. He hated that sound. A flag officer...dead. Khassid, no less. He had only briefly met the Commodore, but he held massive respect for her and her rank.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/a_309b5b989b7597684c7756b8b72816be.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 12:50 AM</span>
+
+            <div class="chatlog__message " data-message-id="688187202269610074" id="message-688187202269610074">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>There it was. That fateful chime Dev Clark knew all to well. Everything and anything kept adding to the meltdown that the boy had built up. He thought his sobs couldn’t get worse but hearing her voice.. just that one last, had officially penetrated a guarded heart. A heart he had opened just for her. She knew they were there and it just made the pain erupting through him to take its course,</em>
+
+“N-no p-please!! You c-can’t go you cam’t go y-you can’t go!” <em>He sobbed out, leaning into Blanche’s chest just slightly, his hand tightening it’s squeeze on what now, he knew to be a truly, cold hand.</em> “<em>I l-love you t-too m-much much much</em>,” <em>Clark just babbled on and on. God why!? Everything in his head just yelled that she wasn’t suffering anymore. The pain she had been put through  had ceased but it could only do so much to help and ease his thoughts.</em>
+
+<em>Dev’s head had now fully leaned into Blanche’s chest, sobs muffling. There couldn’t be a care for any medical personnel who watched as composure fell apart and left what was now a raw, and vulnerable boy.</em> <span class="chatlog__edited-timestamp" title="14-Mar-20 01:35 AM">(edited)</span></div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f62d.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128148;" title="&#128148;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f494.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/68a46f34b80ffde6c7f61d6a3078ca67.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ash!#0223"data-user-id="635608785196679188" style="color: rgb(41,169,238)">Lt. Lylla sh'Avoness</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 12:56 AM</span>
+
+            <div class="chatlog__message " data-message-id="688188880792322153" id="message-688188880792322153">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>she walked back in, having missed dune and stopped in her tracks. It happened. She couldn&#39;t help the tears that flowed freely now. Why did it have to end that way...</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/63d8e239f307458eeb38d09c7742aee3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="XƎ˥∀#1234" data-user-id="208942891941232641" style="color: rgb(41,169,238)">Vulcan Nurse</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 01:02 AM</span>
+
+            <div class="chatlog__message " data-message-id="688190401131184133" id="message-688190401131184133">
+                <div class="chatlog__content">
+                    <div class="markdown">[D] <em>One rather stoic Vulcan nurse slowly approached Khassid, looking at the Commodore briefly, before gently closing the woman’s eyes. They muttered that well known Vulcan phrase, although in Vulcan instead of Standard, and gave that standard salute, before backing off to let everyone else grieve.</em> </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="❤️" title="❤️" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/2764.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/0a8ff773b6c0a63187b35b9da94ea63e.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#7790" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 01:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="688190543397650507" id="message-688190543397650507">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>The chime. The boy&#39;s continued sobs as she embraced him, rocking gently. The hitching of her own breath, hoarse and unable to produce anything coherent at all. Blanche, in stark comparison to Dev, was statue still, all bar the swaying she&#39;d initiated as a means to provide some form of comfort, however trivial. There was none to be sourced in sickbay anymore; the low thrum of machinery was sinister, particularly so in the absence of any activity from those monitoring the Commodore. Its white starkness was greyed, void of the colour she had brought to it with her half-smiles, her cunning. Those witty remarks, against the odds. The colour she had brought to Clark and Carlisle, folded into one another like wilted flowers.</em>
+
+&quot;Time of death, 2358 hours.&quot; <em>Blanche&#39;s voice was similarly free of emotion, as her gaze remained adhered to what she could see of the biobed over Dev&#39;s head. She didn&#39;t move, nor did she speak further, face to face with what she&#39;d come to dread more than anything.</em> <span class="chatlog__edited-timestamp" title="14-Mar-20 01:03 AM">(edited)</span></div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="❤️" title="❤️" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/2764.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f62d.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 01:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="688193705848471600" id="message-688193705848471600">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Remaining distanced from the group he merely noted the time and filed the report away, setting the PADD down and tearing off his gloves. Despite the storm of emotion he usually was, all of his focus was on remaining neutral. For all of the training in the world - all of the emergency response prep, all of the psychosocial support training - for once he didn’t know what to say. Come on, Nox, he told himself. You need to give a debrief... ...But it can wait, the sympathetic and kind part of him spoke back. Give them time to grieve, first... Give yourself a moment, too.</em> </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="♥️" title="♥️" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/2665.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/3886e23ae54c3d2f17c36d530d259add.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lt. JG. Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 01:52 AM</span>
+
+            <div class="chatlog__message " data-message-id="688202809866453074" id="message-688202809866453074">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Cadet Ephrix, Doctor Carlisle...&quot; <em>Oskar sighed deeply, like he was exhausted.</em> &quot;I...will need to talk to you soon about this...&quot; <em>Oskar looked down at the floor, weight just coming down on his shoulders.</em> &quot;I will need to file a report to Starfleet Intelligence. They will want to know what happened here today.&quot; <em>He looked up at the group.</em> &quot;I hate to say this. But I must ask all of you to remain silent about this. As far as any of us are concerned right now...The good Commodore died of cancer. Nothing more...&quot; <em>He cleared his throat.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 01:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="688203704217894941" id="message-688203704217894941">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>The neutrality wavered, almost breaking into anger, but the cadet managed to force it down. He had watched his aunt do this time and time again in every crisis - forcing back the emotion to stay strong.</em> “With all due respect, Ensign Sch-Schneider, I believe it is? This is not the time. This medical team are g-<em>grieving.</em> They have lost f-<em>family</em> today. You will have your answers... But n-n-not now. Intelligence is not the be all and end all.” <em>He glanced back over the team of medical staff who were assembled there, their ministrations having came to a halt for this moment of silence.</em> “F-F-Family is.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/3886e23ae54c3d2f17c36d530d259add.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lt. JG. Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 01:58 AM</span>
+
+            <div class="chatlog__message " data-message-id="688204258361081870" id="message-688204258361081870">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Oskar looked over at the Cadet his face heavy with new emotions. He was grieving, he knew that.</em> &quot;We are all grieving, Ephrix. We have all lost a family member today. I wholeheartedly agree with you on that. But when my bosses hear that a <em>flag officer</em> died aboard the Phoenix...God help us all.&quot; <em>Oskar leaned up against the wall and sighed deeply.</em> &quot;I agree. Family means everything. Without it, there is nothing.&quot; <span class="chatlog__edited-timestamp" title="14-Mar-20 01:58 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 01:59 AM</span>
+
+            <div class="chatlog__message " data-message-id="688204665195593787" id="message-688204665195593787">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Sensing that, despite his words, the Ensign had understood, Kennox merely nodded and turned back to the group... Awaiting the announcement over the comms, planning that debrief in his head. Despite it all there was still work to be done... And he would gladly step up to allow the others a chance to grieve.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/3886e23ae54c3d2f17c36d530d259add.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lt. JG. Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 02:02 AM</span>
+
+            <div class="chatlog__message " data-message-id="688205304424431826" id="message-688205304424431826">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I...must take my leave, I&#39;m afraid. I have to file a report to Intelligence and...inform my immediate superior.&quot; <em>Oskar moved from the wall and gave a grave nod to the Commodore&#39;s body.</em> &quot;Rest easy, ma&#39;am. We have the watch.&quot; <em>Oskar said to himself. With that, he left sick bay and headed out to the hallway.</em> <span class="chatlog__edited-timestamp" title="14-Mar-20 02:03 AM">(edited)</span></div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="❤️" title="❤️" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/2764.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 02:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="688211131197816895" id="message-688211131197816895">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Medical had fallen silent as the Captain&#39;s voice echoed over the intercom. The only sound was the continued tick of equipment in the background, the ambient thrum of equipment, and the sound of harsh sobbing from some. Kennox had stood to attention, head bowed in respect. When the intercom clicked off again he raised his head once more, lilting tone thick with emotion as he spoke.</em> 
+
+&quot;Thank you, everybody, f-for your efforts today... I h-h-haven&#39;t been in Starfleet long, sirs, but I have n-never seen this sort of dedication or determination or c-caring from such a group. Thank you for t-today, for t-trying your hardest, and th-thank you to all who was involved in the Commodore&#39;s t-treatment until now. And this thanks does not come from just m-m-me: it was from her, as well. <em>Turessin.</em>&quot;
+
+&quot;This is g-going to be a d-d-difficult time for us all; some more than others. Please, t-take the time off. Use it to reflect, and g-grieve if needs be. I will b-b-be arranging psychosocial support for everyone involved today, and you are m-more than welcome to speak to me if you would like: c-concerns, complaints, <em>anything.</em> I&#39;m h-here for you to talk to. We...  We will g-g-get through this, sirs. I p-p-p-p-p... <em>Promise</em> you.&quot; <span class="chatlog__edited-timestamp" title="14-Mar-20 02:27 AM">(edited)</span></div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="❤️" title="❤️" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/2764.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f62d.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128149;" title="&#128149;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f495.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128055;" title="&#128055;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f437.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/31a0576f4d938ad6b611c71b243c3e8e.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="LearnedAx#6281" data-user-id="451744242839191553" style="color: rgb(41,169,238)">Random Medic</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 02:26 AM</span>
+
+            <div class="chatlog__message " data-message-id="688211408281796608" id="message-688211408281796608">
+                <div class="chatlog__content">
+                    <div class="markdown">[D] <em>One of the medics nodded and dissapeared out of the door</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/a_309b5b989b7597684c7756b8b72816be.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 02:47 AM</span>
+
+            <div class="chatlog__message " data-message-id="688216627610648601" id="message-688216627610648601">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Dev couldn’t bring himself to leave either Blanche’s or Khassid’s side. He had tuned out practically everyone that spoke. Too far into a meltdown to care,</em> <span class="chatlog__edited-timestamp" title="14-Mar-20 02:58 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/68a46f34b80ffde6c7f61d6a3078ca67.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ash!#0223"data-user-id="635608785196679188" style="color: rgb(41,169,238)">Lt. Lylla sh'Avoness</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 06:59 AM</span>
+
+            <div class="chatlog__message " data-message-id="688280252891660301" id="message-688280252891660301">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>she walked out of the medbay quietly</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 09:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="688314580199538736" id="message-688314580199538736">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Kennox remained there as before, stalwart, watching over the two who remained. He would not leave until they did. The emotion</em> <em><strong>poured</strong></em> <em>off of Blanche Carlisle and Dev Clark in waves; a tide threatening to overcome the beach and drag everything in with it. If he could help, just enough to ensure that they could leave and head somewhere quieter and nicer in order to mourn...</em>
+
+<em>You were only supposed to do this in dire circumstances but he was quite certain that this qualified, and he would only alter things until the two had the strength to move. He wasn&#39;t particularly skilled at it, either, but he would try...</em>
+
+<em>Still standing watch like some sort of guard dog, Kennox inhaled, focussed, and visualised that influence extending out like tendrils; wrapping themselves around the two heads of department like they were being enveloped in a warm hug and a wash of calm. It wasn&#39;t much - but anything to help.</em> </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128153;" title="&#128153;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f499.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/68a46f34b80ffde6c7f61d6a3078ca67.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ash!#0223"data-user-id="635608785196679188" style="color: rgb(41,169,238)">Lt. Lylla sh'Avoness</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 12:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="688363210713464917" id="message-688363210713464917">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>she entered again, giving kennox a nod. She could feel what he was doing... And was very proud. She smiled at him, a silent thank you for being here before continuing her mission to find Eshen.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(194,59,50)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 01:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="688376588944932911" id="message-688376588944932911">
+                <div class="chatlog__content">
+                    <div class="markdown">[Comms]&quot;Lieutenant Tarna to sickbay - could we have a medical officer in main engineering, please?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 02:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="688398072702959673" id="message-688398072702959673">
+                <div class="chatlog__content">
+                    <div class="markdown">[D] <em>An NPC went to attend to that. The others were quite rightfully allowed a break...</em> </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="this" title="this" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/637075614834229248.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="❤️" title="❤️" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/2764.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/0a8ff773b6c0a63187b35b9da94ea63e.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#7790" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 03:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="688409567058853923" id="message-688409567058853923">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>If it had not been for Kennox’s induction of calm, the CMO might have remained sat there during the alert announcement. Removing her chin from Dev’s head, who had remained curled up beside her, Blanche looked up with reluctance. A yellow alert implied preparedness, and they were certainly not prepared.</em>
+
+<em>Medical personnel were busying themselves accordingly; things were to function efficiently as usual, even if that felt like an impossible feat given the circumstances. Khassid certainly wouldn’t have wanted the entire department to fall to shambles, nor did Blanche. She rose, slowly, still holding onto the Trill’s shoulder so as to keep him steady, and looked between the lifeless Cardassian and a nearby ensign.</em>
+
+“Ensign, I think it’s time we think about movin’ the Commodore to the morgue.” <em>Carlisle received a curt nod, and the attendee set to readying Khassid for transportation with the help of a few other officers, all equally morose.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/8185eadf56d3333e3a03bf8cebd0296a.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Cliamain#5731" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Ensign Tevraal Krallarch</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 03:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="688415049777545290" id="message-688415049777545290">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>The door to Sickbay opened and that almost familiar yet very new 4’10” ensign plodded in and glared about the consoles. He half-marched to the first console and registered his arrival. The Tellarite side-stepped to the next console and peered down a check list of duties.</em>
+
+<em>There was a period in the schedule where time stood still for half a day. Yet despite that, supplies were sufficient for a yellow alert. Tevraal, however, did not like inactivity. He stepped away from the console and began organising the remaining supplies in need of maintenance.</em>
+
+<em>Krallarch waddled about the Sickbay, sometimes his heavy footfalls were heard. As he passed the ensign and the Chief Medical Officer around Commodore Khassid, his judging glare and unhappy frown raised into a neutral, emotionless stare.</em> <span class="chatlog__edited-timestamp" title="14-Mar-20 04:22 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/a_309b5b989b7597684c7756b8b72816be.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="G.#0325" data-user-id="211941348977147904" style="color: rgb(41,169,238)">Lt. Cmdr. Dev Clark</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 04:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="688419704599347278" id="message-688419704599347278">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>There had been no response from Dev. Reason being he had fallen asleep a bit ago. Usually his meltdowns included screaming and rocking. But all he could have done in that moment was sob and cry his heart out. It left him exhausted. His body had gone limp in Blanche’s and so now the hand on her shoulder was the only thing keeping him up from falling.</em> </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128148;" title="&#128148;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f494.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/0a8ff773b6c0a63187b35b9da94ea63e.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#7790" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 04:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="688422397426008279" id="message-688422397426008279">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Khassid had been duly removed from the biobed, the small indent in its stark sheets almost impossible for Blanche to regard without the threat of tearing up again. Swallowing, she watched the officers instead, who remained silent as they set to work with removing the woman’s body from sickbay. Blanche had knelt back down beside the sleeping Clark, practically unwilling to let him go; as of right now, they were all each other had.</em>
+
+<em>Quietly clearing her throat, she motioned for Krallarch’s attention, careful so as not to disturb the Trill.</em> “Ensign, do you think you could help me move Doctor Clark to a biobed? I’d like to leave him sleepin’ a little while.” </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="❤️" title="❤️" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/2764.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/8185eadf56d3333e3a03bf8cebd0296a.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Cliamain#5731" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Ensign Tevraal Krallarch</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 04:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="688426215991935062" id="message-688426215991935062">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>The Tellarite gave a single, strong nod. He turned to a fresh biobed and lowered the height to something he may lift up to. If Lt.Cmdr. Clark was close to the biobed, he would gently assist Lt. Cmdr. Carisle with his gloved, wide hands. If the Trill was much further away though, he would bring the comfortable anti-grav lift and move the spent Trill that way with Blanche.
+
+To much surprise, Krallarch made a great attempt at treading quietly. Although one could sense his mental discomfort at the manner.
+
+When it was safe to speak away from the spent Trill, Tevraal exercised a hushed voice, much to his mental disapproval of such ways.</em> “Have you scheduled counselling for the medical team yet?” <em>His attempt at forming a questioning tone was visibly unnatural and strained.</em> <span class="chatlog__edited-timestamp" title="14-Mar-20 04:51 PM">(edited)</span></div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="❤️" title="❤️" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/2764.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 04:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="688428568518459456" id="message-688428568518459456">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I&#39;m alr-r-ready on that,&quot; <em>Kennox stated - well, whispered - from where he had caught the Ensign&#39;s question. At present he was pacing back and forth at the edge of the room, having been overseeing the transference of the Commodore to the mortuary, and was typing on a PADD as he went. Despite everything that had happened he seemed to be holding it together relatively well... And as for counselling? Hadn&#39;t he said at the end of the debrief that he would b- oh, right, Ensign Krallarch hadn&#39;t been there. Okay, Kennox, no need to get angry with more people and this time for no reason.</em> &quot;C-Considering we&#39;re g-g-going to have only o-<em>one</em> available counsellor I&#39;m g-g-going to see about bringing in some ext-t-ternal help.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/8185eadf56d3333e3a03bf8cebd0296a.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Cliamain#5731" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Ensign Tevraal Krallarch</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 04:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="688430689254768747" id="message-688430689254768747">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Now that his mind was taken off the situation, he resumed his usual judgemental glare.</em> “Tell me the name of the counsellor, Sir-.. External help, huh! I want to know what you have in mind, Sir.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 05:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="688432939721031701" id="message-688432939721031701">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>The cadet looked over. Instantly he felt that usual urge to finch away from the Tellarite&#39;s glare, but he had been doing some reading and apparently that was just natural, so he knew that the Ensign didn&#39;t really mean any harm... And the man referring to him as &#39;sir&#39; was pretty cool...</em> &quot;I mean j-j-just externally to this sh-ship, s-s-sir, but not to S-S-Starfleet. I c-c-can get in touch with the h-h-head of psychosocial s-s-support.&quot; </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128077;" title="&#128077;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f44d.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/8185eadf56d3333e3a03bf8cebd0296a.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Cliamain#5731" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Ensign Tevraal Krallarch</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 05:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="688439117150683165" id="message-688439117150683165">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>The Tellarite visibly held back a remark, and gave a singular, insistent nod.</em> “I will look upon the console roster then.” <em>Krallarch half-marched himself away. Scouring through the list. He grumbled audibly.</em> “Apparently.. two Half-Betazoids, Lieutenant S. Carraway and Lt. Junior Grade P. Pendulina. A Trill, Lt. Junior Grade C. Kova, and a Human, Chief Petty Officer E. E. Houston... Right. I expect we’ll be seeing schedule notifications soon.” <span class="chatlog__edited-timestamp" title="14-Mar-20 05:31 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 05:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="688439643649081391" id="message-688439643649081391">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Kennox trailed after the man, unsure of what else he should be doing now that everything had quietened down.</em> &quot;Carraway and P-Pendulina are both on research sabbaticals. I d-don&#39;t know why that says Houston is h-human, because he&#39;s not - he&#39;s a-aenar-andorian and c-c-currently in our ICU in a c-c-coma. K-Kova is the only av-v-vailable counsellor we h-have.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/8185eadf56d3333e3a03bf8cebd0296a.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Cliamain#5731" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Ensign Tevraal Krallarch</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 05:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="688444948840054838" id="message-688444948840054838">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Krallarch glared up at the Denobulan, then back at the screen.</em> “ ...Bah! The Human is E. E. Palmer, not E. E. Houston. You are not so unreliable then, Sir.” <em>He lets out a sigh, and turns to face Cadet Ephrix.</em> “So.. an Aenar Andorian, hm! When needs must, they say.. “ <em>Krallarch peered about the Sickbay, supplies were ready for the yellow alert.</em> “Sir, I have been meaning to run virus simulations, and I am debating whether the Medical Lab or the Holodeck were best. What would you recommend, Sir.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 06:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="688447254146580500" id="message-688447254146580500">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;M-Me, s-s-sir?&quot; <em>He enquired and pointed to himself, having followed Krallarch&#39;s gaze to try to identify who the Ensign was talking to.</em> &quot;Uhm, it d-d-depends on the nature of the tests, r-really. If you h-h-have a l-live sample and are c-certain you can keep it in containment then you&#39;d w-want the medical lab. If your s-s-simulations are <em>just</em> s-simulations with no live components then the h-h-holodeck would work. And uhm... You d-d-don&#39;t have to c-c-call me s-sir, sir.&quot; <em>He blushed and rubbed the back of his head sheepishly at that.</em> &quot;You&#39;re <em>my</em> s-s-superior officer, not the ot-ther way around.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/8185eadf56d3333e3a03bf8cebd0296a.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Cliamain#5731" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Ensign Tevraal Krallarch</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 06:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="688452361932242959" id="message-688452361932242959">
+                <div class="chatlog__content">
+                    <div class="markdown">“The constant challenge is that with every new planet and starship we board, the more unknown viruses we come in contact with. As you know, viruses are the most numerous micro-subject in the universe, even more than bacteria, and much harder to treat. However, only a small portion infect humanoids. But I must be ready for what is eventual, and not by chance.”
+
+<em>Tevraal’s glare became emotionless.</em> “Tell me if you prefer Cadet Ephrix instead.. I have not long come from the Starfleet Academy where all staff were my superiors. This is new to me that someone may be below my rank.”
+
+<em>The Tellarite extended his arm towards Hallway Five.</em> “Do you demand to join me in the Medical Lab.” <span class="chatlog__edited-timestamp" title="14-Mar-20 06:29 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 06:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="688457270560161800" id="message-688457270560161800">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I, uhm...&quot; <em>The poor denobulan paused, looking completely and utterly perplexed by what was currently happening. He had to take a moment to formulate an answer to everything that the Tellarite had just said; it had been such a flurry of words in his brain which was so tired from the events of today.</em> 
+
+&quot;F-Firstly, s-s-sir, you&#39;re v-v-very right about the threat from v-viruses. S-Secondly, uhm, j-just Kennox is fine... Nobody calls me b-by my surname, so. Uh, thirdly, I c-c-can get why the rank change would be a bit odd. There are a f-f-few people j-junior to your position: c-cadets and all of the NCOs... So there are q-q-quite a few people to call you sir! And f-fourthly, uhm, I&#39;m not d-d-demanding anything but if you would l-l-like my input then I would be h-honoured to join you, sir... But at the s-same time, I really sh-should stay here and ensure that everything is okay. The d-department heads were v-very close to the Commodore - I wouldn&#39;t want to l-leave them alone right now...&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/8185eadf56d3333e3a03bf8cebd0296a.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Cliamain#5731" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Ensign Tevraal Krallarch</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 07:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="688468515992502306" id="message-688468515992502306">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Tevraal had to pause and process Kennox’s very flattering and polite decline. He had to convert the Denobulan’s intention and meaning. For usually, such indirect sugarcoating was of grave insult to Tellarites. If a person meant no harm, they would be loud, challenging and direct. It showed familiarity with one another and openness, to be able to insult and argue and remain at ease. However, treading softly and ego-stroking showed a person was closed off, manipulating and could be harbouring ill intention... or just really hated Medical Lab work... But this Denobulan - Tellarite fellowship of officers had the wonderful advantage of education. Tevraal accepted that Kennox was genuinely, and quite simply, busy.</em>
+
+“ ..I understand, Kennox. I want you to know that I have deeply.. <strong>appreciated</strong>.. our brief conversation. I have not had such a.. <strong>great</strong>.. and lengthy interaction with another officer since meeting the Caitian here.” <em>The Tellarite must have been referring to the Ferasan.</em> “I must go, and ..<strong>sadly apologise</strong>.. for my leave. I do.. <strong>not</strong>.. wish to do so.” <em>Tevraal paused and narrowed his eyes, his brain working overtime to check he is translating this right.</em>
+
+<em>He was visibly uncomfortable with this backward way of speaking. It tired his mind, and he had to restore some form of normality and ease to himself</em> “I will see you after the boarding party puts your forward-brushed, wavy hair into ICU. Then I’ll have the displeasure of seeing your clumsy self again.” <em>Said the overly hairy humanoid with the massive hair bun. He gave a single nod, and grunted, before plodding off.</em> <span class="chatlog__edited-timestamp" title="14-Mar-20 07:30 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/f4a6b2295201706d4ccce37938a09d5c.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Charron#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">Cadet Kennox Ephrix</span>
+
+
+        <span class="chatlog__timestamp">14-Mar-20 08:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="688487861359476787" id="message-688487861359476787">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Oh, you d-d-don&#39;t have to apologise, s-sir!&quot; <em>Kennox called, admittedly very glad to have had this conversation with the man. It was surprising that he was so reluctant to leave - and it saddened the cadet to hear that the Ensign had only truly spoken to one other person so far. Mentally, he made a note to find the Ensign and bring him dinner some time... Maybe look up Tellarite cuisine and see what he could do.</em> 
+
+&quot;And I&#39;ll, uh...&quot; <em>He paused, trying to think of some sort of &#39;nice&#39; Tellarite insult.</em> &quot;Be uh, s-s-sorry to uh, s-see you again too, s-sir!&quot; <em>He called as the man headed on out. It was probably a pretty pathetic effort... But he tried nonetheless. With Krallarch gone he turned back to his PADD - and of course looked to Dev and Carlisle, trying to ensure that they were alright.</em> </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128055;" title="&#128055;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f437.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128155;" title="&#128155;" src="Star%20Trek_%20Phoenix%20-%20Deck%206_%20Medical%20-%20sickbay%20%5B630198194537496576%5D%20%282020-03-13%20to%202020-03-15%29.html_Files/1f49b.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 138 message(s)</div>
+</div>
+
+</body>
+</html>

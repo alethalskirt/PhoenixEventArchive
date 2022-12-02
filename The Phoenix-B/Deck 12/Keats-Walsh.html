@@ -1,0 +1,2364 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - keats-walsh</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Deck 12: Lieutenant Quarters I / keats-walsh</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/2f1405f8a9cf4752a238a85415158311-4B292.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheGrandCommonwealth#3246" data-user-id="278609042748866580" style="">TheGrandCommonwealth</span>
+
+
+        <span class="chatlog__timestamp">22-Dec-20 08:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="791040931762667530" id="message-791040931762667530">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Liviana gave  her new quarters a good look as she put down her various personal affects on the shelf above her nightstand. Among them, a family picture taken in a rather archaic manner, on physical paper, showing a young Liviana  holding a big Stick in her right hand like a spear while what was clearly her mother behind her, hands on the young girl&#39;s shoulders. Next to them, a bulky Cardassian with a friendly smile, his arm wrapped around Liviana&#39;s mother, with the other on the shoulder of a child of apparent, mixed Cardassian-Romulan Ancestry. Next to all of this stood an old Romulan woman, wearing the washed out robes of a senator of the old Star Empire, making her look extremely out of place with the rather modestly clothed people in the picture.</em>
+
+<em>Yes, Liviana&#39;s family was an odd one, but it was still her family, damnit! She loved them all and she hoped that she was making them proud. With that moment of necessary sentimentality out of the way, Lt. T&#39;kei picked up her commbadge, affixing it to her newly issued Uniform, seeing as her old one had gotten torn up pretty badly. Following this, the young Romulan put on an amiable smile and made her way out of her quarters to go for her physical, as was routine.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/ce33887575ff995a243ee3f4da0f64e6-F1870.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Space kween#1679" data-user-id="781719436830703707" style="color: rgb(255,203,37)">Lt. JG. Rivee Keats</span>
+
+
+        <span class="chatlog__timestamp">30-Dec-20 05:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="793714260034322432" id="message-793714260034322432">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Rivee stood in the doorway of her quarters and looked around. Two bedrooms, a common area, and a bathroom, she counted. She took a step forward to allow the door to shut behind her. She studied the room, it was rather spacious and Rivee was very glad there were two bedrooms. She entered her room and sat down on the bed. She felt very unsure about having a roommate again, especially one who wasn&#39;t Scott. At least the separate bedrooms helped that weariness, albeit slightly. She stood up, she couldn&#39;t dwell on it for too long, she was here to have a fresh start. She started unpacking and putting her belongings away. It took a while, but they were eventually put away. The last things she put up were a couple pictures. One of her and Scott on their wedding day and the other being a picture of them at a space station, positioned in front of a window, the Valiant docked in the background. The images caused her some pain, of course they did, but Rivee knew that in time they would bring her joy. She took a deep breath, she couldn&#39;t think of this anymore, she was hungry and was here to work. She stood up, smoothed out her uniform and headed out the quarters to find the mess hall.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/745150344cac7d355e4c70eda1af5e48-FC496.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="magnolia#6748" data-user-id="539876517287690250" style="color: rgb(41,169,238)">Commander Blanche Carlisle</span>
+
+
+        <span class="chatlog__timestamp">02-Jan-21 01:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="794745754396393513" id="message-794745754396393513">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>A message chimed for Rivee.</em>
+
+<div class="quote">Good afternoon!
+</div>&gt; 
+<div class="quote">I hope you&#39;ve been faring well since our last conversation, and have managed to spend some time settling in! I just wanted to get in contact as promised, and reassure you that your files have all updated with no issue whatsoever. Attached is a list of potential slots for you to come and get those initial scans done as mentioned, and we&#39;ll also have the opportunity to walk through what to expect in the coming weeks, lifestyle adjustments, etc.
+</div>&gt; 
+<div class="quote">There&#39;s no rush! When you&#39;re able, simply let me know the appointment that would work best for you and we&#39;ll go from there! I&#39;ve also attached contact details for the counsellors who are currently active onboard, just to make them all the more accessible should you still be interested in speaking with one!
+</div>&gt; 
+<div class="quote">Best wishes,
+Dr. Blanche Carlisle</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">18-Jan-21 05:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="800785569583071262" id="message-800785569583071262">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>It seemed as though Jayne had found herself sitting down in her quarters on the Phoenix once more. The area smelled like old car scent, mixed in with a few chemical compounds here and there to keep the place clean. It had been a while since she had been here in this space, but Jayne knew that something was... off. It could have been the tension in the air, or rather, the new system of ranks that she was not used to. However, in time she will become accustomed to  it and push forward. She was just glad to have her job back again, hopefully, this time without any setbacks. She got up from where she was sitting, before she headed out of her quarters to find the new COS.. hopefully they could discuss their current situation.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/ce33887575ff995a243ee3f4da0f64e6-F1870.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Space kween#1679" data-user-id="781719436830703707" style="color: rgb(255,203,37)">Lt. JG. Rivee Keats</span>
+
+
+        <span class="chatlog__timestamp">28-Jan-21 06:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="804418697027911690" id="message-804418697027911690">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Rivee had gotten up much earlier, and after a bit of morning sickness was ready to go to work. She couldn&#39;t say she liked the new uniforms however, and with the addition of the belt she figured she wouldn&#39;t be able to keep her situation mostly private for long. Still, she checked her PADD, today she&#39;s be going around to different departments and seeing if they needed supplies. Enigneering was first on the list. She headed out.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">01-Feb-21 05:52 AM</span>
+
+            <div class="chatlog__message " data-message-id="805676897677606952" id="message-805676897677606952">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>Walsh had made her way back to her quarters, all fresh and clean. Her day had brightened for a moment,  discorving new friendships never happened often with Jayne. However it seemed like the new Orion girl got a kick out of conversing with her. Once on the bed, Jayne dangled her feet over the edge. Leaning back slightly with her PADD in hand she started up a message to send to her new friend.</em>
+
+<div class="quote">Hey Nemo, how have you been? Well..  thats a weird question to ask since its only been like, half a day since we last talked. However, I was wondering if we could set up a day together for us to hang out.  You have got strength  and brute under your belt, you would be a great sparring partner.. that is if you want a sparring partner,  I would be willing to offer my hand. As for printing presses, I have found a couple schematics for newer high quality tech printers that you might want to use for your... printing interests  so if you ever want to know how to make one, I can help you with that.
+</div>
+<div class="quote">Anyways, I hope you receive this message well. Talk to you later.
+</div>
+-Jayne</span>
+
+                                <span class="chatlog__edited-timestamp" title="01-Feb-21 01:06 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="phoenixheart" title="phoenixheart" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/769248729893961780-3D8C1.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127825;" title="&#127825;" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/1f351-28BDC.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">01-Feb-21 06:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="805869750982279188" id="message-805869750982279188">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">To: Lt. Jayne Walsh
+From: Suvwl&#39; cha&#39;DIch Nemo
+
+Hey Jayne! I won&#39;t bother you with the boring details of the past half day, but I would really enjoy a break from these knuckle heads over here, and I would really enjoy a new sparring partner. As for the printing press thing, I was thinking of sending Ornock a better copy, maybe signed with my name in the corner. Then I could leave it in a stash box somewhere and have it left to him whenever I die. You know, I&#39;ve never had a friend I could talk to about this. This is nice. Let me know about the sparring.
+-Nemo</div></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="mildpanic" title="mildpanic" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/734519773932814377-BFF4D.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">01-Feb-21 06:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="805871315227246633" id="message-805871315227246633">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]
+<div class="quote">Reply: Nemo
+</div>   &gt;  From: Jayne
+<div class="quote">I&#39;m free mostly any time, we just have to set up the situation. The holodeck runs many program&#39;s. How about later today?. Its also interesting to see how you spread your affection towards others, its way more sophisticated than I would have hoped. I&#39;m learning new things every day. If you ever want to stop by my quarters and hang, you are always welcome to (in relation to getting away from the knuckle heads.)
+</div>-Jayne</span>
+
+                                <span class="chatlog__edited-timestamp" title="01-Feb-21 06:45 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">01-Feb-21 06:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="805874436019847198" id="message-805874436019847198">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">Reply: Jayne Walsh 
+From: Nemo 
+That sounds good! And truly, I love to spread love everywhere I can. However, you most likely should take any advice from me. I&#39;m just trouble. 
+As for the sparring, I&#39;m a little tied up right now, but how about in a couple hours? Say, at 1600?&quot;</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">01-Feb-21 07:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="805875311417360424" id="message-805875311417360424">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">Reply: Nemo
+From :Jayne
+That is rather pleasant. Some might say that the best advice comes from trouble itself, so I will take what I can get in that regard. As for the sparring, 1600 sounds good, would you like to grab something to eat afterwards? I try to indulge myself in those actions to further my education.</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">01-Feb-21 07:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="805888127633457212" id="message-805888127633457212">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">Reply: Jayne
+From: Nemo
+Food sounds good! Alright, see you at 1600. Wait. Where should I meet you?</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">01-Feb-21 08:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="805890709458518117" id="message-805890709458518117">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">Reply:Nemo
+From: Jayne,  
+How about holodeck 2? If its not full
+-Jayne</div></span>
+
+                                <span class="chatlog__edited-timestamp" title="01-Feb-21 08:10 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">01-Feb-21 08:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="805897431132274748" id="message-805897431132274748">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">Reply: Jayne 
+From: Nemo
+Sounds good, see you there.
+-Nemo</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/a_525446c6b5f92017ac309c2e95f89ec2-52621.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(175,36,27)">Captain Syrezeaju</span>
+
+
+        <span class="chatlog__timestamp">03-Feb-21 10:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="806648484655923240" id="message-806648484655923240">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">Dear <span class="mention" title="Space kween#1679">@Lt. JG. Rivee Keats</span>,
+</div>&gt; 
+<div class="quote">Efforts are underway to prepare the ship for further combat against the Iconians. The ship’s housing of civilians has been drawn to my attention. In order to preserve civilian lives, it may be prudent for the ship to undertake saucer separation and conduct a full civilian evacuation to this area.
+</div>&gt; 
+<div class="quote">A designated team will be tasked with assisting in this evacuation. You have been designated as an  escort who will aid in evacuation if a saucer separation is called.
+</div>&gt; 
+<div class="quote">If you have any further questions please reply. 
+</div>&gt; 
+<div class="quote">- Cpt. Syrezeaju.</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-6F3DD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="808479243788877864" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">08-Feb-21 11:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="808479342022885407" id="message-808479342022885407">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">To: Jayne
+From: Nemo
+Hey!! Sorry, it got so busy on our ship, I couldn&#39;t pull myself away. Do you still want to meet up?</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">08-Feb-21 11:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="808483000928698369" id="message-808483000928698369">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Ding</em>
+<div class="quote">To: Nemo
+From: Jayne
+Sure, I&#39;ve been rather busy, where were we planning on going to again?</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-6F3DD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="808479243788877864" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">09-Feb-21 12:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="808494695482392616" id="message-808494695482392616">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">I think you said something about pool? Is that a sport? Or is that water?</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">09-Feb-21 12:41 AM</span>
+
+            <div class="chatlog__message " data-message-id="808497825716371508" id="message-808497825716371508">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Ding.</em> 
+
+<div class="quote">the sports pool, you know. Where you swim?</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-6F3DD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="808479243788877864" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">09-Feb-21 12:45 AM</span>
+
+            <div class="chatlog__message " data-message-id="808498875030568981" id="message-808498875030568981">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">We definitely do not have those in klingon space <img class="emoji " alt="😂" title="😂" src="https://twemoji.maxcdn.com/2/72x72/1f602.png"> Let&#39;s do it, I have the perfect outfit in mind. I&#39;ll meet you there?</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">09-Feb-21 12:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="808500887374528532" id="message-808500887374528532">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Ding!</em>
+
+<div class="quote">sure thing I&#39;ll be right there!</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-6F3DD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="808479243788877864" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">13-Feb-21 01:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="809955911765327962" id="message-809955911765327962">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo had been in Jayne&#39;s quarters for a while, just talking with the android when the yellow alert came on.</em> &quot;Crap, I should probably get back to my ship. I&#39;ll see you later, Jayne!&quot; <em>Nemo exited the room.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-6F3DD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="808479243788877864" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">15-Feb-21 11:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="811019572944568331" id="message-811019572944568331">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">To: Jayne
+From: Nemo
+
+Hey, sorry that our last get together was cut short. I&#39;ve got a little time, I believe, in a couple days if you want to meet up. Lemme know</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/ce33887575ff995a243ee3f4da0f64e6-F1870.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Space kween#1679" data-user-id="781719436830703707" style="color: rgb(255,203,37)">Lt. JG. Rivee Keats</span>
+
+
+        <span class="chatlog__timestamp">16-Feb-21 12:52 AM</span>
+
+            <div class="chatlog__message " data-message-id="811037240159502356" id="message-811037240159502356">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Rivee was sat in her quarters in sweats about to have a breakdown. She knew she shouldn&#39;t have commented about parents on the ship, but she had tried to resolve the problem, and then the guy had to just flat out ask, and it wasn&#39;t like she couldn&#39;t answer, or lie. She had wanted her pregnancy to stay on the downlow for just a bit longer, just until she started showing. Although she was sure that some people down in ops had their suspicions, with her running to the bathroom nauseous what felt like every 5 minutes. She took a deep breath, this was eminent, that the whole ship would know, it just so happened that they would know a little early. She took one more deep breath, touched her wedding rings, and started typing.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">18-Feb-21 03:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="811976184572149760" id="message-811976184572149760">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>A late response came back in from Jayne</em>
+
+<div class="quote">To: Nemo
+From: Jayne
+Hey! Its okay, your totally fine. I have just been appointed  acting Chief of security so my plate is filled. But how about we meet up at my quarters sometime and discuss the next course of action? Then we can play it by ear or maybe even do it on the day.</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/ce33887575ff995a243ee3f4da0f64e6-F1870.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Space kween#1679" data-user-id="781719436830703707" style="color: rgb(255,203,37)">Lt. JG. Rivee Keats</span>
+
+
+        <span class="chatlog__timestamp">20-Feb-21 06:58 AM</span>
+
+            <div class="chatlog__message " data-message-id="812578864618143785" id="message-812578864618143785">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Rivee sat in her quarters staring out the window. She had her eyes glued to where the entity had been, the damned thing. She didn’t resent it, but it terrified her to no end. She knew how many lives the bird had guided away. She also knew the entity was not the cause of each death, but it’s presence always felt more akin to a grim reapers than a guiding soul. She took a deep breath and looked down at her stomach, placing her hands on it carefully.</em> “Don’t worry my child, I will make sure the entity doesn’t come for us.” <em>She still felt a bit weird about it, talking to her unborn child, and with her pregnancy not obvious, she couldn’t shake the feel she was talking to herself. She looked back out the window again, but kept her hands on her stomach, continuing to talk to baby.</em> “I’m going see you tomorrow, I’m going to see you for the first time, and I’ll hear your heartbeat, and I will love you so much.” <em>Another moment of silence.</em> “I’m going to message Lieutenant Malcolm too, he just lost his wife. I want to know he’s not alone.” <em>She talked a bit more before growing tired and heading to bed. She fell asleep.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128158;" title="&#128158;" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/1f49e-38236.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="pridesparkle" title="pridesparkle" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/706583201488961567-A33F3.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="cuddle" title="cuddle" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/784817284891672608-8AF4D.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/ce33887575ff995a243ee3f4da0f64e6-F1870.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Space kween#1679" data-user-id="781719436830703707" style="color: rgb(255,203,37)">Lt. JG. Rivee Keats</span>
+
+
+        <span class="chatlog__timestamp">22-Feb-21 03:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="813435704893767730" id="message-813435704893767730">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The next morning Rivee woke up and got dressed and ready for the day. She took a quick glace out the window before heading out to go to sickbay.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">24-Feb-21 12:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="813933324384206870" id="message-813933324384206870">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[nemo]
+<div class="quote">To: Jayne 
+From: Nemo 
+
+Good gods above it has been busy over here. Sorry I haven&#39;t responded sooner, I had many breaks and opportunities to send you messages, but Ornock the destroyer of all things good kept up with his namesake and kept me busy, even on my breaks. I am exhausted, but I would love to see you again soon. Let me know!</div></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Feb-21 04:19 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-21 02:49 AM</span>
+
+            <div class="chatlog__message " data-message-id="815052853076688937" id="message-815052853076688937">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>A reply came in as soon as conveniently possible</em>
+<div class="quote">Why dont you head over to my place now and take the load off your back. Relax and stuff! Maybe we can head to the holodeck afterwards, we might discover some rather, enjoyable things there?
+</div>&gt; 
+<div class="quote">Let me know if this sounds good.
+-Jayne</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-21 03:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="815061706790666270" id="message-815061706790666270">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><div class="quote">Sounds like a plan! Ornock is a currently doing something not with me, so I will sneak over. I remember where your quarters are <img class="emoji " alt="😘" title="😘" src="https://twemoji.maxcdn.com/2/72x72/1f618.png"> 
+
+-Nemo</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-21 03:33 AM</span>
+
+            <div class="chatlog__message " data-message-id="815064025401655319" id="message-815064025401655319">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>A genuine hand- to- metal knock sounded on the door.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-21 03:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="815064811746492427" id="message-815064811746492427">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Come in! I know who you are but we should really invent a secret knock code so I know exactly who you are when you come by my quarters!&quot; <em>She hollered from across the room, data pads strewn about her desk with a bunch of blueprints of unknown origin.... well unknown for now. The android was currently having her day off, wearing a pink silky dress with beaded flowers at the bottom. She liked the way that the dress was airy enough to make her feel light, even though she was made completely out of metal. Every time she walked, her dress flowed behind her like a cape in the wind, following its master helplessly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-6F3DD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="808479243788877864" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Feb-21 03:47 AM</span>
+
+            <div class="chatlog__message " data-message-id="815067582238818355" id="message-815067582238818355">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo stepped in and immediately stretched, arms extended above her and her body arched. Finally she stopped with a groan.</em> &quot;Geez that felt nice. And maybe you&#39;re right, maybe we could come up with passwords or something for each other, sugar.&quot; <em>She looked around to get a feel of her surroundings before she actually looked at Jayne. Nemo&#39;s jaw nearly dropped. It wasn&#39;t hard for her to realize keeping her hands to herself was going to be difficult tonight.</em> 
+
+&quot;So! What are you working on?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-21 04:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="815076103306608691" id="message-815076103306608691">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well remember how I told you that I found some blueprints for high quality photocopiers? Well, lets just say I have started to assemble one, with no engineering experience to back me up, so basically I am just using my android knowledge and going in blind.&quot; <em>She said, winking at her wiht a bunch of PADDS in hand, flailing her arms around to indicate her sincereness.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-6F3DD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="808479243788877864" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Feb-21 12:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="815196737043693609" id="message-815196737043693609">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo&#39;s face split into a grin and she cackled. She took a few steps closer to Jayne from across the room.</em> &quot;HaHAA! I thought you were joking when you said that you had blueprints and plans for these... is that what they are called? Photocopiers?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-21 07:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="815311622255411240" id="message-815311622255411240">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;It is against my code to joke around Nemo, and besides. It takes up my free time so its worth it.&quot; <em>She said putting her PADDS down and opening up her arms for a hug, a friendly gesture.</em> &quot;Come here! you have been pretty busy and you might need a stress releiving hug. I heard its theraputic.&quot; <em>She said.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-6F3DD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="808479243788877864" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">27-Feb-21 09:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="815333094713851935" id="message-815333094713851935">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo smirked.</em> &quot;Well, since you asked so nicely-&quot; <em>Nemo crossed the room and swept Jayne off the ground in a huge hug and twirled her around with a big smile on her face. Finally, Nemo set the android back down.</em> &quot;Thanks, sugar. I needed that hug. I usually hate hugs, too.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-21 09:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="815336252584755270" id="message-815336252584755270">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The moment that Nemo picked Jayne up, a face of shock flooded into her face. Here eyes became pin points as her face elongated into a semi &quot;frown&quot;</em> &quot;So-um&quot; <em>She gulped.</em> &quot;Do you want to sit, or lay down somewhere? Anything to help you relax... I guess.&quot; <em>She said stuttering a little, Jayne knew Nemo was buff, but did not expect her to lift the Android up and spin her around.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-6F3DD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="808479243788877864" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">28-Feb-21 12:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="815382521847087135" id="message-815382521847087135">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo smiled softly. She would <strong>love</strong> to lay down, especially since she caught a glimpse of what a star fleet bed looked like the last time she was there. However, multiple things said she couldn&#39;t do that. For starters, Jayne probably wasn&#39;t ready for a.... <strong>lay-down relaxation cycle.</strong> The other thing was the multiple announcements on the comm system.</em> &quot;Um, Jayne, is your ship okay?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-21 12:46 AM</span>
+
+            <div class="chatlog__message " data-message-id="815384291679666176" id="message-815384291679666176">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yellow alert is a standar alert procedure. I was called down to deck 17 however I believe everything has been handled there. Yellow alerts usually mean to be prepared so the ship is just sending out a warning. We are fine.&quot; <em>She answered.</em> &quot;Dont you have anything like that on your ship? Or is it all just red.&quot; <em>She giggled.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-6F3DD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="808479243788877864" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">28-Feb-21 12:59 AM</span>
+
+            <div class="chatlog__message " data-message-id="815387675153793064" id="message-815387675153793064">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She smirked.</em> &quot;All red, sugar. Why don&#39;t we go and see if we can help? I obviously can&#39;t go back to my ship until you guys sort out you little infestation problem, not that I <em>want</em> to head back to my ship.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-21 02:09 AM</span>
+
+            <div class="chatlog__message " data-message-id="815405377947828257" id="message-815405377947828257">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Sounds good um, sugar... Lets go check out the security deck, see if anything is booming there eh?&quot; <em>She asked, looking at her hand, With one swift motion, Jayne extended her own hand, fingers splayed out in a rather interesting fashion. She didnt want to ask the question as it seemed awkward, but Nemo&#39;s response to this gesture would define if the orion was okay with it.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/480dfd3752276cc814e2e6f8e031dbf0-10EE4.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-21 03:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="815418835178881024" id="message-815418835178881024">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Should anyone look towards Jayne&#39;s bed, there was a little movement under the blanket, and- scratching sounds?</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-6F3DD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="808479243788877864" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">28-Feb-21 03:18 AM</span>
+
+            <div class="chatlog__message " data-message-id="815422699358650416" id="message-815422699358650416">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo happily took the hand and was about to head out when she heard something coming from Jayne&#39;s room.</em> &quot;Hey, did you hear that?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-21 03:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="815431401679224872" id="message-815431401679224872">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yeah, sounded like scurrying.... In my bed!&quot; <em>She said urgently, dragging Nemo over to her bed and with her other hand she swiped the covers away from the bed as they flew into the air. Hopefully it would uncover what was underneath.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/480dfd3752276cc814e2e6f8e031dbf0-10EE4.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-21 04:10 AM</span>
+
+            <div class="chatlog__message " data-message-id="815435619220193292" id="message-815435619220193292">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The middle of the sheets were wet, though what was more remarkable itself was the two little reflecting beings- fighting? playing? whatever it was, the two of them were doing it. Too enticed into doing that, they did not noticed right away the two &#39;giants&#39;. When they did do though, they both bolted each their way, one trying to climb the wall, not exactly successfully, and the other passing between Nemo&#39;s legs.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-6F3DD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="808479243788877864" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">28-Feb-21 04:20 AM</span>
+
+            <div class="chatlog__message " data-message-id="815438171034615808" id="message-815438171034615808">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo stepped back a bit, startled by the sudden movement.</em> &quot;What the (Orion equivalent of hell) was that?!?&quot; <em>She looked at the one trying to climb the wall and plucked it off. She brought it closer to her face to examine it closer.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-21 04:59 AM</span>
+
+            <div class="chatlog__message " data-message-id="815448112167911425" id="message-815448112167911425">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;More importantly, why are those things in my damned bed!&quot; <em>She shouted, looking at her soiled bed.</em> &quot;Those sheets were hand made by a friend!&quot; <em>She cried out.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/480dfd3752276cc814e2e6f8e031dbf0-10EE4.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-21 05:05 AM</span>
+
+            <div class="chatlog__message " data-message-id="815449484061704233" id="message-815449484061704233">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The little bastard wriggled in Nemo&#39;s grisp, but found itself unable to freed itself. It started squeaking while it kept wriggling. It did not like the shouting. A few water drops ran down her hands, and the more time would pass, the more there will be. The other one had managed to escape through the ventilation, though.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="28-Feb-21 05:05 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-6F3DD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="808479243788877864" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">28-Feb-21 05:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="815450395635351569" id="message-815450395635351569">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo&#39;s first reaction was to comfort Jayne. She would have used one hand to rub her back gently, but her hands were full.</em> &quot;Hey, I think it&#39;s just water. Your sheets will be fine, Jayne. However, this little guy won&#39;t be for much longer unless I get him something cold. I think he&#39;s <em>melting.</em>&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-21 05:13 AM</span>
+
+            <div class="chatlog__message " data-message-id="815451661451264040" id="message-815451661451264040">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Mhm, and where are those water drops coming from!&quot; <em>She exclaimed, looking over at her cat who had gotten the pounce on one of them. Smirking  she ran over to the thing and picked it up from her cats mouth.</em> &quot;Good boy Halibut.&quot; <em>She commented before bringing the poor thing over to Nemo</em> &quot;Interesting little creatures... now before you say anything. I didn&#39;t tell Halibut to kill this guy, he did it on his own.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/480dfd3752276cc814e2e6f8e031dbf0-10EE4.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-21 05:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="815455568089055272" id="message-815455568089055272">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The one who was held by Nemo got as far as he could in his fellow rat direction, sniffing air almost sadly as he recognized the none-liveliness of the other. The one dead seemed to melt visibly faster than the one still alive, though they both were indeed.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-6F3DD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="808479243788877864" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">28-Feb-21 05:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="815455809248034876" id="message-815455809248034876">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She grimaced and made her way over to a replicator.</em> &quot;I need a cooler with a Thermostat.&quot; <em>Thw replicator complied and immediately Nemo dumped the ice rat thing into the cooler and set it to 0&#176; Celsius. She turned to Jayne and bit her own lip. After thinking a moment, she took the ice rat thing from Jayne and placed it in the cooler as well, then shut the lid.</em> &quot;Well, now that&#39;s all taken care of, we can probably go now.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-21 05:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="815457389863632955" id="message-815457389863632955">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;m sorry  I didn&#39;t mean to hurt it.&quot;<em>She pouted, her head tilted downwards facing towards Nemos waistline in sorrow. Her hands clasped in front of her, one thumb rubbing her index finger.</em> &quot;It wasn&#39;t a pleasant sight to see at all.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-6F3DD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="808479243788877864" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">28-Feb-21 05:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="815639751612825670" id="message-815639751612825670">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo turned to face Jayne and looked up at her. She gently took Jayne&#39;s hands and held them in her own. When she spoke, her voice was quiet and gentle.</em> &quot;Hey, I know you didn&#39;t mean to. It&#39;s okay.&quot; <em>Nemo freed one of her hands to brush a loose lock of Jayne&#39;s hair behind her ear. She let her hand drop onto the android&#39;s shoulder and let it linger there for a moment before it slid back down to her hands. She smiled encouragingly up at Jayne.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/480dfd3752276cc814e2e6f8e031dbf0-10EE4.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-21 11:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="815728827712012299" id="message-815728827712012299">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The rat-like had been snacking on his rat-like folk corpse calmly in the cooler.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="slap" title="slap" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/679004321651752962-CA7BC.png">
+                                <span class="chatlog__reaction-count">9</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/1f62d-FE9EC.png">
+                                <span class="chatlog__reaction-count">9</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-6F3DD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="808479243788877864" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">02-Mar-21 02:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="816135061539258418" id="message-816135061539258418">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Nemo had left some time ago, the cooler in hand when she went back to her ship.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="OHNO" title="OHNO" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/704858838280568842-94336.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-6F3DD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="808479243788877864" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">15-Mar-21 07:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="821101484144984124" id="message-821101484144984124">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Ding!] A message for Jayne Walsh came through.
+<div class="quote">To: Jayne
+From: Nemo
+
+Hey, things have been relatively quiet on our ship, so I have a spot of free time to come over if you&#39;d like. Let me know.
+
+Nemo</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%2012_%20Lieutenant%20Quarters%20I%20-%20keats-walsh%20%5B791034582131933224%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">20-Mar-21 03:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="822848612669194270" id="message-822848612669194270">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>A rather late response came in</em>
+<div class="quote">Hey Nemo, sorry for the late response, things have been quite busy around here in security. Feel free to pop over at any time now, my schedule is pretty open for the next couple days! We can discuss something when you get here.
+</div>&gt; 
+<div class="quote">Let me know if anything comes up.
+-Jayne</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 58 message(s)</div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,1504 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - balcony</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+    .spoiler--hidden .spoiler-image:after {
+        content: "SPOILER";
+        color: #dcddde;
+        background-color: rgba(0, 0, 0, 0.6);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: 600;
+        /* padding: 0.5em 0.7em; */
+        padding: 100%;
+        /* This ruins those beutifully rounded buttons, but it's needed to prevent a FireFox bug with video and audio elemnts. */
+        /* The bug is that you can click trough the spoiler layer and play the video or audio, I could not identify the cause. */
+        /* I leave this here, in case someone is brave enough to venture in to madness that is undocumented browser behaviour. */
+        border-radius: 20px;
+        letter-spacing: 0.05em;
+        font-size: 0.9em;
+    }
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/a_5361c0bf380eb945fe0f2e7ee079ec5d-28F71.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">The Fleet Ball / balcony</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/a_ad1bcb442c9d4270fa4d5453335c1572-646BE.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">28-Nov-20 06:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="782315176245592097" id="message-782315176245592097">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>In contrast to the hustle and bustle of the indoor part of the ball, the Balcony offered a space of moon-lit silence where one could sit to enjoy the beautiful San Francisco skyline, bathed in starlight with the music of the ballroom <strong>just</strong> audible.</em></span>
+
+                        </div>
+                    </div>
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/Collage_2020-11-28_09_36_24-E1C4B.jpg">
+                                        <img class="chatlog__attachment-thumbnail" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/Collage_2020-11-28_09_36_24-E1C4B.jpg" alt="Image attachment" title="Image: Collage_2020-11-28_09_36_24.jpg (369.34 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/675dc0cafe3588581ed78fc5cbc68902-97278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 02:47 AM</span>
+
+            <div class="chatlog__message " data-message-id="782437462436872232" id="message-782437462436872232">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Klingon stepped outside of the bustling rooms, taking a long breath of fresh air as he walked out on a large balcony. He headed toward the stone railing and leaned on it, looking out at the familiar San Franciscan skyline.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/14f6fd894bd7b4532dcee392b6760182-A4B60.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Lieutenant Jayne Walsh#0000" data-user-id="782438631432126504" style="">Lieutenant Jayne Walsh</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Nov-20 02:51 AM</span>
+
+            <div class="chatlog__message " data-message-id="782438632476114944" id="message-782438632476114944">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Mixed in with the glorious glow of the starlit sky, was Jayne. Who went through several modifications since one laid eyes upon her. The long hair that was her feature, was now changed to a bob cut. The ball was pleasing and all, but Jayne rather, supported the simplicity that came with it. The venue offered a balcony, where one could relax and contemplate, while also being on duty. The area overlooked the courtyard and the entrance, where everyone who arrived would crowd around. Although her dress wear was not up to starfleet standard, she still kept her duty items on hand. The contents in her hands were different, although there were many pleasantries at the bar below, Jayne preferred a hot coffee. Even though she could not taste or enjoy one&#39;s humanoid sensations properly, she would often indulge herself in those activities to fit in with the crowd.</em>
+
+<em>The Balcony was her resting place, away from all the commotion that was building up inside that ballroom area itself. Jam packed with officers of all ranks and such. She knew instinctively that the Phoenix crew would arrive soon as they were the front runners in the fleet, well, in her opinion anyways. Starfleet Security has talked a lot about them over the course of the past 5 months. Not because they are an important factor to the fleet, well they are. But it&#39;s just because they are the most relevant right now in terms of fleet popularity.</em>
+<img class="emoji " alt="divider" title="divider" src="https://cdn.discordapp.com/emojis/777719270389973043.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="782438724289167421" id="message-782438724289167421">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>A cold crisp breeze flew by, and all her indicators in her systems indicated for her to shiver, yet she chose not to. Rather to accept the breeze  and watch the trees flow in the wind. The moon was nice and bright, lighting up the sky in a bright white glow, it was rather enjoyable. Surprised by the slightest of things, Jayne turned around quickly, to meet the klingon who had just entered the balcony. Hopefully she did not interrupt his rather private interaction with the area around him. Like she was doing with the area around her.</em>
+
+
+<em>She softened up, looking at him with a slight smile that quickly faded away to a monotonous look, indicating that her receptors were not quite up to human specifications. Her artificial azure eyes glowed in the night like LED’s almost. She bowed slightly in greeting before reaching out her hand.</em> “Lieutenant Walsh.” <em>She said solemnly, looking at the klingon in a more serious manner than before.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/675dc0cafe3588581ed78fc5cbc68902-97278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 03:06 AM</span>
+
+            <div class="chatlog__message " data-message-id="782442226042273802" id="message-782442226042273802">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Klingon&#39;s well honed senses quickly alerted him of someone&#39;s approach, and he rose from his leaning position on the balcony&#39;s railing to turn toward the voice. His eyes quickly scanned the person up and down, and the strange, glowing blue eyes indicated a probable artificial life form. Of course, that did not prevent Lokath from smiling pleasantly and accepting the offered hand, shaking it vigorously.</em> &quot;Lieutenant Lokath. It is an honor to meet you, Lieutenant Walsh.&quot; <em>His voice was deep, but not rough, and he sounded quite calm for a Klingon.</em> &quot;Not a fan of the bustling crowds inside?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/14f6fd894bd7b4532dcee392b6760182-A4B60.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Lieutenant Jayne Walsh#0000" data-user-id="782438631432126504" style="">Lieutenant Jayne Walsh</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Nov-20 03:11 AM</span>
+
+            <div class="chatlog__message " data-message-id="782443620312547419" id="message-782443620312547419">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;One could say that I guess.&quot; <em>She took a sip of her coffee quietly before returning to the small talk she had now created. It was good to converse with people while she was working, it was a nice change of pace.</em> &quot;Its just nice to gaze out at the stars. Even though we do that almost twenty four seven. Its nice to seem them from a planetary view.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/675dc0cafe3588581ed78fc5cbc68902-97278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 03:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="782445132858261547" id="message-782445132858261547">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath nodded, still smiling as he craned his neck upward, looking at the almost perfectly clear black sky, where thousands of stars could be seen.</em> &quot;It&#39;s always quite a striking spectacle, yes. They look very different than the floating spheres of plasma they really are.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/14f6fd894bd7b4532dcee392b6760182-A4B60.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Lieutenant Jayne Walsh#0000" data-user-id="782438631432126504" style="">Lieutenant Jayne Walsh</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Nov-20 03:56 AM</span>
+
+            <div class="chatlog__message " data-message-id="782455023383871508" id="message-782455023383871508">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Indeed, although my receptors are working. I quite like wearing simple clothes on a cold night. To me it makes me feel more elegant.&quot; <em>She said, rubbing her thin sleeves as it absorbed the light that was shining on it.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/675dc0cafe3588581ed78fc5cbc68902-97278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 04:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="782456773625774080" id="message-782456773625774080">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Klingon lifted an eyebrow, slightly confused by the abrupt change of subject, but he did not say anything about it.</em> &quot;Indeed, although I could not describe what I do as &#39;Elegant&#39; myself.&quot; <em>He said with a chuckle. He was not wearing anything extravagant, simply the usual Starfleet dress uniform.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/67f16f0204b2d742edbf81f00c7f8d95-D4E21.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Jule#4755" data-user-id="689529775886565469" style="color: rgb(212,156,2)">Cadet Airi Yamanaka</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 02:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="782614598448185395" id="message-782614598448185395">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She walked in. The view was amazing.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/675dc0cafe3588581ed78fc5cbc68902-97278.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 03:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="782628913029054516" id="message-782628913029054516">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well.&quot; <em>Lokath said with a smile as he bowed his head toward Jayne.</em> &quot;It was an honor meeting you, Lieutenant Walsh, I better head back inside and mingle a bit before they think I&#39;m avoiding them. Have an amazing night!&quot; <em>He said before turning around and heading back inside the building.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/67f16f0204b2d742edbf81f00c7f8d95-D4E21.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Jule#4755" data-user-id="689529775886565469" style="color: rgb(212,156,2)">Cadet Airi Yamanaka</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 04:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="782651640905203772" id="message-782651640905203772">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She drank her drink and went back.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 09:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="782719403564466197" id="message-782719403564466197">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel found a bench and sat Lola down, offering his handkerchief. He waited for her to find her voice.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 09:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="782721885162176534" id="message-782721885162176534">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola gratefully took the handkerchief and lightly dabbed her eyes with it. It took a moment to find her voice, but eventually she spoke.</em> &quot;Charlie is gone. He just... left.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 09:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="782722526895276072" id="message-782722526895276072">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Charlie?&quot; <em>Ciel asked, a little confused. Whoever he was, Charlie must have been someone very important. Perhaps her date? A dear friend?</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 09:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="782726404587651082" id="message-782726404587651082">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Charlie, we&#39;ve been seeing each other for about a little over a month now. I- I always get attached so easily to people, especially when I&#39;ve entered into a relationship with them. I don&#39;t do so often, but when I have it&#39;s always hurt me. I feel kinda silly.&quot; <em>She laughed in a self depricating manner.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Nov-20 09:55 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 09:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="782727571321913364" id="message-782727571321913364">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Lola, it&#39;s not silly to want to be close with someone, and it&#39;s certainly not something to be ashamed of. Did he explain why he left?&quot; Ciel sat beside her and put his arm around her shoulders comfortingly.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 10:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="782733419892310046" id="message-782733419892310046">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She sighed and looked out. It was rather nice to be under the stars again, rather than amongst them.</em> &quot;He did not. He just said, I wish to end this relationship, then walked off. It was so sudden, no warning or anything. One moment I was giving him a hug, the next, gone.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 10:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="782737340975677461" id="message-782737340975677461">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel was quiet. He felt a prick of anger, and he knew better than to speak out of anger. Charlie had made Lola cry. Lola was a friendly, cheery, understanding person. It wasn&#39;t as if she wouldn&#39;t listen to him if he&#39;d spoken to her calmly and maturely about a breakup. Charlie owed her an explanation and now a very sincere apology.</em> 
+<em>Lola seemed to have calmed down now. Ciel followed her gaze to the sky.</em>
+&quot;They&#39;re lovely, aren&#39;t they.&quot; <em>He commented. Not able to think of anything better to say.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 10:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="782739250130059275" id="message-782739250130059275">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola hummed in agreement.</em> &quot;There is something about having scenery and foliage go along with the night sky, instead of floating beside them.&quot; <em>She looked down and back up.</em> &quot;I think I&#39;m going to go fix myself back up. I will be back in a jiffy.&quot; <em>She got up and grabbed her bag that she totally had the whole time and left for the main entrance.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Nov-20 10:47 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 10:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="782740119748608000" id="message-782740119748608000">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel watched her go, stunned once again at how quickly she was able to pull herself together.</em> &quot;Alright. I&#39;ll be here.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 11:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="782747296538296320" id="message-782747296538296320">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Turning his gaze back out over the garden, he began to calm himself down. Being angry served no purpose at the current moment. He needed to be a good friend right now, and he doubted Lola wanted to think about Charlie any more than she had to. She was right about the difference between being among the stars and being under them. It was a difference that felt like home, and he was enjoying every moment of it.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 11:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="782750197814001675" id="message-782750197814001675">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola walked back onto the balcony with a tall saguaro cactus in tow. The cactus had on a bowtie and was blinking in several places, and Lola had in thick gardening gloves</em> &quot;Ciel, I&#39;d like you to meet one of my cactus children. His name is Henry.&quot; <em>She said this with very serious look on her face.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Nov-20 11:30 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 11:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="782751292699312168" id="message-782751292699312168">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel saw her coming with her new friend and was once more taken by surprise. He wanted to laugh, but the grim expression Lola wore instantly told him no. This was not a time for laughter. With all the charm he could muster, Ciel stood and inclined his head, addressing the cactus:</em> &quot;Good evening, Mr. Henry. It&#39;s a pleasure to meet you. You have a wonderful sense of style.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="♥️" title="♥️" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/2665-D9AA0.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">29-Nov-20 11:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="782755979422597121" id="message-782755979422597121">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola laughed, amused by Ciel and his incredibly polite introduction to Henry.</em> &quot;Thank you Ciel for your kind introduction, and not making me feel crazy for having cactus children.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="30-Nov-20 12:02 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">30-Nov-20 12:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="782761383053361172" id="message-782761383053361172">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“We all have our hobbies.” <em>He replied with a smile,</em> “What kind of cactus is Henry?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">30-Nov-20 12:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="782763912402829333" id="message-782763912402829333">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;He&#39;s a saguaro cactus <img class="emoji " alt="🌵" title="🌵" src="https://twemoji.maxcdn.com/2/72x72/1f335.png">. I&#39;ve had him for about 5, 6 years now. Can you believe he was only about a foot high when I got him?? Now he&#39;s almost 5 and a half feet tall!&quot; <em>She pronounced proudly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">30-Nov-20 12:28 AM</span>
+
+            <div class="chatlog__message " data-message-id="782765087223054336" id="message-782765087223054336">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“That’s an impressive growth spurt, Henry!” <em>Ciel addressed the cactus again. Noticing the bow tie was slightly crooked, probably from being moved, he reached out and righted it.</em> “Will you be asking for your mother’s next dance?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">30-Nov-20 01:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="782776143598190613" id="message-782776143598190613">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The wind blew slightly, making the blooms and the arms move slightly, and giving the cactus the appearance of nodding. Lola laughed.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="30-Nov-20 01:18 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">30-Nov-20 01:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="782778438607175680" id="message-782778438607175680">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel smiled, glad to see her feeling better.</em> &quot;Well then, go on!&quot; <em>He gestured to the dance floor, which could be seen through one of the open doors.</em> &quot;I&#39;ll watch.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">30-Nov-20 01:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="782780420244635669" id="message-782780420244635669">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola laughed and took one of Henry&#39;s arms in her gloves hand and dragged him out to the dance floor.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">30-Nov-20 02:04 AM</span>
+
+            <div class="chatlog__message " data-message-id="782789035805638686" id="message-782789035805638686">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel followed her, laughing.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/b2f4bed823fb8b1d8ffdaf47e767e879-66E8D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="KaitouStarlight#7455" data-user-id="677024736013975562" style="color: rgb(17,17,17)">Lt. JG. Jane Autumn</span>
+
+
+        <span class="chatlog__timestamp">30-Nov-20 03:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="782810025805480036" id="message-782810025805480036">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>After a while dancing with her friends back from the Academy, Jane had excused herself from the group. Seeing her friends again was great, but she could get uncomfortable if she stayed in a crowded room like the ballroom for too long. The young Intel officer disappeared to the balcony, and just leaned on the railings, content with letting the wind playing with her loose strands of hair. She looked out onto the skyline and silently admired the the view here - the rumors weren&#39;t wrong, the view of the skyline here is fantastic!</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/b2f4bed823fb8b1d8ffdaf47e767e879-66E8D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="KaitouStarlight#7455" data-user-id="677024736013975562" style="color: rgb(17,17,17)">Lt. JG. Jane Autumn</span>
+
+
+        <span class="chatlog__timestamp">30-Nov-20 10:28 AM</span>
+
+            <div class="chatlog__message " data-message-id="782915979469520906" id="message-782915979469520906">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jane had been standing out here for a while, before a group of 4 joined her. Jane glanced to her sides to look at the group, and smiled widely as she enveloped them in a hug.</em> &quot;Mom, Dad! You two little devils too! I missed you all!&quot; <em>The Autumn family, being a typical Starfleet one, had all returned from their missions (or, in the oldest and youngest members of the family&#39;s case, from their workplace in San Fran) and gathered here at the fleet ball. After a quick catch-up, her dad led the family back into the dance floor, and she spent the rest of the night with her family. Before long it was nearly midnight, and Jane exchanged hugs with her family and friends once more, then tapped her commbadge for a beam-up request. Soon enough after that, she dematerialized, beamed back onto her ship, the Phoenix.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="pridesparkle" title="pridesparkle" src="Star%20Trek_%20Phoenix%20-%20The%20Fleet%20Ball%20-%20balcony%20%5B782233577932587038%5D.html_Files/706583201488961567-A33F3.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 34 message(s)</div>
+</div>
+
+</body>
+</html>

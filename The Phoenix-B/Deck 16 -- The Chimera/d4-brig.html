@@ -1,0 +1,4044 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - d4-brig</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">USS Chimera / d4-brig</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 10:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="803021782264578088" id="message-803021782264578088">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel stepped into the room and opened one of the cabinets, getting out the med kit and taking readings on the inert denobulan.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 10:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="803023775116427325" id="message-803023775116427325">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Having been slumped on the ground from being stunned when the transporter was initiated, he had wound up beaming in face-down on the floor. It took a couple of minutes for him to start coming around, evidenced in a low groan as he tried to raise his head off the floor and work out exactly what had happened.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 10:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="803024864658194442" id="message-803024864658194442">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel looked from his tricorder to the Denobulan and said softly, so as not to startle him:</em> &quot;Hello there.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 10:15 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/c9e2851c0cb0247d592d9bd2a49518eb-7119F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(215,52,42)">Commander Yllescas Itesh</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 10:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="803025432315559967" id="message-803025432315559967">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Comms] “K&#246;nig to Ciel. Get to sickbay immediately. Out.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 10:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="803025654802153483" id="message-803025654802153483">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh, wait here, then. It seems I&#39;m needed in Sickbay.&quot; <em>He said, setting down the tricorder and running into the lift.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 10:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="803025804979339286" id="message-803025804979339286">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The voice that spoke was muffled and he only caught the end.</em> &quot;I can... H-Help,&quot; <em>he stated quietly, but the person was already gone.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128546;" title="&#128546;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f622-69AD3.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/5b403e191055d06561ac84585590f63e-FF408.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 10:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="803034884335075348" id="message-803034884335075348">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime stepped into the brig and walked over to the containment field which Kennox was being held behind,</em> &quot;Ephrix, Kennox, former Starfleet Officer, nephew of the deceased Fleet Admiral Phenna Ephrix. Have I got that right so far?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 10:55 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 10:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="803035796029833250" id="message-803035796029833250">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Having hidden away behind the containment field, sat there entirely dejected as he realised that all of his work - and his friends - were now gone, he hadn&#39;t known what to feel. Tears had welled up but refused to pour, leaving him in some sort of emotional limbo. When the officer arrived and began to talk he looked away. He would have spoken to that medic - and he would have helped - but this person, the security officer... He knew he was only going to get a telling off from them. He refused to answer, remaining silent instead.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/5b403e191055d06561ac84585590f63e-FF408.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 11:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="803036964806197258" id="message-803036964806197258">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime shook their head at Ephrix&#39;s reluctance and stepped closer to the field. They looked at Kennox, cowering in the corner and said three words. Words they hoped would spark some form of reaction from the Denobulan,</em> &quot;Noi is dead...&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 11:04 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 11:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="803037638860865556" id="message-803037638860865556">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Placing his hands firmly upon the ground, he shuffled around so his back was to the holofield instead.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/5b403e191055d06561ac84585590f63e-FF408.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 11:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="803037902358839298" id="message-803037902358839298">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Computer... lower containment field and reinitiate once I am on the other side,&quot; <em>They said, looking away from Kennox temporarily.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 11:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="803038343641169921" id="message-803038343641169921">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He heard the words, and the subsequent sound of the holofield lowering. His head raised a little as he considered his options. If he ran, where would he go? How many of this lot remembered the uninhabited decks? They had been a good place to hide out the last time...</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/5b403e191055d06561ac84585590f63e-FF408.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 11:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="803039348063993866" id="message-803039348063993866">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime stepped inside the cell and let the field come back on behind them.</em> &quot;I never met your Aunt,&quot; <em>they said,</em> &quot;Which, was... disappointing... I&#39;d heard a lot about her... I was supposed to keep an eye on her in her final days...&quot;
+
+<em>Jaime walked towards Kennox and continued,</em> &quot;What would she think of you cowering in a corner in a cell in a brig... of a Starfleet ship, no less?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 11:13 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 11:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="803040223486410792" id="message-803040223486410792">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;m not c-c-cowering. I can&#39;t go anywhere else. And if you u-u-use your eyes and l-l-look, you&#39;ll see I&#39;m not even in the c-c-corner.&quot; <em>Sarcasm seemed to come as a defence mechanism - and besides. This person had been responsible for taking down his people.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/5b403e191055d06561ac84585590f63e-FF408.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 11:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="803041057662697483" id="message-803041057662697483">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Ephrix... you&#39;re a scientist aren&#39;t you? Isn&#39;t it your job to do whatever you can to progress the realms of scientific understanding?&quot; <em>Jaime looked at him, hoping beyond hope that his wish to research into the unknown would intrigue him enough to make him listen to them.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 11:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="803041288731361312" id="message-803041288731361312">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;And that&#39;s wh-what I was doing, until you all s-s-showed up. What ab-bout it?&quot; <em>Jaime&#39;s presumtion had been correct - it did earn a glance around from the Denobulan who was still half-glowering-half-trying-not-to-try.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/5b403e191055d06561ac84585590f63e-FF408.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 11:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="803041564942532659" id="message-803041564942532659">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;What if I could offer you the research job of a lifetime?&quot; <em>Jaime looked him dead in the eyes.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 11:22 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/637075614662393868-CC03F.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 11:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="803042249147285505" id="message-803042249147285505">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He shook his head and gave a sharp, incredulous laugh.</em> &quot;We k-know that&#39;s not gonna happen. You&#39;ll just s-s-send me to jail.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/5b403e191055d06561ac84585590f63e-FF408.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 11:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="803042499605037086" id="message-803042499605037086">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Listen to me...&quot; <em>Jaime said sharply, coming face to face with Kennox.</em> &quot;Elija Noi is dead... How do we fix that?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 11:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="803042872655347722" id="message-803042872655347722">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Flinching, he looked away.</em> &quot;We d-d-don&#39;t.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/5b403e191055d06561ac84585590f63e-FF408.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 11:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="803043109793431562" id="message-803043109793431562">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Ah well...&quot; <em>they said, standing up to leave...</em> &quot;If it&#39;s beyond your skillset, I won&#39;t bother you any longer...&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 11:27 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 11:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="803043612782493706" id="message-803043612782493706">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Frustrated at the situation, at the continuous pacing, at</em> <em><strong>everything,</strong></em> <em>his gaze snapped back to Jaime.</em> &quot;What are you even on ab-b-b-out?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/5b403e191055d06561ac84585590f63e-FF408.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 11:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="803044581574836284" id="message-803044581574836284">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Elija Noi was a criminal. He was top of-... <em>the Federation&#39;s</em> Most Wanted List... I want to see him pay for his crimes...&quot; <em>Jaime backed away slightly before continuing,</em> &quot;And if you helped get him to Command... <em>alive</em> then perhaps you might not go to prison for quite as long as you would otherwise...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 11:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="803044910928363551" id="message-803044910928363551">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;If he&#39;s t-t-t-op of the list, and if you wanted to s-s-see him pay, then why do you want him alive ag-gain?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/5b403e191055d06561ac84585590f63e-FF408.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 11:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="803045504509280306" id="message-803045504509280306">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Death is no way to punish someone... not even someone as barbaric as Noi&quot; <em>they said standing back up.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 11:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="803045865727590470" id="message-803045865727590470">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Would you rather it&#39;s not j-just over, though? Put him in j-j-jail and he might break out. Or-&quot; <em>with the realisation, he did flinch back a little.</em> &quot;Wh-What did <em>you</em> want to d-d-do with him?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/5b403e191055d06561ac84585590f63e-FF408.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 11:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="803046242258255943" id="message-803046242258255943">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;He&#39;s going to be sent where he belongs... where he will pay for <em>all</em> of his crimes,&quot; <em>Jaime said, pleading with the man,</em> &quot;Even the crimes he committed against you...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 11:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="803046723404300298" id="message-803046723404300298">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The wording seemed to send shivers down his spine. Hands upon the floor, he backed himself into what</em> <em><strong>was</strong></em> <em>the corner this time, eyes wide. Kennox wasn&#39;t a normal Starfleet officer. It didn&#39;t take much to tell that this other Ensign did not fall into the normal officer category either.</em> &quot;Wh- Wh-Who <em>are</em> you?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/5b403e191055d06561ac84585590f63e-FF408.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 11:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="803047432338145350" id="message-803047432338145350">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;My name is Jaime Devereux... I&#39;m a Security Officer aboard the USS Phoenix... We were sent to capture Elija Noi and return him to Starfleet Command, alive, where he would then be made to pay for his crimes,&quot; <em>Jaime said, face now completely neutral.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 11:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="803048092487778375" id="message-803048092487778375">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;You&#39;re- All this t-t-talk about him &#39;going where he b-b-belongs-&#39; he&#39;s <em>dead,</em> is that n-n-not payment enough? And I...&quot; <em>He shuddered slightly.</em> &quot;I don&#39;t know if I could b-b-bring him back. I&#39;ve... N-N-Not managed it on a <em>normal</em> p-p-person before.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/5b403e191055d06561ac84585590f63e-FF408.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 11:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="803048673197948929" id="message-803048673197948929">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;If Noi counts as a &#39;Normal person&#39; to you, I think there&#39;s something wrong.&quot; <em>Jaime said, shaking their head.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 11:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="803048992745062451" id="message-803048992745062451">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I- I- Mean- I m-m-mean that he&#39;s m-m-<em>mortal.</em> I haven&#39;t... Fixed that b-b-before. Only basic medicine. Not... R-R-Resurrection.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/5b403e191055d06561ac84585590f63e-FF408.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 11:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="803049843953500190" id="message-803049843953500190">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I see...&quot; <em>Jaime said with a nod,</em> &quot;very well...&quot; <em>They stood and turned to go, walking up to the Containment field.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 11:53 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 11:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="803050373261688852" id="message-803050373261688852">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He merely watched, quite thankful to know that the officer was leaving. All of that conversation had seemed jarring - why would a person so desperately want a terrorist back..?</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/5b403e191055d06561ac84585590f63e-FF408.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 11:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="803051114920280084" id="message-803051114920280084">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Mr.Ephrix... good luck with your trial...&quot; <em>They said, disabling the field and walking out into the main brig, when the field came back on again.</em>
+
+<em>They walked up to the main console and simply stood there, watching.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 12:00 AM</span>
+
+            <div class="chatlog__message " data-message-id="803051571650887708" id="message-803051571650887708">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Remaining in the corner, this time, he merely drew his knees up to his chest and set his head down upon them.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 05:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="803133437116416001" id="message-803133437116416001">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He had remained in the corner, all but curled up on himself. Arms were drawn around his knees with legs pulled up to his chest, leaning slightly sideways against the wall. His gaze was focussed on what seemed to be the corner of the holofield but was entirely vacant. Quietly, the former officer seemed to be speaking to himself.</em> &quot;I&#39;m sorry. I&#39;m s-s-sorry. I know he&#39;s d-dead. I can&#39;t b-bring him back. You can, though... I&#39;m s-s-sorry, I wasn&#39;t there, p-please...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/637075614662393868-CC03F.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 05:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="803134319811100715" id="message-803134319811100715">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel arrived and looked to Jaime for approval for a moment, but then proceeded anyway. The denobulan, who was sitting in the corner of the cell, all curled up, was muttering to himself. Ciel waved to him and called softly, so as not to startle him.</em>
+&quot;Hello there.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 05:32 AM</span>
+
+            <div class="chatlog__message " data-message-id="803135114644553728" id="message-803135114644553728">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The whispering continued for a brief moment before Ciel stepped forwards.</em> &quot;What are you g-g-going to do with me? I&#39;m s-s-s-sorry, I tried to s-save them, I promise-&quot; <em>But it was then that Ciel&#39;s movement was caught out of the corner of his peripheral vision. Despite the medical officer&#39;s attempts to make himself known, Kennox still jumped.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 05:35 AM</span>
+
+            <div class="chatlog__message " data-message-id="803135958987702272" id="message-803135958987702272">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel saw the fear in the man&#39;s face. He lifted his hands to show that he had no weapons, only the medical tricorder. He very slowly lowered himself so that he was kneeling on the floor outside the force field. He had caught the tail end of his whispering, and he answered it with a kind voice:</em> &quot;It&#39;s alright. My name is Ciel, I&#39;m the doctor who was assigned on this mission. I just want to be sure that you&#39;re alright.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Jan-21 05:35 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 05:38 AM</span>
+
+            <div class="chatlog__message " data-message-id="803136580385636362" id="message-803136580385636362">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Still wearing that white lab coat that had been provided to him by Noi (as some sort of twisted welcome present or whatever it had been), he tugged it tighter - not against the cold of the brig, but at the shiver that ran down his spine anyway. His Starfleet uniform had been long forgotten in favour of off duty clothing. Timid as ever despite what he had been doing these past few months, he looked to Ciel.</em> &quot;I&#39;m f-f-fine. ...I can h-help treat the others. If you need.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 05:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="803137106180309063" id="message-803137106180309063">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;They&#39;re all.... alright. I&#39;ve already helped them.&quot; <em>Ciel said with a sad smile, though he choked for a moment.</em> &quot;Do you mind if I take a scan? I just want to be sure.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 05:41 AM</span>
+
+            <div class="chatlog__message " data-message-id="803137503703597076" id="message-803137503703597076">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kennox had been missing any form of telepathic or empathic ability for half a year now, but it didn&#39;t take either to see that the strange man of the strange species was upset. Silently, he gave a singular nod of his head.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 05:45 AM</span>
+
+            <div class="chatlog__message " data-message-id="803138355432652800" id="message-803138355432652800">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;May I ask what your name is?&quot; <em>Ciel asked as he started a scan. There was nothing wrong with hime except the slight shock to his system that was normal after being stunned. He set the tricorder aside, glad that he wouldn&#39;t need to do anything more today. It had been an awful day.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/5b403e191055d06561ac84585590f63e-FF408.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 09:09 AM</span>
+
+            <div class="chatlog__message " data-message-id="803189822801182790" id="message-803189822801182790">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;His name is Kennox Ephrix...&quot; <em>Jaime said, looking up from the console at Ciel.</em> &quot;I can give you some time alone with him before he is transferred to the Phoenix, if you&#39;d like.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Jan-21 09:18 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 12:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="803235041801928704" id="message-803235041801928704">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The mention of being alone - or rather, Devereux leaving - earned more of a response. It seemed that Jaime&#39;s rather ominous questioning earlier had created a dislike of the officer - but, perhaps instinctively, he trusted the one in medical whites.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127484;" title="&#127484;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1fc-E17AB.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127469;" title="&#127469;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1ed-AD677.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127476;" title="&#127476;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1f4-6C4DE.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="divider" title="divider" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/777719270389973043-9725D.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127474;" title="&#127474;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1f2-C2511.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127466;" title="&#127466;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1ea-4B558.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 02:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="803271807700172826" id="message-803271807700172826">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Would you mind, Jaime?” <em>Ciel asked, looking up from where he was kneeling on the floor.</em>
+
+<em>Kennox didn’t seem dangerous at all. In fact, he seemed more like a child who’d been caught in the middle of something very naughty. Of course, Ciel was aware that he must be a criminal. He wouldn’t be in the brig otherwise. But what bad guy offers to help their captors medically?</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Jan-21 02:55 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129402;" title="&#129402;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f97a-338D5.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/5b403e191055d06561ac84585590f63e-FF408.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 03:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="803278093145473074" id="message-803278093145473074">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Not at all, Lieutenant,&quot; <em>Jaime said with a nod and headed out of the brig, turning to take one last look at Kennox before stepping through the door.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 03:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="803288671519637525" id="message-803288671519637525">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;You c-c-can&#39;t trust that one,&quot; <em>he stated as Jamie left, watching the officer leave.</em> &quot;He k-kept talking about how he wanted Elija N-Noi alive again. Asked if I could b-bring him back. It was creepy. Unsettling...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 03:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="803290210011840522" id="message-803290210011840522">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“We all wish Noi was alive right now.” <em>Ciel replied softly. It felt like something was stabbing at his heart.</em> “I did my best, but... there wasn’t anything I could do. Were you good friends with him?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 03:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="803291071987318805" id="message-803291071987318805">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He huffed and unwrapped his arms from around his knees - only so he could scrub at his face in irritation. It was evident that his point hadn&#39;t gotten across.</em> &quot;No, we- we weren&#39;t. He was j-j-just my boss, really... I don&#39;t k-k-know how to feel about it. It&#39;s p-probably better that he&#39;s dead.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 04:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="803293317621350460" id="message-803293317621350460">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel looked down at his tricorder to prevent himself from staring at Kennox. His ears flattened back against his skull. A person had lost their life! Even if that person had been a horrible, monstrous person, it was wrong! Very wrong! How could anyone be so casual with a life? His eyes were hot with tears again, but not here. Now wasn’t the place or the time.</em>
+
+“I see. I’m glad that you’re alright, then.” <em>He said softly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 04:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="803306292092600372" id="message-803306292092600372">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Those strange orange eyes watched Ciel&#39;s reaction, noticing how he seemed to shrink away.</em> &quot;I d-d-don&#39;t think you understand who N-Noi was. Do you know the p-p-population of New Romulus, sir?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 05:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="803308943061155931" id="message-803308943061155931">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“I do.” <em>Ciel nodded, confused what that had to do with anything. What did it matter if he knew who Noi had been? A death was a life lost, no matter who’s it had been.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 05:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="803312777862971462" id="message-803312777862971462">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;He was the one who enabled the attack on N-N-N... N... Mol&#39;Rihan last year. The one that almost k-killed the whole planet and its population. You&#39;re s-seeing it from a medic&#39;s perspective, sir. Focussing on a p-patient lost... Is that r-right? But you m-might have just saved millions of p-possible future ones.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 05:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="803316052770947182" id="message-803316052770947182">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel hadn&#39;t expected this from Kennox, a man behind bars. His ears came up and he looked at hime for a moment, before slowly dropping his gaze back to the tricorder.</em> 
+
+<em>He was right. The man&#39;s death was likely to save many lives. Though Ciel knew precious little about Noi, he understood that the man had been extremely dangerous. He had created so much suffering! It really did seem best that he was dead. But it seemed wrong to be glad about that. How could you be happy that someone had died? It was wrong...</em>
+
+&quot;He wasn&#39;t meant to be killed... it was pointless...&quot; <em>He said softly, ears pinned again.</em> &quot;They would have taken care of him properly at Command...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 05:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="803316848707633172" id="message-803316848707633172">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I k-k-know, sir. But if... If he was t-t-trying to hurt the crew, then was it necessary? Was it the only c-c-course of action and the only w-way of stopping him?&quot; <em>He understood Ciel&#39;s point of view. He had been brought up on the UFHC&#39;s dedication to pacifism and saving every life no matter what said life had done.</em> &quot;You can&#39;t ch-change what happened, sir. And none of it is y-y-your fault.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 05:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="803318798585167883" id="message-803318798585167883">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;There&#39;s always a better way than killing.&quot; <em>Ciel said firmly, if softly. He got to his feet and set the tricorder back in it the medkit.</em> &quot;The security officers should be down to take you to the <em>Phoenix</em>&#39;s brig soon. Thank you... for trying to... explain thinks to me.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 05:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="803322358701490226" id="message-803322358701490226">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;They m-m-might come to get me if they knew I was here. C-C-Course it would be the P-Phoenix that f-found me. Thank you, s-sir.&#39;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 06:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="803336008715337748" id="message-803336008715337748">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;You know the <em>Phoenix</em>?&quot; <em>Ciel asked, curious.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 06:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="803336174450114570" id="message-803336174450114570">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I was there as a c-c-cadet... And it was my f-first posting, sir. I used to work in that medical bay t-t-t-too.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 07:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="803339561962962954" id="message-803339561962962954">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Now this was interesting. He turned to look at Kennox directly, tipping his head slightly to one side.</em>
+
+&quot;If you don&#39;t mind my asking, how on earth did you end up allied to Noi, then?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 07:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="803340030650744882" id="message-803340030650744882">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He was quiet for a moment while he fidgeted with his sleeves.</em> &quot;I... W-Went to work with the Breen for a wh-while. I came back f-f-for the funeral, and...&quot; <em>The tears welled up in an instant.</em> &quot;An admiral spoke to me. He s-s-said that with my h-help we could bring her back. H-H-He had me working with N-Noi using the same t-t-t-t... Equipment he had used with the Tal Sh-Shiar at New Romulus.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128562;" title="&#128562;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f632-E40FC.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="mildpanic" title="mildpanic" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/734519773932814377-BFF4D.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/637075614662393868-CC03F.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="FBI" title="FBI" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/751568636900278282-63B7E.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="blazinbev" title="blazinbev" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/725507760631971970-D69A2.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 07:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="803340768416235550" id="message-803340768416235550">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel set his medkit down softly. He came over to the orce field and peered through it at Kennox, trying to decide if he believed what he was saying.</em>
+
+&quot;A Starfleet admiral?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 07:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="803341468898820096" id="message-803341468898820096">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He nodded his head a little, watching Ciel walk back.</em> &quot;The one from t-t-tactical. Kohl Th&#39;... T&#39;erev-ven? I&#39;m n-n-not good with Andorian surnames.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 07:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="803342506963632148" id="message-803342506963632148">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Hold that thought... I think I need to call someone down here. Will you be alright with that?&quot; <em>Ciel asked, pausing before touching his commbadge. he was most definitely not qualified for this!</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 07:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="803343962550435950" id="message-803343962550435950">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>It wasn&#39;t as if his being involved was a secret. Oskar and Capri certainly already knew.</em> &quot;I g-g-guess, sir...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 07:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="803347048283897916" id="message-803347048283897916">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel tapped his badge and tried for the XO, but he was busy. So he called for the Second Officer. Parlac was the Chief of Security, but he was still in sickbay, and he didn&#39;t want to panic anyone in the lower ranks.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0a98ed443c8301a39fb49ca786235416-54506.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 07:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="803349484507365416" id="message-803349484507365416">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai walked into the brig, hands clasped behind her back, and eyed the prisoner carefully for a moment before turning to Ciel.</em> &quot;Hm. This is not the intended target. What do you need, Lieutenant?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127486;" title="&#127486;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1fe-B7194.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127470;" title="&#127470;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1ee-B3C1F.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127472;" title="&#127472;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1f0-DAB53.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127466;" title="&#127466;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1ea-4B558.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127480;" title="&#127480;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1f8-B6AC7.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 07:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="803350165409890394" id="message-803350165409890394">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Noi is... He didn&#39;t make it, Ma&#39;am. This is Kennox. Kennox, this is Lt. Cmdr. T&#39;Svai, the second officer. Will you please tell her what you&#39;ve told me?&quot; <em>Ciel said, himself quite intimidated of her.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 07:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="803350997182971915" id="message-803350997182971915">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He wasn&#39;t sure if he remembered the Lieutenant Commander. Then again, did he remember a single Operations officer? They had been so weirdly elusive.</em> &quot;Uhm - yes, s-sir. The L-Lieutenant here was asking me h-h-how I ended up w-w-working for Noi. I was t-t-telling him that an admiral asked me. K-Kohl T&#39;... Th&#39;everen..?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127466;" title="&#127466;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1ea-4B558.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127483;" title="&#127483;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1fb-DB87A.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127470;" title="&#127470;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1ee-B3C1F.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127473;" title="&#127473;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1f1-64DCB.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0a98ed443c8301a39fb49ca786235416-54506.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 07:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="803353340573778000" id="message-803353340573778000">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai took out her PADD as if this was a totally normal thing to hear and added that to her notes.</em> &quot;Rear Admiral Kohl Th&#39;ereven.&quot; <em>She repeated to confirm as she wrote that down.</em> &quot;Since you stated you wished to have a conversation with someone from Command, is there anything else you wish to convey at this time?&quot; <em>She paused a beat.</em> &quot;And are you well, Kennox?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="26-Jan-21 08:27 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 08:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="803354312901132298" id="message-803354312901132298">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I- I didn&#39;t s-s-s-say that?&quot; <em>He spoke, definitely confused, and attempted to shrink back a little. The command staff were going to have his head. What if Commander Dunamis wanted to speak with him?</em> &quot;And- I- I d-d-don&#39;t think you can be <em>well</em> well g-g-given the circumstances, sir, but- I&#39;m f-f-f-fine...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 08:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="803354705115611227" id="message-803354705115611227">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;m sorry, Ma&#39;am. Those were my words, not his.&quot; <em>Ciel spoke up.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0a98ed443c8301a39fb49ca786235416-54506.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 08:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="803356489409626204" id="message-803356489409626204">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She looked up from her PADD and raised an eyebrow. In hindsight that made sense, for recording purposes.</em> &quot;I understand. Nonetheless, the question remains. The more information you are able to give now, the less troublesome it will be later.&quot; <em>While that sounded vaguely threatening, she was genuinely just referring to the possible future danger of poorly-informed planning.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 08:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="803357698149318727" id="message-803357698149318727">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I... W-What sort of thing do you n-n-need to know, sir..?&quot; <em>He stopped and glanced down.</em> &quot;I&#39;ll answer the q-q-questoins. No point in not answering, I g-guess.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0a98ed443c8301a39fb49ca786235416-54506.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 08:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="803359437024657408" id="message-803359437024657408">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai barely knew anything about the situation, all things considered, so she just ran through the obvious.</em> &quot;To your knowledge, are there any surviving clones of Elija Noi in existence as of now?&quot; <em>Even though the genuine article was evidently dead, it seemed prudent to ask.</em>&quot;Are you working with anyone else you have not mentioned, and where did you come by the technology you used to produce those clones?&quot; <em>The you was an inclusive you, implying the whole group of conspirators, but unfortunately the translator didn&#39;t differentiate.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 08:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="803360795844149279" id="message-803360795844149279">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;All of the c-c-clones were on the station, sir. Because of the Iconians we h-h-hadn&#39;t sent any anywhere - it was t-t-too dangerous and a waste of resources. Mr. Noi already had the t-t-technology and equipment. It was j-just me, Noi, and Admiral K-Kohl... Well...&quot; <em>He didn&#39;t understand it. Starfleet were right in that Noi was a criminal. Kennox had known this. He had kept working anyway. He couldn&#39;t</em> <em><strong>not</strong></em> <em>work. She told him to. But... Why? Why if Noi was bad, why if it was all wrong? None of it made sense. Shaking his head, he scuffled backwards towards the wall even further. How was he going to get out of this? ...There were lots of people on this ship who would help him, right? Who would listen? But he needed the one who had always helped him no matter what - the one who had the</em> <em><strong>power</strong></em> <em>to help.</em> &quot;S-S-Sir? I c-c-ch-changed my mind. C-C-Can I speak with Commander Dunamis..?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="confused" title="confused" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/704858437166563479-B8822.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0a98ed443c8301a39fb49ca786235416-54506.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 08:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="803363236426678342" id="message-803363236426678342">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The corners of T&#39;Svai&#39;s mouth twitched down.</em> &quot;I will alert him and the Captain to your request.&quot; <em>She said, writing out a message to do exactly that.</em> &quot;In the interim, may I ask how you began working with the Admiral? And, for that matter, Noi?&quot; <em>She paused thoughtfully.</em> &quot;I also wish to remind you that Starfleet Security Protocol 49.09 is very clear about the treatment of prisoners aboard a starship and that you are, to my knowledge, in no immediate danger.&quot; <em>She added, slightly sympathetically.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 08:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="803365202812731464" id="message-803365202812731464">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nodding slightly - and perhaps at least a little bit more at ease with the statement at the end - he fidgetted with the cuffs of his sleeves as he sat there upon the floor of the brig.</em> &quot;Admiral Kohl s-s-spoke to me after Admiral Ephrix&#39;s f-f-funeral. He...&quot; <em>The guilt seemed to creep into his tone.</em> &quot;I was upset, s-s-sir, and he s-s-said he would fix things. He s-s-said we could bring her back. I d-d-didn&#39;t believe him, but he b-b-brought me to Mr. Noi, and because he had d-d-done that work with the Tal Shiar... I thought m-maybe it wasn&#39;t a lie.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0a98ed443c8301a39fb49ca786235416-54506.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 08:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="803365935246868481" id="message-803365935246868481">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>That was the first thing to get a significant emotional reaction out of her, though it was entirely an internal one - the feeling of her heart suddenly dropping out of her chest. It took her a few seconds to get her bearings enough to respond calmly.</em> &quot;To clarify, he said you could bring Admiral Phenna Ephrix back?&quot; <em>Was that even possible?</em> &quot;Have you... made progress towards that goal?&quot; <em>She didn&#39;t believe for a moment the answer could be yes, it was just about covering her bases.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 08:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="803368465356029954" id="message-803368465356029954">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The response was nowhere near as chaotic (or as creepy) as it had been when they had been in the labs. His current state seemed far more like how he used ot have been - timid, meek, and quite often conflicted. There wasn&#39;t even a hint of a smile - just a small nod.</em> &quot;It w-w-worked, sir.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0a98ed443c8301a39fb49ca786235416-54506.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 09:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="803369938844647484" id="message-803369938844647484">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She let that response wash over her for another few seconds, then nodded slowly.</em> &quot;I am going to need you to be a little more specific. You have managed to resurrect Phenna Ephrix... as she was prior to her death? Or is this another version, perhaps with altered memories or genes...?&quot; <em>She trailed off to convey the range of possibilities.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Jan-21 09:07 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 09:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="803371391536857088" id="message-803371391536857088">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He shook his head a little more gruffly than anticipated. Perhaps the possibility of his work being sub-par - and the subsequent anger at such - had broken through.</em> &quot;N-N-No, sir. J-J-Just the same as before. She was the one who t-t-told me to keep working with Noi. She s-s-said all my research was good... Even though Starfleet had s-stopped me before.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0a98ed443c8301a39fb49ca786235416-54506.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 09:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="803372380884959253" id="message-803372380884959253">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>That did not, to use a human expression, vibe with her image of the woman who had brought her and millions of others on Mol&#39;Rihan back from the dead.</em> &quot;And where is she now?&quot; <em>She replied, carefully neutral.</em> &quot;She saved my life once, you know. I owe her a debt.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128514;" title="&#128514;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f602-8A1BE.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 09:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="803374928396025926" id="message-803374928396025926">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I d-d-don&#39;t know. She d-d-doesn&#39;t stay for long. She was s-s-s-speaking to me earlier, before the other m-medical officer came in...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0a98ed443c8301a39fb49ca786235416-54506.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 09:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="803376322402975815" id="message-803376322402975815">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Hm. It is a shame she did not linger longer. Several crew members would no doubt have liked to say hello.&quot; <em>Just a normal conversation. She made a mental note to check footage from that time, if there was any, and/or ask Ciel about that time.</em> &quot;How did she leave?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/637075614662393868-CC03F.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127477;" title="&#127477;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1f5-E259F.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127473;" title="&#127473;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1f1-64DCB.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127480;" title="&#127480;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1f8-B6AC7.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127475;" title="&#127475;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1f3-08F96.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127476;" title="&#127476;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f1f4-6C4DE.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 09:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="803377839680258098" id="message-803377839680258098">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Even though the question had been nothing out of the ordinary, eyes welled up with tears again almost instantaneously. He blinked and looked to T&#39;Svai, the tears threatening to spill over.</em> &quot;I d-d-don&#39;t know. I didn&#39;t see. The medical officer arrived, and... I d-d-didn&#39;t see...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0a98ed443c8301a39fb49ca786235416-54506.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 09:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="803380182445981748" id="message-803380182445981748">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai nodded.</em> &quot;I understand.&quot; <em>She did not. This was all absurd and she had the feeling she wouldn&#39;t even believe her own words when she wrote her log.</em> &quot;Thank you again for your cooperation. Commander Dunamis should arrive at some point within the next few hours. If she returns, can you please inform her the crew sends their greetings, and possibly inform whoever is on duty nearby?&quot; <em>She requested, just in case this did involve some sort of manifestation.</em> &quot;And Lieutenant Ciel, may I speak with you alone briefly?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 09:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="803380595844448292" id="message-803380595844448292">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yes Ma&#39;am.&quot; <em>Ciel nodded, though he was nervous about leaving Kennox alone. It was clear that he was either very mentally disturbed, or something very starnge was going on.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0a98ed443c8301a39fb49ca786235416-54506.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 09:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="803380934749061141" id="message-803380934749061141">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;It will just be a minute.&quot; <em>She waved him towards the hallway just outside of the brig doors.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 09:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="803383136540295179" id="message-803383136540295179">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel followed.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 10:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="803385204709523497" id="message-803385204709523497">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The denobulan had merely nodded in agreement, now wondering what the two were going to be conversing about. ...It was obvious. It was about him. He understood their reasons, though. It was one of few things he did understand right now. Everything felt so perplexing. Noi was a criminal. He had helped Noi. He had</em> <em><strong>known</strong></em> <em>who Noi was and what he had done. Why hadn&#39;t he put up a fight? Why hadn&#39;t he told anyone about Kohl? Nothing made sense any more.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0a98ed443c8301a39fb49ca786235416-54506.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 10:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="803386513164337224" id="message-803386513164337224">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;The next time he reports seeing Phenna, I suggest you attempt to determine whether she is manifesting physically or mentally, to put it delicately. I suspect the latter, but Q are a peculiar species.&quot; <em>T&#39;Svai said in a low voice.</em> &quot;Use caution, of course. It should go without saying - refrain from putting yourself or others at undue risk. Understood?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 10:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="803387705676529715" id="message-803387705676529715">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yes Ma&#39;am. I shall remain with him, then?&quot; <em>Ciel asked, feeling a sinking feeling. He had been looking forward to sleeping for more than two hours today, for the first time in the last week. But he was willing to do it.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0a98ed443c8301a39fb49ca786235416-54506.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 10:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="803388861283434557" id="message-803388861283434557">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She detected a certain hint of exhaustion, which didn&#39;t come as much of a surprise.</em> &quot;So long as he is not left alone I see no reason why it should be you specifically. Any personnel from the away team will do, as useful as it would be to have someone with medical scanner training present. That is, until he&#39;s moved, at which case I assume mission clearance will be a non-issue.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 10:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="803389388302188564" id="message-803389388302188564">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yes Ma&#39;am.&quot; <em>He nodded in understanding.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0a98ed443c8301a39fb49ca786235416-54506.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 10:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="803390675764379698" id="message-803390675764379698">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I suggest you get some rest, Lieutenant.&quot; <em>She said as she walked back towards the turbolift.</em> &quot;And there really is no need to be afraid of me. I&#39;m a Vulcan, not a rabid le-matya.&quot; <em>She added as a final remark as she disappeared into the lift.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 10:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="803391715993059378" id="message-803391715993059378">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I- I&#39;m sorry, Ma&#39;am.&quot; <em>He apologized as she was going. He hadn&#39;t realized that his timidity had been visible. He went back into the brig and sat down in front of the force field, giving Kennox a friendly smile.</em>
+&quot;It looks like it&#39;ll be you and I for a few moments, my friend.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 10:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="803392475217133608" id="message-803392475217133608">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Having been staring at the floor again, he looked up - a little blank - but still managed to nod.</em> &quot;That&#39;s okay. As l-long as it&#39;s you and not the s-s-security officer. They were j-just... Unn-n-n... Un- Unnerving.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128064;" title="&#128064;" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/1f440-51DEA.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 10:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="803392967623704578" id="message-803392967623704578">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I believe they&#39;ll be coming to get you soon, and I&#39;m sorry about that. I wish there were something I could do to help you feel more comfortable. You seem very frightened.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 10:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="803394017119305778" id="message-803394017119305778">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He snorted at that and shook his head.</em> &quot;&#39;M always f-f-frightened. Even m-more so when you&#39;re g-g-going to be s-s-sent to jail, though. T-That sort of thing.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 10:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="803396243563741234" id="message-803396243563741234">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;If I understand the questions the Commander was asking, and their answers, properly, you&#39;ve done some pretty terrible things... so, I&#39;m afraid I haven&#39;t much compassion for you in that regard. If I may ask, sho is <em>She</em>?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 10:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="803397341448241173" id="message-803397341448241173">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>There was a slight grimace at the &#39;terrible things.&#39; He couldn&#39;t deny it, though. He had just been doing as he was told, hadn&#39;t he? But he had known it was wrong. Then why...</em> &quot;F-Fleet Admiral Ph-Phenna Ephrix, sir. The Q.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 10:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="803397798803931177" id="message-803397798803931177">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;You can call me Ciel. How do you know her?&quot; <em>Ciel leaned forward and put his chin un his hands.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 10:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="803398232050630666" id="message-803398232050630666">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;She was my aunt, s-sir. My father&#39;s... H-Half sister, if you want to get t-t-technical about it.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 11:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="803399083322114228" id="message-803399083322114228">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;She <em>was</em>?&quot; <em>Ciel asked, looking a bit confused, though quite intentionally,</em> &quot;Kennox, you keep speaking of her as though she&#39;s gone. But you also said that you&#39;d brought her back... do you think you could explain it to me?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 11:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="803399701835415593" id="message-803399701835415593">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Sighing, he rubbed at his face with both hands before continuing, once again idly fidgeting with the cuffs of his sleeves as he held his hands in his lap again.</em> &quot;She d-d-died. Last year. You&#39;re m-m-medical, you p-probably remember the news. We brought her b-back. She just... D-D-Doesn&#39;t show up much. I... Just want things to be n-n-normal again. I want her to s-s-speak with my dad. He&#39;s s-still very upset...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 11:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="803400154610794577" id="message-803400154610794577">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;So she is dead?&quot; <em>Ciel asked, now genuinely confused.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 11:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="803400662004138075" id="message-803400662004138075">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I don&#39;t know,&quot; <em>he whispered, voice small- before his head snapped up again and his voice increased with it, the same sort of sudden outburst as had been seen upon the station. Both hands were slammed down upon the brig&#39;s floor.</em> &quot;I d-d-don&#39;t know! H-H-H-How do you tell if a Q is d-d-dead or alive?! They&#39;re n-n-not even supposed to die!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 11:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="803401261868384286" id="message-803401261868384286">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;We do know that they can, though.&quot; <em>Ciel said, keeping his tone calm despite Kennox&#39;s outburst.</em> &quot;You think she&#39;s still alive because she speaks to you?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 11:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="803404128696139816" id="message-803404128696139816">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;N-N-No, they <em>can&#39;t,</em> th-that&#39;s the thing! Their <em>energy state</em> s-s-s-still exists. It wouldn&#39;t h-h-appen for any other Q because they don&#39;t h-have the issue of a <em>mortal form.</em> D-d-don&#39;t you get it?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/10876e13c1912222c9273c654fb806a1-FB6AD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kylo Ren#7102" data-user-id="770403160119836712" style="color: rgb(245,182,10)">Ensign Robert Ashwood</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 11:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="803407824888660008" id="message-803407824888660008">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Robert had left the Security Hub with Lieutenant Walsh and he had his trusty set of cuffs attached behind his belt and he made sure they were double enforced.</em>     <em>He always made sure his tool were safely on his person as he knew pick pocketers were a thing and those people were pesky little people who used deception and sneakiness</em>.      <em>He then walked in and said   So lets started process now and he stood at the ready next to Jayne</em>.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">25-Jan-21 11:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="803412638343888906" id="message-803412638343888906">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jayne walked into the brig where Kennox sat. Her eyes scanning the area until they locked onto him and in that moment, her face dropped ever so slightly. A look of shock laid upon her face as she loosened her fists that were usually clenched up. The serious manner that portruded off of the androids body diminished. The last time Kennox and Jayne saw eachother was when he was sent off to the brig many months ago. To find the young man sitting there before her once more, tore some wires inside her. Kennox was one of the few people who Jayne would consider to be &quot;kind at heart&quot; and to this day she still believed it, no matter what he did to deserve his sentencing. Such potential, intelligence and knowledge was simply thrown down the drain when he was sent off. She looked at the Denobulan, still processing the shock that shot threw her body. Her hand raising slightly, almost as if she tried to point at him, but with quick instincts she lowered it to make the scene less awkward.</em> 
+
+&quot;Kennox..&quot; <em>Was the only word she could convey in the moment. The android tried hard to constrain herself to one emotion. She never would have expected to see him sitting there. Was this the person they were trying to catch all along, the criminal?</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jan-21 11:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="803413433743048716" id="message-803413433743048716">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>It had only been a matter of time before someone else that he knew showed up. Still uncharacteristically angry from the conversation with Ciel, he looked at Walsh - and this newcomer - with a look that was nowhere near as friendly as it should have been.</em> &quot;I g-g-guess you&#39;re t-taking me over to the Phoenix, now?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/10876e13c1912222c9273c654fb806a1-FB6AD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kylo Ren#7102" data-user-id="770403160119836712" style="color: rgb(245,182,10)">Ensign Robert Ashwood</span>
+
+
+        <span class="chatlog__timestamp">26-Jan-21 12:10 AM</span>
+
+            <div class="chatlog__message " data-message-id="803416647272628244" id="message-803416647272628244">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Right let&#39;s get this done&quot;,   &quot;He walked over and he passed Jayne his set of cuffs and he stood by the forcefield console<em>.  *He then was at the ready the lower the field down and get ready to take Ephrix to the Phoenix Brig</em>.    <em>Robert then took a look at the person for a good 10 or so minutes Robert had a chill in his spine and he was a bit optimistic about this job and wanted it to go well</em>.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">26-Jan-21 12:20 AM</span>
+
+            <div class="chatlog__message " data-message-id="803419059030458418" id="message-803419059030458418">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel got to his feet as the two security personnel arrived. He was thinking. Kennox had a point. Fleet Admiral Ephrix a had a physical, mortal body, which was something other Q lacked. He wanted to ask Kennox more questions. He wanted to know how the denobulan was rationalizing this. His head was spinning a little.</em>
+
+“Would you like me to walk with you?” <em>Ciel asked Kennox.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/b7cee75884686960141f05de8e2bdb60-736B1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ensign Kennox Ephrix#0000" data-user-id="803023773812916264" style="">Ensign Kennox Ephrix</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">26-Jan-21 12:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="803419651127640064" id="message-803419651127640064">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Figuring that was what the two security officers had arrived for, he slowly clambered to his feet. There was no resistance from him and he didn&#39;t even glance to the doors in some sort of indication that he might try to run for it. Instead, he simply held both hands behind his back, ready for the stasis cuffs to be applied once again. When the medical officer spoke, however, his gaze fell upon him again.</em> &quot;...Only if you w-w-want to, sir. Doubt you&#39;ll w-want me shouting at you m-m-more.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">26-Jan-21 12:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="803420862866653254" id="message-803420862866653254">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“I would like to understand what you’re thinking, but I don’t want to force it out of you.” <em>Ciel said, having compartmentalized the exhaustion already in order to give Kennox his best attention.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">26-Jan-21 12:49 AM</span>
+
+            <div class="chatlog__message " data-message-id="803426384965664808" id="message-803426384965664808">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Lets get a move on then shall we. We have to go through some early procedures to get his cell all figured out for him. You are welcome to accompany us Lieutenant  Ciel, if you would like to that is?&quot; <em>She asked.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/0cc4d0bdedd2a77c20a9a0f90c201f9f-B52E7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="">Planettree</span>
+
+
+        <span class="chatlog__timestamp">26-Jan-21 12:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="803427403766300672" id="message-803427403766300672">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“I would like to, yes, please.”</span>
+
+                                <span class="chatlog__edited-timestamp" title="26-Jan-21 12:59 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20USS%20Chimera%20-%20d4-brig%20%5B800518358813376512%5D.html_Files/69551e083310e3c3c2ccff06c2763cc0-DF2A7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="JayneIsHeer#4206" data-user-id="396729357244039168" style="color: rgb(245,182,10)">Lieutenant Jayne Walsh</span>
+
+
+        <span class="chatlog__timestamp">26-Jan-21 01:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="803431169764360222" id="message-803431169764360222">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well then.&quot; <em>She looked at robert for a moment before he lowered the holofield down. Taking the cuffsed that robert gave her, Jayne put them on Kennox before taking him out of the area that he was in.</em> &quot;I hope you guys are ready for a long walk.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 122 message(s)</div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,3683 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - shielding-base</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+    .spoiler--hidden .spoiler-image:after {
+        content: "SPOILER";
+        color: #dcddde;
+        background-color: rgba(0, 0, 0, 0.6);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: 600;
+        /* padding: 0.5em 0.7em; */
+        padding: 100%;
+        /* This ruins those beutifully rounded buttons, but it's needed to prevent a FireFox bug with video and audio elemnts. */
+        /* The bug is that you can click trough the spoiler layer and play the video or audio, I could not identify the cause. */
+        /* I leave this here, in case someone is brave enough to venture in to madness that is undocumented browser behaviour. */
+        border-radius: 20px;
+        letter-spacing: 0.05em;
+        font-size: 0.9em;
+    }
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a_5361c0bf380eb945fe0f2e7ee079ec5d-28F71.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Xoidia Prime / shielding-base</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">07-Dec-20 11:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="785647730659295235" id="message-785647730659295235">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The place had been blown to peices from the outside, the inside however, was torn. There were things that became salvageable, and the shielding core was intact, yet. The Azvahdellians were close to claiming it,  shutting off the shielding forever and taking the technology as their own. Dozens upon dozens of Xoid workers lay dead, their purple blood staining the area around them. Some Xoid soldiers still fought off the hybrids, their energy weapons stunning them for a short duration of time. The worst part of it all was that some Xoids were left for torture, being kept as hostages and being subject to electric punishiment.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="785647745045495809" id="message-785647745045495809">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/pgak4381lfe21-2D01D.png">
+                                        <img class="chatlog__attachment-thumbnail" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/pgak4381lfe21-2D01D.png" alt="Image attachment" title="Image: pgak4381lfe21.png (954.61 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="785649132172869702" id="message-785649132172869702">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The away team was moved towards the outside of the base, where they were met with the Azvahdellians. Shooting down the Xoid troops with their own weapons. Some Xoids were seen taking over Azvahdellian troops, resorting to punching their lights out in rage, such actions triggered a response in both Tac and Azvah&#39;s nature, which caused them to interject. Pushing their colleague away from the Azvahdellian.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">07-Dec-20 11:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="785651604741292052" id="message-785651604741292052">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel stared at the chaos unfolding around them, wincing from the cries. This was a war zone. He had never expected to be in the middle of something like this. He stared, wide eyed at the bodies that littered the ground, both Xoid and Hybrid. There was a tight feeling in his chest. He almost stopped breathing at several moments. They came to several Xiods, all badly wounded, but still alive. Ciel rushed to them, dropping to his knees and opening his kit quickly. He opened his tricorder to get a reading.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/028260cee4acae13708216f7439f4af8-2B585.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lt. JG. Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">07-Dec-20 11:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="785652478934122517" id="message-785652478934122517">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Oskar silently watched as the chaos unfolded around them. This was a full on war zone. This place must&#39;ve been important, judging by the amount of dead and wounded around here. He didn&#39;t know sign language, so he wouldn&#39;t try to ask why they were there. He still wanted his weapon. At least then if one of his group got hit, he could reliably return fire.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="07-Dec-20 11:43 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">07-Dec-20 11:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="785652564082425896" id="message-785652564082425896">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie gasped as she watched the bloodshed. So much fighting, she wished she could do something anything. It almost reminded her of Earth ￼when they had arrived back in the present to save the president. It was awful, horrible bloodshed. She hated it.</em>￼￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">07-Dec-20 11:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="785653714475810827" id="message-785653714475810827">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai had also followed, having no other practical options, and she turned to the nearest of the crix&#39;oid.</em> &quot;What would you like us to do?&quot; <em>She both signed and said aloud, having no personal talent for diplomacy and figuring they weren&#39;t just there to observe.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">07-Dec-20 11:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="785655055118106703" id="message-785655055118106703">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha looked around in horror. So many dead. Those who weren&#39;t probably wished for it. She could have prevented this if she had stepped back and thought things through. If she had realized the president&#39;s deception this could have been prevented. She clenched her fist in a silent rage before taking a moment to collect herself</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">07-Dec-20 11:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="785655276619300884" id="message-785655276619300884">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop was shocked. This was a massacre! she bit her lip to keep from speaking.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/3bc5b4432b570b05ab0398cf79c54740-F95BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Aerain Azvah#0000" data-user-id="785655459456614410" style="">Aerain Azvah</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">07-Dec-20 11:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="785655460253925397" id="message-785655460253925397">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Xoid came back running with energy weapons. His troop were off storing the confiscated weapons back at the city so he and Tac were on their own. He threw the weapons onto the ground infront of them and signed.</em> <em>&quot;Fight, these weapons were engineered to stun only.&quot;</em> <em>He said, watching as an Azvahdellian screamed, running towards him with his prehistoric weapon (to their standards.), With one shot to the head, Air sucessfully stunned the running man.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">07-Dec-20 11:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="785655885371670540" id="message-785655885371670540">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel packed the bleeding wounds as best he could. He fumbled with the tricorder, trying to get a reading on the Xoid&#39;s body chemistry to see if his painkillers were compatible with its biology. He grabbed the leg of Aerain to get their attention</em> &quot;Do you have medical supplies?&quot; <em>He signed desperately.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">07-Dec-20 11:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="785656339229048873" id="message-785656339229048873">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime shook their head at the sight before them. So much needless violence... and what for? Some pointless war that only started because their own species crash landed on this planet hundreds of years ago.</em>
+
+<em>Jaime didn&#39;t know sign language, but seeing weapons thrown down in front of the Starfleet crew, Jaime fully understood the message and knelt down and picked one up, nodding towards the Xoid and preparing to fight back against their long lost kinsmen if needed.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">07-Dec-20 11:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="785656344359338034" id="message-785656344359338034">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha stared reluctantly at the weapons. She was not a fighter. Far from it. Plus part of the prime directive was that they weren&#39;t supposed to meddle in the affairs of other cultures. But then, there was the suffering and bloodshed all around her. Maybe she could convince the Azvahdellians to retreat or cease fire? She didn&#39;t like the prospect of violence but here it was staring her in the face. Her mind raced as she tried to come up with a peaceful solution</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/41c4ff9996cb66360cf7d6afa2fc1717-002A2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Azvahdellian#0000" data-user-id="785655459456614410" style="">Azvahdellian</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">07-Dec-20 11:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="785656380198617178" id="message-785656380198617178">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>One of the troops saw Ciel standing there, tending a useless soul. Seeing that his looks were different he rushed him, with one thrust he kicked Ciel in the ribs, attemping to knock him over on his front side.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">07-Dec-20 11:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="785656607815368705" id="message-785656607815368705">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Having picked up a weapon, Jaime spun and fired at the Azvahdellian soldier.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">07-Dec-20 11:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="785656658432491532" id="message-785656658432491532">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie picked up her weapon and immediately fired at the man ￼￼ attacking Ciel.</em> 
+“Move it people! We need to help our new friends!”</span>
+
+                                <span class="chatlog__edited-timestamp" title="07-Dec-20 11:59 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/028260cee4acae13708216f7439f4af8-2B585.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lt. JG. Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">07-Dec-20 11:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="785656660882358272" id="message-785656660882358272">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Oskar picked up one of the weapons and turned to see Ciel getting kicked in the ribs. Oskar dropped to a crouch and fired three shots at the soldier.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">07-Dec-20 11:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="785656696823087104" id="message-785656696823087104">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Her reaction was swift. All hesitation gone. She picked up the weapon and fired. Running towards Ciel.</em> &quot;Leave him alone!&quot; <em>She shouted desperately.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="08-Dec-20 12:00 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:02 AM</span>
+
+            <div class="chatlog__message " data-message-id="785657452796444703" id="message-785657452796444703">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel rolled over, shocked and confused. The breath had been knocked from him, and he gasped for breath. In a moment he&#39;d recovered and was again at the Xoid&#39;s side. He ignored the Azvahdellian. The trooper had knocked over his med kit and scattered its contents. Ciel grabbed his tricorder and resumed his work.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:06 AM</span>
+
+            <div class="chatlog__message " data-message-id="785658479020998677" id="message-785658479020998677">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>Another wave of explosions hit, a line of what seemed  like c4 or a pipe bomb was set off all around. Some away team members would be knocked back by the blast, getting a few scratches, but nothing serious. Meanwhile, Azvahdellian troops were proceeding towards the inside of the base, completely ignoring the away team.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:07 AM</span>
+
+            <div class="chatlog__message " data-message-id="785658672340008990" id="message-785658672340008990">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha took up a position to protect Ciel and proceeded to tap her comm badge to relay a message to the bridge</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:07 AM</span>
+
+            <div class="chatlog__message " data-message-id="785658738236456980" id="message-785658738236456980">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac grabbed a phaser as well, moving forward to take a position between the advancing troops and the rest of the away team.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/028260cee4acae13708216f7439f4af8-2B585.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lt. JG. Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="785658970542964736" id="message-785658970542964736">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Oskar felt himself get knocked on his side when the explosions hit. He looked around to make sure no one was injured seriously and saw the soldiers moving in.</em> &quot;More hostiles moving into the base!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:09 AM</span>
+
+            <div class="chatlog__message " data-message-id="785659181264928779" id="message-785659181264928779">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Having already fired at the Azvahdellian that atacked Ciel, Jaime took up a position near Parlac. As Security it was their job to protect the others. And they&#39;d be damned if they didn&#39;t do just that.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:11 AM</span>
+
+            <div class="chatlog__message " data-message-id="785659842848227328" id="message-785659842848227328">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel stared around wildly for a moment, looking for some clue from the Xoids as to where he should take the wounded. None was forthcoming. He was shaking,. He&#39;d only had a little training on what to do in this circumstance. Getting to his feet he shouted over the noise:</em> 
+
+&quot;I need you to set up a defensive barrier! I&#39;m going to make an emergency field hospital over there.&quot; <em>He pointed to a spot where the base bulkhead was blown open and created some shelter from the gunfire.</em> 
+
+&quot;Anyone who&#39;s not fighting, help me move the wounded!&quot; <em>He bent down and began dragging the Xoid towards the location. Every movement hurt his bruised ribs, but he ignored it.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/3bc5b4432b570b05ab0398cf79c54740-F95BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Aerain Azvah#0000" data-user-id="785655459456614410" style="">Aerain Azvah</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">08-Dec-20 12:11 AM</span>
+
+            <div class="chatlog__message " data-message-id="785659879699251240" id="message-785659879699251240">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He switched to his native tongue, holding up his wrist and communicating through a device we have. Once an answer came back, he turned to the away team that was still standing and signed.</em> <em>&quot;There are 54 troops inside that building, out of the 70 workers in that building, only 10 remain. Out of the 40 stationed outside, 2 remain. We are the last stand, the city has decided not to waste any more troops.&quot;</em> <em>He signed with sincerity.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="785660145484562433" id="message-785660145484562433">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">*Maggie moved with Oskar, since she knew him the best and since she trusted him. * 
+“Get the wounded to cover!!”</span>
+
+                                <span class="chatlog__edited-timestamp" title="08-Dec-20 12:12 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/028260cee4acae13708216f7439f4af8-2B585.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lt. JG. Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="785660495612608532" id="message-785660495612608532">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Oskar looked at Maggie.</em> &quot;Give me covering fire! I&#39;ll go for that one right there!&quot; <em>He pointed to a wounded Xoid near a support beam.</em> &quot;You got me?!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="785660504844009482" id="message-785660504844009482">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha repeated the message from the Aerain aloud as she cover Ciel as he moved the wounded. She wasn&#39;t experienced but she was not going to let the only medic get hurt again. He was too big of a resource in this situation</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="785660636662726657" id="message-785660636662726657">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie nodded as she readied her rifle.</em> 
+“Move Oskar! I’ve got you!”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/028260cee4acae13708216f7439f4af8-2B585.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lt. JG. Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="785661043241254923" id="message-785661043241254923">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Oskar popped his body out of cover and made a solid beeline to the wounded Xoid. Once he was there, he slung his rifle to his side and grabbed the Xoid from under the two most upper arms and began dragging it to where he came from.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="785661149140090890" id="message-785661149140090890">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie gave Oskar any amount of covering fire she could give, trying to get him to safety.</em>￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:18 AM</span>
+
+            <div class="chatlog__message " data-message-id="785661568745603072" id="message-785661568745603072">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Hearing Kytha&#39;s translation of the message, Jaime shouted,</em> &quot;How can we help?! What do they want us to do?!&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="08-Dec-20 12:18 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="785661757430824990" id="message-785661757430824990">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The firing had stopped, all the Azvahdellians made it into the shielding base. That, was a bad sign. There were 10 Xoids still inside that station. Aer could hear the cries for help as they were forced to shut down the shielding device. The dust settled and cleared, revealing the battlefield, littered with unfortunate souls who didnt make it. The Xoids who had fallen turned grey, like all their color had ceased to exist in that very moment, lifeless... and alone.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:20 AM</span>
+
+            <div class="chatlog__message " data-message-id="785662145882226758" id="message-785662145882226758">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop had stood there, shocked almost the whole time. This was- this was all so unexpected! All so wrong. She didn&#39;t know what to do.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:20 AM</span>
+
+            <div class="chatlog__message " data-message-id="785662161623711744" id="message-785662161623711744">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie looked from her area of firing.</em> 
+“What just happened?!”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/028260cee4acae13708216f7439f4af8-2B585.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lt. JG. Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="785662241202372639" id="message-785662241202372639">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Oskar finished dragging the Xoid to safety. Once Oskar was behind, he had tripped and fell behind Maggie. He quickly got back up and crouched behind cover. He looked up to see if any other soldiers were outside.</em> &quot;Should we pursue them in?! They&#39;re storming the place!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="785662494345396255" id="message-785662494345396255">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Comms]&quot;Bridge to away team. What is your current status?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="785662853620432937" id="message-785662853620432937">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;This is Kytha! They have stormed the shield genarator, very few of our new friends are still alive. Me and Ciel are doing our best with the wounded. It&#39;s not looking good.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="08-Dec-20 12:25 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="785663359848284212" id="message-785663359848284212">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel had begun triage when things suddenly went deathly silent. He continued working on the few Zoids the team had managed to get behind the debris, but there was very little that he could do. Without the proper tools or any understanding of the Zoids biology, he was lost. He kept packing their wounds, putting pressure on them, and praying to the Lady that it would somehow work. Ciel noticed Lithop standing idly by. He called over to her:</em> &quot;Lithop! Come help!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="785663770386497567" id="message-785663770386497567">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie listened to Kytha conversing with the captain. Before looking to Oskar.</em> 
+“Wait for orders.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:32 AM</span>
+
+            <div class="chatlog__message " data-message-id="785665016362696725" id="message-785665016362696725">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yes!&quot; <em>Lithop said, finally snapping out of it and almost running to Ciel.</em> &quot;What can I do to help?&quot; <em>She knew basic fist aid, that was pretty it.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:33 AM</span>
+
+            <div class="chatlog__message " data-message-id="785665323503452211" id="message-785665323503452211">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Keep pressure on this.&quot; <em>He handed off the Xoid he was working on to her and moved on to the next one.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/d5277f82aba51f2fa68131bb86e66abd-6637E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ksala Mien#0000" data-user-id="785655459456614410" style="">Ksala Mien</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">08-Dec-20 12:34 AM</span>
+
+            <div class="chatlog__message " data-message-id="785665565388963841" id="message-785665565388963841">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Xoid Lithop was tending to was losing color, his eyes faded to a grey as he was slowly withering away. With one lift of his arm he placed his hand on the scientists shoulder. Using his native tongue to try to communicate a message as he was too weak to sign. But with the amount of damage done to him already, he passed. His body turning grey. The hand sliding off of Lithop&#39;s shoulder as he looked to the side, spotting Aer in the midst of dust and flame.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="785665980436840488" id="message-785665980436840488">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai, a Vulcan, &#39;bred to peace&#39; as the late Ambassador Spock had once put it, was having a far from excellent time in an active combat zone and had just kind of frozen at the prospect of getting embroiled in a war. Surely jumping into battle like this was not Starfleet protocol? She found cover.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="08-Dec-20 12:37 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="785666144098975755" id="message-785666144098975755">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Watching the scene unfold made Kytha&#39;s heart ache. This was all her fault for being a naive idiot. She tried to remain composed the best she could while she awaited the Commander&#39;s response. Though, he could probably hear her sniffling through the comms</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="785666454519283712" id="message-785666454519283712">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[COmms]&quot;Prepare for transport. Do you have wounded?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="785666741530787870" id="message-785666741530787870">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop had held onto the Xoid&#39;s hand in comfort while it died. She didn&#39;t know what it said but it didn&#39;t matter now. She moved to another one and attempted to stop it&#39;s bleeding. This was all so wrong, everything she had thought about species on this planet had been wrong. She could only try to keep this one alive.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="785666852802002954" id="message-785666852802002954">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Sir, The away team is fine. I can&#39;t say the same for the rest... Other than minor injuries we are okay. Ciel probably has the worst of it&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/3bc5b4432b570b05ab0398cf79c54740-F95BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Aerain Azvah#0000" data-user-id="785655459456614410" style="">Aerain Azvah</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">08-Dec-20 12:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="785666938290176011" id="message-785666938290176011">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He quickly shot a look at the science officer comming whoever was above. He rushed to stop her, signing in urgency.</em> <em>&quot;No, no please, you do not understand! The protection of our people is at stake, you cant just leave, I know a way to get them out but I need help.&quot;</em> <em>He signed, shaking his head.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="785667207035486239" id="message-785667207035486239">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie took a breath as she moved to regroup, standing guard over the team and Aerain.</em> 
+“SSL. Briar your up!”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="785667498464378890" id="message-785667498464378890">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Sir... they want us to stay. They have a plan to rescue the rest of their people. &quot; <em>Kytha added, completely focused on the Crx&#39;oid that ran up to her</em> &quot;We are all fine, Sir. I request permission to help them inact this plan&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="785667584027656242" id="message-785667584027656242">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Comms]&quot;What is this plan exactly?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="08-Dec-20 12:42 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="785667621013815346" id="message-785667621013815346">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai frowned. Aloud, she translated what Aerain had said for the benefit of the rest of the away team, then turned to Aerain.</em> &quot;What is your plan?&quot; <em>She asked and signed, since that seemed important.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:43 AM</span>
+
+            <div class="chatlog__message " data-message-id="785667852907708417" id="message-785667852907708417">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha signed to him</em> &#39;Please tell us your plan in full detail. Our Commander has to approve of it before he can allow us to help.&#39;</span>
+
+                                <span class="chatlog__edited-timestamp" title="08-Dec-20 12:44 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:45 AM</span>
+
+            <div class="chatlog__message " data-message-id="785668423534247946" id="message-785668423534247946">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop listened as she continued to try to save this Xoid&#39;s life. She couldn&#39;t say it was going great.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:54 AM</span>
+
+            <div class="chatlog__message " data-message-id="785670506467688456" id="message-785670506467688456">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel felt panic eating away at the edge of his thoughts as the Xoid he was working with also began to fade. He breathed deeply, trying his best to keep himself calm.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/3bc5b4432b570b05ab0398cf79c54740-F95BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Aerain Azvah#0000" data-user-id="785655459456614410" style="">Aerain Azvah</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">08-Dec-20 12:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="785670954478993439" id="message-785670954478993439">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>&quot;Well absically it requires a lot of gunfire, and a lot of tactical advantage. We will have to fire through 54 members of the Azvahdellian troop, however, what they dont know. Is that I have give you our new experimental weapon, its technology allows you to shoot a stun beam, through people which allows for 1 shot top possibly hit 2 or even 3 people.&quot;</em> <em>He stopped for a moment, looking at the gaping entry of torn walls and debris.</em> *&quot;They entered the long corridor, which is only one hall, it leads directly to the core. If we work together, we could be able to disarm 54 troops in a matter of minutes.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:59 AM</span>
+
+            <div class="chatlog__message " data-message-id="785671757633028137" id="message-785671757633028137">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai raised an eyebrow.</em> &quot;I would like to state for the record that involving Starfleet personnel in active combat when we ourselves are not at war is...&quot; <em>She paused, quite lost for words, particularly since she knew the word she&#39;d like to use didn&#39;t translate well from Vulcan.</em> &quot;Commander, are you hearing this?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 12:59 AM</span>
+
+            <div class="chatlog__message " data-message-id="785671771545272370" id="message-785671771545272370">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha relayed this to everyone, making sure to translate word for word. This plan made her a tad nervous having no combat experience and she questioned weather she should have let emotion over took her in her request to assist without even knowing what the plan was</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="08-Dec-20 01:02 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:04 AM</span>
+
+            <div class="chatlog__message " data-message-id="785673006928101406" id="message-785673006928101406">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie sighed as she held her chest, looking to T’Svai.</em> 
+“You do have a point, but on the other hand. These people need our help. I don’t know, it’s Dune’s ￼decision￼...”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/028260cee4acae13708216f7439f4af8-2B585.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lt. JG. Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:05 AM</span>
+
+            <div class="chatlog__message " data-message-id="785673301334032384" id="message-785673301334032384">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Oskar held his thought to himself. 54 soldiers? He was trained, but even with this chain shot technology, that&#39;s at least 40 extra guns against them.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:05 AM</span>
+
+            <div class="chatlog__message " data-message-id="785673470440636452" id="message-785673470440636452">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Lieutenant Commander T&#39;Svai is right, this is highly irregular.&quot; <em>Parlac shifted his weight back and forth uncomfortably.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/028260cee4acae13708216f7439f4af8-2B585.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lt. JG. Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:07 AM</span>
+
+            <div class="chatlog__message " data-message-id="785673810468143124" id="message-785673810468143124">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Sir, even with this chain shot, that&#39;s maybe triple the amount of bodies we have. Volume of fire alone in that corridor would make us all duck our heads.&quot; <em>Oskar checked his rifle. Maybe it would work. Maybe it would&#39;nt.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:07 AM</span>
+
+            <div class="chatlog__message " data-message-id="785673996988448819" id="message-785673996988448819">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Comms]&quot;Return home.  Immediately. I will not involve us in any more unnecessary bloodshed.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="785674118569394256" id="message-785674118569394256">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie nodded as Dune spoke, a sad look on her face as she held her head low.</em> 
+“I guess we’re going home then.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="785674162344689674" id="message-785674162344689674">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I am uncertain if you are aware of this, Lieutenant, but at minimum on paper I am leading this away team. We have heard two completely different versions of this conflict, both brutal. We are seeing one now, in person, but we are at a tactical disadvantage and any action we as Starfleet personnel take, particularly since we cannot currently leave orbit, could be construed as an act of war. I am of the impression that at least <em>some</em> of our personnel should depart and attempt to establish a dialogue with the President the first away team met. It is my responsibility to say as much.&quot; <em>She said firmly. Over her protests she heard Dunamis and waved her hand at the combadge.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:10 AM</span>
+
+            <div class="chatlog__message " data-message-id="785674727838449684" id="message-785674727838449684">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie nodded as she looked to T’Svai. A sadness on her face, but one that acknowledge the woman was right. She looked to Oskar.</em> 
+“There’s really nothing we can do right now, that won’t start a war.”￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="785675048358510623" id="message-785675048358510623">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha felt her heart sink. She had promised these people that they would help them. What help were they doing by fleeing? She wasn&#39;t going to dare to disobey a direct order.</em> &quot;Understood, Sir. Expect us back promptly&quot; <em>She did her best to keep her emotions out of her voice and put on a brave face. She signed to  Aerain</em> &#39;Sorry but He doesn&#39;t want us involved in a war. He doesn&#39;t want us to cause bloodshed. I am deeply sorry for you and your people&#39;</span>
+
+                                <span class="chatlog__edited-timestamp" title="08-Dec-20 01:12 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/028260cee4acae13708216f7439f4af8-2B585.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lt. JG. Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:13 AM</span>
+
+            <div class="chatlog__message " data-message-id="785675465750741042" id="message-785675465750741042">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;m just saying that even if we did go in there, we&#39;d be severely disadvantaged.&quot; <em>Oskar said, standing up fully. He sighed a bit. He felt sorry for these people.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="785675673120669706" id="message-785675673120669706">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Air]<em>&quot;Whatever you decide will be completely fine by me, and if you do decide to leave, wish me luck. I hope that one day you can come down here to this place and see our city. You know what, I urge you to go to the city, they will tell you everything that is going on. We overheard you say that your ship is stuck here, well this power plant is the key to getting you out of here. if it against your code to interfere with our current dillema, than I cannot stop you&quot;</em> <em>He signed, grabbing another rifle and holding it in two hands, changing the settings and reloading them before looking at the entrance.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="785675805748887605" id="message-785675805748887605">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel couldn&#39;t help but overhear the conversation unfolding nearby. He touched his comm badge, smearing purple blood across its golden surface.</em> &quot;If you are going order the team back, I would like to request that a full emergency medical team beams down. There are so many wounded, and I don&#39;t believe it is a violation of the Prime Directive to offer relief as long as it is offered equally to both sides.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:18 AM</span>
+
+            <div class="chatlog__message " data-message-id="785676743347535922" id="message-785676743347535922">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha reached out and hugged him. She felt like a failure. Here she was failing another group of people. She kept seemingly failing to help others and this was probably the last time she would see him and she hadn&#39;t even asked for his name. What kind of Anthropologist watches as civilizations die right before her eyes. If she couldn&#39;t help him she could at least give him some sort of comfort</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="785677461136211998" id="message-785677461136211998">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The sky reacted the same way as it did on the viewscreen, lighting up in a flurry of whites, blues and purples, almost blinding to the eye. The same buzzing noise heard throughout the entire planet.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="785677527883841567" id="message-785677527883841567">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>At the commander&#39;s denial, Ciel felt like he&#39;d been kicked in the ribs again. The Xoid he&#39;d been treating had faded to grey. Its life signs were gone. The trembling returned to him. He backed away, turning to look at Lithop, whose patient was also gone.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="785677600395493376" id="message-785677600395493376">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie looked up at the sky with a gasp.</em> 
+“What’s going on?” 
+<em>She hit her badge.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/3bc5b4432b570b05ab0398cf79c54740-F95BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Aerain Azvah#0000" data-user-id="785655459456614410" style="">Aerain Azvah</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">08-Dec-20 01:28 AM</span>
+
+            <div class="chatlog__message " data-message-id="785679138123808818" id="message-785679138123808818">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>&quot;This has happened many times before, when some ship enters our planet, this always happens, but now, since your ship has entered it has become more frequent. It is whats causing our protection, our shield generator, to fail. But we do not know why!&quot;</em> <em>He signed frantically, dropping one of his weapons.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="785679591992852500" id="message-785679591992852500">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;If you&#39;d indulge a theory, please answer my question from before - what life-forms did you say were responsible for this planet&#39;s formation?&quot; <em>T&#39;Svai signed dryly, as much as one could sign dryly. The tone really didn&#39;t get across, but she sure tried.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:34 AM</span>
+
+            <div class="chatlog__message " data-message-id="785680731300823050" id="message-785680731300823050">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha let go of him to sign</em> &#39;What does the shield generator protect you from?&#39;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/3bc5b4432b570b05ab0398cf79c54740-F95BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Aerain Azvah#0000" data-user-id="785655459456614410" style="">Aerain Azvah</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">08-Dec-20 01:38 AM</span>
+
+            <div class="chatlog__message " data-message-id="785681682719047710" id="message-785681682719047710">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>&quot;We were responsible, our people as a whole, were once one, non corporial being. Floating across the cosmos like a speck... noticing the violance that took place after the formation of our planet, we created the generator to shield us, in hopes of protection This shielding generator hid us , and now it is the source of our destruction.&quot;</em> <em>He signed, watching the sky glow with a flurry of static.</em> <em>&quot;It protects us from you, well... it used to, but that was 400 years ago. We tried our best to improve its technology, but every since the Azvahdellians came, there was no hope.&quot;</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="785682246715441152" id="message-785682246715441152">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie even as Kytha was ￼ communicating with the other person. Tapped her badge again.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:44 AM</span>
+
+            <div class="chatlog__message " data-message-id="785683182909128734" id="message-785683182909128734">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&#39;How are we a threat to you? How does it protect you?&#39; <em>She signed. These colonists had disturbed these people by no fault of their own. They are going to have to get to the bottom of this mess</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:50 AM</span>
+
+            <div class="chatlog__message " data-message-id="785684605940400158" id="message-785684605940400158">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Comms]&quot;Away team, you are to vacate the area at once. Now.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:52 AM</span>
+
+            <div class="chatlog__message " data-message-id="785685105431543808" id="message-785685105431543808">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie nodded as she looked around to the rest of the team.</em> 
+“All right, now we need to move. Do we keep the weapons  they gave us? To examine?”￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/3bc5b4432b570b05ab0398cf79c54740-F95BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Aerain Azvah#0000" data-user-id="785655459456614410" style="">Aerain Azvah</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">08-Dec-20 01:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="785685381743378443" id="message-785685381743378443">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;We have studied, that every time a ship enters our planet, one of its components reacts negatively to our shielding generator, causing our skies to glow and haze. When what we call, fast flying or interplanetary vessels come to our planet, we discover that it becomes more frequent, a stronger energy interracts with the shielding generator, causing it to fizz up.&quot; <em>He signed, looking at Kytha as he heard the comm.</em> &quot;Your ship entered this planet, causing our generator to strain to much.&quot; <em>He looked at the base, seeing the beam with his infared vision that he had adapted to, he picked  up his weapon.</em> &quot;You go, I cant leave my people behind, not now.&quot; <em>He signed looking at them.</em> &quot;Your not supposed to interfere with our dillemas remember, now go.&quot; <em>He signed, urging them to move.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="785685525624782880" id="message-785685525624782880">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Discard the weapons given to you, lieutenant. Cary out my orders. Now.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="785685915652587561" id="message-785685915652587561">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie nodded as she tossed away the weapons with a sigh.￼</em> 
+“There goes that. All right let’s move. I’ll take ￼point.” 
+<em>She said, beginning to move away from the area.</em>
+“Let’s go!”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="785686014844731414" id="message-785686014844731414">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&#39;Okay. Be safe and good luck&#39; <em>She signed back with a heavy heart before turning to her comrades</em> &quot;Let&#39;s move out, people!&quot; <em>Kytha tossed her weapon and moved into formation</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:56 AM</span>
+
+            <div class="chatlog__message " data-message-id="785686170403209237" id="message-785686170403209237">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel came out from the base and back to the others. His patients were all dead. His EV suit was covered in purple blood. He simply followed what the others were doing, unable to speak.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 01:58 AM</span>
+
+            <div class="chatlog__message " data-message-id="785686702827896832" id="message-785686702827896832">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai decided Kytha had communication under control. For a moment, in the midst of this bloodshed, she felt... quite small. Slightly useless. People were much harder to fix than the average machine. She&#39;d have been more helpful up there, on the Phoenix, where there were sensors, probes, spare parts, and so on.</em> &quot;Given the strong gravitational field, that is not entirely surprising.&quot; <em>She mused as she quickly hurried out of the area.</em> &quot;Another name for the warp drive, particularly during their early development, was the gravimetric field displacement manifold.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="08-Dec-20 01:59 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/3bc5b4432b570b05ab0398cf79c54740-F95BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Aerain Azvah#0000" data-user-id="785655459456614410" style="">Aerain Azvah</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">08-Dec-20 02:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="785688018127683604" id="message-785688018127683604">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Disregarding the chit chat, Aer picked up another rifle and headed towards the base, there he saw Azvahdellians rushing out of the base and shooting at Aer. However, with his agility he easily doged the rather slow moving bullets, the modified beams did wonders as he shot through the troops like butter. In the realization of the moment, the tortured Xoids broke free of their chains and started to fight with their bare hands. Aer tossed one of his guns to his comrade, before using the last of his ammo to get a couple more enemy troops. As he was running towards the base entrance, he was stopped by a searing pain in his abdomen as a sharp object penetrated his stomach. Clutching it, he ripped it out, finding the man who threw it, he grabbed him and picked the man up. Aer, in a fit of rage threw the man, unfortunatley, his aim was off and the Azvahdellian fell in the fire.</em>
+
+<em>Bleeding out, Aer still pushed forwards to the base, in hopes of saving their final chance at salvation.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:05 AM</span>
+
+            <div class="chatlog__message " data-message-id="785688447985647636" id="message-785688447985647636">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha watched in horror but there wasn&#39;t much she could do at the moment. They needed to leave and soon. She picked up the pace, doing her best not to look back</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:06 AM</span>
+
+            <div class="chatlog__message " data-message-id="785688743049953310" id="message-785688743049953310">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie yelled out to the Vulcan as she began to flee.</em> 
+“Commander move!￼”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:07 AM</span>
+
+            <div class="chatlog__message " data-message-id="785688937887825951" id="message-785688937887825951">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai, who was very much moving, moved faster.</em> &quot;I can think and run, Lieutenant. Do we have anything that can generate an antigraviton beam?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="785690648803278901" id="message-785690648803278901">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie looked at the woman as they moved.</em> 
+“In our EV suits? I don’t think that’s exactly what they were planning for with these? Because otherwise we don’t have them on us, the ship might.”￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:18 AM</span>
+
+            <div class="chatlog__message " data-message-id="785691869564764181" id="message-785691869564764181">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Air]<em>As much as he tried to shield the  base from being destroyed by the oncoming wave of warp core energy, it was too late. Fighting off the last of the Azvahdellians, Aer fell to the ground as he watch the sky light up. The enemy troop put a knife to his neck and killed him quickly, Aers body turning grey to match the cold hard ground that he was on.  Soon, the warp core energy reached the base, engluphing it in a flurry of flames that rose high into the sky. A shockwave was dispersed out, rushing towards the away team. Luckily the away team was far enough away to attempt an escape.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="785692027366277150" id="message-785692027366277150">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie saw the shockwave begin to ￼ approach.</em> 
+“Everybody move!”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:20 AM</span>
+
+            <div class="chatlog__message " data-message-id="785692182052208701" id="message-785692182052208701">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She ran for her life, not caring about anything else. She didn&#39;t want her existence to end just yet. She gave it her all and covered ground as fast as she could</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="785692856174116935" id="message-785692856174116935">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai, who had already been speedwalking, upgraded to running.</em> &quot;You see? Fascinating!&quot; <em>She called while sprinting.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="785692991876235294" id="message-785692991876235294">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie continued to run as they moved.</em> 
+“How is any of this fascinating! We could die!”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="785693159635943454" id="message-785693159635943454">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Deadly phenomena are often of particular scientific interest. I do not see the contradiction.&quot; <em>Still running.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="785693273725468702" id="message-785693273725468702">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel simply followed the others. He was no longer capable of thinking thier circumstance through.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="785693331664928780" id="message-785693331664928780">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac made his way to Ciel.</em> &quot;Can you move?&quot; <em>he asked.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="785693511998504972" id="message-785693511998504972">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He looked up at the Lt. and nodded blankly. He began to run.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="785693613978812416" id="message-785693613978812416">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Okay, stay close to me,&quot; <em>he said, and ran along side the ensign.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="785693973523726426" id="message-785693973523726426">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai took out her tricorder and attempted to scan while running because if she didn&#39;t die, Lithop and perhaps Mera (navigation specialist, after all) would no doubt want data.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:28 AM</span>
+
+            <div class="chatlog__message " data-message-id="785694276557340703" id="message-785694276557340703">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Among the first to beam up were Konig and Ciel who beamed up to deck six. with that the away team was down 2 members, the shockwave creeping closer and closer.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="08-Dec-20 02:37 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="785694636726550538" id="message-785694636726550538">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha kept running, her heart pounding in her chest. She didn&#39;t even notice them leave. She was just trying to make it and not die</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="785694776678285312" id="message-785694776678285312">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie took long deep breathes as she keeps moving. Running as fast as she could.</em> 
+“Keep moving!”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:34 AM</span>
+
+            <div class="chatlog__message " data-message-id="785695876156751914" id="message-785695876156751914">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He tapped his commbadge.</em> &quot;Ensigns Briar and Howard next!&quot; <em>he shouted over the din.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:38 AM</span>
+
+            <div class="chatlog__message " data-message-id="785696736722550794" id="message-785696736722550794">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>On commander parlacs call, both Kytha and lithop were beamed out of there, however, not before a wave of debris came flying towards them, a shard of shrapnel came flying through, cutting open Kytha&#39;s side before she was beamed up.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:38 AM</span>
+
+            <div class="chatlog__message " data-message-id="785696893061300234" id="message-785696893061300234">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie looked towards Parlac and￼ T’Svai.</em> 
+“You two up next!”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="785696987248197663" id="message-785696987248197663">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai kept trying to gather as much data as she could, which was hard while at a full sprint without being able to look back to see if the tricorder was picking anything up. Oh well, that was a problem for later. She tapped her combadge to get a message to sickbay and kept sprinting.</em> &quot;Lieutenant, no. It would be irresponsible of me to leave before the remaining team members. You and Parlac.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="785697033100197908" id="message-785697033100197908">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac ignored Maggie&#39;s request.</em> &quot;Lieutenant Verne and Ensign Devereux next. Lieutenant Commander T&#39;Svai and I will be the last to beam out.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="08-Dec-20 02:48 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="785697201774526474" id="message-785697201774526474">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie looked at the pair with a shake of her head.</em>
+“You two are far more important￼! Go ahead! I’ll be fine!”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:41 AM</span>
+
+            <div class="chatlog__message " data-message-id="785697572207329350" id="message-785697572207329350">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;You are very important, Lieutenant.&quot; <em>T&#39;Svai said firmly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="785697757259366421" id="message-785697757259366421">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie ￼keeps moving with the others.</em> 
+“Yeah sure! But am I a department head￼? Am I the third officer? No!”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:43 AM</span>
+
+            <div class="chatlog__message " data-message-id="785698045886988298" id="message-785698045886988298">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;And that makes it my and Parlac&#39;s responsibility to ensure your safety, does it not? Besides, I need to have a conversation with my transport officers anyway.&quot; <em>She half-joked.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:45 AM</span>
+
+            <div class="chatlog__message " data-message-id="785698452910506004" id="message-785698452910506004">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The transporter officer frankly did not care about the constant bickering and beamed, Maggie and Parlac up before maggie could finish her sentence.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="08-Dec-20 02:46 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/06d308dc8b5854ee08fda2f8c69d2789-66698.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(255,203,37)">Lt. Cmdr. T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:47 AM</span>
+
+            <div class="chatlog__message " data-message-id="785699078951665664" id="message-785699078951665664">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;Svai, still sprinting, took a moment to reflect. There were many perks to being acting first officer. This was, unquestionably, not one of them. She of course kept trying to scan, counting the seconds as she did and trying to remember which transport officers were on shift at the moment.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20shielding-base%20%5B785640728985731072%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">08-Dec-20 02:50 AM</span>
+
+            <div class="chatlog__message " data-message-id="785699719946829844" id="message-785699719946829844">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>25 seconds later, the shockwave reaches T&#39;svai, knocking her forward, shrapnel scratching her back, however. With some luck and possibly a prayer from the one above. T&#39;Svai was beamed up to deck 6 along with any others who were with her.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 121 message(s)</div>
+</div>
+
+</body>
+</html>

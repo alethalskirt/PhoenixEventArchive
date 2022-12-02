@@ -1,0 +1,1944 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - tailor-shop</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Deck 7: Civilian / tailor-shop</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 04:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="823048199895121952" id="message-823048199895121952">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Finley entered the shop and looked around. He had already gotten pretty far, most of his personal tools and supplies were set up neatly at the desk. The other supplies had already been neatly tucked away into drawers and cubbies. Finley just preferred having things set up differently. He also had a mind to change the aesthetic of the shop to be a bit less... Modern.</em>
+
+<em>Finley ran a hand against the wall, was it possible for him to paint the interior somehow? Maybe, maybe. This was his shop after all, buuut the ship the shop was in didn’t belong to him. He’d need to talk to somebody about his ideas, once he was done with his remodeling plans he wanted to have a grand opening of sorts. But of course that would be a task for the future, he needed to focus on what he could do now. And with that Finley started reorganizing.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128755;️" title="&#128755;️" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/1f6f3-047D6.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128717;️" title="&#128717;️" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/1f6cd-51FDC.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 03:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="823223558272057354" id="message-823223558272057354">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He sidled into the tailor shop, hands clasped behind his back, and looked around at the couple of clothing items displayed in the vicinity.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 04:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="823224654604009502" id="message-823224654604009502">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>As Nedras was just coming in, Finley had just got up off of his knees from working on a lower drawer. As he turned around to face Nedras, his heart skipped a beat and he clutched his lace shirt, clearly he had been startled.</em> &quot;Good heavens, you startled me!&quot; <em>He chuckled softly,</em> &quot;I apologize, this place isn’t quite at its best yet. Is there something I can help you with?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 04:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="823225287491190784" id="message-823225287491190784">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras did a little half-bow, which was entirely unnecessary under the circumstances, and took a small step back to try to convey that he was (ostensibly) trying his best not to intrude.</em> &quot;No, I apologize, I shouldn&#39;t have barged in.&quot; <em>He chuckled slightly nervously. He then noticed Finley&#39;s lace shirt. His arms fell to his sides, and he tilted his head slightly.</em> &quot;Would you say you have a good sense of aesthetics?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 04:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="823226490015187025" id="message-823226490015187025">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Upon Nedras&#39; half-bow, Finley attempted to do something of the same. He didn’t mean to make the Vorta feel bad.</em> &quot;Please don’t worry about it, I should add some sort of bell system-&quot; <em>he let his words trail off as he went to the nearby desk and scribbled onto a notepad.</em> &quot;Aesthetic you said? I do consider myself to have a good sense of aesthetic, but not to make me sound like a gate-keeper. It’s just in my job description.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 04:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="823227229383032873" id="message-823227229383032873">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>As usual, Nedras reacted to someone returning the little bow with slight shock and bewilderment. He wrinkled his nose slightly, then clasped his hands behind his back again.</em> &quot;What&#39;s the style when it comes to Alpha and Beta quadrant civilian clothing nowadays?&quot; <em>He asked as casually as he could, trying not to overemphasize his total lack of understanding of fashion.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 04:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="823228565134376980" id="message-823228565134376980">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Finley walked away from the desk, and returned to Nedras.</em> &quot;Well, as of right now there’s been a re-birth in black and purple expressions. I’ve seen a touch of royal blue as well, the colors being the main focus right now. Probably due to the war, it’s touched the hearts of artists and inspired them. These pieces are rather simple, focusing more on the color&#39;s relationship to each other in fabric.&quot; <em>Finley paused,</em> &quot;would you like me to pull up a chair?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 04:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="823228896207437864" id="message-823228896207437864">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He nodded in a facsimile of total understanding of all of the words that were coming out of Finley&#39;s mouth.</em> &quot;Hm. Yes. Hearts.&quot; <em>He said awkwardly, looking around.</em> &quot;Yes, please, if it isn&#39;t too much trouble. I&#39;m Ensign Nedras, by the way.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 04:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="823229692081209354" id="message-823229692081209354">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Finley Harrison, a pleasure!&quot; <em>Finley curtly nodded before briskly walking to the corner of the room and retrieving two chairs, which he awkwardly dragged back over and set out.</em> &quot;This should do,&quot; <em>he muttered more to himself than to Nedras.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 04:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="823234258121654303" id="message-823234258121654303">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras returned the nod and sat down slowly, hands falling to his lap. He tapped one knee restlessly.</em> &quot;Blue and red are popular where I&#39;m from. Blue to convey authority, red to convey violence, their combination to imply the role of a negotiator. But I take it this quadrant doesn&#39;t choose outfits via such means.&quot; <em>He mused.</em> &quot;Unless that shirt of yours symbolizes transparency.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 04:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="823236247030857790" id="message-823236247030857790">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;The use of colors and fashion for different means in culture has always been so interesting to me,&quot; <em>he mused softly. He began to drift off into a thought process, but he quickly brought himself back.</em> &quot;Here outfits are generally designed for artistic expression or the wearer&#39;s expression. That doesn’t mean that we don’t do similar, such as the uniform you’re wearing.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 04:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="823236663798661130" id="message-823236663798661130">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras beamed with pride.</em> &quot;Yes! This design is very intimidating. I love it.&quot; <em>He said cheerfully, straightening the jacket, then the sleeves.</em> &quot;Unfortunately, that&#39;s only so useful in civilian environments, and there are so very many <em>options.</em>&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 04:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="823238010836746240" id="message-823238010836746240">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Finley nodded understandingly,</em> &quot;Yes, although excellent in design for their purpose,&quot; <em>he adjusted his rimmed glasses.</em> &quot;They aren’t really much for personal expression. Which makes sense of course, that would defeat the purpose of a uniform!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 04:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="823239469901283368" id="message-823239469901283368">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras found himself mirroring the gesture, adjusting his own rimless rectangular glasses in a kind of acknowledgement.</em> &quot;How do you choose your clothing, if I may ask?&quot; <em>He then glanced slightly up at Finley&#39;s hair.</em> &quot;And general style. I don&#39;t believe that&#39;s a color naturally found in humans.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 05:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="823247596201312286" id="message-823247596201312286">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I try to choose clothes that remind me of things I like,&quot; <em>he replied simply.</em> &quot;As for my hair? I just really like the light shades of pink. They make me happy, I guess for me it all has to do with personal happiness, I suppose.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 05:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="823250697482665994" id="message-823250697482665994">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras nodded in (what he believed to be) complete and total understanding, then leaned forward in earnest.</em> &quot;What clothing do you think says &#39;torpedoes?&#39;&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="iamlooking" title="iamlooking" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/749076190169399357-901CF.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 06:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="823260706232598588" id="message-823260706232598588">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Finley widened his eyes, had he heard him wrong?</em> &quot;Did you say, um... Torpedoes?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 06:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="823262134037119005" id="message-823262134037119005">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;You said clothes that remind you of...&quot; <em>He trailed off sheepishly and chuckled.</em> &quot;Perhaps I misinterpreted. How did you determine what clothing makes you happy?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/637075614662393868-CC03F.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 06:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="823265661252927548" id="message-823265661252927548">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well I don’t think you misinterpreted, different things make different people happy.&quot; <em>Finley cleared his throat,</em> &quot;sometimes trying things on, and seeing how they look on you can make that decision.&quot; <em>That was probably a more conventional way of choosing clothes that make one happy.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 06:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="823266485673263144" id="message-823266485673263144">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras stood and rubbed his hands together.</em> &quot;That seems reasonable. Logical. Yes.&quot; <em>He looked over Finley&#39;s outfit analytically.</em> &quot;I think I know exactly where to start. Thank you very much for your help.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="21-Mar-21 07:31 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 08:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="823288941091749898" id="message-823288941091749898">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;You’re welcome, I’m happy I could help!&quot; <em>Finley smiled,</em> &quot;let me know if you need anything else. I&#39;m not busy.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">21-Mar-21 08:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="823290144941015041" id="message-823290144941015041">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras smiled, then bowed again.</em> &quot;I most certainly will. Somehow I get the feeling this will be an extensive research process.&quot; <em>He admitted with cheerful determination.</em> &quot;It was a pleasure meeting you.&quot; <em>With that, he left.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 04:11 AM</span>
+
+            <div class="chatlog__message " data-message-id="823770904151982110" id="message-823770904151982110">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola stepped into the shop cautiously. The door was open, but who knew if it was actually <strong>open</strong>.</em> &quot;Hello?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 04:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="823771935883264010" id="message-823771935883264010">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;One moment!&quot; <em>Finley&#39;s voice carried, from inside a nearby closet. Within a brief span of time he emerged with a soft smile.</em> &quot;I’m busier than I thought I’d be,&quot; <em>if of course by busier he had meant two people in the span of a couple hours.</em> &quot;What can I help you with?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 04:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="823774539993317427" id="message-823774539993317427">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola just smiled softly.</em> &quot;I saw your shop earlier while I was in my walk and my curiosity spiked. My name is Zulola Jex, but everyone calls me Lola.&quot; <em>She held out a hand to shake.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 04:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="823775813949587507" id="message-823775813949587507">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Lola is a very nice name,&quot; <em>he complimented genuinely, staring at her hand for a moment before clearing his throat awkwardly.</em> &quot;I’m sorry, I’m Finley Harrison.&quot; <em>He extended his arm and gently shook her hand.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 04:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="823778700713263124" id="message-823778700713263124">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola noticed the awkward silence of course and was confused, but kept her mouth shut. There was no need to extend the awkwardness. After all, she only extended her hand because Harrison was a human, and humans shook hands, right? Some probably didn&#39;t like that, though, so she filed it away for later.</em>
+
+&quot;So, you are a tailor right? I was wondering if you could make a....&quot; <em>Lola thought for a moment.</em> &quot;Pa-looshy? I can&#39;t seem to remember how to pronounce it.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 04:48 AM</span>
+
+            <div class="chatlog__message " data-message-id="823780179494961153" id="message-823780179494961153">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Finley closed his eyes for a moment, trying to think of what a, &#39;pa-looshy&#39; might be.</em> &quot;Pa-looshy, pa-looshy, mmm.&quot; <em>He bit his lip,</em> &quot;could you perhaps provide some more detail?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 04:51 AM</span>
+
+            <div class="chatlog__message " data-message-id="823781044285079553" id="message-823781044285079553">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;It&#39;s a thing that children hold, it&#39;s soft and usually in the shape of an animal. &quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="23-Mar-21 04:51 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 04:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="823782499943186432" id="message-823782499943186432">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Forgive me, but I think you’re referring to a plushy!&quot; <em>He ran his fingers through his pink-ish hair nervously. He silently hoped that he hadn’t offended her by not understanding.</em> &quot;I can definitely make those, given a couple days or so. Depending on what you had in mind it could take more or less time.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 05:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="823783928451301416" id="message-823783928451301416">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola quietly whispered,</em> &quot;P&#39;lushy,&quot; <em>to herself a few times to try and memorize the phrase, then smiled at Harrison.</em> &quot;Yes! A p&#39;lushy! Well, a short while ago I met this wonderful beetle. He was rather large and I find that I miss him often. I was wondering if I drew a picture of him, could you make a life size p&#39;lushy of him?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="23-Mar-21 05:04 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 04:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="823951513381503036" id="message-823951513381503036">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Finley&#39;s eyes sparkled, a beetle? He could definitely do a beetle, he loved beetles.</em> &quot;Out of pure curiosity, how would you describe this beetle?&quot; <em>He moved over to his desk and grabbed a notebook before returning.</em> &quot;I still would like your drawing, but I want to get a rough idea of what I might be making for you. Describe everything you can remember, whether that’s personality, how you met, whatever.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 05:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="823966679586963558" id="message-823966679586963558">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola thought for a second.</em> &quot;He was about two feet tall and maybe 4 feet long. He was an all black beetle with big pinchers. He loved lettuce. Leaves of any kind, really.&quot; <em>Why had she said that? He didn&#39;t need to know that. Oh well.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 05:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="823969757370908733" id="message-823969757370908733">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Finley scribbled onto the notepad,</em> &quot;kind of like a Scarab beetle then? I love beetles,&quot; <em>he murmured the last part softly as he met Lola&#39;s eyes again.</em> &quot;He must’ve been really kind if you still remember him.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 05:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="823971766526672987" id="message-823971766526672987">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;He was a really good beetle. He followed me almost everywhere. I was trying to teach him how to dance at one point and he pulled all sorts of moves.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129402;" title="&#129402;" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/1f97a-338D5.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 05:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="823975780048568341" id="message-823975780048568341">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I’m really sorry, he sounds like a wonderful friend.&quot; <em>Finley&#39;s face mirrored his sympathies,</em> &quot;I would be more than happy to honor your friend in plushy form.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 06:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="823981602689515571" id="message-823981602689515571">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;He really was a good friend. I named him King Horgumbus. It was a suiting name for a beetle his size and stature.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 06:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="823982164604747866" id="message-823982164604747866">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>&#39;Add a crown with the name embroidered,&#39; Finley noted to himself as he nodded.</em> &quot;It really does sound like a fitting name, I appreciate your detail. When do you think you could get a drawing to me by?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128081;" title="&#128081;" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/1f451-05011.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129714;" title="&#129714;" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/1fab2-2033A.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 06:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="823983283661832242" id="message-823983283661832242">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I actually brought it with me!&quot; <em>Lola reached into her pocket and pulled out a folded piece of paper and handed it to him.</em> &quot;I&#39;m not the best artist, but you get the idea of what he looked like, right?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="23-Mar-21 06:16 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 06:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="823984350499700758" id="message-823984350499700758">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Finley took the piece of paper from her, and placed it on top of his notebook.</em> &quot;Yes, and if I have any questions I’ll uh- I’ll use the... PADD? I’m still trying to figure it out,&quot; <em>he blushed, his face turning a soft red.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 06:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="823985292486115409" id="message-823985292486115409">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola smiled at him, not in malice but in kindness.</em> &quot;Oh, it&#39;s okay! I&#39;m not the best with the tech on board the ship, but if you&#39;re ever in need of help, I am more than happy to try. Here, I&#39;ll give you my comm information and you can contact me whenever you need to.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 06:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="823988533278670870" id="message-823988533278670870">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh thank you for understanding, I will gladly accept your comm information. I appreciate your help,&quot; <em>he laughed nervously, still slightly embarrassed.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 06:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="823991753883254834" id="message-823991753883254834">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Of course! I enjoy helping others. If you need anything, I&#39;m more than happy to help.&quot; <em>As much as Lola would like to stay and chat with the new tailor, she had to be on her way. She had a set schedule she was trying to adhere to to get herself back into better health.</em> &quot;If that is all, Harrison, then I should take my leave.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 06:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="823992455186612234" id="message-823992455186612234">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;m very excited to get started, I think I overheard we&#39;ve docked at Earth and that will allow me to get some unique materials.&quot; <em>He walked over to the door, to usher her out.</em> &quot;It was a pleasure to meet you, we should be in contact soon.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 08:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="824014507936317450" id="message-824014507936317450">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola stepped out.</em> &quot;Thank you!! I appreciate this. I will see you around soon.&quot; <em>And with that, Lola disappeared down the hall again.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deck%207_%20Civilian%20-%20tailor-shop%20%5B800162257920983070%5D.html_Files/98ffe603982f9d39813bc2b3c4fdd140-F7690.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 08:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="824019360909361222" id="message-824019360909361222">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Soon after Lola left, Finley put some stuff away and put his sketchbook into his bag. He had eaten a small breakfast for the sake of getting some last stuff organized, but he was more than ready to eat a larger meal. Although he could eat down here, he wanted to get a feel for the layout of the rest of the ship. There was a mess hall on deck eight right? No- deck nine, he was pretty sure. He stepped out into the hallway, closing the door behind him.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 46 message(s)</div>
+</div>
+
+</body>
+
+</html>

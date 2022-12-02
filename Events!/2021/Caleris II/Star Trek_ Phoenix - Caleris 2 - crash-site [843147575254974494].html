@@ -1,0 +1,2713 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - crash-site</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Caleris 2 / crash-site</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="843173826371518494" id="message-843173826371518494">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The beach was an empty expanse of pure white sand under the clear, azure sky. Calm blue-purple waves lapped at the shore. All was silent, save for a quiet, repetitive set of pinging noises that bounced off of the water and sand dunes.</em></span>
+
+                        </div>
+                    </div>
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/types-of-beaches-June302020-10-min-14E12.png">
+                                        <img class="chatlog__attachment-thumbnail" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/types-of-beaches-June302020-10-min-14E12.png" alt="Image attachment" title="Image: types-of-beaches-June302020-10-min.png (940.57 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="843176656965206046" id="message-843176656965206046">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>There was a short delay as everyone&#39;s transporter pattern passed slowly through the subspace layer, hampered by the quaryon particles. Then, the entire <span class="mention" style="">@Away Team One</span> was beamed, safe and sound, onto the beach.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/84ba55069fa0ac78384ea2a209b60ec3-08F73.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="amiddleagedklingon#1897" data-user-id="199168973403717633" style="color: rgb(245,182,10)">Lt. Cdr. W’ototo</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="843176696667570237" id="message-843176696667570237">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>As soon as he beamed down, W&#39;ototo immediately grabbed his type 2 off his belt and powered it up, visually scanning the immediate vicinity as he did.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/4a261a99b4e4a07615a9f96bacf15c35-5C40C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="volk#7950" data-user-id="233443312713859073" style="color: rgb(212,156,2)">Ensign Abby Shepard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="843177268577566751" id="message-843177268577566751">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Abby looked around after he was beamed onto the sandy beach, and let out a unimpressed huff upon looking down at his sand covered boots. Shaking his head, the engineer retrieved his tricorder and began to scan the area.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/b61f130ba568eeee0824d8ff1a8e5240-7B230.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="843177337033457734" id="message-843177337033457734">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Immediately after beaming, Nev had a similar thought to W&#39;ototo. They didn&#39;t prep their phaser yet, but they were on alert and looking around.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="15-May-21 06:25 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/8a227d0464dd85c477fe938257efc81b-E3D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="843177421548290058" id="message-843177421548290058">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Once he beamed down, Dayton took a moment to observe the planet&#39;s surroundings, being vigilant in that sense.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="843177537852538886" id="message-843177537852538886">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Tricorder scans revealed there was a faint energy signal five hundred meters East of the beamdown site.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/4a261a99b4e4a07615a9f96bacf15c35-5C40C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="volk#7950" data-user-id="233443312713859073" style="color: rgb(212,156,2)">Ensign Abby Shepard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="843177836025610301" id="message-843177836025610301">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well, we&#39;re not going into the ocean. Signal&#39;s coming from the East, about five hundred meters, Lieutenant.&quot; <em>Abby spoke out, then looking to Rineva.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/b61f130ba568eeee0824d8ff1a8e5240-7B230.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="843178188666437632" id="message-843178188666437632">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They nodded.</em> &quot;Right. Unless there&#39;s anything else on scans, I propose we head that way. Does the tricorder indicate what kind of energy it is?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/4a261a99b4e4a07615a9f96bacf15c35-5C40C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="volk#7950" data-user-id="233443312713859073" style="color: rgb(212,156,2)">Ensign Abby Shepard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="843178618351517717" id="message-843178618351517717">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Not much, seems like background radiation from a power source as much as I can gather. That can differ wildly on what this <em>is</em> however.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/b61f130ba568eeee0824d8ff1a8e5240-7B230.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="843179015560101909" id="message-843179015560101909">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They turned to address Dayton and Lithop.</em> &quot;Science? Anything else before we get moving?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="843179206544588811" id="message-843179206544588811">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Visual inspection just revealed more sand and sand dunes, and of course the inviting blue water of the beach due South.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/08d192890cc38861b4303a280186fdcf-21B8C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="843180264431812648" id="message-843180264431812648">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop had beamed done with everyone else and after checking scans finally spoke.</em> “I’ll keep tabs on everything, but for now I think we can head out.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/b61f130ba568eeee0824d8ff1a8e5240-7B230.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="843180621975257108" id="message-843180621975257108">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Alright.&quot; <em>They finally removed the phaser from the belt, holding it low as they nodded at each officer and set off trekking to the East.</em> &quot;Let&#39;s get going, then.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/4a261a99b4e4a07615a9f96bacf15c35-5C40C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="volk#7950" data-user-id="233443312713859073" style="color: rgb(212,156,2)">Ensign Abby Shepard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="843181640380579842" id="message-843181640380579842">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;What could&#39;ve caused a distress signal on a resort world?&quot; <em>Abby asked out of mere curiosity and boredom as they began to walk, and his eyes remained mostly locked on his tricorder.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/84ba55069fa0ac78384ea2a209b60ec3-08F73.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="amiddleagedklingon#1897" data-user-id="199168973403717633" style="color: rgb(245,182,10)">Lt. Cdr. W’ototo</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="843181912746622997" id="message-843181912746622997">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I will cover the group from behind.&quot; <em>He said to Rineva, before going behind the group to do exactly that.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/08d192890cc38861b4303a280186fdcf-21B8C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="843182240438943784" id="message-843182240438943784">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop began to walk, checking her tricorder every minute.</em> “T’Svai said it was federation, a civilian ship. Most likely it crashed when trying to enter the atmosphere on account of the anomaly. But that still begs the question of what a civilian ship was doing trying to land here.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/b61f130ba568eeee0824d8ff1a8e5240-7B230.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="843182499307192340" id="message-843182499307192340">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Perhaps they had some kind of other distress onboard.&quot; <em>They mused, squinting a bit in the light.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/8a227d0464dd85c477fe938257efc81b-E3D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="843182547303137350" id="message-843182547303137350">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He started to walk with the group, as well as taking out his tricorder to begin scans.</em> &quot;Well... maybe they had an issue? Perhaps something happened to the vessel that forced them to land or crash here.&quot; <em>He chimed in.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="843182663535951893" id="message-843182663535951893">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Ahead of them, something shiny and metallic stuck out of the sand.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/b61f130ba568eeee0824d8ff1a8e5240-7B230.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="843183018372890694" id="message-843183018372890694">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Hmm.” <em>They hummed, raising a brow in curiosity.</em> “Seems like we’ve found... something. Scans?” <em>This was directed at... well, anyone with a tricorder.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/8a227d0464dd85c477fe938257efc81b-E3D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="843183137751564289" id="message-843183137751564289">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He aimed his tricorder towards the metallic object sticking out of the sand.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/4a261a99b4e4a07615a9f96bacf15c35-5C40C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="volk#7950" data-user-id="233443312713859073" style="color: rgb(212,156,2)">Ensign Abby Shepard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="843183196484534292" id="message-843183196484534292">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Abby found himself puzzled by the metallic object, checking his tricorder as well.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="843183313397350421" id="message-843183313397350421">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The metallic object was unquestionably the source of both the energy readings and the distress signal itself. Being as it was mostly buried in sand, however, it was hard to tell what it was.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/8a227d0464dd85c477fe938257efc81b-E3D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="843183529567191061" id="message-843183529567191061">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;This object is the source of the distress signal and the energy readings.&quot; <em>He stated, looking at the tricorder&#39;s readings.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/4a261a99b4e4a07615a9f96bacf15c35-5C40C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="volk#7950" data-user-id="233443312713859073" style="color: rgb(212,156,2)">Ensign Abby Shepard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="843183783352205373" id="message-843183783352205373">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;m having trouble deciphering what it&#39;s made from. Or where it&#39;s from.&quot; <em>He commented, puzzled by the existence of the object.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="843184030890852352" id="message-843184030890852352">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>More data was still coming in - it was made of duranium! Its precise origins were a little less clear, though there was the tiniest hint of an engraving nearly covered by the sand.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/b61f130ba568eeee0824d8ff1a8e5240-7B230.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="843184648380481577" id="message-843184648380481577">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They nodded at the information already relayed.</em> “It looks like there’s some kind of marking on it. It is safe to approach, yes?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/4a261a99b4e4a07615a9f96bacf15c35-5C40C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="volk#7950" data-user-id="233443312713859073" style="color: rgb(212,156,2)">Ensign Abby Shepard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="843184974563901440" id="message-843184974563901440">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Abby looked over the readings before letting out an unsure sigh.</em> &quot;It&#39;s made of Duranium by the seems of it.&quot; <em>Looking up from his tricorder, he shrugged.</em> &quot;We got this far.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/08d192890cc38861b4303a280186fdcf-21B8C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="843185133184221205" id="message-843185133184221205">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop looked at her tricorder too, trying to figure out how long it had been here.</em> “Yes you can approach.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/8a227d0464dd85c477fe938257efc81b-E3D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="843185151429443614" id="message-843185151429443614">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He swapped looks at the tricorder and the engraving marked in the metal.</em> &quot;While the origins are still a little unclear, I think it is safe to approach.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/b61f130ba568eeee0824d8ff1a8e5240-7B230.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 06:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="843185946266173440" id="message-843185946266173440">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Three confirmations were certainly good enough. Nev approached the object, peering at the engraving as they got closer. They reached forward and ran their hand over the marking, attempting to swipe off any sand remnants to reveal the rest of the mark.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="15-May-21 07:00 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/84ba55069fa0ac78384ea2a209b60ec3-08F73.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="amiddleagedklingon#1897" data-user-id="199168973403717633" style="color: rgb(245,182,10)">Lt. Cdr. W’ototo</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="843186401331380307" id="message-843186401331380307">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>W&#39;ototo continued to look around for any incoming threats. In this environment he should really have his rifle out instead, but he hadn&#39;t thought of that at at the time of taking his type 2 off his belt.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="843186711243653192" id="message-843186711243653192">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Even that gentle pressure was enough to dislodge the object from the soft, fine white sand, sending it toppling onto its side. It continued letting out periodic faint pings. It was a Class 5 probe, albeit about fifteen years out of date. On its side it said <strong>NSP Peligin</strong>, NSP being a common prefix for federation civilian science vessels, particularly Vulcan ones.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="15-May-21 07:03 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/b61f130ba568eeee0824d8ff1a8e5240-7B230.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="843187281580916776" id="message-843187281580916776">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“It’s from a science vessel!” <em>They relayed back.</em> “Perhaps a Vulcan one— the NSP Peligin.” <em>They finally turned back to the group, one hand on their hip.</em> “Maybe they were investigating the anomaly.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/8a227d0464dd85c477fe938257efc81b-E3D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="843187902916984852" id="message-843187902916984852">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;It seems likely that they would be investigating the anomaly. Perhaps something happened to them during their investigation?&quot; <em>He speculated.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/4a261a99b4e4a07615a9f96bacf15c35-5C40C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="volk#7950" data-user-id="233443312713859073" style="color: rgb(212,156,2)">Ensign Abby Shepard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="843189563907899423" id="message-843189563907899423">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;The dating on the probe is a bit old.&quot; <em>He spoke up, looking at Dayton and Rineva.</em> &quot;So what would draw it to <em>this</em> anomaly? Unless I&#39;m misinformed on how old the anomaly is.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/8a227d0464dd85c477fe938257efc81b-E3D1A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="843189874709495828" id="message-843189874709495828">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Maybe the vessel sent the probe out to investigate when they arrived at the planet?&quot; <em>He suggested.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="843190426302283837" id="message-843190426302283837">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Ding! The perfectly intact, functional probe continued pinging periodically.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/4a261a99b4e4a07615a9f96bacf15c35-5C40C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="volk#7950" data-user-id="233443312713859073" style="color: rgb(212,156,2)">Ensign Abby Shepard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="843190770952437800" id="message-843190770952437800">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well...would the next course of action just to be...turning it off?&quot; <em>Abby suggested with a nervous chuckle.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/b61f130ba568eeee0824d8ff1a8e5240-7B230.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="843191158264168479" id="message-843191158264168479">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“I’m not a scientist, but perhaps they’ve been stuck out here longer than we initially thought.” <em>They remarked.</em> “That’s a long time to go without changing a probe.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/08d192890cc38861b4303a280186fdcf-21B8C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="843191166094409749" id="message-843191166094409749">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Wait, I want to see if there’s any info about the planet that we might be able to get from it.” <em>Lithop said, crouching down by the probe.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="843191287935139840" id="message-843191287935139840">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The probe&#39;s data bank was intact and likely accessible - that is, with the aid of a ship&#39;s computer.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="15-May-21 07:21 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/84ba55069fa0ac78384ea2a209b60ec3-08F73.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="amiddleagedklingon#1897" data-user-id="199168973403717633" style="color: rgb(245,182,10)">Lt. Cdr. W’ototo</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="843191818593501185" id="message-843191818593501185">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Is there no ship in distress?&quot; <em>He asked simply, although feeling slightly ripped off that his first mission was only currently turning out to be a data retrieval mission.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/08d192890cc38861b4303a280186fdcf-21B8C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="843192187415691334" id="message-843192187415691334">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“It’s database is still intact. I’d like to send it up to the Phoenix, see what science can get out of it.” <em>She said, standing back up and brushing the sand off her EV suit.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/b61f130ba568eeee0824d8ff1a8e5240-7B230.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="843193096061059096" id="message-843193096061059096">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They nodded.</em> “Alright. Is the energy too much, or can we contact them? It’s most likely been about fifteen minutes anyway.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/4a261a99b4e4a07615a9f96bacf15c35-5C40C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="volk#7950" data-user-id="233443312713859073" style="color: rgb(212,156,2)">Ensign Abby Shepard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="843193117125771274" id="message-843193117125771274">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well maybe something else might be the issue, and the probe has the answer.&quot; <em>He commented.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/08d192890cc38861b4303a280186fdcf-21B8C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="843193805997604934" id="message-843193805997604934">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“We should contact them, see if they want it beamed up. The delay is only a few milliseconds, communication should be just fine.” <em>She said, opening up the communications.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="843193892215062538" id="message-843193892215062538">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>A connection was established with the bridge.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/15f6d8dafa5de7a7a93986539d4243e8-78B43.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HarleyQuinn#7662" data-user-id="792195846238109716" style="color: rgb(41,169,238)">Lieutenant Eli Drake</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="843196438611361822" id="message-843196438611361822">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Eli beamed down with everyone and followed the lead person. He took out his medical tricorder and was scanning for life signs.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="843196600633655336" id="message-843196600633655336">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>There were no life signs anywhere, save for some very small ones that registered as avian, particularly a species of Risian parrot.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/15f6d8dafa5de7a7a93986539d4243e8-78B43.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HarleyQuinn#7662" data-user-id="792195846238109716" style="color: rgb(41,169,238)">Lieutenant Eli Drake</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="843197073180459008" id="message-843197073180459008">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;m not picking any life signs up other than birds, maybe the particles gave false readings?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/b61f130ba568eeee0824d8ff1a8e5240-7B230.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="843197331108134982" id="message-843197331108134982">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Birds? Are they native to the planet?” <em>They asked, standing up from the crouch and looking off into the distance beyond the probe.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/15f6d8dafa5de7a7a93986539d4243e8-78B43.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HarleyQuinn#7662" data-user-id="792195846238109716" style="color: rgb(41,169,238)">Lieutenant Eli Drake</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="843197524512210955" id="message-843197524512210955">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;They seem to be Risian in origin,&quot; <em>Eli said as he shrugged.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/4a261a99b4e4a07615a9f96bacf15c35-5C40C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="volk#7950" data-user-id="233443312713859073" style="color: rgb(212,156,2)">Ensign Abby Shepard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 07:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="843197914037485588" id="message-843197914037485588">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I would assume not native if it was a candidate for terraforming.&quot; <em>The Bajoran noted.</em> &quot;Where&#39;s the ship this probe came from?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/08d192890cc38861b4303a280186fdcf-21B8C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="843201764097785927" id="message-843201764097785927">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop finished up with Comms before carefully moving to pick up the prob, ensuring it wouldn’t break.</em> “They’ll beam it up with us, so we’ll have to bring it with. For now let’s keep looking for anything else. And remember that life signs may not be showing because of the quaryon particles.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="843202044638920774" id="message-843202044638920774">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>To the North, East, and West, there was only empty beach. To the South, open water.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/b61f130ba568eeee0824d8ff1a8e5240-7B230.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="843202740422180885" id="message-843202740422180885">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They looked side to side, pursing their lips.</em> “Alright. The water-“ <em>They pointed at the ocean.</em> “How does it look on scans? If the shuttle went down there and it’s unsafe, we may be pursuing an empty goal.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/4a261a99b4e4a07615a9f96bacf15c35-5C40C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="volk#7950" data-user-id="233443312713859073" style="color: rgb(212,156,2)">Ensign Abby Shepard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="843203518659297280" id="message-843203518659297280">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Abby looked to the water, and stepped only slightly closer as he began his scans on the ocean.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="843204452085006416" id="message-843204452085006416">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Scans of the ocean revealed it was 96.5% water, 2.5% salt, and 1% trace substances. There were a smattering of fish that registered as native to Risa and Wrigley&#39;s Pleasure Planet - monocultures brought in during terraforming, most likely. There was no sign of any other life or any energy readings.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="15-May-21 08:13 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/4a261a99b4e4a07615a9f96bacf15c35-5C40C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="volk#7950" data-user-id="233443312713859073" style="color: rgb(212,156,2)">Ensign Abby Shepard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="843204794926759937" id="message-843204794926759937">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Nothing worth noting in the water I&#39;d say. Nothing relevant to the mission at least.&quot; <em>He noted, looking back at Rineva.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/08d192890cc38861b4303a280186fdcf-21B8C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="843204911139389451" id="message-843204911139389451">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop had to admit she was a bit disappointed, this rescue mission really hadn’t turned up anything.</em> “I think we should head back up to the ship, then we can see if there’s any lead with the probe.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/84ba55069fa0ac78384ea2a209b60ec3-08F73.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="amiddleagedklingon#1897" data-user-id="199168973403717633" style="color: rgb(245,182,10)">Lt. Cdr. W’ototo</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="843205026491138119" id="message-843205026491138119">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>W&#39;ototo chose to remain silent, instead focusing on keeping an eye out.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/4a261a99b4e4a07615a9f96bacf15c35-5C40C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="volk#7950" data-user-id="233443312713859073" style="color: rgb(212,156,2)">Ensign Abby Shepard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="843205439541215263" id="message-843205439541215263">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;We haven&#39;t even been farther inland yet. We don&#39;t know what we could be missing.&quot; <em>Abby spoke, walking away from the water and back to the group.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/15f6d8dafa5de7a7a93986539d4243e8-78B43.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HarleyQuinn#7662" data-user-id="792195846238109716" style="color: rgb(41,169,238)">Lieutenant Eli Drake</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="843205892777705482" id="message-843205892777705482">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;If we want to head farther in, then we should get permission and tell the Captain.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/b61f130ba568eeee0824d8ff1a8e5240-7B230.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="843206037497577512" id="message-843206037497577512">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Mm. Agreed.” <em>They hummed.</em> “I’ll comm back up and see what her thoughts are.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/08d192890cc38861b4303a280186fdcf-21B8C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="843206217438724126" id="message-843206217438724126">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Good idea.” <em>She was just holding the probe.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/b61f130ba568eeee0824d8ff1a8e5240-7B230.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="843209685557051422" id="message-843209685557051422">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They turned to address the group.</em> “We’ll be beaming back up with the probe for the time being.” <em>They explained.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/4a261a99b4e4a07615a9f96bacf15c35-5C40C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="volk#7950" data-user-id="233443312713859073" style="color: rgb(212,156,2)">Ensign Abby Shepard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="843210016785301504" id="message-843210016785301504">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Abby let out a disappointed sigh but regardless nodded.</em> &quot;Let&#39;s get out of here then. This place doesn&#39;t give me a good feeling.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="843210178006614046" id="message-843210178006614046">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>A Risian parrot squawked from somewhere high in the sky.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/08d192890cc38861b4303a280186fdcf-21B8C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Lt. JG. Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="843210382474346546" id="message-843210382474346546">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Yeah.” <em>She shifted the probe in her hands.</em> “I’m read to see what’s in this probe.”</span>
+
+                                <span class="chatlog__edited-timestamp" title="15-May-21 08:37 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/b61f130ba568eeee0824d8ff1a8e5240-7B230.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="843210629800001577" id="message-843210629800001577">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Agree-“ <em>They trailed off and looked up in the sky, peering to see if they could spot the parrot.</em> “Huh. I suppose those readings were right.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="843210794643619870" id="message-843210794643619870">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The parrot was indeed visible in all its bright red-green-orange glory. It circled a few times, then flew off into the distance.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/15f6d8dafa5de7a7a93986539d4243e8-78B43.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HarleyQuinn#7662" data-user-id="792195846238109716" style="color: rgb(41,169,238)">Lieutenant Eli Drake</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="843211007999606785" id="message-843211007999606785">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Eli attempted to take took a quick biological scan of the parrot, just to have something to analyze.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="843211237747458068" id="message-843211237747458068">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The parrot was a standard Risian parrot, adult, male, ornamental variant.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/4a261a99b4e4a07615a9f96bacf15c35-5C40C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="volk#7950" data-user-id="233443312713859073" style="color: rgb(212,156,2)">Ensign Abby Shepard</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="843211315148357643" id="message-843211315148357643">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;What was with it circling and then just leaving? It&#39;s not like we had anything over here.&quot; <em>He wondered aloud.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/b61f130ba568eeee0824d8ff1a8e5240-7B230.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="843211834932330516" id="message-843211834932330516">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“If this probe is that old, perhaps they just haven’t seen people in a while. It might be a shock to see six of us all at once.” <em>They said, watching as the bird disappeared.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Caleris%202%20-%20crash-site%20%5B843147575254974494%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Captain T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">15-May-21 08:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="843213039250833409" id="message-843213039250833409">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Once everyone was clustered around the probe, they and the probe were beamed up to <span class="mention">#deck-three-transporter</span> .</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 78 message(s)</div>
+</div>
+
+</body>
+
+</html>

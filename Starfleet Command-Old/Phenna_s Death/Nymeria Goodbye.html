@@ -1,0 +1,813 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - an-t-eilean-sgitheanach</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+    .spoiler--hidden .spoiler-image:after {
+        content: "SPOILER";
+        color: #dcddde;
+        background-color: rgba(0, 0, 0, 0.6);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: 600;
+        /* padding: 0.5em 0.7em; */
+        padding: 100%;
+        /* This ruins those beutifully rounded buttons, but it's needed to prevent a FireFox bug with video and audio elemnts. */
+        /* The bug is that you can click trough the spoiler layer and play the video or audio, I could not identify the cause. */
+        /* I leave this here, in case someone is brave enough to venture in to madness that is undocumented browser behaviour. */
+        border-radius: 20px;
+        letter-spacing: 0.05em;
+        font-size: 0.9em;
+    }
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Earth%20-%20Starfleet%20-%20an-t-eilean-sgitheanach%20%5B789948127012454402%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Earth - Starfleet / an-t-eilean-sgitheanach</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20-%20Starfleet%20-%20an-t-eilean-sgitheanach%20%5B789948127012454402%5D.html_Files/a_915d44b384563707b0c0f9dbb26ed854-C1CD6.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">20-Dec-20 02:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="790038909135618049" id="message-790038909135618049">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The cold air that blows in from the sea seemed to nip; biting and encouraged by the wind, it would have been unpleasant had it not brought a strange sense of calm with it. The sound of ocean waves washing up against the shore could be heard not too far away - water sloshing in and amongst the rocks. The coast seems to almost be layered in this section surrounded by cliffs; sand, stones, and then fields of grass that seem to sprawl onwards until it hits the village further onto the land. It is on a path from that village that you travelled. It was poorly maintained with rocks ground into the dirt, clearly not traversed too often - and the small cottage house that you passed on the way here seemed equally run-down. What brought life to the area, though, was the sprawling tree that strayed to the left of the path while the cottage was to the right. Despite it being winter its leaves seemed to remain in a dazzling autumnal glow; browns and oranges lighting up the area like a fire. A single dedication plaque sat nailed into the trunk of the tree bearing eight very simple words: &#39;To James McClaren, Seann McClaren, and Phenna Ephrix.&#39;</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20-%20Starfleet%20-%20an-t-eilean-sgitheanach%20%5B789948127012454402%5D.html_Files/6259c02fcf3d1aa90493aa20b5e9f579-CC26D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rear Admiral Nymeria France#0000" data-user-id="790039039574933554" style="">Rear Admiral Nymeria France</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">20-Dec-20 02:13 AM</span>
+
+            <div class="chatlog__message " data-message-id="790039040703070209" id="message-790039040703070209">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>It had been a month, since the passing of her friend. There had been times where Nymeria would sit there in her office and ponder on whether on not her spirit was still out there. Her mind was still conflicted, as she found it hard to believe that a Q had the ability to die, even though Phenna was only a percentage of Q.  She struggled to cope with the loss, dwelling on the past conflicts with her and finding all the negativity and the wrongs that Nymeria herself had put onto the Fleet Admiral. The young lady finally had to do something about this, a confession perhaps. One that she had been wanting to do for a very long time, but her own stubbornness and arrogance kept her from admitting it. Nymeria planned this visit weeks in advance, she had been working on something rather special for Phenna before she had passed,  however, when she did, Nymeria felt more guilt than she had ever felt before. She found herself washing up on the shores that lead her to the place she was travelling to. The place seemed to be bare, the shores rocky and wavy, especially for the season. The breeze was cold, yet calming, Nymeria found herself bundled up in a nice fur coat, the outer lining, protecting her from the bite of the cold breeze mentioned before. France expected her trip to be easy, however when she found herself traversing through the unkept path, her steadiness began to fumble.</em>
+<img class="emoji " alt="divider" title="divider" src="https://cdn.discordapp.com/emojis/777719270389973043.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="790039116296355850" id="message-790039116296355850">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>With her arms laid out in a T position, she balanced herself, trying to equalize her weight as she walked through the mush and slush of the snow that had been caked onto it. Nymeria had been careful with the contents that she was currently holding, her grip was tight, yet not too tight, as the package she was carrying was rather delicate. She looked over to the right, once she had reached the point where she wanted to stop, and saw a worn down cottage or hut of some sort. The wood was tearing apart at the seams, however, it valiantly stood its ground, almost like a statue not wanting to fall during a storm because it lived for a day that it could see the view of the sunset on a cool summers day. France stood there, thinking about it, scanning it with her eyes, then looking behind her to find the view that the cottage was trying to find. A sigh came out of her mouth, which formed a cloud of steam that dissipated with ease, blowing in the direction of the glorious tree. Speckled with beautiful autumn colors, as  if it was still fueled with the nutrients to push forward. Like a fire that wouldn&#39;t cool as it had been too hot for it to burn out by the winds.</em>
+<img class="emoji " alt="divider" title="divider" src="https://cdn.discordapp.com/emojis/777719270389973043.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="790039242948476986" id="message-790039242948476986">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nymeria stood in awe, the tree was a spectacle, however she wasn&#39;t here for the tree. The tree, in a sense, was not her mission. It was the plaque that was nailed onto the tree, weared down slightly by age, but refined with a new name attached onto it. Like someone was trying to edit it. Her name, shined, Phenna…. Ephrix. No matter what kind of weather came on this island, her name would still shine on the plaque that was dedicated for her, and the others she held dear. Maybe it was because of her name, that the tree before Nymeria became vibrant. Almost like the plaque in front of her, was a hug of life that Phenna always enjoyed, even though she might not have shown it. Smiling, Nymeria walked forward, admiring the plaque once more, before cleaning it up, revealing the other names, Seann and James. Satisfied with her caretaking, Nymeria sat down and sighed, before looking out to the sea and closing her eyes in thought.</em>
+<img class="emoji " alt="divider" title="divider" src="https://cdn.discordapp.com/emojis/777719270389973043.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="790039356202024990" id="message-790039356202024990">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Hey Phenna, it&#39;s me. It&#39;s been about a month since we last talked and I thought it might be the right time to keep in touch. Starfleet has been….. Well, it&#39;s been a wreck without you. There was something about your essence that kept the fleet in tip top shape. But I have noticed that since your passing, things simply have not been the same…. Medical has switched heads again and Benji is nowhere to be seen, Oliviria was punched, basically on the first day  of her job… it&#39;s been a mess” <em>She sighed, clutching all the gifts she had prepared to give Phenna, before she died. The cloud of steam rising high up into the air, before it caught the draft of the wind and drifted outwards into nothingness.</em> “We have recently been in some rather interesting times, officers seemed to have gone missing on many different occasions…. Maybe, maybe you know where they have gone. Or maybe you sent them back home. You were always one to care for anybody, no matter how irri-.” <em>She paused, remembering the past that she once was in. Nymeria remembered the arguments between the Admiral and Nymeria, the amount of times where Nymeria had wanted to say sorry but Phenna could never hear her. The look of fear and regret was in Nymeria&#39;s eyes, as one tear fell down her face, soon, becoming frozen onto her cheeks in the bitter cold.</em>
+<img class="emoji " alt="divider" title="divider" src="https://cdn.discordapp.com/emojis/777719270389973043.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="790039432739684362" id="message-790039432739684362">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“No.. matter how irritating they could have been.” <em>She paused, looking and the tree once more before turning herself towards it, to face it.</em> “I made something for you, and got you some hollies. I know you liked them and I made sure to get them fresh so they could preserve themselves longer in the cold…. But, these gifts are not for a make up story, see. The amount of times I had to makeup for what I did was endless, you know… and I tried my hardest to say it to your face but I could never get through the first barrier, I confined myself to my spaces and did something else.” <em>She unraveled the package, which revealed a large tablet with high grade suction cups, turning it on revealed an image, a painting rather, of Phenna. Nymeria wanted to do something for Phenna, to make up for all her mistakes, but on the day that she planned to give it to her, Phenna had died. Placing the tablet on the tree, she had suctioned it on there, making sure it wouldn&#39;t wreck anything. Finally she placed the hollies over the tablet to give it a border before looking at the tree to admire it. There was a sense of sadness that consumed Nymeria, she felt her body fall towards the tree. Her arms catching herself, wrapping themselves around the tree almost in a hug. With the grip Nymeria had, she hugged the tree hard and began to sob.</em>
+<img class="emoji " alt="divider" title="divider" src="https://cdn.discordapp.com/emojis/777719270389973043.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="790039518081450015" id="message-790039518081450015">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Im sorry Phenna! This all seemed so sudden, I remember the times we argued, the times we yelled at each other because we couldn&#39;t settle our differences, rather I couldn&#39;t settle them…. You were in the right, and I was in the wrong. I just remember seeing your face, as we ended and argument, the look of grief, sorrow, anger and disappointment.  To know that I… I failed you, to know that in your eyes, there was a better way to solve whatever dispute we had. Had lingered in my soul forever….. I tried to say sorry… but my stubbornness wouldnt let me do it, and on the day you passed. You were gone forever! The only thing that came close to an apology was when you saved New Romulus, I hugged you… I thought that was good enough, but then when you died it was like I forgot a major part.” <em>She slumped down to her knees, tears now falling down onto the tree and freezing.</em> “Im sorry Phenna, you were like a mother to me, and I failed you. If only you were here now, we could talk…. Share memories, maybe share a cup of tea… I long for the day where I could see your face again, and hug you like I meant it, I miss you, the Fleet misses you. I just hope now, that you are in a good place. Resting among the stars with your true family, a home…. That was made for you.” <em>She said, crying, all of her memories flooding through her mind as she put her forehead to the tree. Trying to deliver some kind of message, a memory perhaps, but Nymeria would never know if it worked. Instead she would just stay there and kneel down to the ground.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20-%20Starfleet%20-%20an-t-eilean-sgitheanach%20%5B789948127012454402%5D.html_Files/a_915d44b384563707b0c0f9dbb26ed854-C1CD6.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">21-Dec-20 07:20 AM</span>
+
+            <div class="chatlog__message " data-message-id="790478701484965950" id="message-790478701484965950">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>Later that night...</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20-%20Starfleet%20-%20an-t-eilean-sgitheanach%20%5B789948127012454402%5D.html_Files/6259c02fcf3d1aa90493aa20b5e9f579-CC26D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rear Admiral Nymeria France#0000" data-user-id="790039039574933554" style="">Rear Admiral Nymeria France</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">21-Dec-20 07:20 AM</span>
+
+            <div class="chatlog__message " data-message-id="790478885460508692" id="message-790478885460508692">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The breeze was cold, once again bitter. The feel of it like thin icicles, pricking your skin with pinpoint precision. Nymeria had been here for hours, in the same place. Wandering around the village and enjoying whatever it could offer. She found herself wandering over to the many docks that laid out symmetrically, some seemed to be hanging by a thread as the wind pushed them inwards and then outwards eventually reaching out to the point where the dock tugged against the rope it was hanging off of. Nymeria had traversed her way through the village and eventually led herself towards one of the docks, walking out onto the tipsy planks of wood that seemed to bob in and out of the freezing cold water. The gloss covered over them reflecting the image of starlight that seemed to be coming from the stars above. The young lady pulled out a kit that she had prepared herself, making a traveler&#39;s cup of tea to warm herself up. Nymeria opted to lay down on the dock, feeling the flow of the waves creeping in, gazing up at the stars before her, as the soft candle light from the posts illuminated her face in a fiery glow.</em>
+<img class="emoji " alt="divider" title="divider" src="https://cdn.discordapp.com/emojis/777719270389973043.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="790478950673547264" id="message-790478950673547264">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She had found amusement in the steam that came out of her mouth, it took on many shapes and forms, almost like a nebula. Nymeria could depict what it could potentially be, depending on the shape it formed into, before the steam disappeared into the starry night. Whether it was an elephant or a starship, the admiral&#39;s creativity never seemed to wander. This place seemed to have been rather comforting, after Nymeria had been accustomed to the cold. What was once a bitter reaction, was now a feeling of butterflies in the stomach. However she felt the oncoming feeling of drowsiness. Remembering that she had dozed off by the tree that bared the name of a beloved friend. The fur coat was already ruined by the set of tears that had caked onto the fur, creating sheets of ice that layered thinly to create a form of art. The coat was lovely, Nymeria loved it very much and she dreaded the day when she would have to lose it.  The thought kicked in and she quickly attempted to get back up. The sound of rips and tears were heard echoing through the small, barron village as Nymeria&#39;s coat seemed to have frozen onto the deck. Pieces of fabric ripping off and fur sticking to the planks of wood.</em>
+<img class="emoji " alt="divider" title="divider" src="https://cdn.discordapp.com/emojis/777719270389973043.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="790479020092948480" id="message-790479020092948480">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Disheartened by that fact, Nymeria got up from the dock and hastily made her way to some sort of tavern or coffee shop… a place that  was warm. Knowing that her coat was torn to shreds, she did not plan to stay for much longer. Perhaps a day or two more to really take in the break and the scenery around her. She realized why Phenna enjoyed this place so much, it was calm in nature… like her, the scenery was breathtaking, beautiful and serene… like her, the mood never changed, and when it did, the anger of the waves would soon be calmed by the steadiness of the wind, balancing it out and making it peaceful again. A smile quickly laid across Nymeria&#39;s face, her hand bringing up the coffee she had asked for, her eyes looking out onto the galaxy&#39;s horizon, the starry belts of purples, blues and greens. Although there wasn&#39;t much here for Nymeria to do, she found that the simple things like laying down and pondering one&#39;s thoughts, could really keep someone occupied in a place like this…. Hopefully one day, Nymeria could come back to this place and stay for a very long time… But not yet, not now. There were things to do..</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 11 message(s)</div>
+</div>
+
+</body>
+</html>

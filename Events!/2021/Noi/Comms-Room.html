@@ -1,0 +1,2619 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - comms-room</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Comms-Room.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Oralus IV Orbital Station / comms-room</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 01:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="802714424388878366" id="message-802714424388878366">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The room they stepped into was evidently a communications center of some sort. Monitors and banks of computers filled the walls, and the quiet hum of a space station control center permeated the room. Three Nois stood at various points in the room, facing the door.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 01:44 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/2562b593045a2a83af9fe08686d330eb-10C54.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lieutenant Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="802721573412667393" id="message-802721573412667393">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Oskar stepped in and pointed his weapon at one of the Noi’s. He put his finger on the trigger and waited for the rest of the team.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/312c940d61033fe52137fc8b78c0ae5b-1BE90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Wolfy#2473" data-user-id="748364124429484074" style="color: rgb(245,182,10)">Lieutenant Serela t&#39;Tumisa</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:11 AM</span>
+
+            <div class="chatlog__message " data-message-id="802722140746285086" id="message-802722140746285086">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Serela stepped through the door, readying her sword and phaser. She aimed both of them at another Noi in the room.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 02:11 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="802722538593583134" id="message-802722538593583134">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac followed, eyes widening at the sight of the three Nois. He stepped in and to the right of the door, also training his phaser. His eyes flicked back and forth over the men, trying in vain to find some discernible difference between them.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/e8b90877cf600e546c77e403f504836a-6EAD8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:13 AM</span>
+
+            <div class="chatlog__message " data-message-id="802722661532041247" id="message-802722661532041247">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri came in behind them and pointed the disruptor at one of the Nois at well, watching them silently.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="802723516201435136" id="message-802723516201435136">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime stepped in and stood with the rest of the team.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 02:18 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:18 AM</span>
+
+            <div class="chatlog__message " data-message-id="802723966006853662" id="message-802723966006853662">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>As the away team stood there, phasers at the ready, it became evident that something was wrong. Each Noi looked at first puzzled, then concerned, and then the trio looked at each other and began to slowly back away. One Noi pressed a hand against a button on a console, and then simultaneously they turned and ran for the door opposite the away team.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 02:18 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/2562b593045a2a83af9fe08686d330eb-10C54.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lieutenant Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="802724254561992764" id="message-802724254561992764">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Get them!” <em>Oskar holstered his weapon and bolted after the trio to the door opposite them.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:20 AM</span>
+
+            <div class="chatlog__message " data-message-id="802724471663624242" id="message-802724471663624242">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>A subtle whine emanated from the console that Noi had interacted with and a series of lights began to flash.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/e8b90877cf600e546c77e403f504836a-6EAD8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="802725183248138281" id="message-802725183248138281">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri lowered his arm and ran after one with Oskar but was caught off guard by the flashing lights.</em> &quot;AAAH!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="802725193456812102" id="message-802725193456812102">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime readied their phaser and looked over at the, now, flashing lights of the console.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 02:23 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="802725315507519540" id="message-802725315507519540">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Oskar was able to catch up to one of the Nois.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/e8b90877cf600e546c77e403f504836a-6EAD8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="802725526375890954" id="message-802725526375890954">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri held a hand over his eyes to try and shield the flash as he ran after one of the Nois again.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/2562b593045a2a83af9fe08686d330eb-10C54.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lieutenant Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="802725526837657620" id="message-802725526837657620">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Oskar tackled the Noi to the ground and tried to put his arms behind his back.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/312c940d61033fe52137fc8b78c0ae5b-1BE90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Wolfy#2473" data-user-id="748364124429484074" style="color: rgb(245,182,10)">Lieutenant Serela t&#39;Tumisa</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="802725629190864987" id="message-802725629190864987">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Serela gave chase to one of the Nois as well, her sword and phaser ready.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="802725845017427989" id="message-802725845017427989">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime ran up to the console and attempted to decipher the meaning of the flashing lights.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 02:26 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="802725859566813206" id="message-802725859566813206">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Jaime didn&#39;t know enough about these systems to be able to tell what was happening at first glance, but when they caught sight of the button that one Noi had pressed, it became immediately evident. Under the button was a neatly printed label that read &#39;delete&#39;.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Comms-Room.html_Files/637075614662393868-CC03F.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="802726258617483265" id="message-802726258617483265">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime mouthed a word, &quot;shit,&quot; then immediately began to investigate the console for any sort of &#39;stop function&#39; button.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="802726262547808276" id="message-802726262547808276">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Oskar successfully detained a Noi, as did Serela and King.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128079;" title="&#128079;" src="Comms-Room.html_Files/1f44f-8DFC5.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+            <div class="chatlog__message " data-message-id="802726482317148210" id="message-802726482317148210">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>No stop function button was evident.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/2562b593045a2a83af9fe08686d330eb-10C54.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lieutenant Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:28 AM</span>
+
+            <div class="chatlog__message " data-message-id="802726591007555625" id="message-802726591007555625">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Oskar picked up a Noi and walked him over to the console. He looked at it and looked at the Noi.</em> “What’s on this console?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/4f2bb5f98a45725f3056255ccd9a32ff-7693E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Elija Noi#0000" data-user-id="802726775129112596" style="">Elija Noi</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 02:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="802726776286609408" id="message-802726776286609408">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Nothing, now, thanks to your eagerness to detain me.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="802726840804048926" id="message-802726840804048926">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Nothing for much longer, Lieutenant,&quot; <em>Jaime said, turning to Oskar,</em> &quot;They have begun deleting the database.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/e8b90877cf600e546c77e403f504836a-6EAD8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:31 AM</span>
+
+            <div class="chatlog__message " data-message-id="802727158375514142" id="message-802727158375514142">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri wrestled with the Noi for a bit then managed to detain it, dragging it to its feet and holding the disruptor to its back as a threat.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/312c940d61033fe52137fc8b78c0ae5b-1BE90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Wolfy#2473" data-user-id="748364124429484074" style="color: rgb(245,182,10)">Lieutenant Serela t&#39;Tumisa</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:32 AM</span>
+
+            <div class="chatlog__message " data-message-id="802727434222043136" id="message-802727434222043136">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Serela chased a Noi down and detained him, then put her sword to the Noi&#39;s neck.</em> &quot;Tell us what was on that console,&quot; <em>she demanded.</em> &quot;What did you delete?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/2562b593045a2a83af9fe08686d330eb-10C54.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lieutenant Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:32 AM</span>
+
+            <div class="chatlog__message " data-message-id="802727489192853565" id="message-802727489192853565">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“I still have you and your buddies. That’s all I need.” <em>Oskar looked at the console, then the Noi.</em> “Where’s your proud papa? Bet he’d love to see three of his friends get nabbed.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/4f2bb5f98a45725f3056255ccd9a32ff-7693E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Elija Noi#0000" data-user-id="802726775129112596" style="">Elija Noi</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 02:35 AM</span>
+
+            <div class="chatlog__message " data-message-id="802728228191469629" id="message-802728228191469629">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Noi detained by Serela struggled, cutting its neck against her sword and sliding against the blade, effectively slicing its own carotid artery. It slumped over, dead.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127479;" title="&#127479;" src="Comms-Room.html_Files/1f1f7-2C305.png">
+                                <span class="chatlog__reaction-count">9</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127470;" title="&#127470;" src="Comms-Room.html_Files/1f1ee-B3C1F.png">
+                                <span class="chatlog__reaction-count">9</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127477;" title="&#127477;" src="Comms-Room.html_Files/1f1f5-E259F.png">
+                                <span class="chatlog__reaction-count">9</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Comms-Room.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/e8b90877cf600e546c77e403f504836a-6EAD8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:35 AM</span>
+
+            <div class="chatlog__message " data-message-id="802728264954806303" id="message-802728264954806303">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;We don&#39;t have time to dick around either, friend. I suggest you be brief.&quot; <em>He hissed at the Noi he had at gunpoint.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/4f2bb5f98a45725f3056255ccd9a32ff-7693E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Elija Noi#0000" data-user-id="802726775129112596" style="">Elija Noi</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Jan-21 02:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="802728452456579092" id="message-802728452456579092">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Please, feel free,&quot; <em>the clone in King&#39;s control said, laughing.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="802728924496920685" id="message-802728924496920685">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;As I&#39;m sure you can tell, none of us have any interest in telling you anything. But please, we do so enjoy a bit of pain, as a treat. If you need information from us, might I suggest torture?&quot; <em>This, from the Noi held by Oskar.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/312c940d61033fe52137fc8b78c0ae5b-1BE90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Wolfy#2473" data-user-id="748364124429484074" style="color: rgb(245,182,10)">Lieutenant Serela t&#39;Tumisa</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:38 AM</span>
+
+            <div class="chatlog__message " data-message-id="802729070860304414" id="message-802729070860304414">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Serela, regrettably, let the corpse of her Noi fall to the floor.</em> &quot;Idiot,&quot; <em>she said, scowling.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 02:39 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/e8b90877cf600e546c77e403f504836a-6EAD8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="802729169267851276" id="message-802729169267851276">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri snarled and looked at the other Noi.</em> &quot;Dont tempt me.&quot; <em>He growled and jammed the disruptor harder into the back of the Noi he held.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/2562b593045a2a83af9fe08686d330eb-10C54.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lieutenant Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="802729393205674004" id="message-802729393205674004">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Oh, don’t worry. I’ll find him eventually. Just wanted to see if you were a defect.” <em>Oskar said and drew his phaser, pointing it at the Noi he had.</em> “Ensign Devereux. Take him from me.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="802729482166337556" id="message-802729482166337556">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac moved over to the console and looked down at it.</em> &quot;I&#39;m afraid I don&#39;t know enough to stop this, but I&#39;d estimate you&#39;re more likely to get information out of this than out of those.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:41 AM</span>
+
+            <div class="chatlog__message " data-message-id="802729727127322654" id="message-802729727127322654">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime did as ordered and took the Noi from Oskar, pointing their phaser at him.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="802730048627933285" id="message-802730048627933285">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Simultaneously, the remaining Nois looked at each other, nodded, and bit down hard. Two loud cracking noises sounded, and the pair collapsed, dead.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/2562b593045a2a83af9fe08686d330eb-10C54.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lieutenant Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:43 AM</span>
+
+            <div class="chatlog__message " data-message-id="802730361460752397" id="message-802730361460752397">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Damn it-“ <em>He said as he watched the Noi’s slump over and die.</em> “At least that’s three we know aren’t the real one. That improves our chances.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/e8b90877cf600e546c77e403f504836a-6EAD8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:44 AM</span>
+
+            <div class="chatlog__message " data-message-id="802730632886747206" id="message-802730632886747206">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri stared at them then almost fell with the Noi.</em> &quot;Youve got to be kidding!&quot; <em>He straightened up and kicked the dead Nois head in frustration.</em> &quot;What about this thing? Isn&#39;t there anything we can do to stop it?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:45 AM</span>
+
+            <div class="chatlog__message " data-message-id="802730841162645564" id="message-802730841162645564">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime let go of the dead Noi and threw his corpse to the floor.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/312c940d61033fe52137fc8b78c0ae5b-1BE90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Wolfy#2473" data-user-id="748364124429484074" style="color: rgb(245,182,10)">Lieutenant Serela t&#39;Tumisa</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:45 AM</span>
+
+            <div class="chatlog__message " data-message-id="802730846267768842" id="message-802730846267768842">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Serela shook her head in disappointment.</em> &quot;They were all too keen to die,&quot; <em>she commented, her blade now bloody. She stepped away from her Noi&#39;s dead body, where it lay slumped on the floor.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 02:46 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/e8b90877cf600e546c77e403f504836a-6EAD8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:46 AM</span>
+
+            <div class="chatlog__message " data-message-id="802731140683268137" id="message-802731140683268137">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri let out another frustrated huff and shot the corpse with his disruptor anyway.</em> &quot;Now I wanna torture them.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/2562b593045a2a83af9fe08686d330eb-10C54.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lieutenant Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:47 AM</span>
+
+            <div class="chatlog__message " data-message-id="802731206272745502" id="message-802731206272745502">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“The real Noi is a rat. He’ll do anything to keep his lungs breathing air.” <em>Oskar went over to the console and studied it.</em> “How can we stop this?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:47 AM</span>
+
+            <div class="chatlog__message " data-message-id="802731348342865931" id="message-802731348342865931">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac looked up at Capri.</em> &quot;I hope that was just a hearing aid malfunction, you didn&#39;t just say you wanted to torture someone, did you?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 02:48 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/312c940d61033fe52137fc8b78c0ae5b-1BE90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Wolfy#2473" data-user-id="748364124429484074" style="color: rgb(245,182,10)">Lieutenant Serela t&#39;Tumisa</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:49 AM</span>
+
+            <div class="chatlog__message " data-message-id="802731660088049674" id="message-802731660088049674">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Serela gave King a pointed look.</em> &quot;I don&#39;t believe Lieutenant King would say that, sir,&quot; <em>she said, covering for him.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/e8b90877cf600e546c77e403f504836a-6EAD8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:49 AM</span>
+
+            <div class="chatlog__message " data-message-id="802731714928967681" id="message-802731714928967681">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;UT malfunction actually. It gets confused sometimes when you mix languages.&quot; <em>He replied, hoping Parlac would buy the lie since he was pretty much just speaking Andorian if one turned off the translator.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 02:49 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:49 AM</span>
+
+            <div class="chatlog__message " data-message-id="802731875540926478" id="message-802731875540926478">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He nodded and looked back down at the console.</em> &quot;I don&#39;t suppose you&#39;ve got a program up your sleeve that can stop this? Or retrieve deleted data?&quot; <em>he asked Oskar hopefully.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/2562b593045a2a83af9fe08686d330eb-10C54.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lieutenant Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:51 AM</span>
+
+            <div class="chatlog__message " data-message-id="802732225279688724" id="message-802732225279688724">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Uh...maybe?” <em>Oskar said softly and pulled up his PADD, pulling one of his keyword search programs from the computer. He began using them to try and find something that would help before it got deleted.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="802733307132772383" id="message-802733307132772383">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Unfortunately, given how long it took between the button being pressed and Oskar&#39;s attempt, all the data had been irretrievably deleted. All that remained was a message, presumably meant for any clones on the station, that decreed the station was &#39;lost&#39; and must be abandoned. Where ever the real Noi was, he was likely making an attempt at escape. The team would need to move quickly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/2562b593045a2a83af9fe08686d330eb-10C54.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lieutenant Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="802733811254820904" id="message-802733811254820904">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“We need to go. Noi is going to be making an escape.” <em>Oskar pulled his phaser out and headed over to the door the Noi’s were originally heading towards.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 02:59 AM</span>
+
+            <div class="chatlog__message " data-message-id="802734196157054986" id="message-802734196157054986">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac had moved to stand near a diagram on the wall.</em> &quot;Hang on, look at this-- There&#39;s only one path through the station proper, and the shuttle bay is all the way at the other end. Presumably that&#39;s where Noi is going to be. But look-- It&#39;s not marked, but there appears to be space for Jeffries tubes.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/312c940d61033fe52137fc8b78c0ae5b-1BE90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Wolfy#2473" data-user-id="748364124429484074" style="color: rgb(245,182,10)">Lieutenant Serela t&#39;Tumisa</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:00 AM</span>
+
+            <div class="chatlog__message " data-message-id="802734474579148810" id="message-802734474579148810">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;An escape?&quot; <em>Serela asked.</em> &quot;We have to catch him, then,&quot; <em>she said.</em> &quot;Do you think there are Jefferies Tubes, sir?&quot; <em>she asked the Commander.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 03:00 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:00 AM</span>
+
+            <div class="chatlog__message " data-message-id="802734493043523645" id="message-802734493043523645">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Knowing Noi, Oskar was probably right, so Jaime nodded and made to head in the same direction. &#39;It was a shame though,&#39; they thought, &#39;that they&#39;d be unable to secure that data. But considering it had been fully deleted it would take some seriously advanced tech to even start to try to retrieve it.&#39;</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 03:00 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/e8b90877cf600e546c77e403f504836a-6EAD8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:00 AM</span>
+
+            <div class="chatlog__message " data-message-id="802734496305905664" id="message-802734496305905664">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri grabbed his disruptor and paused when Parlac spoke. What now?</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:02 AM</span>
+
+            <div class="chatlog__message " data-message-id="802734975987875840" id="message-802734975987875840">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I think it must. Scan this room, see if you can find an entrance.&quot; <em>He began looking himself, moving monitors and pushing consoles out of the way.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/2562b593045a2a83af9fe08686d330eb-10C54.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lieutenant Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="802735371753881630" id="message-802735371753881630">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Oskar started looking around as well, looking for tube access on the walls and near the floor.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:04 AM</span>
+
+            <div class="chatlog__message " data-message-id="802735530151247924" id="message-802735530151247924">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime also joined in the search. &#39;Their has to be some way they could capture this bastard.&#39; Then another thought struck... &#39;what if rather than heading to the Shuttle Bay, Noi went for the Chimera? No... that&#39;s incredibly unlikely...&#39;</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 03:06 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128556;" title="&#128556;" src="Comms-Room.html_Files/1f62c-44636.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/312c940d61033fe52137fc8b78c0ae5b-1BE90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Wolfy#2473" data-user-id="748364124429484074" style="color: rgb(245,182,10)">Lieutenant Serela t&#39;Tumisa</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="802736537292242945" id="message-802736537292242945">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Serela looked around as well, trying to find an entrance to the Jefferies Tubes.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/e8b90877cf600e546c77e403f504836a-6EAD8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="802736658641715221" id="message-802736658641715221">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri felt along the walls, tapping them with his knuckles to test the vibration since he was on his deaf side.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="802736810685628466" id="message-802736810685628466">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Brb)</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:10 AM</span>
+
+            <div class="chatlog__message " data-message-id="802736969918447647" id="message-802736969918447647">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime decided to voice their concerns.</em> &quot;Sir? What if Noi hasn&#39;t gone for the Shuttle Bay at all? There&#39;s another way off the station... The Chimera...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:10 AM</span>
+
+            <div class="chatlog__message " data-message-id="802737102612594719" id="message-802737102612594719">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Serela was the one to discover the false panel, with a little wiggling and a strong arm, she was able to remove it and open the entrance to the tubes.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127481;" title="&#127481;" src="Comms-Room.html_Files/1f1f9-24F03.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127482;" title="&#127482;" src="Comms-Room.html_Files/1f1fa-CCAC3.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127463;" title="&#127463;" src="Comms-Room.html_Files/1f1e7-86C69.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127466;" title="&#127466;" src="Comms-Room.html_Files/1f1ea-4B558.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127480;" title="&#127480;" src="Comms-Room.html_Files/1f1f8-B6AC7.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+            <div class="chatlog__message " data-message-id="802737242807599125" id="message-802737242807599125">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The chief was busy fumbling with a heavy desk, and still hadn&#39;t regained his hearing.</em> &quot;Eh?&quot; <em>he said to Jaime.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/2562b593045a2a83af9fe08686d330eb-10C54.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lieutenant Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="802737641594028072" id="message-802737641594028072">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“They make a good point. The Chimera is an obvious way off the station.” <em>Oskar shook his head. No luck on his side.</em> “Anyone have any luck? I can’t find anything.”</span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 03:14 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="802737993269248021" id="message-802737993269248021">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;What&#39;s the point? I&#39;m sorry, I didn&#39;t catch it.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/312c940d61033fe52137fc8b78c0ae5b-1BE90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Wolfy#2473" data-user-id="748364124429484074" style="color: rgb(245,182,10)">Lieutenant Serela t&#39;Tumisa</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="802738194755878922" id="message-802738194755878922">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;That would not be good indeed,&quot; <em>Serela admitted. She, however, was otherwise distracted, as she found the false panel.</em> &quot;I think it might be here,&quot; <em>she grunted, wiggling the panel.</em> &quot;Almost there... got it!&quot; <em>She managed to remove the panel with some force, revealing the entrance to the tubes.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 03:15 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/e8b90877cf600e546c77e403f504836a-6EAD8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="802738279556186163" id="message-802738279556186163">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;CHIMERA!&quot; <em>Capri half yelled in Parlacs direction and hoped he&#39;d understand.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="802738725637455914" id="message-802738725637455914">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh! Oh, no, come look at the map here,&quot; <em>he said, gesturing to the diagram on the wall. It remained the only useful piece of information in the room, no thanks to the clones.</em> &quot;Look, there&#39;s only one path through the station, so if we go through and he tries to come for the Chimera, he&#39;d have to go through us. Alternatively, he could take the tubes, but--&quot; <em>he turned to Oskar,</em> &quot;I think it would be a rather horrible surprise if he tried and found a Starfleet Intelligence officer wearing a psy-null device.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/2562b593045a2a83af9fe08686d330eb-10C54.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lieutenant Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:18 AM</span>
+
+            <div class="chatlog__message " data-message-id="802738979304767508" id="message-802738979304767508">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Oskar headed over to Serela.</em> “Good work, Lieutenant.” <em>He looked at Parlac.</em> “I’ll go through the tubes and cut him off, then. He won’t get past me.” <em>Oskar tapped his phaser.</em> “I’ll make sure of it.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="802739203473276948" id="message-802739203473276948">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;And we will provide all the distraction you need. Meet you in the shuttle bay, if all goes well.&quot; <em>He grinned broadly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/2562b593045a2a83af9fe08686d330eb-10C54.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SteelWraith64#0724" data-user-id="279450419514572803" style="color: rgb(17,17,17)">Lieutenant Oskar K&#246;nig</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:20 AM</span>
+
+            <div class="chatlog__message " data-message-id="802739494968623115" id="message-802739494968623115">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Aye, sir. Good luck.” <em>Oskar said and crouched down. He entered the tubes and started working through them.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="802739880349401118" id="message-802739880349401118">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac moved to the exit the clones had attempted to escape through.</em> &quot;The rest of you, with me. Phasers at the ready. We&#39;ve got another hallway here, let&#39;s be a little more careful this time, eh?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/e8b90877cf600e546c77e403f504836a-6EAD8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="emi-coyote#0294" data-user-id="421869990560661506" style="color: rgb(17,17,17)">Lt. JG. Copernicus King</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="802740148080214037" id="message-802740148080214037">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Capri nodded and raised his disruptor, following Parlac.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/29b80f7f5502e618ebf706cce2a81675-57ADA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(245,182,10)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="802740315781070879" id="message-802740315781070879">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yes sir,&quot; <em>Jaime said with a nod and followed Parlac into the hallway.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Comms-Room.html_Files/312c940d61033fe52137fc8b78c0ae5b-1BE90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Wolfy#2473" data-user-id="748364124429484074" style="color: rgb(245,182,10)">Lieutenant Serela t&#39;Tumisa</span>
+
+
+        <span class="chatlog__timestamp">24-Jan-21 03:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="802741743052128276" id="message-802741743052128276">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Serela smiled at the compliment Lieutenant K&#246;nig gave her, then followed the others into the next hallway.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jan-21 03:30 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 74 message(s)</div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,3386 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - storage-facility</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Administration Centre / storage-facility</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/497b37496021926f5ccc2ecaeba28d89-9DA93.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 04:44 PM</span>
+
+            <div class="chatlog__message chatlog__message--pinned" data-message-id="825757193927393310" id="message-825757193927393310">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The storage facility was perhaps the best-organized place in the prison. With sign-in sheets for both its contents and the people who worked there, and a categorization system that ensured everything had a place, it was almost a work of art - or would be, if it weren&#39;t in a prison. Everything from medical equipment to 02 bottles were stored here and tracked meticulously.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">30-Mar-21 03:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="826467435049517087" id="message-826467435049517087">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They walked into the storage facility, blood-shot eyes widening as they saw how almost-perfectly organised the place was. It felt normal, it felt like their cargo bay, although with far more armed guards and a distinct lack of freedom. They looked around for a moment, before going over to a sign-in sheet and signing themselves in. After doing that they set about getting to work, hauling various cargo about the place while trying not to make their shoulder worse.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">30-Mar-21 08:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="826541324516720720" id="message-826541324516720720">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They worked non-stop until a meal break came along, and so they went and signed themselves out, before going back out and in the direction of their cell in the hopes of finding somewhere to eat. There</em> <em><strong>had</strong></em> <em>to be somewhere...</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 11:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="827303944190427136" id="message-827303944190427136">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He walked into the storage facility, walked over to a shelf, and stared vacantly at some crates, willing them to reveal their contents. This was not exceptionally effective.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 11:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="827305619152306247" id="message-827305619152306247">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>[D] [Eli] Eli had found himself in the storage area, getting refills for his medical supplies. His fine overlords had granted him this when he had shown his proof of treatment. He wasn&#39;t about to take more than he was allowed, knowing this place would be under heavy watch.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="01-Apr-21 11:17 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 11:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="827306712570134538" id="message-827306712570134538">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras eventually became aware of the existence of other people, then subsequently became aware that this person had done surgery on Maggie.</em> &quot;Hello.&quot; <em>He started, fully intending to follow that up with more sentence, then not doing so as he stared off into space.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 11:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="827308459732500480" id="message-827308459732500480">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Eli] <em>Eli looked up from the hypospray he was studying and noticed the Vorta who had seemed to be in with the iconians. At the risk of getting another tongue lashing from Sara, he decided to be cordial.</em> &quot;Hello overseer. How are you today?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 11:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="827312808147550229" id="message-827312808147550229">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Don&#39;t call me that. It&#39;s just Nedras. Why do people always seem so inclined to come up with other names?&quot; <em>He muttered, turning to face them. He blinked slowly and nodded at his arm.</em> &quot;It&#39;s broken.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 11:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="827313765892096071" id="message-827313765892096071">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Eli] <em>Eli looked at the arm cursatorily.</em> &quot;I can see that Nedras.&quot; <em>He sighed, duty called and it seemed like Nedras was going to keep it professional.</em> &quot;Let me see what I can do. How long has it been like that?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 11:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="827314354001018931" id="message-827314354001018931">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Somewhere around twenty-four hours.&quot; <em>He replied, tightening his grip minutely.</em> &quot;I enjoy talking in circles around a point as much as the next Vorta, but alas, extensive practice has made me temporarily lose my taste for it. What do I need to do for you to fix this?&quot; <em>He said quickly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 11:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="827314752355041309" id="message-827314752355041309">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Eli] <em>A single blonde eyebrow raised in question.</em> &quot;What do... I&#39;ll fix it without you giving anything to me. I&#39;m a doctor.&quot; *He slowly passed the osteoregenerator over the arm.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 11:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="827316078077804544" id="message-827316078077804544">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well, I just had quite the argument with another doctor, and I wanted to account for the possibility that, understandably, unfavorable rumors may have spread that may make one disinclined to treat any injuries resulting from that experience.&quot; <em>He took a deep breath in, then out at the weird tingling sensation of bone re-knitting.</em> &quot;But thank you.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 12:01 AM</span>
+
+            <div class="chatlog__message " data-message-id="827316678924697600" id="message-827316678924697600">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Eli] &quot;Of course. I would be going against my oath if I didn&#39;t help you. That being said... I apologize for trying to intimidate you. I was just trying to protect Maggie.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 12:07 AM</span>
+
+            <div class="chatlog__message " data-message-id="827318348042862604" id="message-827318348042862604">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He glanced around, then spoke under his breath.</em> &quot;Believe me, I understand completely.&quot; <em>He flexed his hand experimentally. The pinky and ring finger moved easily, but the thumb, index, and middle fingers were somewhat weaker.</em> &quot;I&#39;ve had some time to... rethink my existing strategy.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129402;" title="&#129402;" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1f97a-338D5.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 12:10 AM</span>
+
+            <div class="chatlog__message " data-message-id="827319097506791434" id="message-827319097506791434">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Eli] &quot;I... Trust me I understand as well.&quot; <em>His voice got lower as well.</em> &quot;I&#39;m playing a different game but I understand the game.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 12:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="827321191759872040" id="message-827321191759872040">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Then you&#39;re one of a very small number.&quot; <em>He winced and finally let go of his elbow, letting his arms fall to his sides.</em> &quot;A number excluding, by some miracle, Captain Enga - do you know of her? I need to tell someone about her. It&#39;s time-sensitive. It might be too late already.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1f62d-FE9EC.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 12:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="827322016116768830" id="message-827322016116768830">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Eli] <em>Eli shook his head.</em> &quot;No I don&#39;t unfortunately. Who is she?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 12:28 AM</span>
+
+            <div class="chatlog__message " data-message-id="827323505954521108" id="message-827323505954521108">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;She&#39;s the captain of the...&quot; <em>He blinked slowly.</em> &quot;A medical ship. The... Inglis?&quot; <em>He shook his head slightly.</em> &quot;A guard shot part of her ear off for no clear reason. I&#39;ve never seen such behavior during an interrogation. It doesn&#39;t make sense, it doesn&#39;t make any...&quot; <em>He trailed off, then suddenly straightened up and refocused, making eye contact with Eli.</em> &quot;They&#39;re trying to convince her to give up information. Much of her crew has been killed as leverage, which is another appalling oversight, and there&#39;s one left. I knew she&#39;d be safe for at least twenty-four hours, but due to my own incompetence, that time has already passed.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 12:49 AM</span>
+
+            <div class="chatlog__message " data-message-id="827328836399136838" id="message-827328836399136838">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Eli] &quot;But truly, what can be done? Time is not on our side and it&#39;s not like we&#39;re actively leaving anytime soon.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 12:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="827330423373824000" id="message-827330423373824000">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I don&#39;t know, but you&#39;re a Starfleet officer. You don&#39;t just... let such things happen without protest.&quot; <em>He said, deliberately excluding himself from that category.</em> &quot;If I don&#39;t get the chance first, if you get the opportunity, make sure Lieutenant Verne knows - Enga is in the laboratory at the end of the hall in the administrative center.&quot; <em>He murmured.</em> &quot;She wanted to know. I don&#39;t know what the others will do with that information, but I assume it&#39;s going to fit its way into some... plan. <em>Don&#39;t</em> tell me what it is yet.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="02-Apr-21 12:55 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 12:56 AM</span>
+
+            <div class="chatlog__message " data-message-id="827330659612753950" id="message-827330659612753950">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Eli] &quot;If there is a plan, I don&#39;t know about it. I&#39;m not exactly the most popular person on the ship, so I don&#39;t get brought in to plans much. But I will do my best to find Lieutenant Verne and tell her.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="02-Apr-21 12:57 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 01:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="827332458260594728" id="message-827332458260594728">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;They just shot... her <em>ear</em> off. For no reason. Mid-negotiation.&quot; <em>He said quietly. His gaze went vacant yet again, before re-focusing. This was going to become a frequent trend.</em> &quot;Thank you for your help. I was becoming <em>very</em> uncomfortable. It seems like you&#39;re always around to help sometimes.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 01:05 AM</span>
+
+            <div class="chatlog__message " data-message-id="827332860108210196" id="message-827332860108210196">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Eli] &quot;That&#39;s me. Mr helpful. It&#39;s my job and I&#39;m happy to do it. And... I for one won&#39;t ever hold any of this against you. I know the game, there are valuable pieces at play. You&#39;re just increasing your value to protect the smaller pieces.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 01:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="827335514466156544" id="message-827335514466156544">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Hm. Please, repeat that at my court martial. I&#39;ll be grateful for the weight that holds then.&quot; <em>There was a chance a guard could overhear any of this, but who cared? He hadn&#39;t slept in thirty-six hours, everything hurt, and every conversation he had felt like screaming into a deep well lately, with the echoes coming back distorted and damning. Surely one small break wouldn&#39;t hurt.</em> &quot;Is there anything I can do to assist your &#39;game&#39;?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 01:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="827337322605445130" id="message-827337322605445130">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Eli] <em>Eli looked at the hypospray again and shook his head.</em> &quot;Not really. I&#39;ve gotten to a point where I&#39;m almost invisible to the crew and the guards. Unwanted attention would be bad. Do you want anything for the pain?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 01:34 AM</span>
+
+            <div class="chatlog__message " data-message-id="827340146704777256" id="message-827340146704777256">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He shook his head quickly.</em> &quot;No. It evens the scales.&quot; <em>He explained, rubbing his arm for no good reason whatsoever.</em> &quot;Besides, I&#39;m not actually certain if this was supposed to be healed at all.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/71ae68b40c48a675d94021ba009585e5-7384C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Batgirl#3167" data-user-id="112197915178491904" style="color: rgb(212,156,2)">Lt. Cdr. Amanda Higgins</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 01:35 AM</span>
+
+            <div class="chatlog__message " data-message-id="827340532006518794" id="message-827340532006518794">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Eli] <em>Eli nodded and went to pack up his things.</em> &quot;I wish you luck Nedras. Hopefully if we both get out of this alive, we can meet in a more recreational setting.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/bd9691ac053eb138f98db5649b5a8332-81C32.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 01:41 AM</span>
+
+            <div class="chatlog__message " data-message-id="827341906534596668" id="message-827341906534596668">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He laughed, found a semi-functional sling amongst the crates, and put it on his now healed arm, hoping to affect the illusion that it was still definitely broken.</em> &quot;By all means. I&#39;d love to hear more about your last postings - I still haven&#39;t forgotten the partial decapitation story.&quot; <em>With a small nod, he left.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 03:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="827918961684512789" id="message-827918961684512789">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie was all but tossed into the storage facility. Looking around as she dusted off her jumpsuit. She sighed as she began looking around.</em> “Uh...hello?” <em>This was odd.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7da487a277707ec4c6c6f2e7bd570482-81849.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yallis Kress#0000" data-user-id="827929722611695658" style="">Yallis Kress</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">03-Apr-21 04:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="827929723392753725" id="message-827929723392753725">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Within that darkness that surrounded Maggie, came a chatter. Like some delusioned, madman was rumaging through trash, calculating all the spare protein fibres in a simple slice of steak grisle, so that they knew how much protein they would get if they ate it. But the woman behind that chatter was not talking about food. Instead, she was listing things onto a PADD,  eyes glued to it as she dragged her right arm across boxes stacked high on top of eachother. Every time her arm scratched against a metal post, a scraping sound would echo throughout the acousticly fit room. Before long, the woman entered the light, standing tall infront of a small, pint sized desk that could barely fit a cup on it. If one were to look in her direction, they would barely be able to make out what species she was since the only light source that was still on, was place right in front of the frail woman.</em>
+
+<em>Before long, her words became louder, like she was preaching ancient texts from certain manuscripts that would only be handed out on easter morning to earth goers.</em> &quot;NCC-70043, the <em>USS Wintory</em>, older make but a good flyer nonetheless. Limited armament but its warp engine could be usefull enough to put in storage block D. No secondary or Auxiliarry crafts inside, what a shame, those things are gold. The ship... hmm, reportedly is unscathed, thats new.&quot; <em>She said, puttering around the table, placing PADDS all around it to look at.</em> &quot;You can move forward by the way, you do not have to be scared of me.&quot; <em>She called.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 04:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="827930544012263514" id="message-827930544012263514">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie walked forward with a raised eyebrow, careful as she did. This woman seemed nice, and knew about Starfleet models. So that was something. She held her hands in front of her, moving close to the woman but not too close. Giving her space.</em> “Hello there￼ ma’am. I’m uh. Lieutenant Maggie Verne. Qicun told me to come see someone in here, I suppose that person is you?” <em>She said as she looked at the desk with a raised eyebrow.</em> “I wasn’t aware that desks were...available here?￼”</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7da487a277707ec4c6c6f2e7bd570482-81849.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yallis Kress#0000" data-user-id="827929722611695658" style="">Yallis Kress</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">03-Apr-21 04:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="827934267505901608" id="message-827934267505901608">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Do you want one? Because if you do, I cannot offer any of them to you. I was not aware that desks were such a... valuable item in your line of work.&quot; <em>She mused. The pale face of a cold woman turned towards Maggie, inspecting her like she was another item in her inventory. Before long, her whole body was turned, back facing the hot light like a lizard facing a heatlamp. The white haired lady lifted up her right arm, gesturing for Maggie to come closer, however.. something seemed off. In the shadow, most arms would absorb all the darkness around them to become one with it. But with hers, it seemed as though there was some protective layer of shine, that portruded out of the darkness.</em> &quot;Come closer, let me get a better look at you.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 04:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="827935094655680562" id="message-827935094655680562">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie nodded as she slowly began walking forward. Looking somewhat concerned with her shine. She placed both her hands in front of her￼ as she looked at the woman. Something seemed noticeably off about her. Maggie brushed a few strands of her own silver hair behind her. ￼She stood in front of the older woman.</em> “I just haven’t really seen one since the Phoenix went down￼ recently. Also uh... why are you shiny..?” <em>She said with a cautious look. She needed this woman’s help, presumably anyway.</em>￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7da487a277707ec4c6c6f2e7bd570482-81849.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yallis Kress#0000" data-user-id="827929722611695658" style="">Yallis Kress</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">03-Apr-21 05:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="827938429492396033" id="message-827938429492396033">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The woman rolled her eyes behind the thick black shadows that separated her and the other inmate, before sighing.</em> &quot;Its not me who&#39;s shiny, its my arm. They supplied me with this new coating to protect it from oxidization. It is really a drag. But hey, it makes one hell of a fashion statement might I add. Leather... Wool, something to make this arm really, <em>really</em> shine you know. But not dresses, it just doesnt fit well with dresses I am afraid.&quot; <em>She said, rambling on about her arm, inspecting it, rambling about it and so on... Ever since the incident, that was all she could think about.</em>
+
+&quot;You mentioned that Bird.. Yes, I knew him, and his wife too for that matter.&quot; <em>She said, turning on the lights so Maggie could get the full picture of the woman. The wispy white haired lass turned back to her desk and picked up a PADD, the luminescent blues shining onto her face to reveal her features. The woman was Denobulan, there was no doubt about it. However, there was one specific feature that she was missing and that was height. For Kress, she should have been 5 feet or so. But instead, the makers decided to put her into the world at a staggering 5 feet 11 inches.</em> &quot;He told me about your little escapade plans... told me about how he thought you were crazy. I agree with him..&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 05:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="827939468488343612" id="message-827939468488343612">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie sighed as she looked at the woman. Watching her with a raised eyebrow, focussing her attention on the woman’s arm.</em> “Do... they do what they did to your arm to a lot of people?” <em>She said, slightly concerned.</em> 
+
+<em>Once the woman brought up Qicun and his wife she sighed. Of course they thought she was crazy. Hell, maybe she was crazy. Yet, they had to do something.￼￼￼￼￼￼</em> “I need to get home. To my family, to my wife. I don’t care how crazy I look. He told me I should talk to somebody here. I’m assuming that person is you. Please, we need to get out. We know where the prison is. We can liberate everyone here if even one of our officers get out. Please...”￼￼￼￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7da487a277707ec4c6c6f2e7bd570482-81849.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yallis Kress#0000" data-user-id="827929722611695658" style="">Yallis Kress</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">03-Apr-21 05:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="827943162336772107" id="message-827943162336772107">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Only to the people who fall victim to the widowers rage.&quot; <em>She said, looking around the room to find what she wanted to look for. A feint &quot;ah&quot; was heard before Yallis picked up a small figurine. Placing it on the table as she inspected it.</em> &quot;Yorktown class.. one of those Star Cruisers eh? was she a pretty ship?&quot; <em>Her eyes seemed to be stuck on the figurine in front of her. A Tempest class figurine that she scavenged from one of the wrecks when she first started out in the prison.</em> &quot;Word has it that the Phoenix is a goldmine.. The guards chatter about it crashing down somewhere east of here, they say that out of all the things damaged, its engineering section was basically left unscathed. However, reports say that the ship was split in two so it will be harder to transport.:</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/637075614662393868-CC03F.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 05:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="827944113365319721" id="message-827944113365319721">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie nodded as she looked at the woman. Phoenix would’ve been a gold mine, but she didn’t see how that would help them.</em> “Right. Phoenix was really well made, and she was beautiful.￼￼ I don’t see how that could help us through. We can’t just, fly engineering around.￼ The star drive section would probably be completely wrecked. And to get there, we would to have quite a bit of the oxygen tanks. What are you trying to get at?”￼￼￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7da487a277707ec4c6c6f2e7bd570482-81849.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yallis Kress#0000" data-user-id="827929722611695658" style="">Yallis Kress</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">03-Apr-21 05:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="827947558835978301" id="message-827947558835978301">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Escaping a prison is not easy.. you cant just roam around asking people like me for the best way out expecting that you will get the answer right away. It is all about tricking the system&quot; <em>She looked around the place for a moment before locking her gaze back onto Maggie, placing one soft, black leather glove onto her cheek and resting her head there.</em> &quot;You need to work with your team. When Qicun told me about the people who wanted to escape, I was expecting for you to have 5 or more people behind you.... but you came alone which doesnt benefit you in anyway.&quot;  <em>The woman shivered for a moment, her bare skin on her arm forming goosebumps against the frigid cold storage room.. She despised this place, it was almost if the guards wanted her to be put in here because they considered it to be the colder version of prison... &quot;prison 2&quot;.</em>
+
+ <em>Her eyes traveled across the room before she locked her sight on a box that was labeled &quot;Clothing&quot;. She rushed over and scavenged through the lot, trying to find a fur coat of some sort. Knowing it was there, Kress reached down and pulled out a black, silky fur coat from the bin and put it on, chuckling as she did so.</em> &quot;They say I am a fashion thief... but sometimes you need to steal things to look this good.&quot; <em>She said under her breath, before sitting back down.</em> &quot;Now where were we... oh yes. Qicun told you about those powercells yes?&quot; <em>She asked.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 05:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="827949824446824448" id="message-827949824446824448">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“I’m aware of the power cells yes. ￼￼I’m assuming we’re going to do something with that then? And for the record, I have a team. But yeah. I know about the power cells.” <em>She said with a small smile as she looked at the woman put on the fur coat.</em> “All the cells I’ve seen have been deactivated through.”￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7da487a277707ec4c6c6f2e7bd570482-81849.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yallis Kress#0000" data-user-id="827929722611695658" style="">Yallis Kress</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">03-Apr-21 06:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="827959978287562752" id="message-827959978287562752">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well then you already know that the item is contraband to a certain degree. The prison is basically like the black market, there are trades going on daily.. Given enough time you can trade one powercell in for something far greater, to then trade that item to get what you really want. Lets say you wanted a map of the prison... well, your going to have to trade a powercell for a tricorder, then that tricorder for two parts of a phaser rifle, then those two parts for the map. You catch my drift?&quot; <em>The woman said whilst smiling the day away. It was as if the smile never faded from that womans face, there was always something to be happy about. Warmth, fashion, being pretty? You name it, and Kress would be happy about it.</em> 
+
+&quot;You know, there is a person like me in an prison you will find out there - I&#39;m the person who can get it for you. Maps, budget ciggs, those fancy little chess pieces that you find scrapping through the messhalls of wrecked ships during pit hours, and thats just the start. I know people, who know people... its as simple as that. During my first time here at this prison, I bargained with other people... using their personal items to support my gain. I was a bad kitty back then, but I learned how to gain peoples reputation here in this prison. Thats one thing you and your team need to start working on... gaining reputation.&quot; 
+
+<em>She chuckled, fumbling over a pack of white sticks that laid on her desk. She smiled at them, picking one up and inspecting it.</em> &quot;I got these from a scrapper who found them lying in some Captains quarters a while back... I use them for special occaisions when the guards aren&#39;t looking&quot; <em>She chuckled, flicking one over to her.</em> &quot;Keep it, you might find use for it when your back out there in the slums. Take this as your first deal with me. Just promise me that you wont mess up like that stupid bird did okay? I don&#39;t want a repeat of last time.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 06:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="827961431281369158" id="message-827961431281369158">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie nodded as she looked at the sticks. Examining it with a nod.</em> “Right. Okay. Well, thank you then. I can try and start grabbing stuff soon. I’ll see you around then, and I promise I won’t mess anything up. Hopefully not at least, we’re gonna get you out of here. I swear.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7da487a277707ec4c6c6f2e7bd570482-81849.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yallis Kress#0000" data-user-id="827929722611695658" style="">Yallis Kress</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">03-Apr-21 07:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="827971379059097620" id="message-827971379059097620">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Promises have legs. Only a gift has hands...&quot; <em>She stated, turning off the lights so that the darkness could cover her up. Usually when the lights turn off, that means that Kress had finished with the business conversations.</em> &quot;Now, you best get going before I call the guards in here... I wouldnt want to make a scene out of this.&quot; <em>She joked, before wheeling her chair back to her own smooth, polished hardwood desk, tapping her metal fingers to the song playing inside her head.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 07:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="827973496335237182" id="message-827973496335237182">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie nodded with a smile. Before walking back out the door with a nod towards the woman.</em> “Okay! Thank you! And please stay safe.” <em>With that, Maggie exited.</em>￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/46495b30679ca917bfae779dce4ce045-F4C9A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">04-Apr-21 10:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="828385805536985109" id="message-828385805536985109">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Ga&#39;HaTz] <em>And he was in. He was the sneak meister, the master of sneaks, truly the overlord of sneaking. 
+
+After preening/panicking for five minutes straight, he stayed top look around for the irks he was told to get. He found a tube pretty easily, it was tube shaped and long. He had a harder time of finding the disinfectant, considering he&#39;d only ever seen a bottle of the stuff once. Once he had the goods, he snuck out again.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="04-Apr-21 10:49 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 05:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="828660348513026128" id="message-828660348513026128">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They were escorted in and signed back in before starting to move cargo and supplies about the place as per what was needed.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 05:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="828661694573445220" id="message-828661694573445220">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>It was a lovely day in the inventory area and Maladar Derf was a horrible Ferengi. And horrible Pakled. He was perched on top of one of the work stations like an equally horrible bird, PADD in one hand, several small items scattered around him.</em> &quot;Inventory!&quot; <em>He declared to the room.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 05:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="828662150842548224" id="message-828662150842548224">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They looked over at wherever the voice came from, before approaching to ask for clarification.</em> &quot;Umm... Excuse me. Are you asking for a full inventory check, or...?&quot; <em>They asked somewhat nervously.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 05:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="828662594419818536" id="message-828662594419818536">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;No!!!!&quot; <em>Derf exclaimed, sounding appalled by the very idea. He did not clarify any further.</em> &quot;Who are you, spotted hoo-man?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 05:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="828663212148260884" id="message-828663212148260884">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;<em>They were a little taken back by the exclamation, before responding honestly.</em> &quot;Alyx Morgan, Quartermaster for Starfleet. And I&#39;m half Trill which is why I&#39;m spotty.&quot; <em>They said simply.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 05:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="828663751711653888" id="message-828663751711653888">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I know Trill.&quot; <em>Derf said dismissively.</em> &quot;Starfleet items? For me?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 05:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="828664081963024395" id="message-828664081963024395">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Uhh... No, I don&#39;t have anything. Almost everything was taken from me when I got here... Why do you ask? And why do you want random items?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 05:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="828664307943604245" id="message-828664307943604245">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I am Pakled.&quot; <em>He said that, but the shifty gaze and scheming gleam in his eye was very much Ferengi.</em> &quot;You have no items? Then inventory.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 05:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="828664534658187265" id="message-828664534658187265">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;What do you mean &quot;inventory&quot;? Do you want me to just go back to work or what? Considering your PADD I assume you&#39;re in charge here.&quot; <em>They observed.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 05:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="828664813541392395" id="message-828664813541392395">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;You are quartermaster. You know inventory.&quot; <em>This was not at all a helpful thing to say, but despite his writer being apologetic, Derf was not.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 05:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="828665241658327132" id="message-828665241658327132">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;So you want me to take inventory? Carry on doing inventory? Move inventory? Talk to you about the inventory?&quot; <em>They reeled off. They had some experience with talking to people who couldn&#39;t communicate as well as they could, so they tried to remain patient with the Pakled-Ferengi hybrid.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 05:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="828665752826806353" id="message-828665752826806353">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Derf had once again been banking on the Trill getting unsettled and doing some other random task, and was touched to learn otherwise. And irritated. Mostly irritated.</em> &quot;Eugh. Yes, check inventory. Only new inventory, and only log things entering storage, if you know what I mean.&quot; <em>Stealing. He was implying it was a good time to steal.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 05:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="828666381619822593" id="message-828666381619822593">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh, okay I&#39;ll get on that.&quot; <em>They responded innocently, having absolutely know idea that he was implying they should steal new items. They nodded out of respect before going over to get a sign-in sheet for inventory from where they were stored, and headed over to where the new inventory was coming in. They began writing down what was coming in based off what they could see or describe the items as.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 05:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="828667294262755338" id="message-828667294262755338">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Derf poked his head down from one of the racks. Somehow he&#39;d climbed onto one in that amount of time. He peered down at Alyx&#39;s list.</em> &quot;I met other Starfleets.&quot; <em>He explained in a low whisper.</em> &quot;Starfleets with...plans to take Enterprise?&quot; <em>He meant the Chimera.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 05:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="828667711176704000" id="message-828667711176704000">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They looked up at him briefly, before looking back down at their list.</em> &quot;The Enterprise?&quot; <em>They whispered back.</em> &quot;You&#39;ve got the wrong ship name, but I think I know what you&#39;re trying to say.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 05:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="828667851941740554" id="message-828667851941740554">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yesyesyes. Small Enterprise.&quot; <em>He nodded eagerly.</em> &quot;Yes?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 05:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="828668310195011604" id="message-828668310195011604">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yes. That&#39;s correct.&quot; <em>They whispered back.</em> &quot;Who did you meet?&quot; <em>They asked, curious to find out who had this plan.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 05:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="828668881564073994" id="message-828668881564073994">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Suspicious green hoo-man.&quot; <em>Nev.</em> &quot;Not nice. Very effective. They&#39;ll be able to take the Heralds staffs and stick-&quot; <em>Ah, too many words.</em> &quot;They promised teeth.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="sir" title="sir" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/766411250002690050-D67B5.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 05:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="828669158422085662" id="message-828669158422085662">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;So only one person has this plan?&quot; <em>They responded, trying to figure everything out at the same time as effectively doing their job.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 05:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="828669375493570580" id="message-828669375493570580">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;No.&quot; <em>Not that he knew of.</em> &quot;But they were looking. The Continuum provides.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 05:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="828669718621323284" id="message-828669718621323284">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;The Continuum provides...? What does that mean?&quot; <em>They asked, looking back at Derf in confusion.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 06:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="828676545097891942" id="message-828676545097891942">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;The grEAT MATEEEERIAL CONTINUUM.&quot; <em>It was clear this was a point of great interest for him. His voice rose to normal speaking volume even as he continued sorting items on the shelf he was now sitting atop.</em> &quot;You don&#39;t know?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 06:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="828677066168860732" id="message-828677066168860732">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Uhhh.... No, I don&#39;t.&quot; <em>They responded, a little taken back by the man&#39;s response.</em> &quot;You wanna explain it to me?&quot; <em>They asked before turning back to carry on checking in items.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 06:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="828679287451418664" id="message-828679287451418664">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;The force that makes the universe go!&quot; <em>They gesticulated wildly with one hand while sorting with the other.</em> &quot;Everywhere people need things others have and have things others need, and the Great River flows through all those places to move the pieces from one place to the other.&quot; <em>He almost fell off the shelf, poor thing. He took something out of his pocket subtly, which gleamed for a moment before slipping into his sleeve with remarkably smooth sleight of hand - a broken combadge. Veeeeery broken.</em> &quot;Navigate the continuum and you can make <em>all</em> things go.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 06:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="828682593423720498" id="message-828682593423720498">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They listened quite intently as they worked, slowly processing all of the information being fed to them before eventually responding.</em> &quot;I see... Well I&#39;m not so sure I entirely believe that, but honestly at this point anything is possible.&quot; <em>They responded honestly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 06:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="828686916568350730" id="message-828686916568350730">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Ugh. Starfleet. Too good for commerce.&quot; <em>Derf grumbled.</em> &quot;You want items?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 06:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="828688086422519808" id="message-828688086422519808">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;What sort of items?&quot; <em>They asked quietly, turning to look at him again.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 07:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="828700561729257503" id="message-828700561729257503">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Egh. Depends. What do you want?&quot; <em>He asked greedily.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 07:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="828703009709621339" id="message-828703009709621339">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I don&#39;t-- Really know. I mean, I don&#39;t want to get in trouble for having anything, that is.&quot; <em>They said quietly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 07:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="828703266295775282" id="message-828703266295775282">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He groaned and slumped dramatically on the top shelf.</em> &quot;Otherssssss, what do others want?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 07:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="828704506568638466" id="message-828704506568638466">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh, uhhh... A PADD? Maybe some basic tools? Anything small and hideable.&quot; <em>They whispered back, still trying to look like they were working, which they technically were.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 08:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="828708203210604585" id="message-828708203210604585">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Derf reached a hand into one pocket, then withdrew it, empty.</em> &quot;And you give things? Things for me?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 08:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="828712624539172874" id="message-828712624539172874">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They thought for a moment before responding.</em> &quot;I do have one thing...&quot; <em>They reached into their jumpsuit pocket and fiddled around a bit, before pulling out their reading glasses. They turned around and offered them to him.</em> &quot;You know what glasses are, right?&quot; <em>They asked quietly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 08:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="828714486181134373" id="message-828714486181134373">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Nooooo, I am Pakled.&quot; <em>He said mockingly, before scowling and doing grabby hands towards the glasses.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 08:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="828714944522354719" id="message-828714944522354719">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They gave him the glasses.</em> &quot;These magnify anything you look at through them. I personally use them for reading small labels.&quot; <em>They commented.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 08:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="828715215339389028" id="message-828715215339389028">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He had been entirely sarcastic, but hey, whatever bought time. He pocketed the glasses and leapt down from the shelf, landing on the other side, out of Alyx&#39;s view.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 08:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="828715550296899604" id="message-828715550296899604">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They watched as he did, before walking around to try and get to the other side of the shelf where he went. Were they being ripped off?</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 08:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="828715855135113246" id="message-828715855135113246">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em><s>Yes.</s> Derf had somehow not managed to scurry off quickly enough. He looked back up at the Starfleet officer and groaned again.</em> &quot;What do you want?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 08:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="828716078586527806" id="message-828716078586527806">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I thought you were meant to be giving me something useful in return? Like some tech?&quot; <em>They whispered, trying not to get the attention of the guards.</em> &quot;I know you&#39;re part Ferengi, so I know you know what a fair trade is.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 08:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="828717544767881228" id="message-828717544767881228">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Urgh.&quot; <em>He rummaged through his pockets with a faint clatter, then pressed a magnetic coupling into their hand.</em> &quot;Persistent Starfleet.:</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 08:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="828718188669829170" id="message-828718188669829170">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They clasped their hand and quickly put the coupling into their glasses case in their jumpsuit pocket to hide it, before nodding out of respect.</em> &quot;It&#39;s appreciated. I might trade with you again in the future.&quot; <em>They whispered, before going back to their work.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Apr-21 08:58 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 08:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="828720133106565140" id="message-828720133106565140">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Derf &#39;hmph&#39;ed in a &#39;you&#39;d better&#39; kind of way, then got back to doing inventory himself.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7da487a277707ec4c6c6f2e7bd570482-81849.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yallis Kress#0000" data-user-id="827929722611695658" style="">Yallis Kress</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 11:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="828760100139303004" id="message-828760100139303004">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Before Kress made her way towards Maladar, she was busy hiding, watching over them. Her perch, was just above the facility, a stack of rusty boxes atop an unstable support carrier, almost 20 feet up. There was a rickety set of stairs, made by mutilated pieces of steel, some dangling by a thread. Kress was watching the spotlight of those  two people doing their trades, whilst she was up top with a white piece of paper in her hand set a blaze, letting the smoke of it fly high up into the rafters pooling into its own cloud. The woman chuckled at the sight of her doing it &quot;so its true that prisoners will do anything for this stuff.&quot; she thought. The woman sighed and let the half burnt piece of rolled up paper glide down to the bottom of the facility, its final embers breaking off letting the heat carry them upwards.</em>
+
+<em>Now, she was covered in shade. The only way to find out where she could have been, was by the sound of her heels clapping against the steel stairs. The woman still had her coat on, as well as one singular leather glove that fit her hand.. well, like a glove. When she made it to the floor, the woman crushed whatever was left of that piece of paper with her heel, before progressing towards the Ferengi, eyes locked on him like a hawk watching its prey.</em> &quot;Maladar Derf.. what a pleasant surprise.&quot; <em>She mused, smirking in the shadows.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Apr-21 11:40 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">05-Apr-21 11:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="828763207782498344" id="message-828763207782498344">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Derf had no such inclination towards subtlety. He was in the light, thank you very much, perched on a workstation like a hawk... well, like a hawk, full stop, if that hawk was up to something.</em> &quot;Yallis Kress.&quot; <em>He sneered back, fiddling with the glasses Alyx had given him.</em> &quot;No items for me?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7da487a277707ec4c6c6f2e7bd570482-81849.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yallis Kress#0000" data-user-id="827929722611695658" style="">Yallis Kress</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">06-Apr-21 12:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="828772303931965482" id="message-828772303931965482">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The woman cackled behind the curtain of shade, giving her the sense of cover. Her white teeth could be seen through that curtain, if one had adjusted their eyes enough to look through it. With one arm raised, the woman side stepped into a storage block, brushing her metal arm against the boxes of belongings until she stumbled upon Maladar&#39;s confiscated items. The Iconians trusted her enough not to do anything to it, and thats exactly what she did... nothing.</em> &quot;If I did infact have items for you. What would I get in return?&quot; <em>She asked from afar.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">06-Apr-21 12:51 AM</span>
+
+            <div class="chatlog__message " data-message-id="828778985118761051" id="message-828778985118761051">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Derf grinned widely and toothily. The effect was strange, with sharp Ferengi teeth at the front, then Pakled molars and incisors and so on towards the back.</em> &quot;Other items.&quot; <em>He hissed conspiratorially. He had other stashes - it would be foolish to keep everything in one place. But either way, he had no intention of letting Kress know she was close.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7da487a277707ec4c6c6f2e7bd570482-81849.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yallis Kress#0000" data-user-id="827929722611695658" style="">Yallis Kress</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">06-Apr-21 01:11 AM</span>
+
+            <div class="chatlog__message " data-message-id="828783951560704010" id="message-828783951560704010">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Come on Derf, be more specific. Use the Ferengi side of your species to negotiate with me.&quot; *She scoffed, hows your cig supply doing lately anyways. I heard you got into a little curfuffle in the canteen because you only gave a guy two of them. He seemed pretty enraged huh?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">06-Apr-21 01:13 AM</span>
+
+            <div class="chatlog__message " data-message-id="828784396139626536" id="message-828784396139626536">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Hoo-mans and their tobacco.&quot; <em>Seeing the usual routine wasn&#39;t going to work, not that it had the past few times, he relaxed.</em> &quot;It was a fair deal. No good items. Shiny things, sharp things, no things that go. Pretty, not useful.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7da487a277707ec4c6c6f2e7bd570482-81849.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yallis Kress#0000" data-user-id="827929722611695658" style="">Yallis Kress</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">06-Apr-21 02:07 AM</span>
+
+            <div class="chatlog__message " data-message-id="828798097828085801" id="message-828798097828085801">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Good thing the Iconians gave you the promotion you needed then? No more outbursts eh? In here, you can have anything you want. <em>Make</em> anything you want, but you have to be careful though.&quot; <em>She moved out of the shade and progressed towards Maladar. Looking at the cameras that she had memorized, Kress took a deep breath and sighed, taking her ruby read high heels and tossing them out into the spotlight. To woman sat down, criss crossed with her hands on her cheeks.</em> 
+
+&quot;The Iconians never let me go anywhere else nowadays do you know that? Its like they want to keep me here or something. Like I am such a valuable asset to their elite task force, that if I were to change positions, it would be a devastating blow to their system. Frankly, I just want out of this shit pit.&quot; <em>The Denobulan rolled her eyes before pulling out a blade of some sorts, using its reflection to check on her face. The woman was in prison, but she did not want people to see her with blemishes on her face. Happily there was none, and the switch blade was put back into her pocket within seconds.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">06-Apr-21 02:11 AM</span>
+
+            <div class="chatlog__message " data-message-id="828799102984781866" id="message-828799102984781866">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maladar was at least 95% sure he&#39;d caught an implied threat in the surface of that switchblade. He wrinkled his nose at it.</em> &quot;Oh, murder. Murder for me. No, I don&#39;t want that.&quot; <em>He acknowledged with a dismissive huff, pocketing the glasses and adjusting his arms so a jagged piece of metal fell from his sleeve to rest softly in his palm, out of Kress&#39;s view.</em> &quot;You&#39;re happy to be important. You&#39;re happy to make the prison go. You like the items. The arm.&quot; <em>He accused.</em> &quot;What do you want?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7da487a277707ec4c6c6f2e7bd570482-81849.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yallis Kress#0000" data-user-id="827929722611695658" style="">Yallis Kress</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">06-Apr-21 03:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="828821262972485633" id="message-828821262972485633">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;All I want, is a nice place on Risa to go and chill. My starfleet days are over, I&#39;ve spent enough time in this shitheap to know that I have a comepletely new personality. I am more harsh, sly, seductive... everything that a starfleet officer shouldnt be.&quot; <em>She saw the sudden movements made by the Ferengi and stopped. The Denobulan puffed up her face slightly, suspecting something was off with the man.</em> &quot;Um... Derf?&quot; <em>She said, scooching back a couple centimeters and placing her hand behind her pocket just in case he did something.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-14238.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="827929722611695658" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">06-Apr-21 03:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="828997866043342898" id="message-828997866043342898">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Derf stared quizzically.</em> &quot;You have a knife!&quot; <em>He protested once he realized what was happening.</em> &quot;No unfair fights, not-Starfleet.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">06-Apr-21 07:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="829066060812517376" id="message-829066060812517376">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They had been escorted out by a guard when their shift ended.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7da487a277707ec4c6c6f2e7bd570482-81849.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yallis Kress#0000" data-user-id="827929722611695658" style="">Yallis Kress</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">07-Apr-21 08:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="829443643210334248" id="message-829443643210334248">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The woman sighed for a moment.</em> &quot;You idiot... If I was going to kill you, it would have been when you were behind a storage gate so that the Iconians wouldnt know what happened. Besides, I am not that kind of lady anymore... you know that.&quot; <em>She said, disgusted by the fact that he thought of her in that way. Derf was too simple minded for her taste, but for some reason.. he was a good trader. That was something that Kress could never figure out about the man.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/7da487a277707ec4c6c6f2e7bd570482-81849.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Yallis Kress#0000" data-user-id="827929722611695658" style="">Yallis Kress</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">07-Apr-21 09:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="829451726755069983" id="message-829451726755069983">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Anywho, my shift has ended. Its about time I go get some grub. I am starving!&quot; <em>She exclaimed, before propping herself up, putting her wait on her arms, and then leaping towards the door in a skip.</em> &quot;And Maladar.&quot; <em>She said, cocking her head back towards his direction..</em> &quot;Please don&#39;t heckle more people for teeth, it makes people uncomfortable.&quot; <em>With one more chuckle, Kress was lead out by the guards who were standing behind the door.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 01:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="831141321678127164" id="message-831141321678127164">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They walked in at the beginning of their shift, having been escorted here the entire way, and went to sign themselves in for duty. After that, they quickly went and started processing the incoming cargo, all the while trying to spot anything easy and useful to smuggle that wouldn&#39;t get themselves caught.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="12-Apr-21 01:19 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Administration%20Centre%20-%20storage-facility%20%5B825747486076436550%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 06:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="831220054942810212" id="message-831220054942810212">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>As the lights went out, and having previously heard the morse code through their UT, they took a second to get their bearings, having previously tried to memorise the way out. They quickly and quietly made their way out of the facility.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 101 message(s)</div>
+</div>
+
+</body>
+
+</html>

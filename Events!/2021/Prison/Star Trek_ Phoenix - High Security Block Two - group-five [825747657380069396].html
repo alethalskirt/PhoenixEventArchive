@@ -1,0 +1,2388 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - group-five</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">High Security Block Two / group-five</div>
+
+            <div class="preamble__entry preamble__entry--small">Occupants: Houston, Lihne, Nemo, Saren, Syllak.</div>
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 04:44 PM</span>
+
+            <div class="chatlog__message chatlog__message--pinned" data-message-id="825757143554195507" id="message-825757143554195507">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The cell was a small, cramped octagon with a heavy metal door at its front, a smaller door to a bathroom at its back, and one bed against each of the remaining empty walls. There were no windows, and the remaining floor space was barely sufficient for each occupant to stand simultaneously. The walls were a deep, grimy grey. A forcefield hummed in front of the door. Some kind of bright red mushroom was growing from a crack in the floor.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 06:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="825785569577664582" id="message-825785569577664582">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>First to arrive, it seemed, Saren sat himself on one of the beds, breathing a sigh of relief. He fully expected cameras and microphones but even Iconians could only watch so much. He pocketed his pin into the medkit for safe keeping, but kept his eye out for new arrivals.</em> &quot;Fire&#39;s warmth, air&#39;s flow, earth&#39;s protection, water&#39;s chill, and space&#39;s safety. Elements preserve us.&quot; <em>He mumbled the Romulan prayer.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-AE3D8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="825802521263079515" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">28-Mar-21 07:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="825802522195263498" id="message-825802522195263498">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo arrived in her cell and looked around. It wasn&#39;t too bad. Ornock&#39;s room looked worse.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 07:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="825805340582871040" id="message-825805340582871040">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He nodded to the Orion.</em> &quot;Chimera?&quot; <em>He questioned, still inventorying his medkit.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-AE3D8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="825802521263079515" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">28-Mar-21 07:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="825806149344559134" id="message-825806149344559134">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo scowled at the Romulan.</em> &quot;Who wants to know?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 08:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="825806624105955409" id="message-825806624105955409">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He chuckled just a bit at the hostility. Understandable.</em> &quot;Lt. R&#39;Mor. Phoenix. I&#39;m a doctor. Are you hurt?&quot; <em>He asked, trying to get a better handle on the equipment the Iconians had provided him.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-AE3D8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="825802521263079515" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">28-Mar-21 08:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="825807177117335562" id="message-825807177117335562">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo bit out an &quot;I&#39;m fine before she turned away from the other one and matched into the bathroom to change into the jumpsuit. She came out a short while later and did not speak.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 08:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="825807537064247346" id="message-825807537064247346">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He decided best to leave her to it. His own coping kept him a faux-jovial mood but even past the false veneer, the devastation was there. All he could do right now was continue to figure out how each piece of gear worked. Both to tend to his crewmates and possibly to help escape.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/4de344c2baf9303e657ab5c902e69a9e-42C3E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ephrix#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">MCPO. Eshen&#39;strars Houston</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="825826965512519691" id="message-825826965512519691">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Houston had made his way to the cell that he had been allocated, admittedly a little cautious considering how, you know, there were guards literally everywhere and one step out of line could have ended in him being killed... Or him getting someone else killed. He had kept up the confident fa&#231;ade while he tried to get the NCOs and crewmen in line but that&#39;s all it was - a fa&#231;ade. It was now upon entering the cell room that he let it drop a little, the smile and wave he offered being distinctly nervous.</em> &quot;Uhm - hello, sirs. I believe I&#39;ve been put with you.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="825831333833080863" id="message-825831333833080863">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>R&#39;Mor nodded to the Petty Officer.</em> &quot;Good to see you in one piece. Glad you could join us for Ganmadan. Admittedly, I was expecting it to be less drawn out.&quot; <em>He looked to the other as he thumbed his pin in one hand.</em> &quot;Everything un-broken?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/4de344c2baf9303e657ab5c902e69a9e-42C3E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ephrix#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">MCPO. Eshen&#39;strars Houston</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="825832419478208513" id="message-825832419478208513">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ganmadan, Ganmadan...</em> <em><strong>Oh.</strong></em> <em>Wasn&#39;t that the Romulan end-of-the-world scenario in which everything ceased to exist? He was well aware that Saren was joking with the comparison, but it still set him on edge and resulted in that smile becoming a little more nervous.</em> &quot;I&#39;m quite alright, yes, sir - how are all of you?&quot; <em>As he asked the question he spotted one of the empty beds and shuffled over to it.</em> &quot;None of you are hurt, are you? Not that I can do <em>too</em> much - but they have marked me as a medic, so I might as well start sooner rather than later...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="825833520240525322" id="message-825833520240525322">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He looked between the three of them.</em> &quot;They equipped me with a medkit yet send me no patients. I&#39;m beginning to question their system. Not to mention the quality of their facilities.&quot; <em>He eyed the mushroom in the middle. He debated what to do with it. Luminescence usually indicated special properties. Which could be useful for escape or might just be a method of killing them all in a puff of spores.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/4de344c2baf9303e657ab5c902e69a9e-42C3E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ephrix#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">MCPO. Eshen&#39;strars Houston</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 10:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="825842910821482546" id="message-825842910821482546">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yes, it&#39;s... Not the nicest sort of place, is it?&quot; <em>He responded, stopping in the centre in order to look down at that strangely growing mushroom.</em> &quot;I didn&#39;t even get handed a medical kit. I&#39;m not sure if we&#39;re supposed to share resources - they&#39;ve been a little lacking in the information provided, haven&#39;t they?&quot; <em>He set down the folded jumpsuit and then sat upon the bed, leaning his head back against the wall.</em> &quot;We won&#39;t be here long, I&#39;m certain. We&#39;ll find out way out...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 11:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="825856544871809024" id="message-825856544871809024">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He nodded, looking down at the floor beneath them.</em> &quot;I grow curious...Fungi can grow anywhere, so they say, but they do usually need soil. Entertain me, officer: Your theories?&quot; <em>He chuckled, digging through his bag for anything he might be able to use to excise the head of the glowing shroom.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/4de344c2baf9303e657ab5c902e69a9e-42C3E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ephrix#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">MCPO. Eshen&#39;strars Houston</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 11:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="825856780348162070" id="message-825856780348162070">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;That they&#39;ve not done a very good job with the flooring - or someone&#39;s trailed in far too much dirt from outside?&quot; <em>His responses were given with a shrug.</em> &quot;I&#39;m not any sort of expert in the growth of fungi I&#39;m afraid, sir. I&#39;m not much of an expert at biology in general.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 11:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="825857454121680906" id="message-825857454121680906">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He managed a bit of a laugh at the response.</em> &quot;Oh come now. Herbalism surely is a dying science, isn&#39;t it?&quot; <em>He was starting to wish he&#39;d found time to talk with Sara. Risk of exposure kept him from simply hacking at the shroom, but he considered the implements he had before his hand came to his pin. It would likely be able to pierce the stalk.</em> &quot;Demons of air and fire tracking in spores. Makes you wonder if it&#39;s supposed to be here or not, doesn&#39;t it?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="care" title="care" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/711609055021629502-E849D.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-AE3D8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="825802521263079515" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">28-Mar-21 11:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="825858673326817310" id="message-825858673326817310">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Great. This was just great. She was finally, after all of her years carefully evading prison, in jail and her roommates were nerds. The only way this could get worse would be if yet another nerd got sent to this room. Why were these guys in high security anyway?
+
+She was still grieving for the loss of Jayne and she couldn&#39;t even grieve the way she wanted. She couldn&#39;t even die with honor here, not that that bull crap ever mattered to her really.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128531;" title="&#128531;" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/1f613-A8B3A.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/4de344c2baf9303e657ab5c902e69a9e-42C3E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ephrix#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">MCPO. Eshen&#39;strars Houston</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 11:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="825859199018729472" id="message-825859199018729472">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;We have no idea of what grows outside of this facility. For all we know there might be an entire fungus world out there that we don&#39;t get to see yet.&quot; <em>Idly he fidgeted with the sleeve of the jumpsuit, already very reluctant to change. It was as if changing would finalise all of this and make it all real.</em> &quot;I don&#39;t know about it being supposed to be here - but at least its decoration. Makes the place seem less drab...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128064;" title="&#128064;" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/1f440-51DEA.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 11:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="825860038761381949" id="message-825860038761381949">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Only wishing I had my tricorder. Or at least some reactants. You&#39;d be amazed what you can cook up with a particular sample. Though this could range from a powerful hallucinagen, a deadly poison, or a lovely addition to a salad.&quot; <em>If anything, the fixation on potentials helped distract from the situation. Grief wasn&#39;t an emotion he ever planned to dabble in. And one that wouldn&#39;t serve him well right this moment.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/637075614662393868-CC03F.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/4de344c2baf9303e657ab5c902e69a9e-42C3E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ephrix#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">MCPO. Eshen&#39;strars Houston</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 11:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="825863798261809232" id="message-825863798261809232">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;The Iconians are energy beings, are they not? I&#39;m hardly a medic, but something tells me that hallucinogens or poisons may not work on them... And I&#39;m not certain that we should trust it in a salad.&quot; <em>Saren&#39;s idle musing over the fungus at the centre of the room served as a distraction, at least. Silence was crucial in a counselling setting but he had never had an issue with filling the silent gaps in between normal conversation. It was almost comforting to know that they could speak like this, about something completely untoward, despite the circumstances.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 11:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="825864729305415701" id="message-825864729305415701">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He nods at his contribution.</em> &quot;True. Though there are some with pizoelectric properties.&quot; <em>He warried a bit. The man was right: This was unlikely to function in the ways he might want it to. The list of possibilities diminished in his head. Perhaps it would be better to wait.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/4de344c2baf9303e657ab5c902e69a9e-42C3E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ephrix#7477" data-user-id="635608785196679188" style="color: rgb(41,169,238)">MCPO. Eshen&#39;strars Houston</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 12:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="825873253280645161" id="message-825873253280645161">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;m not even going to pretend to know what that word means, I&#39;m afraid. Pizoelectric? I know electric, but not the rest.&quot; <em>He tilted his head a little, one antenna twitching.</em> &quot;What&#39;s the difference? If you don&#39;t mind educating the stupid, that is.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 12:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="825873820350414909" id="message-825873820350414909">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Piezoelectric is a property of crystals, ceramics, and some biological structures like bone. It&#39;s an ability to carry a current due to pressure and latent heat. It&#39;s not the same as conductivity but it would, in theory, help out somewhat. I don&#39;t entirely like the odds of that doing much to a Demon.&quot; <em>He shrugged, moving to lay back on his bed. Patience. Patience.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-AE3D8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="825802521263079515" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 01:01 AM</span>
+
+            <div class="chatlog__message " data-message-id="825882253208715278" id="message-825882253208715278">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo could cry. At the moment she was quietly smacking her head against the wall and waiting for something to happen that wasn&#39;t <strong>mushrooms</strong>.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127812;" title="&#127812;" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/1f344-4F117.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/d79ef58f9511678e9643d0671cad66c5-2B145.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="DocGreen#9520" data-user-id="729910725337808936" style="color: rgb(245,182,10)">Ensign S&#39;vrk Syllak</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="825952636388769802" id="message-825952636388769802">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Syllak entered the cell before the door closed again behind him and, after a quick look around, silently chose what he guessed was one of the free beds, ignoring the conversation and other occupants for now. He curled up in a ball on it, placing aside the jumpsuit to change into later. One could think he was having some sort of breakdown as he began muttering something under his breath, but it was not actually meant to himself. Indeed, comforting the two little beings he&#39;d gotten out of his pockets just now was his goal at the moment. It was only logical to do this first, obviously.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Mar-21 05:46 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128000;" title="&#128000;" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/1f400-5996A.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="825963691563286559" id="message-825963691563286559">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Romulan lay back on his bed, content that the mushroom had long since stopped being interesting and boredom already began to set in. What he wouldn&#39;t give for a set of cards or a dice. His brow raised at the entering Thaessu.</em> &quot;Ah. Welcome, welcome. Accommodations may not be quite as labeled but there is a free mint on the bed. Unless I already ate it. It has been a while, hasn&#39;t it?&quot;
+
+<em>Appropriate for the situation? Probably not. But good humor was important to a R&#39;Mor. Helped focus on the future and not on the dismal present.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128514;" title="&#128514;" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/1f602-8A1BE.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 07:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="826884210429263872" id="message-826884210429263872">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lihne woke up and after dressing, sat down to try and take stock of the situation. She wondered about the condition of the rest of the crew and whether her friends in the crew still ok.  &quot;All my talk of being inspiree by you Dad, and here I am just sitting in this cell like a good little....slave. Am I sucha good Officer I couldnt do anything.&quot;</em>
+     <em>She began staring at the wall, trying to put her mind back in order before more happened.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="31-Mar-21 08:09 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 08:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="826906397106241546" id="message-826906397106241546">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Saren looked up from playing with his pin, giving a light wave to the woman.</em> &quot;Hey. You doing alright there?&quot; <em>He asked with some concern. He&#39;d spent most of his time in his cell outside of his work shifts. It wasn&#39;t as easy to maintain his smile without his pin and he didn&#39;t want them taking it from him. So he stayed where it was.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 09:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="826910015767969903" id="message-826910015767969903">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She jumped slightly at the voice speaking to her. Since their incarceration, she was finding herself almost hungry for any conversation not involving Iconians.</em> &quot;Yeah, sorry. I was just trying to get my mind back in the right frame for another day in Iconian captivity. Sorry if I worried you....Im Lihne.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 09:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="826917043655802931" id="message-826917043655802931">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He nodded, playing with the gold and white emblem in his hand.</em> &quot;Saren R&#39;Mor. Medical. And apparently mycology.&quot; <em>He chuckled, eyeing the strange glowing mushroom in the floor.</em> &quot;I&#39;ve been trying to distract our cellmates by theorizing what it might do. In all honesty, it likely just provides a bit of light and not much else. But who knows?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 10:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="826926397644734525" id="message-826926397644734525">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Your guess is good as mine. Im a Xenoarcheologist, so in terms of what this i have no idea.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 10:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="826932112476995585" id="message-826932112476995585">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He shrugged.</em> &quot;Demons are strange things. Supposedly corporeal but not that we really get to see. Such power and yet so petty...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 11:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="826944034902638652" id="message-826944034902638652">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well, not sure what good im going to be for them. Not like im a chemist or can make outstanding computer programs for  multitude of applications.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 11:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="826947450589282315" id="message-826947450589282315">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh, I&#39;m sure you can be useful. You&#39;ll be the only one of us who stands a chance at their trivia nights.&quot; <em>He smiled, moving through his bag. Surely he could find a decent container...</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 01:18 AM</span>
+
+            <div class="chatlog__message " data-message-id="826973642579247154" id="message-826973642579247154">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I doubt these guys even know the concept of trivia, much less enjoyment of it.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="01-Apr-21 08:34 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 04:09 AM</span>
+
+            <div class="chatlog__message " data-message-id="827016803045605426" id="message-827016803045605426">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He shrugged, taking out the closest thing to a sharp implement in his possession. The time for idle speculation was at an end, trying to cut at the head of the mushroom and cut a piece off.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-AE3D8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="825802521263079515" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">01-Apr-21 06:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="827045503526895646" id="message-827045503526895646">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo had totally been doing whatever she was expected to do by the guards, albeit unhappily. She had just stepped back into the room when she realized the Romulan guy was doing mushrooms again. She contemplated walking back out again.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 08:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="827261057986330664" id="message-827261057986330664">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Im not sure if we should be doing that,&quot; <em>Lihne spoke up.</em> &quot;Why would they be left here in our room like this? Do we know whether they&#39;re trying to do something to us with these things?&quot; <em>She looked over at the new return as she was speaking to Saren.</em> 
+&quot;If im mistaken or being too cautious, please let me know.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 08:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="827263597331611679" id="message-827263597331611679">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well I intend on finding a certain unpronouncable last named friend of mine for consultation. And a sample might make things easier.&quot; <em>He offered, wrapping some cloth around his face as he cut off the sample.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 08:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="827263779301097522" id="message-827263779301097522">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She covered her face as well, watching cautiously.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-AE3D8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="825802521263079515" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">01-Apr-21 11:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="827304738680209428" id="message-827304738680209428">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo just smacked her head against the wall.</em> &quot;Just eat the damn thing. Things can literally only go up from here.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 03:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="827369363975569438" id="message-827369363975569438">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He shrugged. Frankly? She was right on some level. He tossed half the cap in his mouth curiously. Since it hadn&#39;t exploded, worst it could do was kill him quickly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="gasp" title="gasp" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/637082216979103794-99F13.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128591;" title="&#128591;" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/1f64f-71468.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-AE3D8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="825802521263079515" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">02-Apr-21 05:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="827397440478117889" id="message-827397440478117889">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo&#39;s eyebrows rose, her eyes widened slightly, and her mouth parted into a barely there grin. He actually did it! She couldn&#39;t believe it.</em> &quot;So, how is it?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 04:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="827572521200255018" id="message-827572521200255018">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Romulan&#39;s face instantly soured, spitting out the bit with a cough and a laugh.</em> &quot;Well, looks like that&#39;s that fun over with...&quot; <em>He continued to cough, retching from the taste. Even so, he moved to add another cutting to his bag. He planned on getting out of here and...Frankly, he had a suspicion there was mycologist out there who might pay decently for unique sampels.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 08:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="827630497248706593" id="message-827630497248706593">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Im sure we were able to get a distress beacon out, like last time I was in a situation like this. Starfleet has got to be on its way.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 11:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="827666536881586226" id="message-827666536881586226">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He continued to wiped his tongue with a bit of cloth, just trying to get the foul taste out.</em> “Oh, I’m certain we’ll be fine. Frankly, I’ve been paid more to save people from tighter spots. Not that this isn’t a living hell but I choose to think the Angels will save us like they always do. In the meantime, we can make it easier on them by avoiding an untimely demise and maybe making some good trouble for the Demons below.” <em>R’Mor was always fond of Romulan Mythology. Its abstract nature and enigmatic beliefs made it hard to decipher if he was a true believer or a cynic.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-AE3D8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="825802521263079515" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">02-Apr-21 11:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="827668149909585980" id="message-827668149909585980">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo cackled at the Romulan&#39;s reaction to the mushroom.</em> &quot;That bad, huh? And I wouldn&#39;t count on Starfleet to care enough to send out officers to try and rescue us. Even if they did, they certainly wouldn&#39;t rescue all of us.&quot; 
+
+<em>Nemo leaned back against the wall.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 11:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="827670742430253117" id="message-827670742430253117">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;If there&#39;s one thing I&#39;ve learned over the years from talking to fellow immigrants: It&#39;s that the Federation has an uncanny habit of appearing where it is least wanted and most inconvenient. And I assure you, the Iconians very much so don&#39;t want any Galaxy Class showing up.&quot; <em>He chuckled, lying back on his bed. He did start to wonder how long they&#39;d actually been in here. Even with the schedule, it all blurred together.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-AE3D8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="825802521263079515" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">02-Apr-21 11:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="827674563861151766" id="message-827674563861151766">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo made a noise in the back of her throat and crossed her arms against her chest.</em> &quot;Forgive me if I don&#39;t really believe in the Federation.&quot;
+
+<em>She used to, but she didn&#39;t anymore. She couldn&#39;t. Before Jayne gave her life for her captain she was considering transferring to the star ship, just to be closer to Jayne. Now that Jayne was gone, her beautiful positronic mind blasted into billions of pieces, Nemo couldn&#39;t believe in the Federation. She cursed their stupid moral values, giving their lives to save higher ups instead of living the klingon way she knew. 
+
+Nemo&#39;s face had blanked out as she was thinking, making it resemble more stone than flesh. She wouldn&#39;t show any vulnerability to them. She didn&#39;t know them, and she certainly didn&#39;t trust them. She knew that these people wouldn&#39;t hurt her, but that was only because of their stupid ideals that everyone should live in a peaceful environment. 
+
+The Federation would be wrong there. Everyone dies, and more often then not they die in pain and alone.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/1f62d-FE9EC.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="smad" title="smad" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/814231760933617679-518F3.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 12:13 AM</span>
+
+            <div class="chatlog__message " data-message-id="827682063867707442" id="message-827682063867707442">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I have to wonder how much the Nausicans might charge for a rescue mission. Or the Syndicate. Doubt my slush fund is quite enough for a battle with the Devil.&quot; <em>He mused to the air, occasionally still gagging, trying to stabilize his poor, poor tastebuds.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-AE3D8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="825802521263079515" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">04-Apr-21 01:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="828060307326631966" id="message-828060307326631966">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo wondered too. She used to be making a name for herself as a hired hitman, but now she was in prison. Even before, she was ready to throw it all away. Now, her reputation would mean nothing to the Syndicate, ensuring that no one would come help her off of the stupid prison of metal she was in. She didn&#39;t say anything.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">04-Apr-21 05:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="828306384809885716" id="message-828306384809885716">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>As Saren woke up for the morning, he cursed his internal calendar. April 4th. A day before the Earth holiday but a very important day to Saren. If he was back on Freecloud, he&#39;d be enjoying a big meal with his relatives. Sharing that holiday with two other cousins and an uncle hardly meant he&#39;d be the center of attention but it at least meant a party. And time to see his sister and his brothers. They were probably doing just that even without him. It&#39;s what he would have wanted them to do.
+
+But he always called. Always kept in touch. Would they worry? Surely. Cousin Pratal was certainly already proclaiming his death, if only as R&#39;Mor dark humor. Joval would hold out for Elements know how long.
+
+For now, all Saren could do was hum a familiar tune and dream of next year in Freecloud.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-AE3D8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="825802521263079515" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">04-Apr-21 06:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="828314543297658931" id="message-828314543297658931">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo was awoken by the most god awful sound. She sat up and realized it was, of course, coming from her room mate. No. No no no no no. This wasn&#39;t some Andorian musical, she could not- would not - put up with humming. 
+
+She reached down onto the ground, picked up a pebble, and yoinked it at the Romulan&#39;s head.</em> &quot;Shut. Up.&quot; <em>She batted her lashes and smiled sweetly-</em> &quot;Please.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="04-Apr-21 06:07 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 01:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="828422469332500481" id="message-828422469332500481">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>R&#39;Mor flinched as he rubbed his side.</em> &quot;Yeesh. Give a man his memories, will you?&quot; <em>He moved to stand up, deciding it&#39;d be better away from here and maybe clear his head a bit.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129730;" title="&#129730;" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/1fac2-53FF6.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">05-Apr-21 07:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="828696666881130566" id="message-828696666881130566">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She stepped back into the quarters, tugging at her clothes and sitting down with a sigh. She had been escorted on a walk around the grounds, probably to keep her in shape and now she was tired.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/9281c46a6f93c0d758243732faff1977-B6B87.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ezri Steel#6920" data-user-id="168216630726361089" style="color: rgb(41,169,238)">Lt. JG. Saren R&#39;Mor</span>
+
+
+        <span class="chatlog__timestamp">06-Apr-21 08:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="829074543075262495" id="message-829074543075262495">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>R&#39;Mor returned from his excursion, somehow happier than when he left. At least he had a better idea of his tools and, subtly, a better understanding of some plan being in place. The details weren&#39;t important but at least it meant the Angels might come. Might.
+
+Saren was always a gambling man.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 12:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="831130617018056764" id="message-831130617018056764">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>After returning from her walk and talk with Ota, she had made her way back to her bunk and had fallen into the first nightmare laden sleep in a while. The next morning, she woke up and prepared herself for the next day in captivity.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 02:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="831153652873560065" id="message-831153652873560065">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Now....where to go? Not like there are many options.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 02:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="831162364366815262" id="message-831162364366815262">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Standing up, she headed out, looking around to try and study any kind of monitoring layouts as she went.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-AE3D8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="825802521263079515" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">12-Apr-21 04:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="831182788941054064" id="message-831182788941054064">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo was tossed back into her cell after her shift.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20High%20Security%20Block%20Two%20-%20group-five%20%5B825747657380069396%5D.html_Files/b5c7f20dd4adf84a606db4df021d4636-AE3D8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="SuvwI&#39; cha&#39;DIch Nemo#0000" data-user-id="825802521263079515" style="">SuvwI&#39; cha&#39;DIch Nemo</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">12-Apr-21 06:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="831217740849217557" id="message-831217740849217557">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nemo left shortly after for her recreational time.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 61 message(s)</div>
+</div>
+
+</body>
+
+</html>

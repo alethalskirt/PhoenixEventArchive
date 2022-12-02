@@ -1,0 +1,3792 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - requisitions</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Deconstruction Pit / requisitions</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 04:36 PM</span>
+
+            <div class="chatlog__message chatlog__message--pinned" data-message-id="825755246768685117" id="message-825755246768685117">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>Requsitions was a very official-looking building between the entrance to the pits and the shuttle bay. Stacked behind a counter in large racks were hundreds of bottles of Oxygen, basically latinum in gas form if an inmate could get their hands on that many of them. Each inmate received two bottles of Oxygen a day, just enough to last the inmates for their shift.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 03:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="826105575812628481" id="message-826105575812628481">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Derf was here now, fussing over the oxygen bottles.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127465;" title="&#127465;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f1e9-5BADE.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127466;" title="&#127466;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f1ea-4B558.png">
+                                <span class="chatlog__reaction-count">9</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127479;" title="&#127479;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f1f7-2C305.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127467;" title="&#127467;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f1eb-E45E1.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 04:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="826108687101460480" id="message-826108687101460480">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Aaron trudged into requisitions and walked up to the counter, still nervous about the lack of Oxygen in his suit.</em> &quot;Could I get an Oxygen tank please?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 04:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="826112127051759707" id="message-826112127051759707">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maladar eyed the newcomer.</em> &quot;Do you have anything to give me?&quot; <em>He asked hopefully.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 04:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="826112426402381844" id="message-826112426402381844">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Ummmm, no. I just got here actually.&quot; <em>Okay, now he was confused.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/2b555dd0dd10ccd310d82297da7c82e5-86F59.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="&#120071;&#120094;&#120111;&#120104; &#120068;&#120107;&#120100;&#120098;&#120105;#8039" data-user-id="689530475630428175" style="color: rgb(215,52,42)">Lt. JG. S&#39;Kiv</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 04:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="826119108604985344" id="message-826119108604985344">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>S‘Kiv entered.</em> „I need an oxygen bottle and a scratching tool for my shift out there.“</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 04:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="826119554748645397" id="message-826119554748645397">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie nodded as she walked in.</em> “I need to do the same, for work and what not.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/bc881c40eb38fcc2df0d68b83b670964-65090.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Prison Guard#0000" data-user-id="826105575150583808" style="">Prison Guard</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 04:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="826120146514870322" id="message-826120146514870322">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Seeing that Derf was taking his sweet time with the first one, the guard went into the back and emerged with two scrapping tools and four O2 bottles.</em> &quot;<strong>Two bottles and a tool each.</strong>&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/2b555dd0dd10ccd310d82297da7c82e5-86F59.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="&#120071;&#120094;&#120111;&#120104; &#120068;&#120107;&#120100;&#120098;&#120105;#8039" data-user-id="689530475630428175" style="color: rgb(215,52,42)">Lt. JG. S&#39;Kiv</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 04:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="826120910339047435" id="message-826120910339047435">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Thank you.&quot; <em>He replied sarcastically. S&#39;Kiv took the tool in one hand and put the bottle at it&#39;s place on his suit so he could breathe out there. Then he left.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 04:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="826121430785720320" id="message-826121430785720320">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie looked over to the guard with a nod.</em> “Thank you.” <em>Even if she would hopefully be taking part in that guards murder later on. She could at least be nice. So, she headed up high.</em>￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 05:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="826126523148009492" id="message-826126523148009492">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Derf, whose writer had forgotten to turn notifications on in this channel, pouted.</em> &quot;Nobody ever has anything to give me.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="826127327263850567" id="message-826127327263850567">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Aaron looked at Derf. And sighed. And rolled up his right sleeve to reveal the robot arm. He opened it and fiddled about inside, taking out what was probably an unimportant piece and putting it on the counter.</em> &quot;There. Can I have my stuff now.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 05:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="826127879993425972" id="message-826127879993425972">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Derf&#39;s face lit up. He snickered gleefully and stuffed the piece in his pocket, then handed over one tool and two O2 bottles.</em> &quot;A pleasure doing business with you.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="826128782016512020" id="message-826128782016512020">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Fine. Whatever.&quot; <em>He took his O2 bottles and clipped them to his suit, taking the tool and walking out to the walkways.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/d38d44af204ecd1cfdfef0d7124d2755-8850B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="tzening123#9622" data-user-id="377468740830494726" style="color: rgb(215,52,42)">Ensign Joseph Tan</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="826132024876072960" id="message-826132024876072960">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Joe walked in.</em> “I need an oxygen tank and a tool.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 05:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="826132201606348800" id="message-826132201606348800">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Do you have things? Things for me?&quot; <em>Thunk. He placed two tanks and a set of tools on the counter.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/d38d44af204ecd1cfdfef0d7124d2755-8850B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="tzening123#9622" data-user-id="377468740830494726" style="color: rgb(215,52,42)">Ensign Joseph Tan</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="826132345886605392" id="message-826132345886605392">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Unfortunately no. Our lovely host took it all.” <em>He used his eyes to point at the guards.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 05:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="826132551235272724" id="message-826132551235272724">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Euuuuuugh.&quot; <em>He shoved the items over.</em> &quot;You owe me.&quot; <em>This was not an enforceable statement.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/d38d44af204ecd1cfdfef0d7124d2755-8850B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="tzening123#9622" data-user-id="377468740830494726" style="color: rgb(215,52,42)">Ensign Joseph Tan</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="826132971638489148" id="message-826132971638489148">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He groaned at Derf while taking his things and walking out.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="826134633087369286" id="message-826134633087369286">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He entered the room and approached the... was this a prisoner? A guard? He wasn&#39;t sure.</em> &quot;Oxygen, please.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 05:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="826135559356940329" id="message-826135559356940329">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Items for me?&quot; <em>He did a little grabby hand gesture.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/27e4c3066a25b74454b28c9abefe70c1-52933.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Ornock#0000" data-user-id="826105575150583808" style="">Suvwl&#39; wa&#39;DIch Ornock</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 05:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="826137027618930698" id="message-826137027618930698">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ornock entered and waited behind Parlac. He glared at the guard while looking around.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="826137225262661684" id="message-826137225262661684">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac looked down at the inmate and raised a brow.</em> &quot;No,&quot; <em>he replied.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 05:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="826137510647431168" id="message-826137510647431168">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Grr...&quot; <em>He slid the O2 tanks and tools over and beckoned the Klingon over.</em> &quot;Items! For me.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/27e4c3066a25b74454b28c9abefe70c1-52933.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Ornock#0000" data-user-id="826105575150583808" style="">Suvwl&#39; wa&#39;DIch Ornock</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 05:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="826137773747601439" id="message-826137773747601439">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He growled at Derf.</em> “Do not test my patience, Pe’TaQ ! Oxygen and tool now !” <em>He slammed the counter with his fist.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="826137780967047218" id="message-826137780967047218">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac took them and exited.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 05:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="826138343057260554" id="message-826138343057260554">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Derf squeaked and shoved two O2 tanks and a set of tools across the counter, then ducked behind it.</em> &quot;Bring some next time.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/27e4c3066a25b74454b28c9abefe70c1-52933.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Suvwl&#39; wa&#39;DIch Ornock#0000" data-user-id="826105575150583808" style="">Suvwl&#39; wa&#39;DIch Ornock</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 06:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="826138704190898207" id="message-826138704190898207">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He growled at Derf again.</em> “Worthless little Targ.” <em>He grabbed his things and walked out.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/f7b2a6ebf0f89fb7afad410576f6a7c4-92732.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Alexvella36#0952" data-user-id="293465550590443524" style="color: rgb(215,52,42)">Ensign Lena Farkas</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="826166205542432800" id="message-826166205542432800">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lena walked into the room, he was observing his surroundings quietly as he approached the counter, remaining silent for almost 30 seconds with a death-glare before saying.</em> &quot;First day here, need my equipment for the day, nothing more, nothing less.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 07:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="826167028330790933" id="message-826167028330790933">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Items for me?&quot; <em>He asked eagerly, poking his head up over the counter, body in a defensive crouch.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/f7b2a6ebf0f89fb7afad410576f6a7c4-92732.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Alexvella36#0952" data-user-id="293465550590443524" style="color: rgb(215,52,42)">Ensign Lena Farkas</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="826167236309418025" id="message-826167236309418025">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lena kept up the death-glare, replying.</em> &quot;Guess.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 07:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="826167555063545856" id="message-826167555063545856">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Many items?&quot; <em>He said hopefully.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/f7b2a6ebf0f89fb7afad410576f6a7c4-92732.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Alexvella36#0952" data-user-id="293465550590443524" style="color: rgb(215,52,42)">Ensign Lena Farkas</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="826167821720879193" id="message-826167821720879193">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lena took a bit to respond, his glare getting more intense for a second before he replied.</em> &quot;None.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 07:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="826168007041876019" id="message-826168007041876019">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Euuuuuuugh.&quot; <em>Two tanks and a tool set slid across the counter.</em> &quot;Bring things next time.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/f7b2a6ebf0f89fb7afad410576f6a7c4-92732.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Alexvella36#0952" data-user-id="293465550590443524" style="color: rgb(215,52,42)">Ensign Lena Farkas</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 07:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="826168441588285481" id="message-826168441588285481">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;No.&quot; <em>Lena spoke as he grabbed the items, walking out without further acknowledging Derf.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">29-Mar-21 07:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="826168599529521162" id="message-826168599529521162">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He ducked back behind the counter, eyes just barely peering over like some kind of horrid crocodile.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 09:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="826185198844248084" id="message-826185198844248084">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She approached the counter. For legal reasons Derf was momentarily distracted, so she got her O2 and tools from another guard.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">30-Mar-21 07:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="826522616608718868" id="message-826522616608718868">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie entered and quickly grabbed her supplies, very much avoiding Derf as she grabbed them. Before heading up.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">30-Mar-21 07:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="826523162489389117" id="message-826523162489389117">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Eugh, never any items. Sly, sly Starfleet.&quot; <em>He grumbled in the background.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/f7b2a6ebf0f89fb7afad410576f6a7c4-92732.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Alexvella36#0952" data-user-id="293465550590443524" style="color: rgb(215,52,42)">Ensign Lena Farkas</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 06:49 AM</span>
+
+            <div class="chatlog__message " data-message-id="826694657366949949" id="message-826694657366949949">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>After being beamed into the pits, Lena stopped at the Req room, ignoring Derf as he grabbed his supplies, and leaving for work.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 06:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="826873472960561213" id="message-826873472960561213">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Nev appeared here after leaving the rec room Scheming Session. They surveyed the requisitions building, before sliding behind the counter next to none other than Maladar Derf. They ignored him save for an initial glance, and then got to work.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf឵#0000" data-user-id="826105575150583808" style="">Maladar Derf឵</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">31-Mar-21 06:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="826873951174787154" id="message-826873951174787154">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Starfleet? Starfleet items?&quot; <em>Derf was laying on his back on the counter staring forlornly at the ceiling, doing no work. This would have certainly gotten him in trouble if his job wasn&#39;t to supervise.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 06:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="826874343027507240" id="message-826874343027507240">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nev looked at Derf, then at the O2 container in their hands, then back at Derf once more.</em> “No Starfleet items.” <em>They said.</em> “But why do you ask?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf឵#0000" data-user-id="826105575150583808" style="">Maladar Derf឵</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">31-Mar-21 06:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="826874996109607023" id="message-826874996109607023">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;To make things go. The Continuum flows past and washes nothing onto its shores. No items for me.&quot; <em>He was sulking.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 06:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="826876246612115557" id="message-826876246612115557">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They didn’t say anything for a moment, mulling over the options for a possible response. Mostly though, they were trying to figure out exactly what Derf... was.</em> “What happens if I get you Starfleet items?” <em>They mused, almost as bait.</em> “What would I get out of it?”</span>
+
+                                <span class="chatlog__edited-timestamp" title="31-Mar-21 06:51 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">31-Mar-21 06:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="826876747093770270" id="message-826876747093770270">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Things that go. Information. The continuum provides.&quot; <em>He suddenly jumped up, landing on the counter on the balls of his feet, and rubbed his hands together.</em> &quot;Do you want things?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 07:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="826883835882111027" id="message-826883835882111027">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>What the-</em> “Perhaps.” <em>They hummed, the evenness of their tone not betraying just how weirded out by this little man they were.</em> “Depends what kind of items you have to trade. I can get you Starfleet items, or other things if you want them- but I want a fair trade.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">31-Mar-21 07:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="826886065721835521" id="message-826886065721835521">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I have many things.&quot; <em>He said in a stage whisper. His eyes glittered. He remained perched like a bird on the counter. It was kind of a miracle he was able to get away with openly soliciting contraband, frankly.</em> &quot;Shiny things, moving things, teeth-&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="ohno" title="ohno" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/668960662709338113-B9DE8.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="bonk" title="bonk" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/737004715379785728-467E4.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129463;" title="&#129463;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f9b7-1FDFD.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 07:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="826886788777508886" id="message-826886788777508886">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The internal monologue in their head was something along the lines of &#39;whatthefuckwhatthefuck&#39;, but in reality all they did was blink.</em> &quot;Okay.&quot; <em>They crossed their arms, opting to ignore the teeth part.</em> &quot;Moving things. That interests me.&quot; <em>Their voice lowered.</em> &quot;What would you like in return for a moving thing?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">31-Mar-21 07:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="826887112203829289" id="message-826887112203829289">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Derf reached into one pocket and pulled out a mostly-broken hyperspanner.</em> &quot;What do you have?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 07:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="826889582742077500" id="message-826889582742077500">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>A single eyebrow raised at that. A hyperspanner- that could be incredibly useful, though they&#39;d have to find someone to repair it. They reached into the their own pocket, finding the only thing they&#39;d managed to squirrel away so far: an incredible shiny but small piece of circular metal, rounded off at the corners. It bore half of the Starfleet insignia burned off on one end. Nev had spotted it on the line and had been keeping it for some almost stupidly sentimental reason, planning to pass it off to someone on the off chance it actually was from the Phoenix, but instead they held it out to Derf.</em> &quot;A Starfleet thing.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">31-Mar-21 07:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="826889858248605696" id="message-826889858248605696">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Derf snatched it, then stuffed both items back in his pockets with a grin.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="WOAH" title="WOAH" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/713318236585721896-80898.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="phaserworf" title="phaserworf" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/816576642880241684-5F84E.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 07:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="826891104950943754" id="message-826891104950943754">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nev watched that exchange with a stoic expression, before cooly stepping forward towards the counter and fixing Derf with an unmoving stare.</em> &quot;From the way we&#39;re standing, there are about fifteen different ways I could break one of your bones. And that&#39;s not counting what happens when I pull you down from that counter.&quot;  <em>They said, voice low- and to Derf, maybe even dangerous.</em> &quot;So I would suggest you give me the hyperspanner.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">31-Mar-21 07:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="826891326523703306" id="message-826891326523703306">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I have more bones.&quot; <em>He said mock-confidently, voice wavering. He leapt backwards and down, now behind the counter, hiding.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 07:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="826891676072017926" id="message-826891676072017926">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They stared down at Derf, antennae twitching slightly in annoyance.</em> &quot;And I have all the time in the world. Would you like to see how long it would take?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">31-Mar-21 07:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="826892063919964214" id="message-826892063919964214">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;We have the same amount of time.&quot; <em>Derf sulked.</em> &quot;What items would you give more things for?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 07:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="826892518527991869" id="message-826892518527991869">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Was he serious?</em> &quot;If you give me that hyperspanner, I will get you a tooth.&quot; <em>They offered, as if they had a tooth to give him at that point. It was completely believable coming out of their mouth, however.</em> &quot;How does that sound?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">31-Mar-21 07:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="826893215852003338" id="message-826893215852003338">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Will you get other Starfleets to get me more things?&quot; <em>He poked his head back up over the counter.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 08:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="826893665678393394" id="message-826893665678393394">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I can.&quot; <em>Nev held out their hand in front of Derf&#39;s face, clearly expecting a certain something to be placed in it.</em> &quot;I&#39;m sure they&#39;d be more than willing to bring you things, as long as you&#39;re <em>fair</em> about it.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">31-Mar-21 08:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="826894086337462363" id="message-826894086337462363">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Derf handed over the broken hyperspanner and, as a treat, a shard of something blue and ceramic that had probably once been part of a vase.</em> &quot;I can be fair. Get me more things.&quot;  <em>He stood again.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">31-Mar-21 08:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="826897257285812254" id="message-826897257285812254">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They looked around the building, checking to see if any guards were watching, before snatching the hyperspanner and by extension, the vase shard, and sliding both into their pocket.</em> &quot;Thank you. I will be fair as well- I will get you more things.&quot; <em>They said simply, before turning towards the inventory and grabbing a set of oxygen tanks for the next scrap worker.</em> &quot;Do you have some sort of working deal with the guards here?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">31-Mar-21 08:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="826897893746016327" id="message-826897893746016327">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;No, I have no deal. I am Pakled.&quot; <em>They said this with an evil little gleam in their eye and a great deal of mischievous hand-rubbing.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 02:00 AM</span>
+
+            <div class="chatlog__message " data-message-id="826984370854166549" id="message-826984370854166549">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nev almost snapped their fingers. Pakled- that was it. That made a lot of sense.</em> &quot;So how do you get away with so much?&quot; <em>They asked.</em> &quot;There&#39;s not way anyone is that good at keeping things for so long.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">01-Apr-21 02:01 AM</span>
+
+            <div class="chatlog__message " data-message-id="826984711166623794" id="message-826984711166623794">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Derf put on his most vacant expression. There were no brain cells in that head, none whatsoever.</em> &quot;We are Pakled.&quot; <em>He said in monotone.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 02:07 AM</span>
+
+            <div class="chatlog__message " data-message-id="826986002400149515" id="message-826986002400149515">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Their mouth set in a slightly annoyed line. Another approach.</em> &quot;Okay. Say I gave you something extremely valuable- for example, my finest piece of a Starfleet thing. Or a- a tooth. Where would you put it?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">01-Apr-21 02:09 AM</span>
+
+            <div class="chatlog__message " data-message-id="826986629797380167" id="message-826986629797380167">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Teeeeeeeeeeeeth.&quot; <em>He said dreamily. He had his reasons, but no intention of revealing them.</em> &quot;Mattress or shower.&quot; <em>He added in a low whisper, leaning forwards.</em> &quot;Will you give me teeth, Starfleet?&quot; <em>He said in his normal voice, rubbing his hands together.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 02:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="826988226661056573" id="message-826988226661056573">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They very intentionally waited until leaning back before opening their mouth again. Who knows how far Derf was willing to obtain the precious pearly whites?</em> &quot;Mattress or shower, hmm? Mattress makes sense, but shower... I suppose it&#39;d make sense for there not to be cameras in there. Oh, and sure-&quot; <em>They tacked on simply.</em> &quot;I&#39;ll get you some teeth.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129463;" title="&#129463;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f9b7-1FDFD.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">01-Apr-21 02:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="826991965248684083" id="message-826991965248684083">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Eugh. You repeat my words out loud.&quot; <em>More hand rubbing. Did it ever stop?</em> &quot;Yes yes, items for me. Many items, many Starfleet items.&quot; <em>Usually this made people leave by now, and frankly he was running out of material. (And patience, considering the lack of further little trinkets.)</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 02:51 AM</span>
+
+            <div class="chatlog__message " data-message-id="826997050603339787" id="message-826997050603339787">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Mmm hmm, many items...&quot; <em>They muttered, watching Derf as he rubbed his gremlin hands together. It was becoming very obvious he was getting antsy, and that was right where Nev wanted him.</em> &quot;What&#39;s the obsession with Starfleet things? What&#39;s so special about them?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">01-Apr-21 02:52 AM</span>
+
+            <div class="chatlog__message " data-message-id="826997521464688711" id="message-826997521464688711">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;...You are Starfleet, you have Starfleet items. Klingons have Klingon items, Heralds Herald items. No more questions.&quot; <em>He said swiftly, shooing Nev away.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 02:58 AM</span>
+
+            <div class="chatlog__message " data-message-id="826998908064497674" id="message-826998908064497674">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They rolled their eyes and put up a placating hand, backing away.</em> &quot;Pleasure doing business with you.&quot; <em>They muttered, moving to the other end of the requisitions building to continue working. Gods above, that was strange.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">01-Apr-21 02:58 AM</span>
+
+            <div class="chatlog__message " data-message-id="826999042411200537" id="message-826999042411200537">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Derf let out an audible sigh of relief and ducked behind the counter cartoonishly, then started doing something with a couple of metal scraps.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 05:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="827220947081625631" id="message-827220947081625631">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He made no attempt to bargain with the inmate in charge of oxygen, acquiring what he needed and immediately leaving.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="this" title="this" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/637075614834229248-F5F87.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">01-Apr-21 05:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="827221096121630781" id="message-827221096121630781">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Faint grumbling emitted from behind the counter.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128514;" title="&#128514;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f602-8A1BE.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127468;" title="&#127468;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f1ec-E889A.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127476;" title="&#127476;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f1f4-6C4DE.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="⭕" title="⭕" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/2b55-2C031.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127465;" title="&#127465;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f1e9-5BADE.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 06:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="827234704989749328" id="message-827234704989749328">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac headed back indoors, waiting near the oxygen counter and doing his absolute best to ignore Derf&#39;s presence.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/640ec0813c71ccdb1e61015583d9f046-3EA0E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="goldenaces#8122" data-user-id="730612298099720225" style="color: rgb(255,203,37)">Lieutenant Mera Aeonian</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 06:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="827235473373921300" id="message-827235473373921300">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Mera soon followed, absently cracking her knuckles out of habit. She doubted that this was even real, maybe she&#39;d wake up on the bed again with Maggie&#39;s sobs. But it didn&#39;t happen, like it was taunting her, but this was no dream. She tried to tell herself that it was no dream, this was real, and it was happening. It was, it had to be. She was alive, and so was Rekat.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="pridesparkle" title="pridesparkle" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/706583201488961567-A33F3.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 06:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="827236284346138638" id="message-827236284346138638">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac took two steps forward and swept Mera into a hug. It was brief, he didn&#39;t want to risk her safety if the guards saw fit to intervene, but he wrapped his arms around her for a moment and squeezed tightly. The reality that she was alive and safe finally sank in-- she was solidly there. She was okay. Tears pricked the insides of his eyelids, and the helmet of the EV suit prevented him from wiping them away.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/640ec0813c71ccdb1e61015583d9f046-3EA0E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="goldenaces#8122" data-user-id="730612298099720225" style="color: rgb(255,203,37)">Lieutenant Mera Aeonian</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 06:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="827238907627175976" id="message-827238907627175976">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>As his arms wrapped around her then let go, Mera&#39;s voice broke, cracked, how could it not have,</em> &quot;I&#39;m so happy you&#39;re alive. I-&quot; <em>She stopped for her own good, not wanting to fog up her helmet. The sense of touch served to solidly ground Mera in reality, this was all real, he was alive, fine, but that word was heavily relative. She didn&#39;t know what to do next, the mere idea of seeing someone she was close to again already at the top of her list.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 06:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="827240013070073880" id="message-827240013070073880">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I am equally as thrilled, Mera,&quot; <em>he said, somehow managing to keep his voice steady,</em> &quot;I heard you were alive but... It is nothing compared to seeing you. Are you alright, under the circumstances? Uninjured?&quot; <em>He attempted a visual check, but the EV suit made that difficult; all he could discern was that her hair was braided instead of hanging loose.</em> &quot;Your hair is quite Cardassian today,&quot; <em>he said softly, raising a hand and placing it on the side of her helmet.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129402;" title="&#129402;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f97a-338D5.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/640ec0813c71ccdb1e61015583d9f046-3EA0E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="goldenaces#8122" data-user-id="730612298099720225" style="color: rgb(255,203,37)">Lieutenant Mera Aeonian</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 07:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="827243295464751105" id="message-827243295464751105">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Uninjured to an extent, yes, headaches much akin to simple scrapes now,&quot; <em>She shook her head slightly before looking back up at him. He looked somewhat more taxed now, even when he had been working himself far too hard back on the ship, this was a whole different rink. A few tears fell freely when he put a hand on her helmet,</em> &quot;Thank you,&quot; <em>Mera let out a sound halfway between a chuckle and a sob,</em> &quot;It&#39;s,&quot; <em>She sniffed harshly,</em>. &quot;A way to exert minimal effort and not need to cut it off.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 07:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="827244167860191312" id="message-827244167860191312">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;It&#39;s a shame such circumstances are what necessitated it; you look lovely,&quot; <em>He stepped closer and pressed his forehead to hers-- despite the helmets-- in a quick show of traditional Cardassian affection, before pulling away again.</em> &quot;I am relieved to hear you are mostly unharmed. I suffered some wounds during the boarding of the Phoenix, but I&#39;ve been since patched up. The work is oppressive and exhausting, but I have seen Commander T&#39;Svai. She-- let me know the captain didn&#39;t make it.&quot; <em>Unbidden, more tears pricked at his eyes and the back of his throat burned.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f62d-FE9EC.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/640ec0813c71ccdb1e61015583d9f046-3EA0E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="goldenaces#8122" data-user-id="730612298099720225" style="color: rgb(255,203,37)">Lieutenant Mera Aeonian</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 07:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="827250468589797426" id="message-827250468589797426">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Who knows, I may grow attached even if circumstances improve&quot; <em>The Cardassian show of affection was wholly welcome in Mera&#39;s eyes. Whatever worked for people worked, she was happy to be a conduit for it.</em> &quot;I&#39;m lucky to say I fared better than most. The Captain ordered us off the bridge, a few wanted to go back for her but it was already too late. She was brave, the bravest Captain I&#39;ve had.&quot; <em>Mera nodded solemnly, the lack of a proper grieving period weighing heavy on her mind. But she remembered what Syre said in the observation deck, about spirits, she hoped the Captain had peace in her final moments.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 08:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="827257147677999155" id="message-827257147677999155">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He nodded, his throat too tight to speak. Resolve roiled in his gut, a knot of emotions warring for what came out on top but he knew that no matter what, they were going to fix this. They were going to get out of there. He coughed, then made direct eye contact and said,</em> &quot;We&#39;re going to get through this, Mera. Have you seen anything that might be useful yet? I feel the pit is hardly the most information-rich location here, but I&#39;ve been doing what I can.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 09:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="827285583121743892" id="message-827285583121743892">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nervous of a guard that had been hovering nearby for longer than Parlac was comfortable with, he pulled Mera into one last quick hug and whispered,</em> &quot;I&#39;ll see you again soon. Stay safe.&quot; <em>He turned and headed out for the end of his shift.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/0763aa4d6f50af083f20eb9a824ea52d-ACA33.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CPO. T&#39;ed#0000" data-user-id="826105575150583808" style="">CPO. T&#39;ed</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">03-Apr-21 04:01 AM</span>
+
+            <div class="chatlog__message " data-message-id="827739635991445524" id="message-827739635991445524">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Here he entered. The Vulcan took a moment to place the bottles on and maybe to postpone the inevitable too, hiding the winces when he had to use that arm. Just a little bit longer, not too much to get the guards&#39; attention, but just a little...</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 04:04 AM</span>
+
+            <div class="chatlog__message " data-message-id="827740377238339594" id="message-827740377238339594">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nev eyed T&#39;ed with a careful eye after providing him with oxygen, picking up on... something. They weren&#39;t quite sure what, being he was Vulcan, but they were damned if they weren&#39;t going to find out.</em> &quot;You&#39;re lucky you got me and not the Pakled.&quot; <em>They opted to go with the single species descriptor, because really what words in the world were enough to describe Maladar Derf?</em> &quot;You from the Phoenix?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/0763aa4d6f50af083f20eb9a824ea52d-ACA33.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CPO. T&#39;ed#0000" data-user-id="826105575150583808" style="">CPO. T&#39;ed</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">03-Apr-21 04:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="827742339953852476" id="message-827742339953852476">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Vulcan froze for a moment, but it was the voice of the one providing the oxygen and not one of a guard. He looked at the person, an Orion-Andorian hybrid from what he could visually deciphered and wasn&#39;t this another life abomination, before answering.</em> &quot;Unfortunately.&quot; <em>he confirmed, regarding being from the Phoenix.</em> &quot;And why so, if I may ask? About the... Pakled.&quot; <em>He didn&#39;t like those either, and it kinda showed in his tone. Not his fault if they were so... Pakled.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 04:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="827744176443490324" id="message-827744176443490324">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Unfortunately?&quot; <em>They parroted, a single eyebrow lifting.</em> &quot;That&#39;s a new one. Interesting take, but definitely not one I&#39;d spread around.&quot; <em>They remarked, the suggestion also a well-veiled threat. Hell of a first impression this man was making- they didn&#39;t like him already.</em> &quot;The Pakled likes teeth, and generally running an unfair trading practice. I, on the other hand, do not- to either of those things.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/0763aa4d6f50af083f20eb9a824ea52d-ACA33.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CPO. T&#39;ed#0000" data-user-id="826105575150583808" style="">CPO. T&#39;ed</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">03-Apr-21 04:31 AM</span>
+
+            <div class="chatlog__message " data-message-id="827747049251536937" id="message-827747049251536937">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;What you may or may not spread around have no importance to me.&quot; <em>he stated impassively and unimpressed, before raising an eyebrow at the Pakled&#39;s antics.</em> &quot;Teeth? Though, the latter does not surprise me. They would need to be an intelligent life form to begin with to even know what is fair or not, thus we cannot hold it against them.&quot; <em>He took his tools on his wrong side as he was distracted, changing it immediately as he felt the pain. He hoped the wince looked like him trying to balance the thing and nothing else.</em> &quot;Was there a thing you required, or were you merely... chitchatting?&quot; <em>Disdain shadowed this word, though Rineva should slowly started to get used to it as a discussion with him without it was fairly rare.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 04:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="827749027759915009" id="message-827749027759915009">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They very barely resisted the urge to roll their eyes. What was it about them that was attracting this kind of company? Tooth man and an unpleasant Vulcan? If this was the worst the prison had to offer, Nev was almost disappointed.</em> &quot;I wouldn&#39;t go as far as that, but to each their own.&quot; <em>They said, watching as he switched the tools. Hmph.</em> &quot;As for &#39;chitchatting&#39;, no. We do <em>not</em> have to continue doing that- though maybe there is something you can do for me. What division did you work in, exactly?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/0763aa4d6f50af083f20eb9a824ea52d-ACA33.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CPO. T&#39;ed#0000" data-user-id="826105575150583808" style="">CPO. T&#39;ed</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">03-Apr-21 04:44 AM</span>
+
+            <div class="chatlog__message " data-message-id="827750346671390770" id="message-827750346671390770">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;To each their own.&quot; <em>he echoed, mentally adding that some people still knew better. Like him. Then, he answered,</em> &quot;Operations. Why?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 04:45 AM</span>
+
+            <div class="chatlog__message " data-message-id="827750652570370058" id="message-827750652570370058">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They snapped their fingers.</em> &quot;Great.&quot; <em>Leaning in closer to T&#39;ed (against their better judgement) they lowered their voice to a whisper.</em> &quot;If I told you I knew how to get my hands on, say, a hyperspanner, how opposed would you be to repairing it?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/0763aa4d6f50af083f20eb9a824ea52d-ACA33.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CPO. T&#39;ed#0000" data-user-id="826105575150583808" style="">CPO. T&#39;ed</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">03-Apr-21 04:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="827753678843805727" id="message-827753678843805727">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He raised an eyebrow again, and suffered through the closeness with this hybrid the act of whispering required.</em> &quot;It would depend of some... things. The risks, first. I do not look for... additional... violence from the guards. Second, why would I do this, for <em>you</em>? What is planned concerning it, and would it benefit my?&quot; <em>Third, he kept to himself, would it not be better to tell the guards this person have it? If they were to do something stupid with it and get caught with it anyway, for clearly if they could not repair it, they didn&#39;t know how to use it properly, he could get a better reputation with the guards. Still, he decided to wait for an answer before deciding, against his better judgement.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="WOAH" title="WOAH" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/713318236585721896-80898.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128298;" title="&#128298;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f52a-F16A8.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 05:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="827758084439932978" id="message-827758084439932978">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nev frowned.</em> &quot;The &#39;benefit&#39; is getting out of this place as soon as possible.&quot; <em>They explained, as though it were obvious. To them, it was.</em> &quot;And I&#39;ve found the guards are... more lax around here. Gods above know a certain someone is able to get away with quite a bit.&quot; <em>They crossed their arms, resisting the urge to chuck the hyperspanner right into his hands and make a demand.</em> &quot;But I&#39;d not like to continue with this conversation unless I know you&#39;re not going to- what&#39;s the phrase, &#39;rat me out&#39;? Something tells me you&#39;re not too keen on marking yourself as Phoenix crew, so why would I be an exception?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/0763aa4d6f50af083f20eb9a824ea52d-ACA33.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CPO. T&#39;ed#0000" data-user-id="826105575150583808" style="">CPO. T&#39;ed</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">03-Apr-21 05:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="827760560769859634" id="message-827760560769859634">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;If you do not give me a reason to, I will not. I too do desire to leave this place. The reason I do not like to associate with the Phoenix is that they are why I am here.&quot; <em>T&#39;ed huffed a little from the nose. What did they think? He wasn&#39;t worth rotting in there, but he couldn&#39;t just listen to the first idiot coming to him for help.</em> &quot;I simply wish to assure myself I am not taking unnecessary risks that will be rendered useless and brought but more suffering on mine. If that plan of yours is a real possibility and the guards really are, as you said, more &#39;lax&#39; here, you may have the honors of my agreeing to help.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 05:28 AM</span>
+
+            <div class="chatlog__message " data-message-id="827761482740531200" id="message-827761482740531200">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Oh, goody. They fixed T&#39;ed with a sickly sweet smile.</em> &quot;Lovely.&quot; <em>They turned, scanning the racks before grabbing a container of oxygen. In one swift move they moved the hyperspanner from their pocket to the space in between the tank and their hand, and set both on the counter. They leaned over it, hopefully creating enough of a shadow to aid the setup.</em> &quot;As you can see, I have already obtained said hyperspanner. Does it look like you can fix it?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/0763aa4d6f50af083f20eb9a824ea52d-ACA33.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CPO. T&#39;ed#0000" data-user-id="826105575150583808" style="">CPO. T&#39;ed</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">03-Apr-21 05:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="827768169095495700" id="message-827768169095495700">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>T&#39;ed raised an eyebrow at the maneuver, which wasn&#39;t quite admitting they had done something clever, but the closest someone could get from him, probably. With his good hand he turned the hyperspanner around a little, opened slightly a side with one of his tools that wasn&#39;t quite made for this but will have to do, to peek inside.</em> &quot;The magnesite-nitron subspace inhibitor is a little damaged but not beyond repair, and the ionic polarity units slightly displaced but not too much of a problem either... the exterior damage is but superficial.&quot; <em>he grumbled more to himself than the hybrid.</em> &quot;You are in luck, it is not as broken as it looks and, thus, salvageable despite my not quite adequate tools. I am unsure of its following long term life expectancy, but you should manage to use it for whatever it is you plan.&quot; <em>A glance towards one of the guards that must be hanging not too far, then he asked lastly.</em> &quot;If they really are as lax as you pretend, I shall have the time to fix it now before getting to my shift. Is this agreeable?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 06:05 AM</span>
+
+            <div class="chatlog__message " data-message-id="827770806561275944" id="message-827770806561275944">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They gave a curt nod. Most of that technical jumbo was terms they&#39;d heard before, but in practical application T&#39;ed was by far better suited.</em> &quot;I&#39;m not looking for something to last forever, just long enough to function- so yes, that is indeed agreeable. And should any of the guards become too curious, I&#39;ll waste no time in distracting them.&quot; <em>They replied, relinquishing control of the hyperspanner to the Vulcan and conveniently leaning across the counter- nonchalantly, of course- to provide cover for him to work.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/0763aa4d6f50af083f20eb9a824ea52d-ACA33.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CPO. T&#39;ed#0000" data-user-id="826105575150583808" style="">CPO. T&#39;ed</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">03-Apr-21 06:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="827773447320764416" id="message-827773447320764416">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Vulcan gave back a nod, he wouldn&#39;t talk more than needed to the hybrid, before getting to work. His work was slightly slowed by the fact that he had to relayed on his non-dominant hand, he should really go heal that arm, to do work more precise than what he had been doing in the last days in the pits. What a waste of his skills it was, he irritably thought. This, though, this was what he was meant to do, and he caught himself being happy for a second, almost smirking, before he shoved back the feeling under the regular and much more easier to control irritation he felt at every moment of his existence. At least, there wasn&#39;t any Betazoid around to notice, the shame it would have brought upon him.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 04:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="827935260385345586" id="message-827935260385345586">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nev might not have been a Betazoid, but their years of training provided enough perception for them to pick up on T’ed’s slight change in mood.  Maybe he wasn’t so single-faceted after all. They watched carefully as he worked, focus half split between the Vulcan and the guards.</em> “You should get that checked out.” <em>They remarked suddenly. If he thought he would hide his arm from them while trying to work, he was mistaken.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/0763aa4d6f50af083f20eb9a824ea52d-ACA33.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="CPO. T&#39;ed#0000" data-user-id="826105575150583808" style="">CPO. T&#39;ed</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">03-Apr-21 10:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="828011650346516510" id="message-828011650346516510">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Almost done, he was almost done when that voice spoke again. He quirked an eyebrow, for it could not have been this visible. He was not one of those hybrids or V&#39;tosh ka&#39;tur Vulcan!</em> &quot;I do not know what you are speaking of.&quot; <em>A few more tweaks here and there and, finally, it was done. Far from the expression &#39;as good as new&#39; the humans used, it was still quite agreeable. He pushed the hyperspanner slightly closer to them to indicate he was done.</em> &quot;Here. Do not act idiotically with it.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7c3be3db3338076f41a328ee881595f5-1AD08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="astro goblin#5838" data-user-id="432563950492712971" style="color: rgb(245,182,10)">Lieutenant Rineva Sh&#39;zhyvin</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 11:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="828028530330697738" id="message-828028530330697738">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Hmph.” <em>Nev eyed the eyebrow raise carefully, ignored it, then shifted their eyes to the hyperspanner and quickly slid it into their pocket.</em> “I’m pleased to know you think so highly of me.” <em>They said, albeit incredibly sarcastically.</em> “I’m not an assistant chief for no reason, you know- I’m going to use it wisely. But thank you regardless.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/0610c6dbe789936e6f69aaf8db1bd494-3C883.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">03-Apr-21 11:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="828033249967472661" id="message-828033249967472661">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[T&#39;ed]&#160;<em>Ah, so they had an ounce of importance, then. Good for them.</em> &quot;Indeed. I am Chief Petty Officer T&#39;ed, of group three in high security, if another need shall arise.&quot; <em>And to get the credit should they mentioned who repaired it, it went without saying.</em> &quot;I shall take my leave, then.&quot; <em>Before the guards decided enough was enough went without saying, again. Making sure one last time the oxygen was well placed for the outside work and that all his tools had been accounted for, the Vulcan left the room. Although, he stopped a second in the entrance.</em> &quot;I shall take your... advice... regarding my... arm.&quot; <em>And out he was.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">04-Apr-21 11:59 AM</span>
+
+            <div class="chatlog__message " data-message-id="828222120349794384" id="message-828222120349794384">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie entered and grabbed herself the necessary supplies and equipment to head out. Very much avoiding Derf. Before heading up the walkways.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/2b555dd0dd10ccd310d82297da7c82e5-86F59.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="&#120071;&#120094;&#120111;&#120104; &#120068;&#120107;&#120100;&#120098;&#120105;#8039" data-user-id="689530475630428175" style="color: rgb(215,52,42)">Lt. JG. S&#39;Kiv</span>
+
+
+        <span class="chatlog__timestamp">07-Apr-21 07:09 AM</span>
+
+            <div class="chatlog__message " data-message-id="829236509076750416" id="message-829236509076750416">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>S&#39;Kiv got himself the things he needed and left again.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">08-Apr-21 12:32 AM</span>
+
+            <div class="chatlog__message " data-message-id="829499010452422727" id="message-829499010452422727">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She held up a ta&#39;al at Derf and retrieved her supplies, then left.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">08-Apr-21 12:33 AM</span>
+
+            <div class="chatlog__message " data-message-id="829499174110101504" id="message-829499174110101504">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Derf returned the ta&#39;al and grumbled something under his breath as the Vulcan left.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128406;" title="&#128406;" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/1f596-B6C3E.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/d38d44af204ecd1cfdfef0d7124d2755-8850B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="tzening123#9622" data-user-id="377468740830494726" style="color: rgb(215,52,42)">Ensign Joseph Tan</span>
+
+
+        <span class="chatlog__timestamp">08-Apr-21 10:28 AM</span>
+
+            <div class="chatlog__message " data-message-id="829648991146213376" id="message-829648991146213376">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He quickly grabbed his supplies and left.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 05:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="831197459342163978" id="message-831197459342163978">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He arrived in requisitions and grabbed a bottle of oxygen while Derf was distracted bartering with some poor fool.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">12-Apr-21 05:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="831199415023697951" id="message-831199415023697951">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] &quot;No!!! No bat&#39;leth pieces!&quot; <em>He was truly thoroughly distracted.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 06:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="831219872590594129" id="message-831219872590594129">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>He stepped in through requisitions and picked up as many oxygen bottles as he could carry, dropping his pips and uniform on the desk for Derf.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/ce33887575ff995a243ee3f4da0f64e6-F1870.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Space kween#1679" data-user-id="781719436830703707" style="color: rgb(255,203,37)">Lt. JG. Rivee Keats</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 06:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="831220040879571034" id="message-831220040879571034">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Rivee had taken to working here, and today, she was very glad she had. As soon as Rivee heard the message she turned around and started taking bottles of oxygen of the wall to give to the people heading to the tunnels. She continued this until the EMPs went off. At that point she continued, though she did so rather slowly.</em> &quot;I have Oxygen!&quot; <em>She called out the the people who entered.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/7b30e0710128b61fe40b78eab622d9dc-B5E90.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Maladar Derf#0000" data-user-id="826105575150583808" style="">Maladar Derf</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">12-Apr-21 06:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="831220092241969224" id="message-831220092241969224">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>A shrill ferengi scream came from behind the desk as the lights went out. It was followed by a clank as he passed O2 over the counter.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Deconstruction%20Pit%20-%20requisitions%20%5B825748651452268585%5D.html_Files/ce33887575ff995a243ee3f4da0f64e6-F1870.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Space kween#1679" data-user-id="781719436830703707" style="color: rgb(255,203,37)">Lt. JG. Rivee Keats</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 07:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="831227287511760929" id="message-831227287511760929">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Rivee had been handing out oxygen to the people who came in, but as the flow of people slowed, her anxiety got the best of her, and she headed out with them, not wanting to be left behind.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 114 message(s)</div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,4522 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - grassy-plains</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+    .spoiler--hidden .spoiler-image:after {
+        content: "SPOILER";
+        color: #dcddde;
+        background-color: rgba(0, 0, 0, 0.6);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: 600;
+        /* padding: 0.5em 0.7em; */
+        padding: 100%;
+        /* This ruins those beutifully rounded buttons, but it's needed to prevent a FireFox bug with video and audio elemnts. */
+        /* The bug is that you can click trough the spoiler layer and play the video or audio, I could not identify the cause. */
+        /* I leave this here, in case someone is brave enough to venture in to madness that is undocumented browser behaviour. */
+        border-radius: 20px;
+        letter-spacing: 0.05em;
+        font-size: 0.9em;
+    }
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a_5361c0bf380eb945fe0f2e7ee079ec5d-28F71.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Xoidia Prime / grassy-plains</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 12:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="784573865744793630" id="message-784573865744793630">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The Grassy plains was a lot similar to the hilltops, however, what was once hills, was replaces with tall, bamboo like grass, filled with bugs and small rodents, rumor has it that bears hibernate and store their food in the long grass to protect themselves from anything else, anything bigger, that would be able to hurt them. This instinct is what keeps them alive today.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="784573944967331870" id="message-784573944967331870">
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/dcobb34-c111725b-81a6-40a8-919c-12fbfcd39c-1BA98.png">
+                                        <img class="chatlog__attachment-thumbnail" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/dcobb34-c111725b-81a6-40a8-919c-12fbfcd39c-1BA98.png" alt="Image attachment" title="Image: dcobb34-c111725b-81a6-40a8-919c-12fbfcd39c8c.png (3.16 MB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="784629057869316146" id="message-784629057869316146">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <span class="mention" style="">@Away Team One</span>  <em>Was beamed down to the grassy plains, the grass seemed to be as tall as them... swaying with the wind, bugs seemed to fly onto their ev suit screens. Wasp like creatures with 10 legs, eyes on their antennas instead of on their heads.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:56 AM</span>
+
+            <div class="chatlog__message " data-message-id="784629320265105409" id="message-784629320265105409">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop beamed down and looked around.</em> &quot;Pretty.&quot; <em>She mused.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="784629443628367883" id="message-784629443628367883">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha looked around in wonder, carefully observing there surroundings and taking a few samples for Kianaa</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="784629545256747009" id="message-784629545256747009">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Klingon beamed down in the tall grass. Hopefully, it wasn&#39;t as tall as he was, otherwise all the others would see a whole lot of nothing. He pulled out his tricorder and immediately started scanning the area.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a2a215705d57d95408286596d5813500-CD1CC.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="simpcakes#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:58 AM</span>
+
+            <div class="chatlog__message " data-message-id="784629712734650368" id="message-784629712734650368">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Looking around them, Sara immediately whipped out her tricorder from her side-satchel and began running scans on everything. This was all so new, so gorgeous, so much PLANT LIFE! She made sure to stand close to the landing party group though, sure to not step off too soon. Who knew what else might be in the tall grass other than some beautiful flowers and bugs?</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="784629787570208769" id="message-784629787570208769">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;This is so gorgeous..&quot; <em>She murmured.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a_ad1bcb442c9d4270fa4d5453335c1572-646BE.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:59 AM</span>
+
+            <div class="chatlog__message " data-message-id="784629979362754570" id="message-784629979362754570">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>As soon as the group beamed in, Maleb spun around quickly, trying to get a headcount despite the cloud of bugs and the grass - though he had an edge over the latter, with his height and all. That confirmed, he took a moment to look over the surrounding fields and plant life, though he didn&#39;t comment on them.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:59 AM</span>
+
+            <div class="chatlog__message " data-message-id="784630080658997248" id="message-784630080658997248">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel was instantly put off a little by the height of the grass. He didn&#39;t care much for walking through it, and it would make it easy to get separated and lost in. He did not fancy the idea of getting lost on his first away mission</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="784631086390575105" id="message-784631086390575105">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac rematerialized on the surface and began checking the area for anything that seemed off. He was always hopeful that away missions would be peaceful, but he preferred to be prepared.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="784631114089103400" id="message-784631114089103400">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Liithop took some scans and looked around.</em> &quot;Should we keep checking out this area or start moving? What are we trying to find here?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a2a215705d57d95408286596d5813500-CD1CC.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="simpcakes#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:04 AM</span>
+
+            <div class="chatlog__message " data-message-id="784631348370472970" id="message-784631348370472970">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Immediate threats, mostly.&quot; <em>Sara answered, looking down at her tricorder.</em> &quot;Life signs, alien bio-signs..<em>predators.</em>&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:05 AM</span>
+
+            <div class="chatlog__message " data-message-id="784631569238196234" id="message-784631569238196234">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha started scanning as well, better to be safe then sorry</em> &quot;How are we going to get our bearing in this thick grass?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:06 AM</span>
+
+            <div class="chatlog__message " data-message-id="784631739883847690" id="message-784631739883847690">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;We need to find a higher location. A hill or mountainside if possible.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="784632228902207539" id="message-784632228902207539">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The scans picked up life signs of all kind, mammalian, insect, all in the main area of the long grass. However it seemed as though the readings were the bare minimum, the long grass was interfering with major scans.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:09 AM</span>
+
+            <div class="chatlog__message " data-message-id="784632595781779529" id="message-784632595781779529">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop looked at the scans and then moved grass out of the way, looking for any hills and mountains.</em> &quot;Get higher up, sounds good.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:10 AM</span>
+
+            <div class="chatlog__message " data-message-id="784632671774179349" id="message-784632671774179349">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath brought his tricorder upward, scanning the atmosphere around them. It had changed so quickly when they were in the ship, and he wondered just how volatile it was.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:10 AM</span>
+
+            <div class="chatlog__message " data-message-id="784632770370469889" id="message-784632770370469889">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Doesn&#39;t seem we can do a proper scan. Should we try lifting someone up to see over the grass?&quot; <em>Kytha suggested</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="784633250689056808" id="message-784633250689056808">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath turned around, looking at the assembled team. He was by far the tallest of the group, along with Lieutenant Verne.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Dec-20 04:14 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="784633720774328360" id="message-784633720774328360">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Can you see anything Lokath?&quot; <em>She asked still trying to get a glimpse herself.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a2a215705d57d95408286596d5813500-CD1CC.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="simpcakes#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="784634048228229130" id="message-784634048228229130">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Just lift Maggie onto your shoulders, that&#39;s eight and a half feet right there!&quot; <em>Sara joked, giving Lokath a grin.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a_ad1bcb442c9d4270fa4d5453335c1572-646BE.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="784634565478187020" id="message-784634565478187020">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;That would be quite logical.&quot; <em>Maleb said. Obviously, the fact that Sara was joking hadn&#39;t gone entirely over his head, but he thought it useful to mention that it was actually a good combination.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Dec-20 04:17 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:20 AM</span>
+
+            <div class="chatlog__message " data-message-id="784635202977923092" id="message-784635202977923092">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>Lokaths scans showed the same readings as it did in the science labs. Breathable atmosphere, for all life, raised levels of other elements but completely nominal.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="784636647534493705" id="message-784636647534493705">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;any mountains about? it might help if we get further up.&quot; <em>She continued to look up.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="784637168223518720" id="message-784637168223518720">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>There  were mountains straight ahead, literally straight ahead, the grassy long fields extended everwhere, the only way to get higher, was if they went through the grass itself.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:28 AM</span>
+
+            <div class="chatlog__message " data-message-id="784637308053487617" id="message-784637308053487617">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath barely managed to look over the grass.</em> &quot;Up ahead, mountains.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="784637740016336896" id="message-784637740016336896">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I guess we&#39;re walking through grass.&quot; <em>She took a few steps toward the direction Lokath was facing, checking her tricorder as she went.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a2a215705d57d95408286596d5813500-CD1CC.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="simpcakes#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:32 AM</span>
+
+            <div class="chatlog__message " data-message-id="784638286161379349" id="message-784638286161379349">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;We should stick very close together, yes? If we aren&#39;t getting good readings, we aren&#39;t sure what could be further ahead other than just the mountains.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:33 AM</span>
+
+            <div class="chatlog__message " data-message-id="784638577639292983" id="message-784638577639292983">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;We should stay within eyesight of one another, I think.&quot; <em>Ciel added.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:34 AM</span>
+
+            <div class="chatlog__message " data-message-id="784638702813970442" id="message-784638702813970442">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Indeed, I agree with Lieutenant Bj&#248;rge and Ensign Ciel. Let&#39;s try and keep the group close together as we move.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:35 AM</span>
+
+            <div class="chatlog__message " data-message-id="784638941587832853" id="message-784638941587832853">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I would suggest Lieutenant Verne and I move in front. We are the tallest and as such will have better vision over the grass and will lower it as we walk through. Lieutenant Parlac and Maleb could take up the rear?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:35 AM</span>
+
+            <div class="chatlog__message " data-message-id="784638976950272050" id="message-784638976950272050">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Hold hands while we walk?&quot; <em>She suggested, holding out her hands for the others to take.</em> &quot;Or if we have string, tie it to each other to keep up together.&quot; *She was spitting out random ideas</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:35 AM</span>
+
+            <div class="chatlog__message " data-message-id="784639177576284190" id="message-784639177576284190">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Excellent suggestion, Lieutenant Targesh. Lieutenant Maleb, to the rear with me if you please?&quot; <em>Parlac stepped back, allowing the much taller Klingon to take the lead.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a_ad1bcb442c9d4270fa4d5453335c1572-646BE.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="784639302235324446" id="message-784639302235324446">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maleb looked over to Lokath and then Parlac, immediately heading over as ordered.</em> &quot;Aye, sir.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:43 AM</span>
+
+            <div class="chatlog__message " data-message-id="784641023061393418" id="message-784641023061393418">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop situated herself in the back with Kytha in front of her and Sara in front of Kytha.</em> &quot;Ready to move!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:45 AM</span>
+
+            <div class="chatlog__message " data-message-id="784641459890028584" id="message-784641459890028584">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath waited for everyone to be in position before stepping up front with Lieutenant Verne, very slowly making their way forward, making sure to push down the tall blades of grass for the smaller officers behind.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:46 AM</span>
+
+            <div class="chatlog__message " data-message-id="784641849544540180" id="message-784641849544540180">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>In the distance, they could hear strange animal noises. One of them sounding almost like an alert klaxon, hollering its loud call throughout the echoing plains.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:46 AM</span>
+
+            <div class="chatlog__message " data-message-id="784641917987192882" id="message-784641917987192882">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel followed the others as they walked, just behind Lithop and Kytha.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:47 AM</span>
+
+            <div class="chatlog__message " data-message-id="784642191557525516" id="message-784642191557525516">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha flinched alittle at the noise but pressed onward. She was not going to be deterred</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:50 AM</span>
+
+            <div class="chatlog__message " data-message-id="784642930186780673" id="message-784642930186780673">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Did you hear that?&quot; <em>She asked containing to walk and checking her tricorder to locate that animal.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a_ad1bcb442c9d4270fa4d5453335c1572-646BE.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:52 AM</span>
+
+            <div class="chatlog__message " data-message-id="784643384416796702" id="message-784643384416796702">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>At the rear as ordered, Maleb moved with the rest of the group and suppressed a flinch at the sound. He did, however, keep a very vigilant eye out for any threats, which was easier said than done in the thick, dense grass.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="784643618832252949" id="message-784643618832252949">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac, too, remained on alert, alternating between scanning the surrounding grasses visually and with a tricorder.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="784643646162337802" id="message-784643646162337802">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath&#39;s head quickly turned toward the source of the sound, fighting back an instinctive growl at the sound. He turned back forward, continuing to make his way further along in the tall grass, a bit slower now.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="784644066250850365" id="message-784644066250850365">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The shrill cry of the animal made Ciel jump a little. he gripped his med kit a little tighter and kept walking.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:56 AM</span>
+
+            <div class="chatlog__message " data-message-id="784644362163716186" id="message-784644362163716186">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Keep moving, lets get out of this grass as soon as possible.&quot; <em>She said, trying to hurry up.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 10:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="784726085576294410" id="message-784726085576294410">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie was was still with the group, holding her rifle as she looked around. Still sticking with the group.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 01:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="784768177120477205" id="message-784768177120477205">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola was moving with the group, tricorder in hand.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="784796548566351924" id="message-784796548566351924">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Can any of the tall people see if we’re getting close?” <em>She asked as they continued to walk.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Dec-20 03:02 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="784797506805432341" id="message-784797506805432341">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie walked along with them, in the front . Staying silent as they moved with her rifle out.</em> 
+“I mean, it’s a mountain. I can easily see it from here.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="784800577691451392" id="message-784800577691451392">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Yeah, but like are we like 30 minutes away from it or will we be walking all day?” <em>She trudged along, glancing at her tricorder every few minutes.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="784800893337468958" id="message-784800893337468958">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola chirped from her place in the group,</em> &quot;I think the scenery is lovely!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="784801508976754728" id="message-784801508976754728">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath continued to look forward, pushing the tall grass down and stepping on it so it wouldn&#39;t come back up.</em> &quot;I&#39;d say about 10 to 20 minutes at our current rythm, Ensign Lithop.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="784801699708928050" id="message-784801699708928050">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“I’d agree with that, so stick together everyone. We probably want to get there as soon as possible.”￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="784802383389261824" id="message-784802383389261824">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Got it.” <em>She stayed in line, scanning all the way.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="784804317282566154" id="message-784804317282566154">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>They heard something rustle in the bushes along their current path. It made a grumbling noise as it moved, the ground thudding with each step.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="784805298295930880" id="message-784805298295930880">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie held her hand up quickly as she aimed at the bushes. Monitoring for silence. As she held her breath, looking at the brushes.</em>￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="784805589548793876" id="message-784805589548793876">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop stopped at the sound and looked at her tricorder trying to find the direction the sound came from.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="784806085332566036" id="message-784806085332566036">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath stopped moving as soon as he heard the grumbling noises, his eyes scanning to see any rustling blades of grass in the horizon.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a_ad1bcb442c9d4270fa4d5453335c1572-646BE.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="784806483690782770" id="message-784806483690782770">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maleb immediately lifted his phaser, taking a few steps to the side so he had a clear shot at the bushes.</em> &quot;Careful.&quot; <em>He said, eyes narrowed at the potential threat.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="784807474824740905" id="message-784807474824740905">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>Lithops tricorder readings indicated a life form dead ahead, moving slowly towards them. Before they could react however, the life form appeared in front of them, almost half of Lokaths size, a huge armadillo like creature appeared out of curiosity, its path in the long grass conveniently lead them straight to the mountain.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="784810968249008149" id="message-784810968249008149">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Aww!” <em>Lithop said when it appeared.</em> “My tricorder readings don’t show it to be dangerous.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 03:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="784811172129144893" id="message-784811172129144893">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath moved to the side, clearing the way for the large beast to pass through unharmed and safely.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a_ad1bcb442c9d4270fa4d5453335c1572-646BE.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="784811562287759371" id="message-784811562287759371">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maleb stepped aside as well, but he didn&#39;t lower his phaser by much - just enough that he wasn&#39;t aiming at it, but not so far that he couldn&#39;t react quickly to fire if it did become aggressive.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Dec-20 04:01 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="784811770170572830" id="message-784811770170572830">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha followed suit, looking at the creature in amazement</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="784812062601248789" id="message-784812062601248789">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel watched the animal with a sense of awe and caution.</em> “It’s huge.” <em>He said to no one in particular.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="784812657768792074" id="message-784812657768792074">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop stepped aside for it to pass.</em> “Travel will be easier if we use the path that thing made.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="784817304227676180" id="message-784817304227676180">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The armadillo did not care for these people in front of it. Instead, with or without their cooperation, it moved forward, not caring if it knocked one of them over.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="784818318452195358" id="message-784818318452195358">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola wasn&#39;t really looking at the creature, so she got pushed over rather easily.</em> &quot;Whoop!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a_ad1bcb442c9d4270fa4d5453335c1572-646BE.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="784818826637213709" id="message-784818826637213709">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Immediately, the Vulcan looked over to Lola.</em> &quot;Are you alright?&quot; <em>He said quickly, though he didn&#39;t offer a hand.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="784819246886682644" id="message-784819246886682644">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel offered to help her up with a smile</em> “Guess he’s not interested in making friends.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="784819418470809640" id="message-784819418470809640">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola took the offered hand with a sheepish grin and stood up.</em> &quot;I guess not!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="784820151526752306" id="message-784820151526752306">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;He is such an amazing creature! I wish Kianaa could see this!&quot; <em>Kytha watched in wonder</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="784820439578443776" id="message-784820439578443776">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath smiled as he watched the creature go by, then turned toward the path it had created.</em> &quot;Well at least now you will be able to see. We should keep moving, we might have been lucky in our encounter with something that did not wish to harm us.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="784824307632308245" id="message-784824307632308245">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel began walking forward again, peering around, wondering if there were more of the armadillo creatures about. It seemed like the sort of animal that would travel on herds.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="784825040377348156" id="message-784825040377348156">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola followed behind</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 04:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="784826170835206177" id="message-784826170835206177">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>As the team progressed further, they were almost at the exit point of the tall grass. Bugs of weird origin were crawling all over their EV suits, and then, in the peak of silence they heard a ear piercing sound.  Afterwards there was a snap and a gurgle before silence fell over the away team again.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="784826421679751208" id="message-784826421679751208">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac readied his phaser and rotated in place, eyes searching for the source of the strange noise.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="784826858520051782" id="message-784826858520051782">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel froze in the middle of a step, holding his breath. He didn’t dare break the silence.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="784827242244866109" id="message-784827242244866109">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola squeaked quietly. Sge was beginning to think this was a bad idea.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a_ad1bcb442c9d4270fa4d5453335c1572-646BE.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="784827385781813258" id="message-784827385781813258">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maleb immediately stiffened, phaser up again as he too began looking over the area.</em> &quot;Is anything appearing on scans?&quot; <em>Deities, it was hard to see through the cloud of bugs, but sensitive half-Vulcan ears were listening for the slightest of sounds (aside from Lola&#39;s little noise).</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="784827465876111360" id="message-784827465876111360">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha cringed at the noise. That didn&#39;t sound good. Reminded her of something out of a horror movie. She could feel her heartbeat quicken as unease set in</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="784827937655619585" id="message-784827937655619585">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath was calm despite the high pitched noise and gurgle, an obvious sign of a predator finding a prey. An honorable death, and a necessary one after all. He simply kept on moving forward, scanning the environment as he walked.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="784828353709604885" id="message-784828353709604885">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The area in front of them was bare, the common insect life sign here and there, but nothing else. However, proximity alerts rose, indicating two dots, large enough in size, where behind them. One faded into nothingness as the other one stayed in place, until it moved towards them, slowly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="784828609188593704" id="message-784828609188593704">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Klingon stopped immediately, and turned to show the scans to Maleb, Parlac and Verne. They were being stalked.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="784829058441674752" id="message-784829058441674752">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Everyone group up, stay close together.&quot; <em>Parlac said, his voice low.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a_ad1bcb442c9d4270fa4d5453335c1572-646BE.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="784829283041411083" id="message-784829283041411083">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Furrowing his brow at the scans, Maleb looked up at Lokath, then to Parlac. He glanced back where they&#39;d came from, and hesitated for a moment before speaking in a near-whisper.</em> &quot;If we group up, we make ourselves an easier target, sir.&quot; <em>he said, though he did follow orders as he did.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Dec-20 05:11 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="784829460733493289" id="message-784829460733493289">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;And if we don&#39;t, we allow those on the edge to be picked off,&quot; <em>he replied, still eyeing the grasses around them for any sign of what was out there.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="784829648918937651" id="message-784829648918937651">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath nodded.</em> &quot;Standard hunting, pick off the weaker members of the herd left behind. We do not leave anyone behind.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a_ad1bcb442c9d4270fa4d5453335c1572-646BE.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="784830229528182784" id="message-784830229528182784">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maleb nodded, taking a spot between majority of the group and the threat, though still close as Parlac had said. Even if he disagreed, orders were orders, and there wasn&#39;t any time to debate. Instead, he just kept facing where the threat supposedly was, looking for any hint of what it was.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="784831566887125026" id="message-784831566887125026">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>A large groan was heard from in front of them, then silence. A few rustles of grass here and there, but then it stopped. If one checked their proximity alert, they would find the dot, almost in eyes view. However, it wasn&#39;t needed. Peering out of the grass, was what they were looking for. A bear, who&#39;s curiosity  turned into violence. With a head that was half of Lola&#39;s size, the bear stood up, revealing its body to be two times taller than Lokath. It crashed down on four legs, roaring loudly into the away teams faces, its breath like a serious gust of wind, blowing them back. The bear lifted its arm up, spotting a straggling crew member, and with one fell swoop the bear swiped the crew member out of view, sending him flying across the grassy plains, the last thing heard from the crew member was the crack of bones and an agonizing scream.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="784833486858223656" id="message-784833486858223656">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop scrambled back franticly, holding onto her tricorder for dear life.</em> “Who was that? Who did it throw?” <em>She said quickly, still trying to get away from the bear.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="784833844636680202" id="message-784833844636680202">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac raised his phaser immediately, moving to place himself between the bear and his crewmates. He tried to ignore the pounding in his chest as he took aim and fired at the creature, phaser set to kill.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a4e535019cf53254eb746209b8a3841f-A337C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Remi-chan#6969" data-user-id="196987904235536384" style="color: rgb(39,126,205)">Ensign Kytha Briar</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="784834303133089836" id="message-784834303133089836">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Kytha squealed, clinging on to Sara who was in front of her. She had been looking for adventure not being mauled by a bear</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Dec-20 05:31 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a_ad1bcb442c9d4270fa4d5453335c1572-646BE.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="784834572134121573" id="message-784834572134121573">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maleb quickly moved up beside Parlac, firing as soon as he saw the Lieutenant open fire, though he had his weapon set to stun. They couldn&#39;t run - the bear was certainly faster, and they couldn&#39;t leave the crewmate who might somehow be alive.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="784835772675129344" id="message-784835772675129344">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>Well the bear took the brunt of the blast, the shot hitting directly on the center of his chest. The bear leaned back a bit, assessing his own situation before looking at Parlac, the man who shot him, With a growl he moved into the sunlight, snarling his teeth and revealing the blood stained on his fur coat, behind him, was the armadillo, dead. The shell completely caved in like it was made out of styrofoam. Enraged, the bear roared once more, using its chest to beef up the sound.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="784836047120498749" id="message-784836047120498749">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel followed the arc that the thrown crew member had made with his eyes. He landed a good ways off.</em> “Lola, get a stabilizing field ready.” <em>He tapped his comm badge:</em> “Sickbay, prep for wounded. Broken bones, possibly major lacerations to chest and gut”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="784836884371210270" id="message-784836884371210270">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac fired two more quick shots into the bear&#39;s chest, hoping the combination of his phaser and Lieutenant Maleb&#39;s would bring the beast down.</em> &quot;Lieutenant Targesh, get the rest of the away team to safety!&quot; <em>he said firmly, not raising his voice.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Dec-20 05:41 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="784837909839609886" id="message-784837909839609886">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie fired at the bear as well at the same time.</em> 
+“Move!”</span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Dec-20 05:45 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="784838180070359100" id="message-784838180070359100">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath did not hesitate, and turned toward the other crewmembers that were unharmed.</em> &quot;You heard them, move move move! To the mountain!&quot; <em>He said, making sure all of the non-tactical and security crewmembers were on their way to the mountain before following.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="784838218264608768" id="message-784838218264608768">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop only had a tricorder, she couldn’t help fight off the bear or help the medical team. What she could do however, was run. So she did, she ran to the side, disappearing into the grass . She ran until she didn’t know how far away she was from the group. Now realizing she had separated from the team she stayed put, glad she could at least see the mountain towering in front of her.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="784838694699925554" id="message-784838694699925554">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Sir, the crewman!” <em>Ciel yelled over the noise of phaser fire and the beast.</em> “Do Lola and I have permission to go after him?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="784839059998507008" id="message-784839059998507008">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath tapped his commbadge.</em> &quot;Phoenix, beam crewmember X to sickbay!&quot; <em>He looked at Ciel.</em> &quot;Go, now!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="784839614724571157" id="message-784839614724571157">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The bear flicked his head towards Ciel, being shot twice drained his systems, but with strength he pushed onwards towards Ciel. Prime target, nice flesh for his children, just one chop and he&#39;s gone. The bear snarled his teeth, yellowed and sharp.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="784840430599667732" id="message-784840430599667732">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie pulled her rifle around, firing four more shots at the bear.</em> 
+“Ensign move!”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="784840503165714472" id="message-784840503165714472">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“This way!” <em>Keeping Lola as close as possible, Ciel set off running as fast as he could. They arrived at the crewman, who was lying in a crumpled heap where he’d landed. He dropped to his knees, opening the med kit and packing the crewmen’s wounds.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 05:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="784840514889187338" id="message-784840514889187338">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Seeing the bear turning toward the medical Officer, Lokath did not hesitate, placing himself between the predator and its new prey. Today would not be the day where this Klingon would not face its challenge honorably. He let out a loud, guttural growl toward the bear, not giving up any ground, fully ready to protect his fellow crewmate.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Dec-20 06:01 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="784841642091610172" id="message-784841642091610172">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The chief barked in frustration, turning to follow the bear as it moved and fired three shots in succession. He dove for Lt. Targesh, hoping he would make it in time to prevent any harm to the Klingon.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a_ad1bcb442c9d4270fa4d5453335c1572-646BE.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="784841872760766474" id="message-784841872760766474">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Sir, Ensign Howard just ran off into the grass.&quot; <em>Maleb said quickly, not specifying whether he meant Targesh or Parlac as he too continued firing at the bear, phaser turned up to kill as well.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Dec-20 06:02 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="784842010397507594" id="message-784842010397507594">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The bear squeeled, being hit four times almost killed him, but it wasnt enough. He needed to feed his children, why were these, stick figures so strong. Why did they possess this power. In rage, the bear saw Lokath standing infront of the two he was wanting to kill. Instead he took Lokath, with one swoop of the bears arm, He flung Lokath across the field before parlac could get to him. His strength, not as powerful before, but it would do. Hoping that it was enough to kill what was standing in front of him. Lokath was tumbling into the short grass. His chest scratched to hell, with bruises everywhere, but still able to breathe.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="784842211387768832" id="message-784842211387768832">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola was scared. Actually terrified. Still she worked with the crewman. She shrieked when Lt  Lokath got hurt, but she turned around and immediately began working on him.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="784842269475209266" id="message-784842269475209266">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Parlac snarled in fury. He unleashed two more shots, aiming for the bear&#39;s face.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="784842272260751412" id="message-784842272260751412">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>Parlacs shots did hit the bear however, it was those 5 shots that downed the bear immediatly. With one short puff it stopped breathing, laying there to die in the long grass that it once called its home.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Dec-20 06:03 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128577;" title="&#128577;" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/1f641-58553.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="ohno" title="ohno" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/668960662709338113-B9DE8.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127462;" title="&#127462;" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/1f1e6-79872.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127475;" title="&#127475;" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/1f1f3-08F96.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127486;" title="&#127486;" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/1f1fe-B7194.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127484;" title="&#127484;" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/1f1fc-E17AB.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="letterTealA" title="letterTealA" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/560705838252163092-4490C.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="letterTealY" title="letterTealY" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/560705836641419286-D901F.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="784842552452972582" id="message-784842552452972582">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie coughed as she held her rifle.</em> 
+“Get any wounded up to the ship, now. Then, we press on?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="784842610014421002" id="message-784842610014421002">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Sickbay, energize!”* Ciel yelled.*</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="784842654709055508" id="message-784842654709055508">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Breathing heavily, Parlac stood for a moment and waited for his heart to slow down a bit. He surveyed the slain beast, but could not bring himself to feel any pity for it. He turned instead to Lieutenant Targesh and Lieutenant Jex.</em> &quot;Is he alright?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="784842691434643476" id="message-784842691434643476">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop heard the commotion and now knew a general direction she immerged from the grass right behind the now dead bear. She looked at it and then to her crew mates.</em> “Is everyone ok?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a_ad1bcb442c9d4270fa4d5453335c1572-646BE.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="784842695125499994" id="message-784842695125499994">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Four deities, Maleb said. He clenched his jaw to keep from shouting when Lokath was thrown. Four deities. Four deities. But the beast was down, and he immediately lowered his phaser. Four deities.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="784843056846340128" id="message-784843056846340128">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh I&#39;m fine, these guys may not be though.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="784843112236711937" id="message-784843112236711937">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath growled as he was sent flying and tumbling into the tall blades of grass, his body spinning out of control before it finally dragged against the dirt, coming to a stop. He groaned, pushing himself up to a sitting position, large gashing wounds through his ev suit and into his flesh.</em> &quot;Ghay&#39;cha&#39;...&quot; <em>He muttered to himself as he attempted to push himself back to his feet.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Dec-20 06:07 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="784843596918423553" id="message-784843596918423553">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I don&#39;t think you should be moving, Targesh,&quot; <em>Parlac said, putting a hand on his shoulder.</em> &quot;Ensign Ciel, can you take a look at his wounds?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="784843872684605480" id="message-784843872684605480">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;m already on it&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="784844061244129281" id="message-784844061244129281">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel came running back from where the crewman had been. He saw Lola attending to Lokath, and the downed bear. He released a shaky breath. He wasn’t entirely certain what all had happened, but he knew part of it was due to his slow reaction. He turned to the others:</em> “Was anyone else injured?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="784844202081124363" id="message-784844202081124363">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie stood ￼guard over the group tending to the officers wounds. Eyes open for any threats on the horizons.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="784844563058655253" id="message-784844563058655253">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;No, just Targesh. Assist Lieutenant Jex please, but I don&#39;t think he&#39;ll be able to continue on this away mission,&quot; <em>he said, concern evident on his face.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="784844808677621811" id="message-784844808677621811">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath growled as he looked up at Parlac.</em> &quot;I&#39;ll be fine Lieutenant.&quot; <em>He said, still sitting on the ground, pulling his tricorder. The screen was cracked from the impact, but it miraculously still worked. Ignoring the pain in his chest, he started scanning the area for other life forms.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Dec-20 06:13 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="784845512317861908" id="message-784845512317861908">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola huffed,  annoyed, and muttered something g about stubborn klingons.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="784845566357143604" id="message-784845566357143604">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie looked worriedly towards Lokath. Looking to Parlac with a equally worried look on her face.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="784845668748623895" id="message-784845668748623895">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“I don’t know about his injuries.” <em>She said standing by the group.</em> “But we need to get his suit closed, because the air is so unstable and there could be toxic plants around.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="784846238675370024" id="message-784846238675370024">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Lieutenant Jex, Ensign Ciel. Is he stable enough to beam up to sickbay?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Dec-20 06:19 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/57217d625b81ce985dfef65b5dcb83b4-FF68F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Time4Skoo#4206" data-user-id="396729357244039168" style="color: rgb(212,156,2)">Lt. JG. Khil</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="784846375586234408" id="message-784846375586234408">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>The crewman, although with the various efforts of help, died on impact with the ground. There was nothing that could be done, his bones shattered everywhere, puncturing vital organs in the process.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="784847743109169183" id="message-784847743109169183">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Lt, sir, you&#39;re not fine.&quot; <em>Ciel retorted as respectfully as he could.</em> &quot;You won&#39;t be able to continue. You&#39;ll be beaming up to sickbay once you let Lola pack those wounds.&quot; <em>Ciel could see the ragged edges of the claw marks that Lola was trying to patch up. They had turned an ugly dark color. The possible beginning of an infection.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="784848477921345637" id="message-784848477921345637">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath growled quietly then lowered his tricorder, letting Lola patch him up.</em> &quot;Make sure you have a tricorder constantly monitoring for lifesigns. You don&#39;t want to be ambushed by another one of those creatures.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="784849707544608768" id="message-784849707544608768">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I will stun you if you make my job any harder, don&#39;t think I won&#39;t. &quot; <em>Lola pulled out her bandages and and her tricorder and began to scan his body, taking in the damage and bandaging the wounds after sterilizing the scratches.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="784850308958388224" id="message-784850308958388224">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Can you breathe? I know air is really unstable.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="784850578865913897" id="message-784850578865913897">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie looked at Lola with a bit of a worried look on her face. Before returning to watching over the team, making sure no more bears attacked.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Dec-20 06:36 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="784850692384096286" id="message-784850692384096286">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel was glad Lokath did not protest more. He tapped his comm badge:</em> &quot;Sickbay, Lt. Targesh beaming up with lacerations to the chest. Possible infection from a predator&#39;s claws.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="784851038330945607" id="message-784851038330945607">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Ready?&quot; <em>Ciel asked Lola.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="784851974499205160" id="message-784851974499205160">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath nodded.</em> &quot;The air is fine for now, but don&#39;t let that make you any more lax. Keep your EV suit on at all time, no matter what.&quot; <em>He said before looking at Ciel and Lola.</em> &quot;I&#39;m ready.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="784852128535543868" id="message-784852128535543868">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Sickbay, energize.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/6fa04a25238bfcf9f0bf7807cabe180c-A7E1F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="birb#1215" data-user-id="384551551567659009" style="color: rgb(41,169,238)">Lt. JG. Amy Olson</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="784852258709176361" id="message-784852258709176361">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Those who requested to beam up, were transported directly to sickbay.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="784852660888928286" id="message-784852660888928286">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola stayed down on the planet.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/76ad32f1c0eba9b7a1e71473a06196bd-1EB51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Gab_j#7700" data-user-id="781538023098548244" style="color: rgb(39,126,205)">Lieutenant Lokath Targesh</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="784852740751884308" id="message-784852740751884308">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lokath was beamed up.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/907a2a0081a15dbbfc2a16daab86c637-841FE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Night Owll#8733" data-user-id="390328155682111489" style="color: rgb(39,126,205)">Ensign Lithop Howard</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="784853682986024980" id="message-784853682986024980">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lithop took a shaky breath and quickly checked her tricorder.</em> “Should we keep moving?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="784853814338650122" id="message-784853814338650122">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ciel watched the Lt. disappear in a flurry of sparkles. He turned to Lola. She had been terribly frightened by the whole think. Not that Ciel hadn&#39;t been. He was still a little shaky himself, but he chose to ignore it.</em> &quot;Are you alright?&quot; <em>He asked her in a low voice, hoping the others wouldn&#39;t hear. He didn&#39;t want to embarrass her.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="784854518188998677" id="message-784854518188998677">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Alright everyone, gather back up together. Lieutenant Maleb, Lieutenant Verne, get a head count, please.&quot; <em>Parlac kept his tone even and calm.</em> &quot;We&#39;re going to keep heading for the mountain so we can get above this grass and get our bearings.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="784854738961170453" id="message-784854738961170453">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie nodded as she began taking count of the away team.</em> 
+“Aye￼ sir.” 
+<em>She began pointing at everyone, mumbling under her breath.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/6fa04a25238bfcf9f0bf7807cabe180c-A7E1F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="birb#1215" data-user-id="384551551567659009" style="color: rgb(41,169,238)">Lt. JG. Amy Olson</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="784855016804581377" id="message-784855016804581377">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The path ahead still lead to the hill tops, it was the most visible Anyways.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/a_ad1bcb442c9d4270fa4d5453335c1572-646BE.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="784855494049136640" id="message-784855494049136640">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Understood, sir.&quot; <em>Maleb nodded, and took his place at the back of the group. It would have been a lie to say he wasn&#39;t still a little stunned inside, but he couldn&#39;t let it show or interfere with his work, so he got to his spot and stayed still, so he wouldn&#39;t interfere with Maggie&#39;s count while he took his own.</em> &quot;I believe that everyone is accounted for, sir.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Dec-20 06:56 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="784856063455133716" id="message-784856063455133716">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie turned over to look at the group and gave a nod.</em> 
+“I think we have everyone that hasn’t beamed up.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/e1723aefbab6343cf495e546cc7b15ec-7D317.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lieutenant Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 06:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="784856545317093476" id="message-784856545317093476">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Good. Verne, I want you at the front again, with your height and the clear path, you should have a good view of any other creatures that might get in our way. Maleb, to the rear with me-- oh, good, you&#39;re already in position. Let&#39;s move quickly, everyone.&quot; <em>Taking charge of the away mission hadn&#39;t been his intention, but he felt the responsibility was his in the absence of Targesh. He would be grateful to be out of this damned grass soon.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="05-Dec-20 07:00 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/9340a0631b58bf578563f52b097e1f55-B768B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lieutenant Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 07:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="784856768420905000" id="message-784856768420905000">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie nodded as she moved forward, leading the group up the path towards the hill.</em> 
+“All right let’s move people!”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/c70c22ab9419bad11fa9083d9a5b7275-4EB79.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 07:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="784857198614413368" id="message-784857198614413368">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Packing the med kits back up, Ciel joined the column on the move again.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/7449abcd5e02c19ad996cfd6a3dc2a7a-CF8E9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 07:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="784862559034933258" id="message-784862559034933258">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola was with the group as they moved.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Xoidia%20Prime%20-%20grassy-plains%20%5B784566285202882570%5D.html_Files/6fa04a25238bfcf9f0bf7807cabe180c-A7E1F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="birb#1215" data-user-id="384551551567659009" style="color: rgb(41,169,238)">Lt. JG. Amy Olson</span>
+
+
+        <span class="chatlog__timestamp">05-Dec-20 07:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="784863906203041802" id="message-784863906203041802">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>As the away team continued along the path, they weren’t bothered by any creatures. Unless you count the bugs, that were trying to suck blood from the EV suits, filthy mosquitos the size of rocks, red checkered eyes, and a long straw like nose presumably used to take blood. They bothered the away team all the way up the path until they reached <span class="mention">#hilltops</span>.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 155 message(s)</div>
+</div>
+
+</body>
+</html>

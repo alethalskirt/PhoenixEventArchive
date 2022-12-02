@@ -1,0 +1,2598 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - group-thirteen</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Low Security Block Two / group-thirteen</div>
+
+            <div class="preamble__entry preamble__entry--small">Occupants: Newton, Harrison, Mino, Sara</div>
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 04:24 PM</span>
+
+            <div class="chatlog__message chatlog__message--pinned" data-message-id="825752307097403464" id="message-825752307097403464">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The cell was a small, cramped octagon with a heavy metal door at its front, a smaller door to a bathroom at its back, and one bed against each of the remaining empty walls. There were no windows, and the remaining floor space was barely sufficient for each occupant to stand simultaneously. The walls were a deep, grimy grey. One of the beds was overturned, with its corresponding mattress across the room. </em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 07:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="825799676447424512" id="message-825799676447424512">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Ah wasn’t group thirteen&#39;s cell nice. Finley stepped inside, and shuddered when the large door slammed shut. It was cold in here, they figured the long sleeved prison uniform would provide some sort of warmth so they slipped into it, leaving their personal clothing in a dejected pile. Those clothes would do them no good here.</em>
+
+<em>They looked over at the mattress and bed, if they got a cell-mate that was in worse condition than themself- they walked over and worked hard to return the bed to an upright position. After doing so, they dragged the mattress and placed it back on the bed, somewhat sloppily. This would do. They walked back to their own bed and laid down.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="28-Mar-21 09:03 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="825824545176813618" id="message-825824545176813618">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Sara peeked inside the thirteenth cell, looking wearily inside for who or what might already be there. Spotting someone she hadn&#39;t seen before, she internally sighed a weary breath. She didn&#39;t begrudge them anything, it wasn&#39;t their fault she didn&#39;t know them, but allfather alive she&#39;d been hoping for a familiar face.</em>
+
+&quot;Hallo.&quot; <em>She greeted softly, stepping inside properly now, still holding her jumpsuit close to her chest as she surveyed the meager dwelling.</em> &quot;I have never seen you before, what a way to meet, ja?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="28-Mar-21 09:14 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/5a5bb7bf5f8f68969f9986a009b21543-92F1D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="825825294258012160" id="message-825825294258012160">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>There was a soft cooing sound that came from beneath one of the beds.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="825825438106255420" id="message-825825438106255420">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Upon hearing the new person&#39;s soft voice, Finley opened their eyes. This certainly wasn’t the ideal friend-making situation for sure.</em> &quot;Yeah, what a way to meet indeed.&quot; <em>Part of them wanted to sit up to meet her eyes, but their energy was running low. They instead tilted their head to get a look at her. Their spectacles shining in the dim light.</em>
+
+<em>Upon hearing the noise, Finely scrunched their nose.</em> &quot;I’m sorry, but did you say something?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="825825787844100176" id="message-825825787844100176">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Sara shook her head wordlessly, looking around for what most <strong>definitely</strong> sounded like a a muffled coo. A..bird, maybe? She had a rather confused expression slip across her features as she stepped further into the room to look around..not that there was much to look at.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="28-Mar-21 09:17 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/5a5bb7bf5f8f68969f9986a009b21543-92F1D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="825826020958666752" id="message-825826020958666752">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The sound happened again, slightly louder this time, but its point of origin didn&#39;t change.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="825826738725847070" id="message-825826738725847070">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Enough adrenaline now went through Finley&#39;s body, to allow him to sit up and hang his legs over the edge of the bed. He wasn’t sure what to do, so he looked over at Sara and scratched his head softly.</em> &quot;I thought we were alone...&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="825827680398213140" id="message-825827680398213140">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Perhaps a critter of some sort, no?&quot; <em>Sara flung her jumpsuit onto the bed and got down onto her knees, looking under the bed where she was absolutely sure she heard the noise emanating from.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="825827999071862844" id="message-825827999071862844">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Do be careful,&quot; <em>they whispered, getting up to aid the newcomer if needed.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/5a5bb7bf5f8f68969f9986a009b21543-92F1D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="825828110636417084" id="message-825828110636417084">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Under the bed, Sara was able to see a... <strong>something...</strong> covered in fur.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="825828646480248862" id="message-825828646480248862">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Sara, a much-experienced cat whisperer, softly &#39;spspspspspsp&#39;d the creature, hoping that the small creature would allow her to touch it.</em> &quot;It&#39;s definitely a critter of some sort? Spspspsp.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="blushcat" title="blushcat" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/784816948868808754-CCAC4.png">
+                                <span class="chatlog__reaction-count">9</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="825828975925657600" id="message-825828975925657600">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;A creature,&quot; <em>Finley lowered themself to the ground. They loved animals, and maybe this thing was just... scared?</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="phoenixheart" title="phoenixheart" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/769248729893961780-3D8C1.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/5a5bb7bf5f8f68969f9986a009b21543-92F1D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="825830504318238720" id="message-825830504318238720">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Slowly, the small creature rolled out from under bed and bumped into Sara&#39;s knee. It cooed again.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="825831017516367902" id="message-825831017516367902">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Ohh! Hello baby!~&quot; <em>Sara gently cooed in response, holding out her hand to see if the odd creature was friendly.</em> &quot;Maybe the previous tenants&#39; pet?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="825831336597520415" id="message-825831336597520415">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I hope not,&quot; <em>Finley replied morosely. That would mean this creature had been left alone for who knows how long. And where had its owner gone?</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/5a5bb7bf5f8f68969f9986a009b21543-92F1D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="825831804446965760" id="message-825831804446965760">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>It cooed again, before rolling away again, but not back under the bed, simply a foot or so away from Sara.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="825832242370052127" id="message-825832242370052127">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Where are you going little one,&quot; <em>Finley said softly, as their gaze followed the little creature.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="825832418778284032" id="message-825832418778284032">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;He roll.&quot; <em>Sara stated whistfully, obviously enthused with the new, furry ball. Okay, maybe being a prisoner of war wasn&#39;t <strong>so</strong> bad. Scooting on her knees, Sara moved over towards the furball once again, still holding out her hand.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/5a5bb7bf5f8f68969f9986a009b21543-92F1D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="825833240224858113" id="message-825833240224858113">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The creature nuzzled her hand and cooed again, vibrating slightly.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="28-Mar-21 09:46 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="825833712917938197" id="message-825833712917938197">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Finley got up and stepped behind Sara, carefully he crouched back down and held out his hand to it as a non-invasive offer.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="825834083924836404" id="message-825834083924836404">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The sheer restraint Sara was pulling from her inner being was insurmountable..but even it could not be stopped when the small, furry creature nuzzled her. God damn it, <strong>that was it</strong> her day had been bad enough! People have died, the ship was destroyed, she was going to pet this not-cat if it killed her! Very gently, she scooped up the furry creature and held it to her chest, petting it softly before turning to Finley.</em>
+
+&quot;Ooohhh~ Look at you! You are so perfect!&quot; <em>She nearly squealed, quite pleased with their find.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="28-Mar-21 09:51 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/5a5bb7bf5f8f68969f9986a009b21543-92F1D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="825834790917636144" id="message-825834790917636144">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>As it was picked up, the creature cooed again, at a slightly higher pitch this time, as if it had been surprised. But, quite quickly, it relaxed in Sara&#39;s arms and cooed again and welcomed any petting from Finley.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 09:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="825835342157709313" id="message-825835342157709313">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Finley began to stroke the small creature gently, his mind wandering off. The creature&#39;s soft fur and bright cooing offering enough of a relaxing stimulus for Finley to feel slightly at peace.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/5a5bb7bf5f8f68969f9986a009b21543-92F1D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 10:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="825838508136071259" id="message-825838508136071259">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>After a few minutes, the creature went quiet, though its body kept vibrating. It appeared to be asleep.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 10:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="825839116755140648" id="message-825839116755140648">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Perhaps it was because it had been an emotionally, and physically draining day.. So much had happened beyond her grasp, So much that she couldn&#39;t change, or help. The future, and the future of her crewmates stood in the balance of them either breaking out of this place, or being rescued, and both options seemed so far fetched when they were all just so tired.. But she simply couldn&#39;t handle this. Her free hand went to cover her face, which was quickly turning a vibrant shade of pink as she desperately tried not to cry as this soft, furry creature fell asleep in her arms.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="28-Mar-21 10:13 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 10:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="825840978328813638" id="message-825840978328813638">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Finley was withdrawn from the situation entirely, the only thing tethering him to reality was the soft fur brushing underneath his hand. He hadn’t known any of the crew, of the three people he met, he hadn’t had the time to get close to any of them. His things were irrelevant, losing them with the ship made no difference to him. He had just started his new life, only to be thrust in the throws of jail. He couldn’t feel anything, everything was just so numb, how could things possibly go this wrong?</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 10:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="825843771891122196" id="message-825843771891122196">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;We can&#39;t let the guards see this thing.&quot; <em>Sara whispered tightly, sniffling deeply before taking her hand away from her face to reinforce her hold from underneath.</em> &quot;They&#39;ll probably take it away.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="28-Mar-21 10:29 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 10:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="825845148411887656" id="message-825845148411887656">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Mhmm,&quot; <em>Finley hummed in agreement. It was the only thing he was capable of saying before he fully processed what she had said to him. Wait was she crying? Probably but he wasn’t sure how to help with that at the moment. Her tears certainly weren’t unwarranted.</em> &quot;I wonder what it eats, too. If we’re going to take care of it we&#39;ll need to know.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 11:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="825852674951479376" id="message-825852674951479376">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I couldn&#39;t say.. Hopefully something that we get for food as well. Otherwise it might be going hungry.. I doubt we will have access to  replicators.&quot; <em>As the soft creature purred away in her arms, Sara lifted herself to her feet and lightly rocked it, to and fro.</em> &quot;I&#39;m sorry.. I didn&#39;t actually get your name? I was so curious about the sound I had forgotten my manners.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">28-Mar-21 11:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="825857289922936832" id="message-825857289922936832">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;That’s partially my fault,&quot; <em>he admitted solemnly.</em> &quot;I’m not in a proper head space,&quot; <em>not that he was usually good at introductions. Or socializing for that matter.</em> &quot;I’m Finley Harrison, it’s a pleasure to meet you, but I wish it were under better circumstances.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 12:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="825869873527652382" id="message-825869873527652382">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Much the same. I&#39;m Sara Bj&#248;rge, I am the..<strong>was</strong> the CSO on Phoenix.&quot; <em>The last part of her sentence understandably softer than the first portion. Embarrassment suddenly fanning the flames of her shyness. She wasn&#39;t in her element, not that anyone was, but she even more so felt far smaller and mousier than she ever had before. How much of use was a botanist in this situation? She had no brawn like Oskar, the command presence like T&#39;Svai, or the traditional mechanical smarts like Amanda. How could she help?</em>
+
+&quot;What position were you?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 12:32 AM</span>
+
+            <div class="chatlog__message " data-message-id="825875072102825984" id="message-825875072102825984">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Conversely, Finley was feeling rather pathetic about his role. If the crew had any chance of getting out of here alive and all together it would take someone like the Chief Science Officer to get them out. How was a tailor ever going to be of much use, he hadn’t even brought any of his things. Unless the Iconians somehow got into fashion trends, all he was worth was just being another body. He practically felt like dead weight.</em> 
+
+&quot;I was the ship&#39;s tailor,&quot; <em>he laughed a bit hysterically under his breath.</em> &quot;I had just finished settling in.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 12:49 AM</span>
+
+            <div class="chatlog__message " data-message-id="825879308832210965" id="message-825879308832210965">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Ah, Commander Carlisle will be so jealous to know I&#39;ve gotten roommates with the tailor! I would think she would do most anything to get her jumpsuit fitted.&quot; 
+
+<em>She looked down disparagingly at the orange jumpsuit that she had yet to slip into, still cuddling the tribble-like creature gently.</em> &quot;Though I am not sure even the best tailor in the galaxy could make this comfortable to wear. Glad to meet you all the same though, Finley.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 01:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="825892621947240458" id="message-825892621947240458">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Commander Carlisle sounds like she has good taste,&quot; <em>he joked.</em> &quot;I would have to agree that these jumpsuits are just terrible, but I haven’t the mind to argue with any of our captors. Not that I think they have any alternative. Excuse me sir, do you have this in <em>pink</em>? I think not.&quot; <em>At least socializing was bringing a piece of him back.</em> &quot;But yes, I’m happy to have some company here. And I’m grateful for our small friend as well,&quot; <em>he gestured toward the furry bundle in Sara&#39;s arms.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/0610c6dbe789936e6f69aaf8db1bd494-3C883.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 01:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="825895817021882368" id="message-825895817021882368">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>It was still clutching at the jumpsuit and the medkit he had been given that Newt made his way into the cell, before the door was closed again behind him. He was kinda bloody, but he did not seem to limp or anything of the sort, and given the original white of his uniform peeking here and there, it could easily be assumed it wasn&#39;t his. After giving a quick look around, his eyes stopped on the unfamiliar person, a soft</em> &quot;Hello there.&quot; <em>leaving his lips, before he took a look at the other in the room so far, and a glint appeared in his eyes.</em> &quot;Sara!&quot; <em>he said happily, before frowning and trying to spot any injuries on both of them with his eyes only,</em> &quot;Are you ok? Are you both ok?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 01:59 AM</span>
+
+            <div class="chatlog__message " data-message-id="825897025961984041" id="message-825897025961984041">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>At first Finley immediately stepped in front of Sara to guard the creature from being seen, he was worried the newcomer had been a guard. After realizing that this was another officer, he stepped to the side and relaxed his posture.</em> &quot;Yes, yes I’m okay. I’m not sure about Ms. Bj&#248;rge though,&quot; <em>he looked back at her.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/5a5bb7bf5f8f68969f9986a009b21543-92F1D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 02:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="825901382581092383" id="message-825901382581092383">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>With the sound of the door opening and closing, the little ball of fur had woken up again and it cooed softly in Sara&#39;s arms.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 02:51 AM</span>
+
+            <div class="chatlog__message " data-message-id="825910056319057933" id="message-825910056319057933">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Newt!&quot; <em>Sara gasped, a smile plastering onto her face as the short medic walked inside, her eyes practically aglitter. Despite her face being smeared in blood, she looked relatively unharmed, though the blood pattern looked as though it might have been somewhere in her hairline.</em>
+
+&quot;I am fine, I promise, it is just a cut. How are you, are you okay? Did they hurt you, or did the ship?&quot; <em>The small cooing creature in her arms suddenly not existing for a moment as she talked with Newton near frantically.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Mar-21 03:26 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 03:00 AM</span>
+
+            <div class="chatlog__message " data-message-id="825912266104897595" id="message-825912266104897595">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Finley eyed the little bundle in her arms warily, hoping she wouldn’t drop it in her excitement.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/0610c6dbe789936e6f69aaf8db1bd494-3C883.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 03:01 AM</span>
+
+            <div class="chatlog__message " data-message-id="825912589506183188" id="message-825912589506183188">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yeah, yeah I am. I was lucky, unlike-&quot; <em>he cut himself as he feared that, should he say more, he would have started crying. So, so many who... Focus.</em> &quot;Let me give it a look, yeah? Just- just to be sure?&quot; <em>he almost begged, first because they didn&#39;t know how everything would be there and he didn&#39;t want to risk an infection or anything, and last because it would be better than just sitting in the cell doing nothing. Waiting for her approval before approaching, he couldn&#39;t help but ask, as he had caught a little glimpse of what they were saying just before.</em> &quot;Is- have you seen my m- Bl- Commander Carlisle? Do you know if she&#39;s ok?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Mar-21 07:00 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 03:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="825915776884146207" id="message-825915776884146207">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I saw her in the hallways, she was near Commander T&#39;Svai last I saw, and she looked..well. I do not think it is appropriate to say anyone looks <strong>good</strong> but..she is alive and walking unassisted at any rate, Newt.&quot; <em>She looked to Finley and held her hands out, offering the furry tribble-like animal to him quietly.</em> &quot;Will you hold him so Newt can look at my wound?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Mar-21 03:14 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 03:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="825916643687006248" id="message-825916643687006248">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Absolutely,&quot; <em>Finley bent down to reach Sara better, and took the small creature. Upon taking it, he began to stroke it once more.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/0610c6dbe789936e6f69aaf8db1bd494-3C883.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 03:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="825919159615488010" id="message-825919159615488010">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Thank god.&quot; <em>he couldn&#39;t help but voice, as a weight he hadn&#39;t known had been on his shoulders was removed. The threat was still there, he knew, but for now, it seemed more distant. Right now though, he got settled to look at Sara&#39;s injury, despite how little it was. Addressing the person who he had yet to ask their name, he said,</em> &quot;Thank you, Sir. I wouldn&#39;t want to be a bother and make ya repeatin&#39; again that name of yours, but I&#39;m afraid I came in a lil&#39; too late and didn&#39;t hear it, if you don&#39;t mind..?&quot; <em>Sterilizing and closing back the cut wouldn&#39;t take long nor much focus, and that&#39;s when he recalled the creature he&#39;d seen and the exchange that just had happened.</em> &quot;And, huh, who&#39;s that cute lil&#39; one?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128532;" title="&#128532;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f614-D4BEE.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128147;" title="&#128147;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f493-6DAB2.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 03:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="825921495057563738" id="message-825921495057563738">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Through the heavy Southern accent, Finley picked up the polite questions.</em> &quot;It’s quite alright,&quot; <em>he replied, subconsciously mirroring the polite tone the stranger had spoken in.</em> &quot;I’m sorry that you have to be here at all, my name is Finley Harrison.&quot; <em>He patted the creature gently,</em> &quot;and we found this little thing under the bed. We don’t know where it came from, but I think it’s safe to say we’ve adopted it for the time being.&quot; <em>&#39;However dangerous that might be,&#39; he thought to himself.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/0610c6dbe789936e6f69aaf8db1bd494-3C883.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 05:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="825956754680315935" id="message-825956754680315935">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Once done with Sara&#39;s cut, Newt nodded.</em> &quot;Nice to meet ya, then! Even if- y&#39;know. I&#39;m sorry too. Ah, and I&#39;m Newt... well, Newton Eirson, but folks generally call me Newt.&quot; <em>Giving another look to the furry being, he smiled.</em> &quot;I see why, it&#39;s totally adorbs!&quot; <em>he pushed away the thoughts about where was its owner if it had one, and other thoughts concerning his own pet. He could, would cry later.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Mar-21 05:58 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:33 AM</span>
+
+            <div class="chatlog__message " data-message-id="825965777760944129" id="message-825965777760944129">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Newt is a very cute nickname,&quot; <em>Finley complimented, before nodding at the creature in agreement.</em> &quot;We have yet to name it, but I’m not sure I want to. You know what they say,&quot; <em>he whispered softly.</em> &quot;Give it a name and you’ll get attached.&quot; <em>At this point Finley wasn’t sure he even wanted to get to know his cellmates very well, what would happen if they were taken away? He normally liked being alone, but being alone here seemed like torture.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/0610c6dbe789936e6f69aaf8db1bd494-3C883.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 06:45 AM</span>
+
+            <div class="chatlog__message " data-message-id="825968883084034058" id="message-825968883084034058">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Ah, well, it&#39;s- ah, thanks-!&quot; <em>His typical not-knowing-how-to-take-compliments, before giving a little chuckle.</em> &quot;Well, ha, I guess I&#39;m doomed. I&#39;m already attached to the little darlin&#39;. I can&#39;t help it, I guess. I just hope...&quot; <em>He slightly shook his head instead of finishing what he was going to say, switching to another subject.</em> &quot;I&#39;ll just- I&#39;ll be right back.&quot; <em>Indeed, he was gone for a few minutes to change, coming back with less red and other species blood color, now in orange. Although, he still had, not visibly, the precious necklace under this new &#39;uniform&#39; and had hidden his pips in the medkit he had been given. He was also clutching at the latter, the threat should he lose it always at the back of his mind. He sat on one of the bed, starting to nod off a little.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Mar-21 06:48 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/5a5bb7bf5f8f68969f9986a009b21543-92F1D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 01:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="826067690049241108" id="message-826067690049241108">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The little creature wriggled slightly in Finley&#39;s arms, as if wanting to be put down.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/4f18bdbb2031d8acd538b661158c5875-3842C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Birb#7040" data-user-id="384551551567659009" style="color: rgb(175,36,27)">Lieutenant Mino</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 02:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="826090761913237536" id="message-826090761913237536">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Mino had eventually found herself here.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 03:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="826098996979564614" id="message-826098996979564614">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Sara thanked Newt softly, rubbing the spot that&#39;d previous been an open wound on her hairline. She headed over to the bathroom, grabbing the jumpsuit as she went to wash the mostly dried blood off of her face and neck and to dress in the horrid orange jumpsuit. She came back out with her normally braided hair piled high into a ponytail to keep it off her back- who knows what sort of shift they had prepared for them. She watched Finley and Newt interact for a while, sitting on her bed with a touch of exhaustion. She was sleepy and hungry and she missed Giblets- Oh god? Had Giblets even been evacuated?? The veterinarian onboard had evacuated all animals in the firefight with the Romulans- but had the same orders been given this time around? Panic suddenly set in as she tried to parse through everything that&#39;d happened, all the orders that&#39;d been given.</em>
+<em>She suddenly wasn&#39;t sure that Giblets had made it out..</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f62d-FE9EC.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 04:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="826117439397822505" id="message-826117439397822505">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>As the wake up alarms whined, she stood and exited the cell, heading towards...the place overseers went, she supposed. Maybe they were made up of other department heads- that was the only possible reason she could discern why the Iconians would otherwise choose her for an overseer. She headed down the hallway, scoping out for familiar faces among the sea of orange.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129402;" title="&#129402;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f97a-338D5.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 08:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="826180752462577715" id="message-826180752462577715">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Finley had eventually fallen asleep after Newt and Sara had laid down and gotten to sleep themselves. When he woke up he used his old clothes to build a soft nest underneath his bed to leave the creature on so it would be comfortable while he worked. He wasn’t looking forward to this at all, but it was work or die and he sure wasn’t ready for that yet. Some part of him held onto the hope that this wouldn’t be permanent. That he would escape with Newton, Sara, and this small creature that they had yet to name.</em>
+
+<em>Not really mentally prepared, Finley left for his shift.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/5a5bb7bf5f8f68969f9986a009b21543-92F1D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 08:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="826183667189022731" id="message-826183667189022731">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The creature cooed a little when it was settled into the nest, before deciding to roll around on the floor for a bit.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="care" title="care" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/711609055021629502-E849D.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/5a5bb7bf5f8f68969f9986a009b21543-92F1D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">29-Mar-21 11:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="826222682240450590" id="message-826222682240450590">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>It rolled over to the cell door and looked out, wondering when the tall bipedal things were going to come back. It cooed sadly. It had an itch that needed scratching.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129402;" title="&#129402;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f97a-338D5.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/5a5bb7bf5f8f68969f9986a009b21543-92F1D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">30-Mar-21 03:06 AM</span>
+
+            <div class="chatlog__message " data-message-id="826276147095797810" id="message-826276147095797810">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Deciding it wasn&#39;t going to get any scritches any time soon, it turned from the door and rolled over to one of the bed posts and attempted to itch itself on it. Then it rolled over to the nest Finley had made and settled down into it.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="30-Mar-21 03:06 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="care" title="care" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/711609055021629502-E849D.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129402;" title="&#129402;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f97a-338D5.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">30-Mar-21 04:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="826293418522050581" id="message-826293418522050581">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Sara had walked inside quietly, taking off her boots at the door as was her custom, despite the hovel not being anywhere near worthy of doing so. The door shut behind her with a thick, metal &#39;CLANK&#39; as she sat down on the grimy, 1-ply mattress, the sound only confirming for her that this situation was feeling more shut and locked than she&#39;d ever thought before. Her face was already tinged red as she struggled to hold off the tears, both hands coming up to clasp gently at her face, covering her mouth and eyes as despite her best attempt, hot, angry, terrified tears rolled down her freckled cheeks in quick succession.</em>
+<em>Her throat was raw and tight, unable to sob even if she wanted to as the knot that tied her vocal chords together nearly strangled her as she attempted to just..let it out. Her shoulders shook weakly as she leaned down into her lap, wanting nothing more than to curl in on herself and disappear as the silent sobs wracked her already ragged and sore throat. People were already turning against each other on day one in this miserable hell- what would the rest of the week bring? What if weeks? What if months? The struggle to keep quiet was desperate, but she simply held her face tighter, willing the tears to suck themselves back into her eyes.</em>
+
+<em>But to little avail. It took what felt like hours, but in reality was likely only minutes to finally calm herself down enough to try and regulate her breathing, it having previously only been desperate gulps of air in-between her shaky sobs. Once she was able to breathe again and not greedily suck in air as if she were drowning, she laid down on the creaky mattress that she could tell was going to hurt her shoulder by morning, and promptly slipped into a fitful sleep.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="30-Mar-21 01:30 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/5a5bb7bf5f8f68969f9986a009b21543-92F1D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">30-Mar-21 03:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="826469564178497577" id="message-826469564178497577">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>While Sara was sleeping, the small creature &#39;somehow&#39; managed to get on top of the bed and cuddled next to her.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">30-Mar-21 07:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="826524324616732693" id="message-826524324616732693">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Sara woke up hours later at the loud near-klaxon level work alarm. She opened now seemingly dull blue eyes that felt caked with wet and dried mascara she&#39;d worn days previous. She never had washed her face, had she? Moving to get up, she realized her stomach was warm and looked down, half expecting to see Giblets..but it was the tribble creature from earlier, having evidently not gotten caught by security..or Nedras yet.</em>
+
+&quot;Good morning to you..&quot; <em>She murmured quietly, lifting a lazy hand to pet it softly before gently rearranging it to lay in the warm spot she&#39;d left as she sat up on the edge of the bed to take hold of her bearings. She was weak, exhausted, cold despite the warmth of her new friend..but it was more of an inner cold, one that she didn&#39;t feel would be sated by hot water or cuddles.</em> &quot;I must be off to work, stay out of trouble, ja?&quot; <em>She announced to the furry creature, standing up and heading over to the bathroom where she rinsed her face clean of the dried makeup, put her long hair up into a ponytail once more, and headed out.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/0610c6dbe789936e6f69aaf8db1bd494-3C883.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">01-Apr-21 10:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="827296094358470696" id="message-827296094358470696">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Having had some shifts he had eventually stopped counting, Newt woke up once again for another one. Slowly moving, his brain told him something was wrong, though it was still a bit fuzzy and didn&#39;t know what. That&#39;s when he felt it; his hands were empty. Jumping out of his cot, he began panicking. His medkit, where was his medkit! He couldn&#39;t lose it, he just couldn&#39;t, he- oh, wait. On the ground. It was there. He must have dropped it while sleeping. Well. He picked it up after sighing, and left the cell when the door opened.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/d9b5477465c7e6ba9aeb50ce5a9ba071-7DB6F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Test Subject V-891#0000" data-user-id="827371086656045106" style="">Test Subject V-891</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">02-Apr-21 03:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="827371087502508082" id="message-827371087502508082">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The tribble had been returned here by one of the guards, and it now absent-mindedly rolled around the cell.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/79e87f1e089e417022abd5ff7684ec36-29893.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#9591" data-user-id="730589021281058816" style="color: rgb(39,126,205)">Lieutenant Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">02-Apr-21 09:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="827634141436706816" id="message-827634141436706816">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Sara had respawned back in her cell, only to quickly leave once more.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/d9b5477465c7e6ba9aeb50ce5a9ba071-7DB6F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Test Subject V-891#0000" data-user-id="827371086656045106" style="">Test Subject V-891</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">10-Apr-21 04:35 AM</span>
+
+            <div class="chatlog__message " data-message-id="830284945595301908" id="message-830284945595301908">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The tribble rolled into its nest and cooed, disappointed that nobody had petted it in a while.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f62d-FE9EC.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127477;" title="&#127477;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f1f5-E259F.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127466;" title="&#127466;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f1ea-4B558.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127481;" title="&#127481;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f1f9-24F03.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="olddivider" title="olddivider" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/641399042726821959-8118D.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127474;" title="&#127474;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f1f2-C2511.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128231;" title="&#128231;" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/1f4e7-BFD2B.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/0610c6dbe789936e6f69aaf8db1bd494-3C883.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">10-Apr-21 06:49 AM</span>
+
+            <div class="chatlog__message " data-message-id="830318475641618442" id="message-830318475641618442">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Newt who had totally been there resting on his cot and not into the scary void he went (not) each time his player forgot about him, looked at the little being curiously after hearing it cooed. Ah, maybe was it lonely..? All species suffered from loneliness, after all. Or scared? Carefully, he went over and picked it up, hoping it wouldn&#39;t mind. Maybe he should have asked, but he was already in his arms now, so... yeah. Back to his cot, the nurse began petting the little one gently, a sad smile adorning his face. If he closed his eyes, he could almost pretend it was Horatio, minus the weight and licking and- Almost.</em> &quot;Don&#39;t worry darlin&#39;, we gettin&#39; outta there soon,&quot; <em>he whispered,</em> &quot;I&#39;ve heard... thin&#39;s goin&#39; on. We&#39;ll be ok, I swear.&quot; <em>He wasn&#39;t sure if he was reassuring the tribble, or himself. It didn&#39;t matter.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="10-Apr-21 07:33 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/d9b5477465c7e6ba9aeb50ce5a9ba071-7DB6F.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Test Subject V-891#0000" data-user-id="827371086656045106" style="">Test Subject V-891</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">10-Apr-21 05:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="830479941367758848" id="message-830479941367758848">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Tribble cooed as Newt held it and vibrated slightly in his arms.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="care" title="care" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/711609055021629502-E849D.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 05:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="831204080839950336" id="message-831204080839950336">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Finley had returned from his shift, or adventure rather the day prior. Today was supposed to be the big day, and he wasn’t leaving without the creature. After he woke up, he immediately prepared himself, making small internal checks on a list of things. The creature was the last one on his list, he wasn’t leaving without it. He looked around the room to see if he could find it.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Low%20Security%20Block%20Two%20-%20group-thirteen%20%5B825748384488489000%5D.html_Files/e87ffa29c3c40a6c9bf345d9ea8c9153-04505.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Shopping Cart King#5248" data-user-id="414921781749481472" style="color: rgb(224,124,169)">Finley Harrison</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-21 06:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="831217434290683925" id="message-831217434290683925">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I don’t know where the others are, but it’s time for you and me to go.&quot; <em>Finley scooped the Tribble up and hid it in his jacket. He then fled the cell to make it to the deconstruction yard.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 67 message(s)</div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,1834 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - underground-lab</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Esta / underground-lab</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 12:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="821176555535335444" id="message-821176555535335444">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The laboratory is completely dark, untouched for centuries and covered in dust. Whatever-- or whoever-- had been able to keep the main floor clean certainly wasn&#39;t able to do anything at this depth, it appeared. With lights turned on,  the room reveals itself to be large (at this scale, anyway) and round, with a section in the center that was lower than the rest of the room and contained a device approximately 10&quot; in height and 5&quot; in diameter. Still powered by cables that lead to a box on the wall, with additional cables leading upwards, the machine sparked and whirred, continuing to produce the particles that it had been designed to create with no knowledge of the havoc it was currently wreaking.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:02 AM</span>
+
+            <div class="chatlog__message " data-message-id="821186678717808661" id="message-821186678717808661">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras stepped out of the lift and looked around, gaze eventually settling on the unclear mass of sparks in the center of the room. He turned on the EV suit light thing his writer can&#39;t remember the name of, then stared at the machine.</em> &quot;I&#39;m surprised that hasn&#39;t broken down by itself.&quot; <em>He commented dryly.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="16-Mar-21 01:03 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/2490c957417a8c4f44948bc77b38f912-8D9BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="821186930926157865" id="message-821186930926157865">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She flicked her head lamp on as well, took one look at what she could see of the machine, and started towards one of the walls.</em> &quot;I&#39;m going to try and find a way to turn the lights on.&quot; <em>She announced.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:04 AM</span>
+
+            <div class="chatlog__message " data-message-id="821187091588841483" id="message-821187091588841483">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>A light switch was easily located.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/2490c957417a8c4f44948bc77b38f912-8D9BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:07 AM</span>
+
+            <div class="chatlog__message " data-message-id="821187909465931847" id="message-821187909465931847">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She turned the switch on, flooding the room with light.</em> &quot;Whoa. This is... bigger than I thought.&quot; <em>She walked away from the wall and approached the box seemingly powered the machine.</em> &quot;These cables go up, so maybe they connect to something on a higher floor.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:09 AM</span>
+
+            <div class="chatlog__message " data-message-id="821188463533096970" id="message-821188463533096970">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They winced as the light was turned on, having previously only been using the comparatively dim light of the EV suit. After their eyes adjusted, however, they looked around curiously for a moment, before having a brief thought. They tinted their visor for a moment in order to be able to look up at the light source, and did so in an attempt to figure out what kind of technology whoever build this place as using. Considering the lift having buttons, it was certainly outdated equipment.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:10 AM</span>
+
+            <div class="chatlog__message " data-message-id="821188585771237377" id="message-821188585771237377">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola frowned.</em> &quot;Why didn&#39;t we bring an engineer here. They would gave been useful to this part of the mission.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="16-Mar-21 01:11 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="821189034038657024" id="message-821189034038657024">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The light sources were quite high overhead thanks to the size of the lab and therefore difficult to make out, but they appeared to be long bars of some type of glass filled with an illuminating material.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="821189909414936626" id="message-821189909414936626">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“This technology is all outdated in comparison to Starfleet’s.” <em>They commented to anyone paying attention.</em> “I know a bit about old Earth tech, but I doubt that knowledge will be useful considering the fact that, ya know, this stuff is alien.” <em>They said simply, turning back to look around the rest of the room as they untinted their visor.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="821190947378561104" id="message-821190947378561104">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras squinted at the material.</em> &quot;Strange.&quot; <em>He commented.</em> &quot;I&#39;m familiar with Gamma Quadrant technology, to some extent, but how that applies depends on... well, what this is. Have you been able to obtain tricorder scans?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="821191486594613269" id="message-821191486594613269">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Uh, no. I can do that, though.” <em>They responded, pulling their tricorder off their EV suit’s belt as they did. They started with scanning the light sources.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="821191787589664779" id="message-821191787589664779">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The light sources were light sources and did not produce much information for the tricorder, other than the amount of energy they were consuming to produce illumination.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="821191889197334528" id="message-821191889197334528">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras squinted, then realized what Alyx was doing.</em> &quot;I was referring to the machine.&quot; <em>He clarified, pointing to it.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="821192999279001671" id="message-821192999279001671">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>They glanced at the lack of information on their tricorder, before looking over at Nedras when he spoke, and ultimately looking at the machine.</em> “Oh, sorry. Yeah I’ll do that now. The light sources didn’t give me much anyway.” <em>They responded, before going over to the aforementioned machine and scanning it with their tricorder.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="821193311196545024" id="message-821193311196545024">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola stood on the sidelines scanning the cords and cables as she waited for someone to do something stupid and need her help.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="gasp" title="gasp" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/637082216979103794-99F13.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="sombrerodata" title="sombrerodata" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/816576692600307712-CB70C.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="worfarg" title="worfarg" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/645268178032656394-90E20.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="821195083394449478" id="message-821195083394449478">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The machine was absolutely and without a doubt the source of the particle emissions. Scans indicated the power source was connected to the surface-- likely solar powered, and part of how it would still be able to draw energy after all this time. It stuttered and sparked, pressing on with its job of particle production. Based on the data collected, it seemed the machine had come on after a power surge during a storm only a few months ago.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="821196275256131584" id="message-821196275256131584">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Scans are showing that this is probably what we’re looking for. The power source is connected to the surface, my guess being an eco-friendly energy supply somewhere. Based off this data I’d estimate that it activated a few months back thanks to an apparent power surge.” <em>They said to the group as they read the info on their tricorder’s screen. After a second, however, they looked up from their tricorder.</em> “Wait, what exactly is it that we’re down here for? Is it to do with the ship’s systems acting weird?” <em>They questioned.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/2490c957417a8c4f44948bc77b38f912-8D9BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:43 AM</span>
+
+            <div class="chatlog__message " data-message-id="821196988791521300" id="message-821196988791521300">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She continued peering at the machine as Alyx relayed the information, then turned to them once they&#39;d finished.</em> &quot;The systems onboard have been acting up due to a species called the Qhaveid. They&#39;re native to this planet, but a long time ago they figured out how to ascend to a different plane of existence. The particles this machine is making are killing them.&quot; <em>She explained.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="16-Mar-21 01:43 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:45 AM</span>
+
+            <div class="chatlog__message " data-message-id="821197510726123521" id="message-821197510726123521">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras inspected the box on the wall carefully.</em> &quot;You might be surprised, given the malfunctions, but the Qhaveid are really very nice.&quot; <em>He chimed in.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/1074924ed2e82992d6d8011df98da012-5EE6E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Ayy Dee Bee#8008" data-user-id="208942891941232641" style="color: rgb(255,203,37)">Ensign Alyx Morgan</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 01:46 AM</span>
+
+            <div class="chatlog__message " data-message-id="821197765609914368" id="message-821197765609914368">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“Oh. Oh... That ain’t good.” <em>They responded simply.</em> “Considering the fact nothing lethal has happened, I’d assume so. But either way, we should really find a way to switch this thing off of that’s the case.”</span>
+
+                                <span class="chatlog__edited-timestamp" title="16-Mar-21 01:59 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/2490c957417a8c4f44948bc77b38f912-8D9BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="821202029119799317" id="message-821202029119799317">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Yeah.&quot; <em>She said, sighing.</em> &quot;Lola was right. It&#39;s a shame we didn&#39;t bring an engineer. The only way I can think of is of course cutting of the power supply,&quot; <em>She gestured to the cables.</em> &quot;But obviously I don&#39;t know if just yanking them out is the safest route.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="16-Mar-21 02:05 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="821205401328287775" id="message-821205401328287775">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The wall box contained multiple cables all connected in to one primary cable which lead up and out of the area. Alien characters marked the box as &#39;power&#39; which seemed rather self-explanatory. There were several computers nearby, cables also connected to the power junction.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="821206108273377321" id="message-821206108273377321">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola pursed her lips as she thought. Hmm. On one hand, having random cords out of walls was generally a bad idea. On the other hand, she didn&#39;t want it to be someone else&#39;s bad idea. She reached over and did the &quot;stupid&quot; deed herself. She unplugged everything in the power junction.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="821206798102822963" id="message-821206798102822963">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The machine in the middle of the room began to spark furiously. Tricorder scans indicated the abrupt change of energy to the already defective particle manufacturer were causing mechanism collapse. Since the away team were unfamiliar with the power source, there was no way to tell what was going to happen-- but smoke was beginning to pour out of the device.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="821207092688846898" id="message-821207092688846898">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras reflexively tapped his combadge.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/2490c957417a8c4f44948bc77b38f912-8D9BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="821207132874997761" id="message-821207132874997761">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh, Prophets, oh no-&quot; <em>She furiously looked between her tricorder and the machine.</em> &quot;It&#39;s collapsing. What would happen if we plugged it back in?!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="821207526422610011" id="message-821207526422610011">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;No time, get to the lift now, that&#39;s an order ensigns!&quot; <em>Lola took off for the lift and it the ground floor button furiously while waiting for the others to get in the lift.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:26 AM</span>
+
+            <div class="chatlog__message " data-message-id="821207802651344927" id="message-821207802651344927">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras quickly entered the lift.</em> &quot;Has the particle flow stopped? Is the machine disabled?&quot; <em>He asked urgently, temporarily muting the comm line.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/2490c957417a8c4f44948bc77b38f912-8D9BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="821207946796859442" id="message-821207946796859442">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Before following Lola&#39;s order, Cas ran over and grabbed one of the computers and toted it along with her into the lift.</em> &quot;Let me check.&quot; <em>She quickly scanned the room for particles.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:28 AM</span>
+
+            <div class="chatlog__message " data-message-id="821208319461031996" id="message-821208319461031996">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Once Alyx was safely in the elevator Lola mashed the button that had two arrows pointing towards each other, praying it would make the elevator work faster.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="sparkling_yellow" title="sparkling_yellow" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/590330615857938502-B15FF.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="821208569184518195" id="message-821208569184518195">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>At the moment, the machine appeared to be imploding, which was causing a massive surge of particle generation according to Cas&#39; scans.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/1f62d-FE9EC.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="nogodpleaseno" title="nogodpleaseno" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/784817293053394995-CBCEC.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/2490c957417a8c4f44948bc77b38f912-8D9BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="821208801017069599" id="message-821208801017069599">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;It&#39;s imploding!&quot; <em>She practically shouted.</em> &quot;There&#39;s even more particles than before. What if that kills them <em>all</em>?!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="821208882880839690" id="message-821208882880839690">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras closed his eyes and muttered a prayer to the Founders under his breath, then rapidly exited the lift and  attempted to  plug the machine back in.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/2490c957417a8c4f44948bc77b38f912-8D9BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:31 AM</span>
+
+            <div class="chatlog__message " data-message-id="821209065827860490" id="message-821209065827860490">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She followed him out of the lift, because dammit if she was going to let anything die, and continueously scanned the machine as Nedras worked.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:32 AM</span>
+
+            <div class="chatlog__message " data-message-id="821209251179266088" id="message-821209251179266088">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The lift doors closed and the lift began to ascend without Nedras and Cas.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:32 AM</span>
+
+            <div class="chatlog__message " data-message-id="821209355071389696" id="message-821209355071389696">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">((wait but did plugging it in help))</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:35 AM</span>
+
+            <div class="chatlog__message " data-message-id="821209968748658738" id="message-821209968748658738">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The cable was plugged back in to the power junction, but the machine was too far gone. It was clearly about to explode.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/f6570d9b2a0a089617d5b144edccae41-8EFCD.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:35 AM</span>
+
+            <div class="chatlog__message " data-message-id="821210116644012042" id="message-821210116644012042">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lola tried to yell at the ensigns to get back into the elevator, but the door shut and began its ascension. She slammed on the door several times with her hands, then tapped her comm badge.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/2490c957417a8c4f44948bc77b38f912-8D9BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="821210284168577066" id="message-821210284168577066">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Cas ran over to one of the computers and desperately turned it on, hoping it had answers to solve her and Nedras&#39;s rapidly forthcoming doom.</em> &quot;What do we do <em>now</em>?!&quot; <em>She shouted.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/5b17e5588cceb4114788a154f1435955-B1A62.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cmdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="821210574096039936" id="message-821210574096039936">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>With an incredibly loud BANG the machine gave up the ghost and exploded. The pieces went flying-- directly into the failsafe containment field that had dropped into place.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/64d16908f8283cbbd27d67e1998ec2ae-534AE.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters2ElectricBoogaloo#0435" data-user-id="787372991474171946" style="color: rgb(215,52,42)">Ensign Nedras</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="821210948953440256" id="message-821210948953440256">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Nedras closed his eyes, then opened them once the explosion finally occurred and he didn&#39;t die. He unplugged the machine again for good measure.</em> &quot;Excellent engineering. &quot;<em>He muttered under his breath, before re-activating the comm line.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Esta%20-%20underground-lab%20%5B821174163703463937%5D.html_Files/2490c957417a8c4f44948bc77b38f912-8D9BA.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space cowboy#7917" data-user-id="806258988123160658" style="color: rgb(39,126,205)">Ensign Cas Yardi</span>
+
+
+        <span class="chatlog__timestamp">16-Mar-21 02:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="821211135368757279" id="message-821211135368757279">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She let out a long sigh and slid to the ground, still clutching the computer she&#39;d grabbed earlier and muttering various curse words and praises under her breath.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="16-Mar-21 02:40 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 42 message(s)</div>
+</div>
+
+</body>
+
+</html>

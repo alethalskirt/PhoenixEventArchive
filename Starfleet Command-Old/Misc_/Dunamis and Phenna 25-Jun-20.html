@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - starfleet-medical</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/6c6374bad0b0b6d204d8d6dc4a18d820.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/e8acd7d9bf6207f99350ca9f9e23b168.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/3bdef1251a424500c1b3a78dea9b7e57.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/be0060dafb7a0e31d2a1ca17c0708636.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/8e12fb4f14d9c4592eb8ec9f22337b04.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    white-space: pre-wrap;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.spoiler {
+    width: fit-content;
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image img {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 0.5em 0.7em;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="https://cdn.discordapp.com/icons/629656123091451934/741f79395701523dd2db7c22f691220d.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Earth - Starfleet / starfleet-medical</div>
+
+
+        <div class="preamble__entry preamble__entry--small">
+                Between 25-Jun-20 12:00 AM and 26-Jun-20 12:00 AM
+        </div>
+    </div>
+</div>
+
+<div class="chatlog">
+    <div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/710715279432482868/d72cd803ba5db1e27c650ec35b761a3b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fleet Admiral Phenna Ephrix#0000" data-user-id="710715279432482868" >Fleet Admiral Phenna Ephrix</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jun-20 02:04 AM</span>
+
+            <div class="chatlog__message " data-message-id="725516617005662299" id="message-725516617005662299">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Attempts to drive an invasive entity out of your own mind was only natural. The attempt to make her leave may well have not been directed towards herself either. It could be a subconscious reflection of a desire to rid himself of this alternate personality. After all,</em> <em><strong>it</strong></em> <em>was what truly didn’t belong.</em> 
+
+<em>The familiar opening notes of that song did manage to catch her off guard. Suddenly aware of both reality and Dunamis’s own mindscape her hands had dropped, staggering – it took her all of her effort to drag herself back into the image his brain was projecting and not lose sight of it.</em>
+
+<em>It was just typical that he would know the easiest way to attempt to forcibly remove her. This had just made everything even more difficult. It did not matter, though. Perseverance was the key. Once Dunamis was alright then she could face whatever new consequences lay in wait for her. She could already predict them. Maybe it would finally happen this time.</em> 
+
+<em>As vision cleared she caught sight of the door. Chained – like his own personality, perhaps, or attempting to lock away the alternate one behind the steel. The wood of the door could be broken down. It had to be himself, then. It was himself behind the door.</em> 
+
+<em>”Dunamis, darling,” she dared to speak. “It’s not me that you want rid of. I’m here to help you, alright? It’s time to bring you back. The real you. You’re going to have to focus for me. Focus on yourself, on who</em> <em><strong>you</strong></em> <em>are. I know that you’ve been hurt. I know that you’ve been locked away. But we’re going to get you out. We’re going to help you.”</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/196165132273975296/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296"  style="color: rgb(194, 59, 50)" >Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">25-Jun-20 05:28 AM</span>
+
+            <div class="chatlog__message " data-message-id="725568020218511461" id="message-725568020218511461">
+                <div class="chatlog__content">
+                    <div class="markdown">[D]<em>The trembling beneath her feet lessened. As if by magic the book that K&#39;Pora had been ripping pages out of flipped open, and the scraps of paper flew into it, pages mending. The book itself remained on the floor, however. The incessant background music slowly petered out, leaving her alone with the two of them in silence once again. The apparitions themselves regarded her silently, once, before casting their gaze to the oaken door, where the chains remained fixed in place.</em> 
+
+&quot;Are you sure you want to go in there, aunt Phen? You might not like what you see.&quot; <em>&#39;Kennox&#39; informed her.</em> 
+
+&quot;He&#39;s hardly worth saving. What kind of leader makes assumptions about his followers before they&#39;ve had a chance to prove themselves?&quot; <em>&#39;K&#39;Pora&#39; added.</em> 
+
+<em>Okay, maybe he hadn&#39;t really heard them both talk a lot. Their voices sounded about right but their inflections and speech were off. But for what it was they represented well enough the feelings he kept bottled up inside; Fear. Regret. Feelings that wandered his mind every so often, messed up the cozy, warm space from which he drew strength. Each and every time he&#39;d picked the books up, restored them and put them back where they belonged. But not this time. Not fully.</em> 
+
+<em>She could hear something else now. Voices. <strong>A lot</strong> of voices. Voices that escaped under the chained door, drifted out, carried on the air. Was there air in this space? Was that even relevant? Eh, who cares? Laughing, chattering, maybe a few hard thumps and groans of pain - groans that distinctly belonged to Dunamis. The contents of the conversation, or conversation<strong>s</strong> going on behind the door were unclear at this time, though she would be able to tell that the tone was mocking. Some seemed vaguely familiar to her as well.</em>
+
+&quot;We came from there. How much fun it is in there!&quot; <em>&#39;K&#39;pora&#39; gave a snort of laughter.</em> &quot;Why don&#39;t you go join in?&quot;<span class="chatlog__edited-timestamp" title="25-Jun-20 05:40 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/710715279432482868/d72cd803ba5db1e27c650ec35b761a3b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fleet Admiral Phenna Ephrix#0000" data-user-id="710715279432482868" >Fleet Admiral Phenna Ephrix</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jun-20 08:46 AM</span>
+
+            <div class="chatlog__message " data-message-id="725617932507283487" id="message-725617932507283487">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>The music filtering out and slowing to a stop had been a relief. She had no idea of how much longer she could have kept this telepathic connection active with that plaguing her. The image of this room had already began to fade to black at the edges, every sound and noise becoming more distant as the call of reality crept in. She had been right when she presumed this was not going to be a simple task - and was going to be one that she really shouldn&#39;t undertake.</em> 
+
+<em>Another moment to analyse the change. This felt like being forced to pick apart a novel for every detail and its symbolism. Not as if she usually minded but in this case she did. She simply did not have the time. The pages suddenly being returned to the book was likely an improvement, as well. Did its place on the floor still indicate its ability to be trod upon, perhaps, unwilling to properly be restored to life? There could have been numerous interpretations. And then there was still that door now coupled with a cacophony of sound from beyond. Sound... Something that she wasn&#39;t supposed to hear, this mental projection something that she was not supposed to see. Trawling through mental mindscapes in comparison to the reality of the real world was agonising. The contrast was too great. Her brain was no longer equipped to physically handle these two senses and yet here she was,</em> <em><strong>having to.</strong></em> <em>Time was limited</em> 
+
+<em>&quot;Dunamis, I know that it feels like you&#39;ve been chained. You&#39;re going to have to realise that you have the ability of fighting back. You can break free of those chains. I need you to take the first step for me, okay?</em> <em><strong>You</strong></em> <em>have to do this, and I know that you can. Just focus. All of that emotion is what makes you</em> <em><strong>you.</strong></em> <em>Don&#39;t let anyone else control you. You need to remember who you are.&quot;</em>
+
+<em>The plea made sense. As soon as there was a projection of the two different sides of himself that was when she could step in and erase it. The first part just had to be down to him.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/196165132273975296/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296"  style="color: rgb(194, 59, 50)" >Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">25-Jun-20 09:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="725625090993160194" id="message-725625090993160194">
+                <div class="chatlog__content">
+                    <div class="markdown">[D]<em>The trembling beneath her noncorporeal feet stopped completely. The apparitions of Kennox and K&#39;Pora looked at each other and nodded, shaking their heads. &quot;She&#39;s sure.&quot; &quot;Same old aunt Phen.&quot; And with that they flickered and were gone, and the chains latching the door shut cracked, fell away in pieces on the floor. The door swung open... revealing the bridge of the Phoenix, which appeared to be filled with people and in a state of utter disrepair. At least a thousand people, all dressed in section 31 black. How they all fit was a mystery. The voices heard were familiar because the <strong>people</strong> were familiar: the crew of the Phoenix, both past and present. Talos, Logan, Mackenzie. Zanmar, Korvas, Blanche, Ezran, Kun and more, everyone who he&#39;d served with in recent years and cared about.</em> 
+
+<em>But more than that she saw also the six members of the away team whom he&#39;d nearly sent down and killed by sheer negligence. They too were dressed in section 31 black, but their expressions were blank, pallor sickly, eyes glassed over and empty. The three security officers he&#39;d killed in a mind-controlled state were present too, in the same undead state as their compatriots. Like they&#39;d been raised from the dead. All of them seemed to be mercilessly attacking someone in the centre, some gloating, others goading and laughing. From the centre of the impossibly large mob came whimpers of pain and groans. As if their victim was ready to succumb, but would not.</em>
+
+<em>In making the poor decisions that he had, he felt that he&#39;d let down the legacy of the ship, a legacy that extended to the people who had, and continued to, give the ship it&#39;s name, for without them they&#39;d be nowhere. And this was the extent of his guilt at having failed them. How crushing.</em><span class="chatlog__edited-timestamp" title="25-Jun-20 09:21 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/710715279432482868/d72cd803ba5db1e27c650ec35b761a3b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fleet Admiral Phenna Ephrix#0000" data-user-id="710715279432482868" >Fleet Admiral Phenna Ephrix</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jun-20 10:13 AM</span>
+
+            <div class="chatlog__message " data-message-id="725639925579382844" id="message-725639925579382844">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>While it was unsurprising that all of this would culminate in a mental recreation of what his own mind had subject him to at the hands of the Expanse. At the same time, though, it made her wonder what must have happened in his past to make a grown man so sensitive to name-calling and the sort of bullying that a child might throw around. Surely there must be something else behind it. An adult wouldn&#39;t be so sensitive to such a minor thing if not.</em> 
+
+<em>They had been over this as well before. The concepts of mistakes or wronging people or carrying out actions that were not actually his own. The trauma of being forced to watch while he, not being in control, had to carry out such attacks would undoubtedly be difficult to move past. What Section 31 had done to him was going to be difficult to move past. This fight was up to him, though. She couldn&#39;t fix everything for him. She couldn&#39;t drive out these images and thoughts and suddenly make him who he was again. That was his own fight. She could only guide him - and if some forced alternate consciousness did decide to present itself, then she could remove it.</em> 
+
+&quot;I know this is difficult. I know that these people hurt you - and that you hurt them. You have to focus, though. What they are doing is not real, it never was. It has always been part of your imagination. No one would chastise you like this. We all make mistakes, we all want to help one another learn from them and use it as an opportunity for growth. You have to realise that.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/196165132273975296/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296"  style="color: rgb(194, 59, 50)" >Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">25-Jun-20 10:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="725646711908728862" id="message-725646711908728862">
+                <div class="chatlog__content">
+                    <div class="markdown">[D]<em>At her voice the heads of the crew snapped round to look at her. Many of them were blank-faced - literally - he hadn&#39;t memorized all his crew after all. And yet somehow the apparitions all spoke with one unified voice: &quot;Phenna Ephrix. Welcome to the captain&#39;s mind...&quot; And before her eyes  each person melted into shadow, forming a dark cloud that hung eerily over the bridge, leaving the Kelpien&#39;s shivering mental avatar prone on the floor, whimpering in pain. The avatar was dressed in white captain&#39;s uniform, woefully unaware of the changes that&#39;d taken place over the course of the past few days. In his hand was held his commbadge, tightly, knuckles white from the effort. Like a source of comfort or strength. The commbadge itself seemed to pulse weakly with light - like a sort of beating heart. Free of the surrounding darkness now it was free to glow, and with it his resolve. Maybe. Minds were funny things.</em> 
+
+<em>But that wasn&#39;t the only thing that wae happening, however. The dark cloud of section 31 elongated, formed itself into a cylinder, and from the swirling black mass stepped <strong>another</strong> version of Dune, in black section 31 uniform. &quot;How nice of you to join us. Enjoying the view?&quot; The voice was certainly <strong>not</strong> Dune&#39;s own, though - in fact, it sounded suspiciously familiar to the man who&#39;d tried to kidnap her and make her order the fleet out to Breen space...</em><span class="chatlog__edited-timestamp" title="25-Jun-20 10:41 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/710715279432482868/d72cd803ba5db1e27c650ec35b761a3b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fleet Admiral Phenna Ephrix#0000" data-user-id="710715279432482868" >Fleet Admiral Phenna Ephrix</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jun-20 11:27 AM</span>
+
+            <div class="chatlog__message " data-message-id="725658367686869002" id="message-725658367686869002">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>&quot;I already knew where I was, thank you very much. And no - you&#39;re creating quite the horrid picture, actually. Your artistic talent is lacking.&quot;</em>
+
+<em>Unconscious projections of symbolism meant nothing now. The counsellor was well aware that Dunamis here still had hope, she did not require yet another reflection of that being presented. Quite frankly, they did not have time for any sort of mind games.</em> <em><strong>She</strong></em> <em>did not have the time. Ah - that was quite possibly the reason why the manifestation of that alternate consciousness was trying to stall, then. With every second they waited the likelihood of this consciousness being removed was lessened. As soon as she knew that the Kelpien&#39;s own consciousness was secure then she could work. All that was required was for Dunamis to fight back.</em> 
+
+<em>With quick strides she walked straight past the Section 31 manifestation of him - or of that agent they both seemed to have encountered now. A hand was extended to the Kelpien. &quot;Come on, darling. Let&#39;s fix this. All you have to do is take the first step in this fight.&quot; A surprisingly steely gaze flickered back to the other representation of the Kelpien. &quot;I can do the rest.&quot;</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/196165132273975296/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296"  style="color: rgb(194, 59, 50)" >Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">25-Jun-20 11:38 AM</span>
+
+            <div class="chatlog__message " data-message-id="725661268849066046" id="message-725661268849066046">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>The curled up Kelpien on the floor groaned once, unfurled - looked up at her with golden eyes that were considerably more fiery than his real-world counterpart, pinned the commbadge back onto his uniform, eyed the impostor behind her with something akin to disdain. &quot;By yourself, Admiral? Knowing your current state in good conscience I cannot let you battle that <strong>thing</strong> alone. Tell me. How can I be of assistance?&quot;</em>
+
+<em>Oh, good. This one sounded like his real-world counterpart should&#39;ve. Acted like he should&#39;ve too. That was a good sign. Or not. A matter of perspective, really.</em><span class="chatlog__edited-timestamp" title="25-Jun-20 12:00 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/710715279432482868/d72cd803ba5db1e27c650ec35b761a3b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fleet Admiral Phenna Ephrix#0000" data-user-id="710715279432482868" >Fleet Admiral Phenna Ephrix</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jun-20 12:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="725671806744133702" id="message-725671806744133702">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>His immediate use of poetic word choice was more than reassuring. It was an indication that beneath it all, the Kelpien was himself - and he was willing to fight to</em> <em><strong>be</strong></em> <em>himself again. It was a glimmer of hope amidst the darkness that Section 31 had created. He would make it out of this alright.</em>
+
+<em>&quot;You don&#39;t need to worry about me. What you need to do is ensure that you keep fighting. Do not give in to him. You have an opportunity to learn, the chance for a better future. We&#39;re going to help you. You can be stronger than him.&quot;</em>
+
+<em>Eyes which were normally unseeing drilled into the other representation of the Kelpien. There was the distinct sensation of the world beginning to shift - fading away into specs of light. It started with the representation of the bridge and then moved to the people themselves - dissipating into familiar  white stars, the room beginning to swirl with purple until the old image of that nebula was built. Chasing stray fragments of a katra was always easier when there was a representation - extracting it from the other part of a person&#39;s mind was difficult. It took a lot to influence a person&#39;s thoughts, a lot to transfer a consciousness such as this... But swirling stars had soon encompassed it in a void between their two minds, lost to the mental connection.</em> 
+
+<em>Dunamis could be free now, he could be himself. He could work on rebuilding and repairing without someone else trying to influence his way. This was what had been required all along.</em>
+
+<em>The world went silent, devoid of thought. There was no more torment from that other consciosuness. All that remained was the memory of the event - a reminder, so that he could know his own strength and know he had the ability to move on. He needed to find a sense of pride in himself.</em>
+
+<em>The stars flickered out to black.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/196165132273975296/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296"  style="color: rgb(194, 59, 50)" >Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">25-Jun-20 12:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="725673592045436988" id="message-725673592045436988">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Released from the connection at last he drew in a sharp breath and coughed, blinking his golden eyes in shock. It felt like waking from a dream, almost - or maybe it had been one. Two years of dating one of the most powerful, if not <strong>the</strong> most powerful telepathic species in the quadrant had apparently taught him little about experiences like this. Oh well.</em> 
+
+<em>The first thing he did was to reach over, after a few minutes spent recovering, to his PADD and read over the letter of resignation again. Without the duality forcing him to second guess himself his judgment was clear: he wouldn&#39;t go down that easily. A single tap, and the letter was erased from the device. That was that.</em>
+
+<em>His thoughts immediately turned to Phenna afterwards, though, remembering all she&#39;d had to go through in the past few days, weeks even. Silently he reached over to her, hoping that the effort of helping him hadn&#39;t done the unthinkable.</em><span class="chatlog__edited-timestamp" title="25-Jun-20 12:41 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/710715279432482868/d72cd803ba5db1e27c650ec35b761a3b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fleet Admiral Phenna Ephrix#0000" data-user-id="710715279432482868" >Fleet Admiral Phenna Ephrix</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jun-20 03:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="725726104400166974" id="message-725726104400166974">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>There was no response from the admiral. As soon as that mental link had been severed she had sunk into the chair behind her. A trail of blood was present upon her face, having dripped from her nose and down her chin. Her head hung to the side over the back of the chair, completely unconscious.</em></div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="ohno" title="ohno" src="https://cdn.discordapp.com/emojis/668960662709338113.png">
+                            <span class="chatlog__reaction-count">7</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/196165132273975296/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296"  style="color: rgb(194, 59, 50)" >Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">25-Jun-20 04:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="725727944030552154" id="message-725727944030552154">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>No. No. No no no no. Not now. He instantly lunged for the call button, alerting the nurses and doctor on duty. After which he held her wrist, testing her pulse.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/710715279432482868/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="710715279432482868" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jun-20 04:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="725728532847657012" id="message-725728532847657012">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Upon hearing the alert go off, and sensing Phenna&#39;s telepathic aura burn out, he rushed in from where he was waiting outside.</em> &quot;Oh for... What have you done now, <em>Ephrix?</em>&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/196165132273975296/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296"  style="color: rgb(194, 59, 50)" >Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">25-Jun-20 04:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="725728850864111726" id="message-725728850864111726">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Golden eyes shifted from the admiral to Phenna to the admiral again. No. No no no no... His head sank low, unable to meet the man&#39;s gaze.</em> &quot;She was helping me, sir. Psychiatric intervention...&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/710715279432482868/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="710715279432482868" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jun-20 04:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="725729430978166816" id="message-725729430978166816">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;For the fleets most powerful telepath, she really does seem to-&quot; <em>He stuck his head back out the door again.</em> &quot;Nurse! Some help please!&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/196165132273975296/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296"  style="color: rgb(194, 59, 50)" >Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">25-Jun-20 04:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="725733283790585876" id="message-725733283790585876">
+                <div class="chatlog__content">
+                    <div class="markdown">[D]<em>Phenna was taken out of Dune&#39;s ward by nurses and doctors.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/710715279432482868/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="710715279432482868" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jun-20 04:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="725733886566596649" id="message-725733886566596649">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He sighed.</em> &quot;Are you alright, Com- Captain? She hurt herself, but I assume it was at her own expense? To help you.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/196165132273975296/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296"  style="color: rgb(194, 59, 50)" >Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">25-Jun-20 04:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="725734575451406478" id="message-725734575451406478">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Yes, it was.&quot; <em>Came his reply as he sat back down on the mattress. That was okay. She&#39;d done what she had to in order to help a patient - and knowing a caregiver like her she would give her life for anyone she sought to heal. For that he respected her a great deal.</em> &quot;I&#39;m alright, though, sir. Thank you.&quot;<span class="chatlog__edited-timestamp" title="25-Jun-20 04:32 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/710715279432482868/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="710715279432482868" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jun-20 04:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="725737671707852901" id="message-725737671707852901">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Did she talk to you about anything, other than your recovery?&quot; <em>He inquired.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/196165132273975296/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296"  style="color: rgb(194, 59, 50)" >Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">25-Jun-20 06:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="725757466511540376" id="message-725757466511540376">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;No, sir. Why?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/710715279432482868/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="710715279432482868" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jun-20 06:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="725759921932730448" id="message-725759921932730448">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I won&#39;t drag it out any longer. The admiralty have had a meeting about your position aboard the phoenix. Due to multiple reports from your crew, and issues arisen during your little adventure through time...&quot; <em>He straighted up, looking seriously at the man.</em>
+
+&quot;Captain Dunamis, you are hereby demoted to the rank of Commander, and are to step down from your position as commanding officer of the USS Phoenix. Commander Kunzō will be taking your place as CO, and you&#39;re to be offered the current position as Chief Tactical Officer, given your experience in said field. Any questions?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/196165132273975296/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296"  style="color: rgb(194, 59, 50)" >Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">25-Jun-20 06:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="725760628999979091" id="message-725760628999979091">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Unsurprisingly he didn&#39;t protest; merely sighed and cast his gaze downward. Having done so much thinking and so much reflecting (influence from the synthetic katra not withstanding) he knew that <strong>something</strong> had to happen.</em> 
+
+<em>And somehow? He was alright with that.</em> &quot;I accept. I&#39;m-&quot; <em>The words snagged in his throat, snarled together in a lump that refused to get out.</em> &quot;-sorry. I let you down, sir, and my crew. No questions.&quot;<span class="chatlog__edited-timestamp" title="25-Jun-20 06:13 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/710715279432482868/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="710715279432482868" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jun-20 06:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="725761125215633540" id="message-725761125215633540">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Don&#39;t apologise to me, Dunamis. Apologise to your crew, it&#39;s them you let down. If you have no further questions, I&#39;ll be going to check up on the admiral.&quot; <em>He turned to leave.</em></div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="yes" title="yes" src="https://cdn.discordapp.com/emojis/704858777706561605.png">
+                            <span class="chatlog__reaction-count">5</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="slap" title="slap" src="https://cdn.discordapp.com/emojis/679004321651752962.png">
+                            <span class="chatlog__reaction-count">6</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="🔥" title="🔥" src="https://twemoji.maxcdn.com/2/72x72/1f525.png">
+                            <span class="chatlog__reaction-count">7</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="pulaski" title="pulaski" src="https://cdn.discordapp.com/emojis/725509607593869403.png">
+                            <span class="chatlog__reaction-count">6</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/196165132273975296/ebe7d8dd10157a759d600061523f13f2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296"  style="color: rgb(194, 59, 50)" >Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">25-Jun-20 06:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="725761686266576926" id="message-725761686266576926">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I shall.&quot; <em>Came the reply. He averted his gaze to his PADD and the blank screen upon it.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/710715279432482868/129b47cc2b09085050f81178a52e324b.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Vice Admiral Kaaros Vuuhn#0000" data-user-id="710715279432482868" >Vice Admiral Kaaros Vuuhn</span>
+
+        <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Jun-20 06:18 PM</span>
+
+            <div class="chatlog__message " data-message-id="725761846052913202" id="message-725761846052913202">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He was already gone...</em></div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="🖕" title="🖕" src="https://twemoji.maxcdn.com/2/72x72/1f595.png">
+                            <span class="chatlog__reaction-count">2</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div>
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 25 message(s)</div>
+</div>
+
+</body>
+</html>

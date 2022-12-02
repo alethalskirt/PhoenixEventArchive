@@ -1,0 +1,2339 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - refreshment-area</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    white-space: pre-wrap;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.spoiler {
+    width: fit-content;
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image img {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 0.5em 0.7em;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/a_5361c0bf380eb945fe0f2e7ee079ec5d-28F71.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Ephrix Funeral / refreshment-area</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/7ecf61060d4020d2e49b09bde9f06e85-79FB2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">07-Nov-20 10:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="774769167781593118" id="message-774769167781593118">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Newt <s>scuttled</s> walked there. He took a non-alcoholic drink, not really being able to support alcohol well. He sipped, looking around.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/fab3cf8f396f6405877bd5c6d73528a4-506E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">07-Nov-20 11:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="774770341821546506" id="message-774770341821546506">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Dayton walked to the refreshment area from the ceilidh hall, since he wanted some time away from large clusters of people- and he wasn&#39;t in the mood to be in a crowded location, so he made his way to the refreshments. And besides, he also wanted something to drink, so he took a cup of coffee and began to drink it- looking around the place. Eventually, his gaze would settle onto Newt, so he would slowly walk over to the medical officer and beginning to speak.</em> &quot;Hello, Lieutenant..&quot; <em>He said as a greeting- trailing off if he could find anything else to say- but his emotion-riddled mind couldn&#39;t come up with anything.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/c38fa4314c6b9b59b6bd433b2bf66806-A3556.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Wash#0000" data-user-id="774771466390339594" style="">Wash</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">07-Nov-20 11:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="774771467371151412" id="message-774771467371151412">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Standing to the side of the table and leaning against the wall (in generic antisocial fashion) was a rather short fellow, Tellarite, judging by the appearance. Despite the occasion it seemed as if they hadn&#39;t really put in the effort - the black attire had been accomplished but the jacket was scruffy and sleeves were way too long for his arms. With arms folded across his chest he seemed to be scrutinising the people nearby, and at the approach of the two Starfleet officers he grunted to himself and looked away.</em> </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/1f62d-FE9EC.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/7ecf61060d4020d2e49b09bde9f06e85-79FB2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">07-Nov-20 11:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="774772457122562109" id="message-774772457122562109">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Newt heard someone calling for him, though there was a second or two before his mind caught that that &#39;lieutenant&#39; was himself. Blame it on the newly acquired rank, heh. He swallowed the fruity drink, then finally answered.</em> &quot;Heya, Lieutenant!&quot; <em>Maybe he could do a little better than that, though. Huh, right, socialization and all.</em> &quot;How you doin&#39;?&quot; <em>he asked, though with the black irises, he couldn&#39;t help but feel it probably wasn&#39;t his best day. The Tellarite didn&#39;t seem to want to talk so he just... kept looking at the other lieutenant after sending a quick wave.</em> <span class="chatlog__edited-timestamp" title="07-Nov-20 11:18 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/62aa2b0baf1231ea070bd0a378f610f8-895F8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space#8338" data-user-id="277281211200569344" style="color: rgb(41,169,238)">Ensign T&#39;Skyiar</span>
+
+
+        <span class="chatlog__timestamp">07-Nov-20 11:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="774775162608418826" id="message-774775162608418826">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>T&#39;Skyiar headed towards the refreshments, ignoring the three men. There really wasn&#39;t anything that she&#39;d allow to get in her way of finger food and a drink.</em> <span class="chatlog__edited-timestamp" title="07-Nov-20 11:20 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/fab3cf8f396f6405877bd5c6d73528a4-506E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">07-Nov-20 11:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="774775258098958346" id="message-774775258098958346">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;To be frank with you, I haven&#39;t been doing well, because of the funeral and all.. But what about you? How have you been doing?&quot; <em>Dayton said, his gaze averting Newton for a little, looking down at the floor before looking back at the medical officer. He felt as if he could have said practiclaly anything that would have been better than what he said. Of course Newt wouldn&#39;t be doing fine either! This was a funeral, and didn&#39;t he give a speech about Phenna, too? He did notice the Tellarite for a brief moment, but he returned his attention back onto the fellow officer.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/7ecf61060d4020d2e49b09bde9f06e85-79FB2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">07-Nov-20 11:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="774778295023435817" id="message-774778295023435817">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Well, that was expected, funeral and all. Not his brightest question. Newt pondered on the returned question for a second or two. How had he been doing? He kinda pushed his own feelings earlier, just before getting here, to comfort some people outside. But... Well, he wasn&#39;t crying anymore. He couldn&#39;t say he was happy-happy but...</em> 
+&quot;Well... I guess I&#39;m fine- I mean, as fine as we can be in such event, I guess.&quot; <em>he shrugged then sipped. He wasn&#39;t sure if his speech had been ok and he himself wouldn&#39;t mention it. He did sent a little wave towards the ensign, though she looked more lured towards the food and such.</em> 
+&quot;Just tried to help those who didn&#39;t seem so.&quot; <em>he sipped again at his drink. Crap was he bad at discussion.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/62aa2b0baf1231ea070bd0a378f610f8-895F8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="space#8338" data-user-id="277281211200569344" style="color: rgb(41,169,238)">Ensign T&#39;Skyiar</span>
+
+
+        <span class="chatlog__timestamp">07-Nov-20 11:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="774779696800858143" id="message-774779696800858143">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>T&#39;Skyiar gave a nod to the fellow medic - was that someone she&#39;d be working with often? What a wonderful first impression, her stuffing her face - before finishing her food and drink. Feeling a slight pleasant buzz, she focused on her next goal for the evening, and moved towards the dance floor.</em> <span class="chatlog__edited-timestamp" title="07-Nov-20 11:38 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/fab3cf8f396f6405877bd5c6d73528a4-506E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">07-Nov-20 11:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="774782258695503902" id="message-774782258695503902">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Oh? You tried to help others grieving? That&#39;s very admirable of you to do so..&quot; <em>Dayton said. He still felt as if he couldn&#39;t come up with anything that was close to articulate and he was kind of frustrated with himself for that inability to come up with a suitable subject to discuss- so that an awkward atmosphere wouldn&#39;t be so prevalent... but that didn&#39;t seem possible due to their shared inability to come up with anything to talk about- which was there because of the somber atmosphere around them.</em>
+
+He took another sip of his coffee, before he began to speak again. &quot;I&#39;m sorry if I can&#39;t come up with anything to talk about- I&#39;m not very articulate right now..&quot; <em>He said, feeling the need to apologize for the atmosphere between the two of them. He didn&#39;t know why he did it, but he just felt as if he had to do it.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/7ecf61060d4020d2e49b09bde9f06e85-79FB2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">07-Nov-20 11:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="774785182452285461" id="message-774785182452285461">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;It&#39;s nothin&#39;, really... Oh, huh, don&#39;tcha worry..! It&#39;s completely fine. And normal. It&#39;s not just any random party thingy, &#39;fter all.&quot; <em>He then rubbed the back of his head with his free hand after a few silent seconds passed, smiling sheepishly as he added,</em> &quot;I ain&#39;t really better, m&#39;I? Heh... Tallking ain&#39;t my forte. Though mine is obvious, white uniform ain&#39;t givin&#39; that many choices. Science&#39;s a&#39;bit larger though, so what&#39;s yours?&quot; <em>he asked, really curious about Dayton&#39;s specialty, but also happy to have find somehow a topic.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/c38fa4314c6b9b59b6bd433b2bf66806-A3556.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Wash#0000" data-user-id="774771466390339594" style="">Wash</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">08-Nov-20 12:00 AM</span>
+
+            <div class="chatlog__message " data-message-id="774785425478385724" id="message-774785425478385724">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Seemingly having been listening into the conversation he spoke up just for a moment, looking in the direction of the two.</em> &quot;That one isn&#39;t exactly articulate either,&quot; <em>he grumbled, clearly in reference to Dayton&#39;s quip and the way poor Newton spoke.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/fab3cf8f396f6405877bd5c6d73528a4-506E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 12:11 AM</span>
+
+            <div class="chatlog__message " data-message-id="774788156989505567" id="message-774788156989505567">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;My forte..? Oh, well- I&#39;m a mainly a biochemist. My field involves studying the chemical processes of biological organisms- that&#39;s my main speciality.&quot; <em>Dayton replied, somewhat relieved that they both have found some common ground to form a discussion on, since they were both heavily struggling to find a topic that could have easily spawned a discussion, so he was kind of relieved in that matter. And it was somewhat obvious to him that Newt wasn&#39;t that articulate either, but he didn&#39;t blame him for it because he had some emotional connection to Phenna, and so Dayton thought that might have some influence in the way he&#39;s talking. When Wash had retorted, he looked in the Tellarite&#39;s direction and said.</em> &quot;Would you like to join us?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/c38fa4314c6b9b59b6bd433b2bf66806-A3556.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Wash#0000" data-user-id="774771466390339594" style="">Wash</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">08-Nov-20 12:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="774788319082315816" id="message-774788319082315816">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>The response was very short and not at all sweet.</em> &quot;Nope.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/7ecf61060d4020d2e49b09bde9f06e85-79FB2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 12:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="774790675975503902" id="message-774790675975503902">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Newt winced internally. He&#39;d talk slower for now on, thinking more heavily about not slipping too much in his usual way more emotional way of talking, which he used quite often but was somehow self-conscious about. Though he couldn&#39;t get himself not to drawled his words. Hopefully the guy wouldn&#39;t comment on his way of speaking again. It was silly to care about this but Newt did.</em> &quot;Oh, that&#39;s nice! You have side ones, too?&quot; <em>He wasn&#39;t too sure what to say to the tellarite though... but, he did say he didn&#39;t want to talk, so it wasn&#39;t rude to &#39;ignore&#39; him, right?</em> <span class="chatlog__edited-timestamp" title="08-Nov-20 12:23 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/fab3cf8f396f6405877bd5c6d73528a4-506E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 12:43 AM</span>
+
+            <div class="chatlog__message " data-message-id="774796279552933889" id="message-774796279552933889">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Well, yes. I do have some other fields, too. My second best field is exobiology, and I do know a bit about botany and two more things. What about you? Aside from your main task being medical, do you have any other subjects that you&#39;re specialized in?&quot; <em>Dayton asked, taking another drink of his coffee afterward. He didn&#39;t mind that the Tellarite didn&#39;t wish to socialize with them because he knows that not everyone was willing to converse with somebody and considering the circumstances and social atmosphere, who would blame those types of people? So he opted to put his focus onto the conversation that he is in, and he attempted to think of another subject for them to discuss aside from their specializations on the Phoenix, so he remained silent for now, and took another sip of his drink.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/7ecf61060d4020d2e49b09bde9f06e85-79FB2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 12:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="774799637001142312" id="message-774799637001142312">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Newt was sipping while listening, nodding.</em> &quot;Well, to be even more specific, my main thing is nursing. I do have some surgeon training, but I didn&#39;t finish that path so I ain&#39;t no surgeon. That&#39;s pretty much it for the professional skills.&quot; <em>Yeah, really not much.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/fab3cf8f396f6405877bd5c6d73528a4-506E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 01:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="774804290547089419" id="message-774804290547089419">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Oh, I understand. Well then.. what&#39;s your favorite pastime? Do you have any favorite hobbies? What about a pet? Do you have one of those?&quot; <em>Dayton inquired, his emotionally-exhausted mind now finding a good chunk of conversation topics to talk about, which he was relieved about because that means that the conversation wouldn&#39;t be awkward for the both of them.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/7ecf61060d4020d2e49b09bde9f06e85-79FB2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 01:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="774808133594906686" id="message-774808133594906686">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He was a bit surprised at the wave of sudden questions, but grateful too.</em> &quot;I&#39;d say work, but it&#39;s not really what people would consider a pastime, even if it does pass the time. Maybe too much of it.&quot; <em>he said with a little smile.</em> &quot;Huh, I don&#39;t do that many... I&#39;d say, read and draw and... those two.&quot; <em>He seemed quite excited as he answered the next question though,</em> &quot;Yes, I do! I&#39;m a total dog dad who have way to many pictures of his Rat in his PADD!&quot; <em>In his excitement, he used Horatio&#39;s nickname, which might sounds a little funny as a dog being called rat.</em> &quot;What about yours? And little or big beans in your life?&quot; <em>There, now he called animals, beans.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/fab3cf8f396f6405877bd5c6d73528a4-506E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 01:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="774810287571730453" id="message-774810287571730453">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I do have a pet, actually. He&#39;s a blue-tongued skink, essentially a lizard. His name is Harold, and my family has a pet ball python named Joseph.&quot; <em>Dayton replied, his tone equally excited as Newton&#39;s as well and not minding the nickname that he gave his dog or the pets, he found it a bit cute. He was glad that they both found a few subjects that they could both develop and dwell on- so that they do not have to suffer in the tense and awkward atmosphere. So yes, he was as equally excited as Newton.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/7ecf61060d4020d2e49b09bde9f06e85-79FB2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 01:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="774813735839727617" id="message-774813735839727617">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Aww! They sound totally adorbs! Oh and, I didn&#39;t actually called my dog, Rat. T&#39;s&#39;a nickname for Horatio. Found it quite funny.&quot; <em>he said with another smile.</em> &quot;We didn&#39;t have any at home. It would have been a furry friend, but one of my moms is allergic to fur. And to the anti-allergies hypos. They probably had enough of one hyperactive little monster, too.&quot; <em>he joked.</em> &quot;Or maybe it was just excuses to make me stop askin&#39; about it. Was quite stubborn.&quot; <em>he finished with a smile.</em> &quot;You, you have hobbies?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/fab3cf8f396f6405877bd5c6d73528a4-506E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 02:32 AM</span>
+
+            <div class="chatlog__message " data-message-id="774823662909915137" id="message-774823662909915137">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Huh.. that&#39;s adorable. I don&#39;t really.. have hobbies, per say. While I do have a few interests, I don&#39;t actively do them enough for them to be considered hobbies..&quot; <em>He said, becoming a bit sheepish when talking about his hobbies- since he didn&#39;t actively pursue them enough with interest to do anything, so he considered them to be activities that he would do when bored. But when he&#39;s usually free, he would spend time on PADD. But he&#39;ll occasionally draw or sketch something.</em> &quot;When Joseph was first bought, it took my mom and sister time to adjust to him, since they didn&#39;t like reptiles too much. By the way... what is your favorite animal?&quot; <em>He asked, curiosity clear in his voice.</em> <span class="chatlog__edited-timestamp" title="08-Nov-20 02:35 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/7ecf61060d4020d2e49b09bde9f06e85-79FB2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 02:45 AM</span>
+
+            <div class="chatlog__message " data-message-id="774827021330546698" id="message-774827021330546698">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Well, it&#39;s alright if it&#39;s alright for ya!&quot; <em>he nodded as he said so.</em> &quot;I don&#39;t think I&#39;d even have been able to put one foot in the house if I had tried to bring back a reptile home!&quot; <em>he started with a chuckle, then, a little pause before,</em> ...Well, that&#39;s an hard question, sir.&quot; <em>he said pensively.</em> &quot;I&#39;d say dogs since that&#39;s what I&#39;ve got, but... if I could have a giant, friendly bear to snuggle with...&quot; <em>he chuckled, though it did seem comfortable. A good chunky boi and friend!</em> &quot;I love bears! Do you? Or maybe you prefer furless beans?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 02:50 AM</span>
+
+            <div class="chatlog__message " data-message-id="774828075178393600" id="message-774828075178393600">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>As they came off the dance floor, they passed the table laden with various treats: cake, dessert gelatin, puddings, sliced fruit, and whatnot. Ciel thought it was probably better to let Lola get control over he legs back before they even thought about food, though he did grab a cup of water as they passed, handing it to her, then taking another for himself. He hadn&#39;t realized how thirsty he was until he too a sip.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/fab3cf8f396f6405877bd5c6d73528a4-506E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 02:51 AM</span>
+
+            <div class="chatlog__message " data-message-id="774828458315481129" id="message-774828458315481129">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I don&#39;t blame you- the question is hard. My favorite animal is anything that is a reptile. If it is a turtle, snake, or lizard- it&#39;s automatically my favorite animal. Although.. my main preference comes with lizards and snakes, Lieutenant. But I equally like turtles and other reptillians. Amphibians are another type of animal that I like, but I don&#39;t like them as much as I do with reptiles.&quot; <em>He admitted, his tone more excited when he began to discuss his favorite type of animal. Day is honestly a reptile-lover, so if it were up to him, he would had a turtle, a snake, and a lizard. Crocodilians are off limits, though.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/90cc8c22441c682cb2df8e2c48cedc77-F0F51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 02:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="774830036842315818" id="message-774830036842315818">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Lola took the cup thankfully and continued on with Ciel. Thankfully, as she walked more the more she could feel them starting to work like legs again. Still, she was greatful to finally sit down.</em> &quot;You have <em>got</em> to tell me where you learned to dance!&quot; <em>Lola said with a grin. She took a sip as she waited for an answer.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/7ecf61060d4020d2e49b09bde9f06e85-79FB2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 02:59 AM</span>
+
+            <div class="chatlog__message " data-message-id="774830373565759518" id="message-774830373565759518">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I see! Any specific reasons to it? I know I love those two because I find pettin&#39; their fur relaxin&#39;, somehow. And also, the bigger the better. Harder to find those traits with reptiles, but they do score cuteness points. Most of them, anyway.&quot; <em>he said with a smile.</em> &quot;Or maybe the scientific side? Or, no reason- that&#39;s alright too. Just wonderin&#39;, don&#39;t have to say either in case it&#39;s too personal, Lieutennat.&quot; <em>he finished with another smile.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 03:04 AM</span>
+
+            <div class="chatlog__message " data-message-id="774831680878936065" id="message-774831680878936065">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;A friend of mine at Academy taught me. Her name is Rachel. Her parents run a dance hall in the bay area, and we used to go down every weekend we could spare. I have to say, it was one of my saving graces during sophomore year, what with O-Chem and Anatomy at the same time that first semester.&quot; <em>Ciel explained, smiling fondly.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/90cc8c22441c682cb2df8e2c48cedc77-F0F51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 03:20 AM</span>
+
+            <div class="chatlog__message " data-message-id="774835742194925610" id="message-774835742194925610">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Lola grimaced.</em> &quot;I feel that. Back at the Academy my saving grace was going with my best friend K&#39;Pische to clubs all over San Francisco, and during the day when I wasn&#39;t studying I was working on my personal garden. <em>Oooo</em>, I need to show you my plants sometime!!&quot; <em>Lola spoke with a bright grin. Her hair was slightly messed up after dancing, so she just took out the hair clip keeping her hair up and let it fall around her shoulders.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 03:26 AM</span>
+
+            <div class="chatlog__message " data-message-id="774837220892475403" id="message-774837220892475403">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I would like that. I tried growing plants in my dorm several times, but I never succeeded. I&#39;m sure the ghost of my unfortunate cactus is haunting the poor freshman who lives in my old room now.&quot; <em>Ciel smiled</em> &quot;Do you grow vegetables?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/fab3cf8f396f6405877bd5c6d73528a4-506E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 03:41 AM</span>
+
+            <div class="chatlog__message " data-message-id="774841103064105021" id="message-774841103064105021">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I mean, there&#39;s just.. <em>something</em> about them that&#39;s appealing to me. It&#39;s just that their design and appearance is so interesting.. so I can&#39;t help but like them, you know what I mean?&quot; <em>He commented with a smile on his face, taking a little sip of his coffee once more. He was somewhat excited to talk about his favorite type of animal- and that was clear in his tone.</em> <span class="chatlog__edited-timestamp" title="08-Nov-20 03:42 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/90cc8c22441c682cb2df8e2c48cedc77-F0F51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 03:43 AM</span>
+
+            <div class="chatlog__message " data-message-id="774841504921419816" id="message-774841504921419816">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>She laughed at the story of failed plant growth.</em> &quot;It&#39;s harder than you think, right? I could grow vegetables if I wanted to, but I prefer to collect cactuses and grow different flowers. I&#39;m currently working on cross breeding my Kelpien orchid with my Cardassian orchid. I think that the hybrid would be gorgeous, but I have been working on this for quite a while now and progress is slow.&quot; <em>She took another sip of her drink and sighed.</em> &quot;I adore my cactuses though. I have a Vulcan-Terran cactus in my possession and his name is Davis.&quot; <em>She grinned happily.</em> &quot;I am very proud of him.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/7ecf61060d4020d2e49b09bde9f06e85-79FB2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 03:54 AM</span>
+
+            <div class="chatlog__message " data-message-id="774844346368655371" id="message-774844346368655371">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Yeah, I got it, don&#39;t worry!&quot; <em>He said with a nod, understanding exactly what he meant. Then, he tried to take a sip from his glass, only to find it was empty. Mindlessly, he took another drink and took a big sip of it, only to find that he had inadvertently take one with alcohol. That sip passed somehow weirdly with a controlled grimace. He&#39;d need to drink this drink more slowly.</em> &quot;Do you plan to get more friends to lil&#39; Harold, then? Or one is enough? I&#39;d give Rat a friend, but I&#39;m afraid my schedule&#39;s too busy and that they might be a lil&#39; too stuck in my quarters. Rat&#39;s already quite big...  bigger than me, actually.&quot; <em>he finished with a smile. It almost wasn&#39;t an hyperbole.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 03:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="774845099624235038" id="message-774845099624235038">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I&#39;ve always been astonished at how plants from different evolutionary lines could be interbred. Only a few centuries ago Klimasz scientists would have rejected such a process as complete science fiction. Yet now they feed their families with terra-atoll hybrid rice every day. It begs some interesting questions about interspecies medicine, doesn&#39;t it? Suppose someday in the future we&#39;ll be able to modify transplant organs with Klingon DNA to prevent them from being as susceptible to heavy trauma?&quot; <span class="chatlog__edited-timestamp" title="08-Nov-20 03:58 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/fab3cf8f396f6405877bd5c6d73528a4-506E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 04:18 AM</span>
+
+            <div class="chatlog__message " data-message-id="774850326624862228" id="message-774850326624862228">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I haven&#39;t thought of introducing him to any other pets, actually. He hasn&#39;t been introduced to any other pets on the ship yet, so he&#39;s quiet and observant. But I think it would be good for both of them if they could have the chance to meet, you know? They could have a time where they could interact with each other. So, I would think it would be in his best interest to meet another creature on the ship. And about scheduling? Well.. perhaps it can happen where we&#39;re both free and have nothing to do?&quot; <em>He said, taking another sip of his coffee before finishing it, and then he disposed of that cup and took another cup of coffee. He really likes caffeine, so he just drinks coffee or any other caffeinated beverage.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/7ecf61060d4020d2e49b09bde9f06e85-79FB2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 04:31 AM</span>
+
+            <div class="chatlog__message " data-message-id="774853594658111529" id="message-774853594658111529">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I see, yeah! When the quarters were destroyed and all the pets were sent on deck five, at the vet, they told me Rat apparently befriended two rats.&quot; <em>he said with a chuckle.</em> &quot;Besides that, I&#39;ve got him while he was already quite old, so wouldn&#39;t know if he had any other experiences with other pets... though, I&#39;m sure he&#39;d love to. I can ask him... sometimes, it&#39;s almost like he understands everythin&#39; I&#39;m tellin&#39; him!&quot; <em>he said with a little grin.</em> &quot;Sure can find a hole in my schedule, I&#39;m not as busy my mom...s.&quot; <em>A little slip, hopefully it didn&#39;t look too much like it. He just sipped.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/90cc8c22441c682cb2df8e2c48cedc77-F0F51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 04:31 AM</span>
+
+            <div class="chatlog__message " data-message-id="774853699183968297" id="message-774853699183968297">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Lola smiled and nodded in agreement.</em> &quot;I have to admit, that would be amazing.&quot; <em>She turned to Ciel and shot him a wicked grin.</em> &quot;When that happens I&#39;d be able to drink all night instead of just <em>saying</em> I lasted all night!&quot; <em>Lola laughed loud and bright.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 04:38 AM</span>
+
+            <div class="chatlog__message " data-message-id="774855356530688010" id="message-774855356530688010">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Well, that&#39;s not exactly the kind of trauma I was thinking of. <em>He laughed a little. Her response had taken him completely by surprise.</em> &quot;I take it you&#39;ll be wanting something a little stronger than water, then?&quot; <em>He asked, standing up. He had recovered at this point, and had his wind back.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/90cc8c22441c682cb2df8e2c48cedc77-F0F51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 04:46 AM</span>
+
+            <div class="chatlog__message " data-message-id="774857372019195904" id="message-774857372019195904">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Lola stood as well, feeling much better.</em> &quot;Let&#39;s see what they got!&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 04:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="774859097677103114" id="message-774859097677103114">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>They walked over to the bar, where Ciel hung back for a moment. Lola was clearly an expert at this. He didn&#39;t want her to think any less of him for his drink of choice. He had been told several times that it was for pansies. His friends at Academy had teased him mercilessly about it every time they went out for drinks.</em> &quot;Why don&#39;t you go first?&quot; <em>He offered, hoping to delay the teasing he imagined was incoming.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/90cc8c22441c682cb2df8e2c48cedc77-F0F51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 05:01 AM</span>
+
+            <div class="chatlog__message " data-message-id="774861091427057675" id="message-774861091427057675">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Lola happily took the lead on this, her drink of choice already on her mind. She walked up to bartender and said,</em> &quot;I&#39;m feeling like a Samarian Sunset, and if you could make it in front of me, I would absolutely <em>love</em> you.&quot; <em>After making the bartender blush, she grinned and turned back to her friend.</em> &quot;What&#39;ll it be for you?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 05:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="774861699236233226" id="message-774861699236233226">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Ciel let out a breath of defeat and went all the way up to the counter.</em> &quot;May I get a hot peppermint patty with Irish cream, please?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/fab3cf8f396f6405877bd5c6d73528a4-506E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 05:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="774868236105547776" id="message-774868236105547776">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Huh, when that happened.. I was told that Harold just spent most of his time curled up in a ball-like shape. But I wouldn&#39;t necessarily blame him because of that. I feel that way with Harold too, it&#39;s strange the way that our pets sometimes can understand us, right?&quot; <em>He stated, taking another sip of his coffee, smiling as he spoke. While he did notice Newt&#39;s little slip up, he didn&#39;t think too much about it- so he rarely paid any attention to it at all. But he did feel excited about the idea of their pets possibly meeting together.</em> <span class="chatlog__edited-timestamp" title="08-Nov-20 05:30 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/90cc8c22441c682cb2df8e2c48cedc77-F0F51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 05:47 AM</span>
+
+            <div class="chatlog__message " data-message-id="774872786917261352" id="message-774872786917261352">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Lola almost choked on her own spit trying to say words. After she finished dying she wheezed out,</em> &quot;What the sugar honey ice tea?!?!  That&#39;s like, my secret pleasure! I am always so afraid to get it in public though. I admire your bravery.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/7ecf61060d4020d2e49b09bde9f06e85-79FB2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 05:51 AM</span>
+
+            <div class="chatlog__message " data-message-id="774873697218723852" id="message-774873697218723852">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Maybe it&#39;s less scary when you&#39;re bigger than everyone else in the room. Rat certainly was!&quot; <em>he chuckled, then continued,</em> &quot;Yeah!&quot; <em>he nodded, quite excitedly. Then, he seemed pensive for a second, like he wondered about something. Actually, he was asking himself if the question he had was too intrusive or not. He hoped not, plus, the other was no way obliged to answer it, right? Can&#39;t know if you don&#39;t try...</em> &quot;Can you... I mean, if it&#39;s too intrusive, y&#39;don&#39;t need to answer, but- Can you, like, communicate with him like..?&quot; <em>he was pointing at his own head, obviously talking about empathy and/or telepathy. He was genuinely curious, but didn&#39;t want to make Dayton uncomfortable with his lack of telepathy knowledge.</em> &quot;You really don&#39;t need to tell me if y&#39;don&#39;t want to. No pressure!&quot; <em>He was excited too about the pet meeting.</em> <span class="chatlog__edited-timestamp" title="08-Nov-20 05:53 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 05:58 AM</span>
+
+            <div class="chatlog__message " data-message-id="774875378870517780" id="message-774875378870517780">
+                <div class="chatlog__content">
+                    <div class="markdown">“Wait, what?” <em>Ciel asked, confused by his friend’s sudden coughing fit.</em> “I- I did not expect that...” <em>He said after processing her spluttering.</em> “My friends have always made fun of me for it!” <em>He began to laugh.</em>
+“I was afraid you might too.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/90cc8c22441c682cb2df8e2c48cedc77-F0F51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 06:06 AM</span>
+
+            <div class="chatlog__message " data-message-id="774877425603444736" id="message-774877425603444736">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Lola looked at her friend with a warm smile.</em> &quot;I would hardly judge you based off your choice of drink. My best friend K&#39;Pische is half-Vulcan half-Bajoran and she is the craziest person I know and you know what her choice of drink is? <em>Hot coco and scotch.</em> People like different things, cause we&#39;re all different. It would be an awfully boring universe if we all enjoyed the same things and all we talked about was how nice the weather was that day. You know?&quot; </div>
+                </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="774878111756976138" id="message-774878111756976138">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>The bartender made the Samarian sunset in front of Lola, Lola watching adamantly the entire time even as she spoke to Ciel. She loved watching the &quot;sun set&quot; in the drink. She knew it was just a candy cherry, but she loved it all the same.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 06:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="774879024475799562" id="message-774879024475799562">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Now evidently tired from partyinf with the rest, the Kelpien commander made his way to the refreshments booth and sat down, nodding to both Lola and her friend before ordering a glass of mango juice. If either of the two had thought that their choice of beverage was weird, his was probably the weirdest.</em> </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129389;" title="&#129389;" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/1f96d-8E3E4.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 06:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="774880238505033729" id="message-774880238505033729">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Ciel smiled quietly at what Lola had said. She was right, of course. Her reaction had been nonetheless unexpected. He watched the bartender flick the glass and make the colors dance in the clear liquid. His own frothy, creamy drink was set before him. He cradled it in both hands, enjoying the aromatic steam wafting up from it.</em> “Cheers!” <em>He lifted his mug to Lola before taking a sip.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/90cc8c22441c682cb2df8e2c48cedc77-F0F51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 06:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="774880839891943465" id="message-774880839891943465">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Lola grinned and said,</em> &quot;Cheers!!&quot; <em>and took a big sip of her drink. She turned slightly and noticed the commander.</em> &quot;Ah, Commander Dunamis! Please, come join us! Have you met my friend Ciel? He is also in medical!&quot; <em>And Lola&#39;s mouth was running on its own. Again.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 06:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="774881296890855454" id="message-774881296890855454">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Ah, Lola. No, I have not, in fact.&quot; <em>He didn&#39;t seem to mind if her mouth ran on its own. Huh. He nodded to the Klimasz man as he sipped from his drink.</em> &quot;It is a pleasure to meet you.&quot; <em>He then held his hand out to shake.</em> <span class="chatlog__edited-timestamp" title="08-Nov-20 06:24 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 06:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="774882037332443138" id="message-774882037332443138">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Ciel offered his hand to the Commander. This was the highest ranking person he had yet met, and he was a little intimidated.</em> “The pleasure’s mine. My name is Ciel.” <span class="chatlog__edited-timestamp" title="08-Nov-20 06:27 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 06:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="774883430084902933" id="message-774883430084902933">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>The hand was firmly shaken, accompanied by an equally firm, if weary nod.</em> &quot;Commander Dunamis, first officer. I trust your time on board thus far has been acceptable? I&#39;m sorry that you had to join us in these circumstances...&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 06:35 AM</span>
+
+            <div class="chatlog__message " data-message-id="774884863840223253" id="message-774884863840223253">
+                <div class="chatlog__content">
+                    <div class="markdown">“I wish to be a part of this crew, sir. And that means enduring the hardest moments in life with you.” <em>Ciel replied softly, but with conviction.</em> “And Lola has made certain that I was welcomed warmly. Thank you for asking.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 06:41 AM</span>
+
+            <div class="chatlog__message " data-message-id="774886408908439562" id="message-774886408908439562">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I am glad that she has made you feel welcome. I&#39;m sure the rest of the crew would love to meet you. Have you spoken with doctor Carlisle yet?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 06:48 AM</span>
+
+            <div class="chatlog__message " data-message-id="774887939913941023" id="message-774887939913941023">
+                <div class="chatlog__content">
+                    <div class="markdown">“I haven’t. I intended to introduce myself this evening, but as you can see, I chose to attend this instead.” <em>Ciel felt somewhat guilty admitting this. He should not have spent so much time reading yesterday.</em> “There are still a number of things I need to do before I’m settled in.” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 07:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="774891837851828244" id="message-774891837851828244">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I see.&quot; <em>Come to think of it he hadn&#39;t seen Blanche at the funeral or any of the proceedings at all. Hmmm... he wondered why.</em> &quot;Well, once again, welcome aboard. We are glad to have you be a part of our family.&quot; </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/637075614662393868-CC03F.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/7ecf61060d4020d2e49b09bde9f06e85-79FB2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 07:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="774893115256471603" id="message-774893115256471603">
+                <div class="chatlog__content">
+                    <div class="markdown">[D] <em>Dayton gave a satisfying answer to Newt&#39;s questioning, and then the later excused himself as the days had been quite tiring, emotionally. Also promising each other of thinking about that pet meeting.</em>
+<em>On the way out though, Newt noticed the Commander and approached slightly. He wouldn&#39;t stay long, but he had meant to at least have a word or two and deliver something else, too. He hoped he didn&#39;t intrude too much, as he was apparently talking with a fellow medical officer he didn&#39;t know yet, but he&#39;d be brief so hopefully it wouldn&#39;t be too much of a bother.</em> &quot;Hello Commander, Ensign!&quot; <span class="chatlog__edited-timestamp" title="08-Nov-20 07:10 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 07:10 AM</span>
+
+            <div class="chatlog__message " data-message-id="774893611954733066" id="message-774893611954733066">
+                <div class="chatlog__content">
+                    <div class="markdown">“Thank you.” <em>Ciel smiled. There was a pause as he tried to figure out what he should say next. Lola wasn’t helping at all, so he was flying by the seat of his pants. It was almost a relief when someone else approached and broke the awkward pause.</em> “Hello, sir.” <em>he greeted the newcomer</em> </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 07:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="774894521854197770" id="message-774894521854197770">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Ensign Eirson.&quot; <em>He smiled to the young man in front of him, placing his empty glass back on the bar counter behind him.</em> &quot;What can we do for you?&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/7ecf61060d4020d2e49b09bde9f06e85-79FB2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 07:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="774895914263379979" id="message-774895914263379979">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Hm. Okay, this felt a bit weird. Not in a bad way, just... he pointed to his pips, with a shy smile and looking somewhere on the wall.</em> &quot;It&#39;s, huh, actually Lieutenant, now- It&#39;s alright, I&#39;m not quite used to it either.&quot; <em>he let out a little chuckle.</em> &quot;I&#39;m goin&#39; back to the ship, actually. Just wanted to check on ya sir before doin&#39; so, y&#39;know. Oh, and the speech was lovely.&quot; <em>he finished with a warm, honest smile, before turning to the Ensign.</em> &quot;I don&#39;t believe we&#39;ve met before, have we?&quot; <span class="chatlog__edited-timestamp" title="08-Nov-20 07:22 AM">(edited)</span></div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129396;" title="&#129396;" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/1f974-0D832.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 07:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="774896981595914261" id="message-774896981595914261">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I&#39;m doing alright, lieutenant.&quot; <em>So Blanche (maybe) had finally decided to recognize his efforts. Excellent! That put a smile on his face - a big one.</em> &quot;As for the speech... I hope it wasn&#39;t too long. I tried to keep it to the point as far as possible.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 07:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="774897328251076619" id="message-774897328251076619">
+                <div class="chatlog__content">
+                    <div class="markdown">“No, sir. My name is Ciel. I’ve only just been commissioned.” <em>Ciel explained.</em> “It’s a pleasure to meet you, Lieutenant...?” </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/7ecf61060d4020d2e49b09bde9f06e85-79FB2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 07:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="774898465032503316" id="message-774898465032503316">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;That&#39;s good to hear, sir! And it was just peachy, don&#39;tcha worry about it!&quot; <em>he nodded to emphasize his point.</em> &quot;Ah, that would explain then! I&#39;m Newton Eirson... but just Newt is alright too!&quot; <em>An accidental yawn.</em> &quot;Aaah, I&#39;d like to get to stay a bit to talk and know you more but I fear sleep is stronger...&quot; <span class="chatlog__edited-timestamp" title="08-Nov-20 07:30 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 07:33 AM</span>
+
+            <div class="chatlog__message " data-message-id="774899489106296842" id="message-774899489106296842">
+                <div class="chatlog__content">
+                    <div class="markdown">“Have a good night, then.” <em>Ciel said. The Lieutenant‘s manner of speech was odd to him, but it made him smile.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 07:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="774900141454262302" id="message-774900141454262302">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He nodded in understanding - the day had been draining, emotionally and physically, for all involved.</em> &quot;Of course. Sleep well, lieutenant. See you back on board.&quot; </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/7ecf61060d4020d2e49b09bde9f06e85-79FB2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Binouchetruc#8283" data-user-id="343737086060396545" style="color: rgb(41,169,238)">Lt. JG. Newton Eirson</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 07:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="774901555966771221" id="message-774901555966771221">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Newt nodded, and then, it seemed there were a few seconds were he should have moved or said something, yet nothing happened. It didn&#39;t last too long though, as the Kelpien suddenly felt himself engulfed in a hug... well, his legs at least did, as Newton wasn&#39;t very tall. A whisper, then,</em> &quot;If you need to talk, you know who to call.&quot; <em>before ending the hug and sending a last</em> &quot;G&#39;night y&#39;all, too!&quot; <em>along a warm smile and a wave, as he left back towards the hall.</em> </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="care" title="care" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/711609055021629502-E849D.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="❤️" title="❤️" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/2764-18179.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="peachy" title="peachy" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/729458327041474601-2E636.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 07:50 AM</span>
+
+            <div class="chatlog__message " data-message-id="774903560495300630" id="message-774903560495300630">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Ciel watched the Lieutenant leave, a bit surprised. Then he looked at the Commander.</em> “Are very close with your crew?” <em>He asked.</em> <span class="chatlog__edited-timestamp" title="08-Nov-20 07:50 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 07:56 AM</span>
+
+            <div class="chatlog__message " data-message-id="774905228083724288" id="message-774905228083724288">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Only to some. Lieutenant Eirson on the other hand loves and shows affection to any and all he considers dear...&quot; <em>He smiled tiredly again and stood, stretching his limbs.</em> &quot;...like his mother does. I am not religious, ensign, but if I were, God bless him. Well and truly.&quot; </div>
+                </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/637075614662393868-CC03F.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 08:03 AM</span>
+
+            <div class="chatlog__message " data-message-id="774906946024243221" id="message-774906946024243221">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Ciel nodded agreement. He had met people who were willing to give their all to anyone who needed it. Those sorts of people were the ones that made the most difference the most often. He finished his drink, licking some of the froth off the lip of the mug, and thanked the bartender.</em> “I hope you have a good night, Sir.” <em>He said, also getting up.</em> “I would like to speak with you again soon, but I agree with the Lieutenant. It’s high time for bed.” <em>He held his hand out to the commander again.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 08:05 AM</span>
+
+            <div class="chatlog__message " data-message-id="774907371994611722" id="message-774907371994611722">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;The same should go for me as well,&quot; <em>He held his hand out and shook Ciel&#39;s before yawning.</em> &quot;See you back on board.&quot; <span class="chatlog__edited-timestamp" title="08-Nov-20 08:05 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/d49999c45572b96e79d93a349ca8df9b-B3BA3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Planettree#4988" data-user-id="706254334815502406" style="color: rgb(41,169,238)">Ensign Ciel</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 08:08 AM</span>
+
+            <div class="chatlog__message " data-message-id="774908084249296916" id="message-774908084249296916">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Ciel said a final Goodnight and walked out of the hall.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/ebe7d8dd10157a759d600061523f13f2-D5FE6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kaijin#9153" data-user-id="196165132273975296" style="color: rgb(175,36,27)">Commander Dunamis</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 10:18 AM</span>
+
+            <div class="chatlog__message " data-message-id="774940793181700096" id="message-774940793181700096">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He left as well, soon after.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/fab3cf8f396f6405877bd5c6d73528a4-506E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dr. Turry#8230" data-user-id="462376683559714816" style="color: rgb(39,126,205)">Lt. JG. Dayton Finn</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 03:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="775018681163841606" id="message-775018681163841606">
+                <div class="chatlog__content">
+                    <div class="markdown">[D] <em>Dayton had left shortly after.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/90cc8c22441c682cb2df8e2c48cedc77-F0F51.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Kandy#7420" data-user-id="388173571979083776" style="color: rgb(41,169,238)">Lt. JG. Zulola Jex</span>
+
+
+        <span class="chatlog__timestamp">08-Nov-20 04:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="775036231007600680" id="message-775036231007600680">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Lola woke up with a start. She picked her head up off the hard surface it was on and blearily looked around. She blinked blearily a few times before she shot out of her chair.</em> &quot;Oh my gosh!! I fell asleep!! How could I have fallen asleep?!?&quot; <em>She shot out of the room.</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Ephrix%20Funeral%20-%20refreshment-area%20%5B774754361544015902%5D.html_Files/45fa688800e81b191a09b9e5545754de-354E3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Anglachel#1124" data-user-id="425785904703995904" style="color: rgb(212,156,2)">Lt. JG. Tal Voran</span>
+
+
+        <span class="chatlog__timestamp">09-Nov-20 03:31 AM</span>
+
+            <div class="chatlog__message " data-message-id="775200904373600276" id="message-775200904373600276">
+                <div class="chatlog__content">
+                    <div class="markdown">[D] <em>At some point Tal had returned to the phoenix</em> </div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 76 message(s)</div>
+</div>
+
+</body>
+</html>

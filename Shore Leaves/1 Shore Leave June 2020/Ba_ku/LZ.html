@@ -1,0 +1,2482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - landing-zone</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/6c6374bad0b0b6d204d8d6dc4a18d820.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/e8acd7d9bf6207f99350ca9f9e23b168.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/3bdef1251a424500c1b3a78dea9b7e57.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/be0060dafb7a0e31d2a1ca17c0708636.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/8e12fb4f14d9c4592eb8ec9f22337b04.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    white-space: pre-wrap;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.spoiler {
+    width: fit-content;
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image img {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 0.5em 0.7em;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="https://cdn.discordapp.com/icons/629656123091451934/741f79395701523dd2db7c22f691220d.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Ba&#39;ku / landing-zone</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+    <div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/267053542005538829/409e33fae8da59452096d7ef788406f8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rick_Morrison#5561" data-user-id="267053542005538829"  style="color: rgb(194, 59, 50)" >Ensign Gabriel Monroe</span>
+
+
+        <span class="chatlog__timestamp">26-Jun-20 07:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="726147241731031201" id="message-726147241731031201">
+                <div class="chatlog__content">
+                    <div class="markdown">[D] <em>The Delta Flyer soared through the skies of Ba&#39;ku as it had become the perfect place for them to camp. The weather  conditions are perfect for camp, the trees were swaying a bit from the cool spring wind, and the forest down below teemed with life. The shuttle found the spot to land and one it did, the crew got out and looked toward their surroundings</em><span class="chatlog__edited-timestamp" title="26-Jun-20 09:29 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">26-Jun-20 07:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="726149129037938738" id="message-726149129037938738">
+                <div class="chatlog__content">
+                    <div class="markdown">((Hey buddy I’m in another scene right now maybe way till all the players are on before this))</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/425785904703995904/78ff88a81cdc13cc31ceeedf84ced2bd.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Anglachel#1124" data-user-id="425785904703995904"  style="color: rgb(224, 124, 169)" >Tal Voran</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 08:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="726525280834945024" id="message-726525280834945024">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He looks out of the flyer the window.</em> &quot;Green.&quot;</div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="https://cdn.discordapp.com/emojis/638063538723618825.png">
+                            <span class="chatlog__reaction-count">3</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/267053542005538829/409e33fae8da59452096d7ef788406f8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rick_Morrison#5561" data-user-id="267053542005538829"  style="color: rgb(194, 59, 50)" >Ensign Gabriel Monroe</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 09:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="726532440578850816" id="message-726532440578850816">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Gabriel looked, walked out of the flyer and took planetary reading on his tricorder</em> &quot;Mhm, this area seems to have the right growing conditions in a pinch. There are plenty of opportunities to explore and have fun all the same time.&quot; <em>He said looking at the others</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 09:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="726533557597634581" id="message-726533557597634581">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Sa&#39;val exited the Flyer and set the first crate down next to the door before he straightened up and looked at his surroundings.</em> &quot;Fascinating.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/439519317114224641/847e2211bba73f0af6ccb2b89b530b55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="{~ ʄǟʟʟɛռ ~}#0120" data-user-id="439519317114224641"  style="color: rgb(39, 126, 205)" >Ensign T&#39;lith</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 09:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="726534129231069275" id="message-726534129231069275">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>T&#39;lith exited the Flyer. She looked around, taking in her surroundings, silent.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 09:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="726541648242409522" id="message-726541648242409522">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Sara followed shortly after, cooing in delight at how green and supple the land was.</em>
+
+&quot;The soil feels so dense, you could grow an enormous Bajoran pumpkin here!&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 09:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="726541996956713031" id="message-726541996956713031">
+                <div class="chatlog__content">
+                    <div class="markdown">“Ohh I’m sure the soil is good but I couldn’t grow a fart of I tired. But this definitely looks like a good place to relax maybe do some fishing or hunting.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 10:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="726542817018773536" id="message-726542817018773536">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Did you bring anything to do that with, Soval?~ I hope you don&#39;t plan on catching dinner with your bare hands.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/425785904703995904/78ff88a81cdc13cc31ceeedf84ced2bd.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Anglachel#1124" data-user-id="425785904703995904"  style="color: rgb(224, 124, 169)" >Tal Voran</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 10:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="726543795507691660" id="message-726543795507691660">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Did we not bring food?&quot; <em>He was carrying his and Sara&#39;s bags.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 10:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="726543966501208074" id="message-726543966501208074">
+                <div class="chatlog__content">
+                    <div class="markdown">“Well actually I was planning making a trident fishing spear. And Well getting us some food.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 10:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="726544135552630896" id="message-726544135552630896">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I&#39;m sure there&#39;s emergency supplies but half the fun of camping is foraging!&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/425785904703995904/78ff88a81cdc13cc31ceeedf84ced2bd.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Anglachel#1124" data-user-id="425785904703995904"  style="color: rgb(224, 124, 169)" >Tal Voran</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 10:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="726544216506892359" id="message-726544216506892359">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Speak for yourself.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 10:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="726544363265720391" id="message-726544363265720391">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Don&#39;t worry, just in case t&#39;lith or I don&#39;t recognize it, I brought my botanical scanner.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/439519317114224641/847e2211bba73f0af6ccb2b89b530b55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="{~ ʄǟʟʟɛռ ~}#0120" data-user-id="439519317114224641"  style="color: rgb(39, 126, 205)" >Ensign T&#39;lith</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 10:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="726544564902691200" id="message-726544564902691200">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>At the mention of her name, the Vulcan looked over at Sara and nodded.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 10:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="726544670368202813" id="message-726544670368202813">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Just girls being gals! We will find so much fruit, I smell the sugar in the air!&quot;<span class="chatlog__edited-timestamp" title="27-Jun-20 10:09 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 10:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="726545201837113496" id="message-726545201837113496">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Sa&#39;val exited the Flyer with another crate.</em> &quot;It may be of interest to note that simple traps are quite painless to construct. They were a part of survival training and could easily be set up to capture small game if one so desired.&quot;<span class="chatlog__edited-timestamp" title="27-Jun-20 10:11 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 10:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="726545788838215730" id="message-726545788838215730">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;We don&#39;t know what kind of things attract the local small fauna though? But if we figure it out- while I don&#39;t eat meat anymore, I used to go rucking with my family and do know how to skin and prepare most small animals if need be.&quot;<span class="chatlog__edited-timestamp" title="27-Jun-20 10:16 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="726546072272502804" id="message-726546072272502804">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Did anyone do any reading up on Ba&#39;ku before we got here?&quot;</div>
+                </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="726546751858802698" id="message-726546751858802698">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Also, you&#39;re tactical? Why do you have wilderness survival training? Not that I&#39;m displeased, very much the opposite! Just curious, as most tactical has more training in say.. ship on ship survival.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 10:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="726551122554257490" id="message-726551122554257490">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Sa&#39;val nodded.</em> &quot;Indeed. I am...how should I put this...a uniquely colored ruminant...or &#39;black sheep&#39; as my father would say in the Tactical Department. My work is generally done away from the ship. My expertise in Ground Combat requires operating for long period of times on planetoid surfaces. As a result, it was logical to provide me with a manner with which to sustain life.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 10:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="726555067951611985" id="message-726555067951611985">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>She nodded her head along as he spoke, obviously pleased that they had reinforcements on their camping trip should things go wildly south. Between the lot of them, nothing should go too haywire, this trip was staffed by nothing but Starfleet officers!</em>
+
+&quot;That&#39;s a joy in my book, very happy you decided to come bond with us last minute! So camping should be a breeze for you then?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 10:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="726555882921656371" id="message-726555882921656371">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;If we are fortunate, a breeze would be excellent to avoid all of us getting too warm...&quot; <em>Sa&#39;val paused as his slight smirk pulled at the corner of his mouth.</em> &quot;...that would be my approximation of humor.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="726559370137305128" id="message-726559370137305128">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;If my eyeballs weren&#39;t attached, they might have just rolled out of my head.&quot;
+
+<em>Even as she said it, she flashed him a bright grin, obviously tickled at the monotonous tone of his joke. She could tell they would be good friends.</em>
+
+&quot;So now that we&#39;re here, I guess first order of business is to set up camp? How far away from the flyer should we go?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="726560507368308766" id="message-726560507368308766">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;As this is not a combat situation, my expertise would be less useful in choosing an appropriate camping site. Perhaps the opposite of my usual routine would be more fitting? Camping near the shuttle would allow for security and ease of control over our means of transportation.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="726561802741350411" id="message-726561802741350411">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;My only reservation is the distance to the nearest clean water source.. we&#39;ll be here for five days and four nights, we&#39;ll need to bathe, wash things and drink. It&#39;d be a lot of extra effort to haul it if it&#39;s too far away.. &quot;<span class="chatlog__edited-timestamp" title="27-Jun-20 11:17 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="726562229700395130" id="message-726562229700395130">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;But in that same breath, of it <em>is</em> too far away, couldn&#39;t we manuever the flyer closer to the water source?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="726564011495260190" id="message-726564011495260190">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Excellent strategic planning. Perhaps it would be most appropriate to initiate a scouting expedition to locate water.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="726565422471839765" id="message-726565422471839765">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>She beamed at his compliment, looking to Tal with a very pleased smile, not unlike a dog who had been told they did a very good job.</em>
+
+&quot;Should we split into groups or go as one big party?&quot;
+
+<em>Sara looked to Gabriel for this answer.</em></div>
+                </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="726565553233330267" id="message-726565553233330267">
+                <div class="chatlog__content">
+                    <div class="markdown"><span class="mention" title="Rick_Morrison#5561">@Ensign Gabriel Monroe</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="726566168416092251" id="message-726566168416092251">
+                <div class="chatlog__content">
+                    <div class="markdown">“Or we could use the flyers scanners.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="726566706952011776" id="message-726566706952011776">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;This solution provides far less of a challenge, but I confess it would be more logical.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="726568045274988565" id="message-726568045274988565">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Oh! See, this is why you guys are tactical- I don&#39;t know much about the flyer systems .&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="726568307209142363" id="message-726568307209142363">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;A scouting party would have been more...educational.&quot; <em>Sa&#39;val smirked slightly in his way.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="726568533424734218" id="message-726568533424734218">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Maybe so, but we don&#39;t want to tire ourselves out before we pitch our tents and gather firewood. There&#39;s a lot to be done, a few technological cheats won&#39;t hurt the experience I don&#39;t think~&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="726568826392543284" id="message-726568826392543284">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Sa&#39;val bows his head slightly.</em> &quot;I will have plenty of opportunity to explore, setting up camp takes priority.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="726569703526629406" id="message-726569703526629406">
+                <div class="chatlog__content">
+                    <div class="markdown">“Well I’ll start looking for dry wood of some sorts. Maybe if the lieutenant here would join me.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="726570428281258024" id="message-726570428281258024">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Then I guess me and the ladies will go foraging?&quot;</div>
+                </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="726570487316086795" id="message-726570487316086795">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;True hunter gather vibes right now.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="726570663820656754" id="message-726570663820656754">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Sa&#39;val nodded stoically.</em> &quot;It would appear you have the help of as many Lieutenants as you could need.&quot; <em>Sa&#39;val paused significantly.</em> &quot;This is another approximation of humor.&quot;<span class="chatlog__edited-timestamp" title="27-Jun-20 11:53 PM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="726570677934490104" id="message-726570677934490104">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>She looked to other women for their opinion.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="726571008886046751" id="message-726571008886046751">
+                <div class="chatlog__content">
+                    <div class="markdown">“Well I was talking to you pointy. I’m Soval McFadden, and you are.?”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="726571713642627072" id="message-726571713642627072">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Lieutenant Junior Grade Sa&#39;val Stryker. Sa&#39;val, if you please. It is agreeable to make your acquaintance, Soval McFadden.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">27-Jun-20 11:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="726572259099148358" id="message-726572259099148358">
+                <div class="chatlog__content">
+                    <div class="markdown">“Ohh who would of thunk that our names are very similar. I am named after the first ambassador to earth. And Soval is fine by me.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:02 AM</span>
+
+            <div class="chatlog__message " data-message-id="726573251362422804" id="message-726573251362422804">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Fascinating. I was named after a masculine form of my mother&#39;s name and...of course took my father&#39;s last name.&quot;<span class="chatlog__edited-timestamp" title="28-Jun-20 04:36 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:04 AM</span>
+
+            <div class="chatlog__message " data-message-id="726573606699663432" id="message-726573606699663432">
+                <div class="chatlog__content">
+                    <div class="markdown">“I as well took my fathers last name. So your mom is the Vulcan I presume. My mom is Vulcan as well she’s a science officer and my father is in command now but he came up through engineering.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:13 AM</span>
+
+            <div class="chatlog__message " data-message-id="726576077975191569" id="message-726576077975191569">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Yes. Excellent deduction. She was also in Command, through Science. My father was in...Operations, but had his start in much the same line of work I have chosen. He actually served as my mother&#39;s XO in their last posting.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="726576416577290272" id="message-726576416577290272">
+                <div class="chatlog__content">
+                    <div class="markdown">“Wow. That’s very interesting so you grew up on Star ships.? I grew up on Star ships and star bases I didn’t spend more then a few weeks planet side till my academy days.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="726576800666222683" id="message-726576800666222683">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Sa&#39;val nodded.</em> &quot;It would appear that we have both shared a similar upbringing...and both of us have found our way into Tactical. Fascinating.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/267053542005538829/409e33fae8da59452096d7ef788406f8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rick_Morrison#5561" data-user-id="267053542005538829"  style="color: rgb(194, 59, 50)" >Ensign Gabriel Monroe</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="726576898792226858" id="message-726576898792226858">
+                <div class="chatlog__content">
+                    <div class="markdown">(Sorry I was working)</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:18 AM</span>
+
+            <div class="chatlog__message " data-message-id="726577112538153000" id="message-726577112538153000">
+                <div class="chatlog__content">
+                    <div class="markdown">“Yes except for one major difference Iv learned to balance logic and emotions and live with both in harmony.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="726577918746165258" id="message-726577918746165258">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;As much as my mother has tried to instill the same lessons in me, I strive to do the same every day.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/267053542005538829/409e33fae8da59452096d7ef788406f8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rick_Morrison#5561" data-user-id="267053542005538829"  style="color: rgb(194, 59, 50)" >Ensign Gabriel Monroe</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="726578383840083980" id="message-726578383840083980">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Right, what we need to do is to try to make camp and set everything up for cooking and such. Sara, you appear to be in the hunting vibe, I&#39;d like you and the ladies to go and forage for nearby vegetation and maybe catch something good. Meanwhile the men and I will set up the tents and equipment. Remember to keep your comm channel open should you be in trouble. Understood?&quot; <em>He finished explaining his plab</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="726580089499680799" id="message-726580089499680799">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>She gave her friend a salute.</em>
+
+&quot;Aye Captain. We&#39;re a strong bunch of ladies, we&#39;ll be fine!~ But comms are opens and Location is enabled.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:31 AM</span>
+
+            <div class="chatlog__message " data-message-id="726580446539808839" id="message-726580446539808839">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Sa&#39;val turned to Sara.</em> &quot;I have a boot knife if you feel you need it.&quot; <em>Sa&#39;val smirked slightly again.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="726581927813054544" id="message-726581927813054544">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Sara slipped her hand beneath the collar on her tank top and pulled out a pocketknife thatd been hidden in her unmentionables. She waved it between her fingers, slipping the blade open with ease between two fingers.</em>
+
+&quot;You&#39;re not the only outdoorsy expert Mr Vulcan man.~ But you&#39;re very chivilrous to offer. I might adopt the boot knife method someday however.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="726582121908535427" id="message-726582121908535427">
+                <div class="chatlog__content">
+                    <div class="markdown">“I too have a good knife with me. I always take one with me when I go camping.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/425785904703995904/78ff88a81cdc13cc31ceeedf84ced2bd.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Anglachel#1124" data-user-id="425785904703995904"  style="color: rgb(224, 124, 169)" >Tal Voran</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:38 AM</span>
+
+            <div class="chatlog__message " data-message-id="726582281879159055" id="message-726582281879159055">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Why was it there?&quot; <em>He questioned Sara, opening up his bag on the ground.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="726582689741930497" id="message-726582689741930497">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Boobie trap!&quot; <em>she grinned, knowing it was absolutely not funny to anyone but her.</em><span class="chatlog__edited-timestamp" title="28-Jun-20 12:44 AM">(edited)</span></div>
+                </div>
+
+
+
+                <div class="chatlog__reactions">
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="slap" title="slap" src="https://cdn.discordapp.com/emojis/679004321651752962.png">
+                            <span class="chatlog__reaction-count">5</span>
+                        </div>
+                        <div class="chatlog__reaction">
+                            <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="https://cdn.discordapp.com/emojis/638063538723618825.png">
+                            <span class="chatlog__reaction-count">3</span>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="726582822118096920" id="message-726582822118096920">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Sa&#39;val nodded to Soval ((and that alliteration sounded weird in everyone&#39;s head when they read it out loud)).</em> &quot;A most logical habit. I personally have two, but I doubted Sara would want my father&#39;s combat knife.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="726583334666502206" id="message-726583334666502206">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Haha, not for foraging berries I&#39;m afraid! Maybe filleting fish or gutting small game, I&#39;ll get back to you on that offer, yeah?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:46 AM</span>
+
+            <div class="chatlog__message " data-message-id="726584204137332766" id="message-726584204137332766">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Sa&#39;val nodded to Sara with a smirk.</em> &quot;My knives are your knives, my friend.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 12:49 AM</span>
+
+            <div class="chatlog__message " data-message-id="726584981517893733" id="message-726584981517893733">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>She shut the blade away with as much ease as she had when opening it, tucking it back into her shirt where it couldn&#39;t be seen.</em>
+
+&quot;Same to you! It&#39;s a small knife, but it&#39;s yours if you want it.. Though I imagine you&#39;d get more use out of my laser scalpel than an old pocketknife.&quot;<span class="chatlog__edited-timestamp" title="28-Jun-20 12:49 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="726585446959677470" id="message-726585446959677470">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>She pointed to her side pocket on the large yellow bag slung over her shoulder.</em>
+
+&quot;If you need it, it&#39;s in the left pocket.&quot;</div>
+                </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="726585895293157417" id="message-726585895293157417">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;But alright, you girls ready to go?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="726591467866554378" id="message-726591467866554378">
+                <div class="chatlog__content">
+                    <div class="markdown">“Well small game hmm I wonder if the flyer replicator can make a take down bow and small game arrows.?”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/425785904703995904/78ff88a81cdc13cc31ceeedf84ced2bd.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Anglachel#1124" data-user-id="425785904703995904"  style="color: rgb(224, 124, 169)" >Tal Voran</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="726596913021059093" id="message-726596913021059093">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;If we can do that why not just make the food?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="726597574647349298" id="message-726597574647349298">
+                <div class="chatlog__content">
+                    <div class="markdown">“Well I need something to hunt with silly. You don’t expect me to hunt with a knife and my bare hands do you.?”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="726597875923943465" id="message-726597875923943465">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I think he means why bother hunting if we have a replicator available- but the reason is because fresh caught and harvested food tastes better.&quot;</div>
+                </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="726598082896068729" id="message-726598082896068729">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;And! You know! It&#39;s part of the experience~&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="726598257089970196" id="message-726598257089970196">
+                <div class="chatlog__content">
+                    <div class="markdown">“Yes thank you Sara but having the right tool for the job helps. it would take me a full day to make a bow to hunt with.”<span class="chatlog__edited-timestamp" title="28-Jun-20 01:43 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:49 AM</span>
+
+            <div class="chatlog__message " data-message-id="726600241285169183" id="message-726600241285169183">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;It would be possible to craft our own bow with items we may be able to find in the forest...but it is certainly also possible that it will be less durable.&quot;<span class="chatlog__edited-timestamp" title="28-Jun-20 01:50 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 01:51 AM</span>
+
+            <div class="chatlog__message " data-message-id="726600519841480784" id="message-726600519841480784">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;I admit that having the replicator available for certain items is nice. And I don&#39;t think we should shame ourselves that if it enhances the experience. &quot;<span class="chatlog__edited-timestamp" title="28-Jun-20 01:51 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="726606355284230235" id="message-726606355284230235">
+                <div class="chatlog__content">
+                    <div class="markdown">“All I’m saying is I could spend a full day looking for a straight enough pice, then another shaping it and tuning the limbs to make sure they both bend evenly.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/267053542005538829/409e33fae8da59452096d7ef788406f8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rick_Morrison#5561" data-user-id="267053542005538829"  style="color: rgb(194, 59, 50)" >Ensign Gabriel Monroe</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="726606952125170217" id="message-726606952125170217">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Hmm, you know this gives me an idea. All in favor in going with sara say I&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:26 AM</span>
+
+            <div class="chatlog__message " data-message-id="726609456351281194" id="message-726609456351281194">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Sa&#39;val had started to continue to examine the crate.</em> &quot;An interesting proposition, you say?&quot;<span class="chatlog__edited-timestamp" title="28-Jun-20 02:55 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:26 AM</span>
+
+            <div class="chatlog__message " data-message-id="726609462143746111" id="message-726609462143746111">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Wh! I thought the men were doing the setting up of camp?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="726612995756523530" id="message-726612995756523530">
+                <div class="chatlog__content">
+                    <div class="markdown">“Well I’m gunna hunt sara. And hopefully get us some grub.”</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:50 AM</span>
+
+            <div class="chatlog__message " data-message-id="726615358923866152" id="message-726615358923866152">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Sara waved Soval off, Looking back to the remaining men with a confused smile.</em>
+
+&quot;Then I guess me and the girls will go foraging? Good luck getting together camp, be good and don&#39;t talk to strangers, yeah?&quot;</div>
+                </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="726615526037651548" id="message-726615526037651548">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>She grinned, leaning up to kiss Tal on the nose before readjusting her too-large back pack and NPC&#39;ing the other girls off onto the hiking trail.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:50 AM</span>
+
+            <div class="chatlog__message " data-message-id="726615546124042301" id="message-726615546124042301">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;A difficult proposition as all of you were strangers to me before I started talking to you.&quot; <em>Sa&#39;val smirked.</em><span class="chatlog__edited-timestamp" title="28-Jun-20 02:54 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:51 AM</span>
+
+            <div class="chatlog__message " data-message-id="726615672527912981" id="message-726615672527912981">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;You called me a friend, and all these people are my friends. Blood of my blood and home of my home, we&#39;re all friends now~ So play nice.&quot;</div>
+                </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="726615809572470844" id="message-726615809572470844">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Especially you, Tal.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/425785904703995904/78ff88a81cdc13cc31ceeedf84ced2bd.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Anglachel#1124" data-user-id="425785904703995904"  style="color: rgb(224, 124, 169)" >Tal Voran</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:52 AM</span>
+
+            <div class="chatlog__message " data-message-id="726615978112450590" id="message-726615978112450590">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;What did I do?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/504713549763969034/d78d0ffc39cefe8b71cfdbe3d441abcb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Stacy&#39;s Mom#4138" data-user-id="504713549763969034"  style="color: rgb(39, 126, 205)" >Lt. JG. Sara Bj&#248;rge</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="726616158740152410" id="message-726616158740152410">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Oh..you know.&quot; <em>She didn&#39;t elaborate any further as she turned heel, pulling her botany scanner from her side-pocket and began to scan along the trail.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/267053542005538829/409e33fae8da59452096d7ef788406f8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rick_Morrison#5561" data-user-id="267053542005538829"  style="color: rgb(194, 59, 50)" >Ensign Gabriel Monroe</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:54 AM</span>
+
+            <div class="chatlog__message " data-message-id="726616462474608721" id="message-726616462474608721">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Right, those of you remaining come help me off load the equipment and let&#39;s set up camp&quot; <em>He proceeds to offload the first of the equipment and takes them to <span class="mention">#campsite</span></em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/425785904703995904/78ff88a81cdc13cc31ceeedf84ced2bd.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Anglachel#1124" data-user-id="425785904703995904"  style="color: rgb(224, 124, 169)" >Tal Voran</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="726616644507664435" id="message-726616644507664435">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He stared at her as she left, bearing a Sara-like confused face.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/314524330149019648/d3a38976025552bcbfad3df41e47dce9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="L. King#5008" data-user-id="314524330149019648"  style="color: rgb(194, 59, 50)" >Lt. JG. Sa&#39;val Stryker</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 02:56 AM</span>
+
+            <div class="chatlog__message " data-message-id="726616917116321792" id="message-726616917116321792">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Sa&#39;val picked up his duffle bag again and hoisted the crate he had unloaded and moved it to the campsite.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 03:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="726621834232987679" id="message-726621834232987679">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>he went into the flyer to replicate a 50lb draw recurve. To hunt small game.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/425785904703995904/78ff88a81cdc13cc31ceeedf84ced2bd.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Anglachel#1124" data-user-id="425785904703995904"  style="color: rgb(224, 124, 169)" >Tal Voran</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 03:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="726622679167139841" id="message-726622679167139841">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He stepped into the Delta flyer, searching for a few minutes before finding the cooking setup.</em> &quot;When did you learn to use a bow?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/309535340673236992/daef8f2151b0b8b34eb532638059daeb.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="xxirish89xx#2095" data-user-id="309535340673236992"  style="color: rgb(194, 59, 50)" >Lt. JG. Soval McFadden</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 04:18 AM</span>
+
+            <div class="chatlog__message " data-message-id="726637711615721514" id="message-726637711615721514">
+                <div class="chatlog__content">
+                    <div class="markdown">“It’s a hobby Iv practiced of and on my whole life.”<span class="chatlog__edited-timestamp" title="28-Jun-20 04:18 AM">(edited)</span></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/425785904703995904/78ff88a81cdc13cc31ceeedf84ced2bd.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Anglachel#1124" data-user-id="425785904703995904"  style="color: rgb(224, 124, 169)" >Tal Voran</span>
+
+
+        <span class="chatlog__timestamp">28-Jun-20 04:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="726639463358267453" id="message-726639463358267453">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Ah. Hopefully I&#39;ll have a good chance to use these then.&quot; <em>He raises a small skillet, smiling.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/267053542005538829/409e33fae8da59452096d7ef788406f8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rick_Morrison#5561" data-user-id="267053542005538829"  style="color: rgb(194, 59, 50)" >Ensign Gabriel Monroe</span>
+
+
+        <span class="chatlog__timestamp">05-Jul-20 03:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="729348326033457263" id="message-729348326033457263">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Puts the crates into the flyer</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/237310760672428032/420748eed3596b47451013d9dcf0a38e.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032"  style="color: rgb(194, 59, 50)" >Ensign Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Jul-20 03:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="729348503116972074" id="message-729348503116972074">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Maleb laid the crate and tents neatly and systematically in the flyer.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/439519317114224641/847e2211bba73f0af6ccb2b89b530b55.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="{~ ʄǟʟʟɛռ ~}#0120" data-user-id="439519317114224641"  style="color: rgb(39, 126, 205)" >Ensign T&#39;lith</span>
+
+
+        <span class="chatlog__timestamp">05-Jul-20 03:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="729348591142961183" id="message-729348591142961183">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>T&#39;lith put the crates in the flyer, silent.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/267053542005538829/409e33fae8da59452096d7ef788406f8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rick_Morrison#5561" data-user-id="267053542005538829"  style="color: rgb(194, 59, 50)" >Ensign Gabriel Monroe</span>
+
+
+        <span class="chatlog__timestamp">05-Jul-20 04:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="729357226497540136" id="message-729357226497540136">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>walks into the flyer to prep it for departure</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/237310760672428032/420748eed3596b47451013d9dcf0a38e.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032"  style="color: rgb(194, 59, 50)" >Ensign Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Jul-20 04:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="729357401655869451" id="message-729357401655869451">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Following, he said,</em> &quot;Do you require a copilot, Ensign?&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/267053542005538829/409e33fae8da59452096d7ef788406f8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rick_Morrison#5561" data-user-id="267053542005538829"  style="color: rgb(194, 59, 50)" >Ensign Gabriel Monroe</span>
+
+
+        <span class="chatlog__timestamp">05-Jul-20 04:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="729357833065463808" id="message-729357833065463808">
+                <div class="chatlog__content">
+                    <div class="markdown">&quot;Come to think of it, I could use someone to help&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/237310760672428032/420748eed3596b47451013d9dcf0a38e.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032"  style="color: rgb(194, 59, 50)" >Ensign Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Jul-20 04:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="729358045921935370" id="message-729358045921935370">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>Maleb nodded in acknowledgement.</em> &quot;I will do whatever you deem necessary.&quot;</div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/267053542005538829/409e33fae8da59452096d7ef788406f8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rick_Morrison#5561" data-user-id="267053542005538829"  style="color: rgb(194, 59, 50)" >Ensign Gabriel Monroe</span>
+
+
+        <span class="chatlog__timestamp">05-Jul-20 04:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="729358237782114344" id="message-729358237782114344">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He nods and boards the ship</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/237310760672428032/420748eed3596b47451013d9dcf0a38e.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032"  style="color: rgb(194, 59, 50)" >Ensign Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">05-Jul-20 04:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="729358548542292018" id="message-729358548542292018">
+                <div class="chatlog__content">
+                    <div class="markdown"><em>He followed and sat in the copilot&#39;s seat.</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div><div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/267053542005538829/409e33fae8da59452096d7ef788406f8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rick_Morrison#5561" data-user-id="267053542005538829"  style="color: rgb(194, 59, 50)" >Ensign Gabriel Monroe</span>
+
+
+        <span class="chatlog__timestamp">05-Jul-20 04:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="729360215195254825" id="message-729360215195254825">
+                <div class="chatlog__content">
+                    <div class="markdown">[D] <em>The flyer was lifted off the ground and slowly flown away from its landingite and gone up, up and away out of sight. All was left now was the sounds of nature on the planet of Ba&#39;ku</em></div>
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 102 message(s)</div>
+</div>
+
+</body>
+</html>

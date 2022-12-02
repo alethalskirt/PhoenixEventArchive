@@ -1,0 +1,1548 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - orbit</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Arkelos II / orbit</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/a_525446c6b5f92017ac309c2e95f89ec2-52621.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Fernloch#9014" data-user-id="609850455627005953" style="color: rgb(41,169,238)">SI&#39;. w&#39;DI. Cherow</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 10:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="835624665946652692" id="message-835624665946652692">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>High above the sprawling prison compound and section of the planet which had slowly started to become overgrown with plant-life and vegetation, a Iaidon dreadnought, two cruisers, and five smaller raider vessels cruised just in orbit of the planet. Standard patrol had - as per usual - detected nothing untoward. The only activity they saw was their colleagues warping in with other ships in tow, either hauling the wreckage back for it to be scrapped or purposefully luring a vessel here so they might crash down onto the surface below. It was rather surprising for the Iconians aboard, then, when their sensors</em> <em><strong>did</strong></em> <em>begin to detect a blip on their radar-- and a moment later a lone vessel - with a Starfleet registry - warped in before them.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128064;" title="&#128064;" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f440-51DEA.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/412fc1698e3a9544ca88d5f8e4941b25-9C8A8.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Woodster#4268" data-user-id="689862823488389132" style="color: rgb(212,156,2)">Lt. JG. Aaron Miller</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 10:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="835626657095090247" id="message-835626657095090247">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D]<em>Suddenly another Federation ship warped in, and another, and another, all immediately one after the other, a small, no a large squadron, All with Federation signatures. All with their weapons locked and shields raised.</em>
+
+<em>Yet there were more coming.</em>
+
+<em>Lots more.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="winkwonk" title="winkwonk" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/704858311790690337-EAB4E.png">
+                                <span class="chatlog__reaction-count">14</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/637075614662393868-CC03F.png">
+                                <span class="chatlog__reaction-count">14</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="PE_PandaYay" title="PE_PandaYay" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/728192432084221952-40A63.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="starfleet" title="starfleet" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/758333482236772393-A2145.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 10:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="835627770762625026" id="message-835627770762625026">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Ten D&#39;Kora class Marauders dropped out of warp behind the Federation fleet and lingered to the rear, &#39;necks&#39; extended to expose their weapons arrays. The Ferengi were here to make good on that promise of first salvage rights.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">12</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/17cf0398018c2a7c2a5906b91b2ef189-906AF.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Dominion#0000" data-user-id="835630407126089758" style="">The Dominion</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Apr-21 10:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="835630541403193406" id="message-835630541403193406">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Dropping out of warp off the port side of the already gathered Federation and Ferengi Alliance ships, a large contingency of Dominion Battleships and Fighters appeared in the system. Their weapons armed and shields raised, they took up formation alongside their &#39;allies&#39;.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128065;️" title="&#128065;️" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f441-76548.png">
+                                <span class="chatlog__reaction-count">9</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/f27bd6baf7bee058d5b74c001522978a-ED042.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Romulan Republic Fleet#0000" data-user-id="835630407126089758" style="">Romulan Republic Fleet</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Apr-21 10:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="835632255631622224" id="message-835632255631622224">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>It was in a defensive formation around their allies that the ships of the Romulan Republic dropped out of warp. Considering the state that Mol&#39;Rihan had been in following the war in the previous year they seemed to have managed to pull themselves together well - or they had held a secret arsenal at their disposal all along, considering how formidable this squadron was. The alternative was that the Republic had pulled out their best ships for this fight, determined to show that their faction still stood strong. The squadron consisting of dinaes, mogai, malem, okhala, and d&#39;khellra class vessels stood strong, ready to engage the Iconians once the signal was given.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">13</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/956808ab234ab00027cebe10ca45ea98-E06B9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Starfleet#0000" data-user-id="835630407126089758" style="">Starfleet</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Apr-21 10:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="835635319411965952" id="message-835635319411965952">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>A message rung out from one of the ships in the fleet, on every subspace band. Even while more ships were pouring in from across the galaxy.</em> &quot;Release the prisoners of Arkelos Two, or you will be fired upon.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">13</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129395;" title="&#129395;" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f973-8DAB3.png">
+                                <span class="chatlog__reaction-count">12</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128299;" title="&#128299;" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f52b-03BA0.png">
+                                <span class="chatlog__reaction-count">11</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="phaser" title="phaser" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/802544252835332106-9BE05.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/497b37496021926f5ccc2ecaeba28d89-9DA93.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TheRubyFalcon#8066" data-user-id="237310760672428032" style="color: rgb(215,52,42)">Lt. JG. Haitek Maleb</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 10:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="835635336070824046" id="message-835635336070824046">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>A small fleet of a dozen Kentari warships soon dropped out of warp to assist in the fight. It took them only seconds to fall into formation, ready to help their allies rescue the prisoners.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/16ac59bd5557344d05ba1b5062afbd72-F4442.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Iconian Fleet#0000" data-user-id="835630407126089758" style="">Iconian Fleet</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Apr-21 10:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="835635851383930900" id="message-835635851383930900">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The patrol vessels distributed themselves evenly along the front. The gaps between each vessel were quickly filled by swirling, blue-black gateway, each containing an Iaidon Dreadnought or a cluster of Baltim Raiders, weapons arrays charged and ready to attack.</em>
+
+<em>A return comm was transmitted to Starfleet, tone detached and arrogant.</em> &quot;<em><strong>You</strong></em> <strong>will be fired upon.</strong>&quot;
+
+<em>With that, the Baltim Raiders started whizzing their way between each attack wing. The Dreadnoughts began firing on each wing&#39;s lead vessels. The battle had begun.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/956808ab234ab00027cebe10ca45ea98-E06B9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Starfleet#0000" data-user-id="835630407126089758" style="">Starfleet</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Apr-21 11:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="835636226195324928" id="message-835636226195324928">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>A message was sent to the fleet, which was still warping in.</em> &quot;All ships, you are clear to engage, repeat you have a green light.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1de6e6d420f7fd62e740b327fca68b85-1E7F7.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The KDF#0000" data-user-id="835630407126089758" style="">The KDF</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Apr-21 11:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="835639771257634816" id="message-835639771257634816">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Not long after,  a small squadron of 10 klingon ships, being lead in by a Ning&#39;tao Class uncloaked, holding up the rear.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/17cf0398018c2a7c2a5906b91b2ef189-906AF.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Dominion#0000" data-user-id="835630407126089758" style="">The Dominion</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Apr-21 11:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="835639817403760670" id="message-835639817403760670">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Immediately, the Dominion ships began to engage the Iconians. The Fighters weaved around and between the larger Iconian ships, firing at every opportunity.</em> 
+<em>Meanwhile, the battleships began attacking the raiders with a deadly combination of phased polaron beams and disruptor blasts.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/30be91a9b55370fa0020b9bf407d843e-15126.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Delta Alliance#0000" data-user-id="835630407126089758" style="">Delta Alliance</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Apr-21 11:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="835643054169784350" id="message-835643054169784350">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Delta alliance has arrived to assist!</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-21 11:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="835643464745222174" id="message-835643464745222174">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The Ferengi ships mostly lingered to the back of each wing, but did their best to use their strong aft weaponry to their advantage.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/9093ab71ea4303129c59f3a7f9d57f7a-C71A1.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="alethalskirt#5166" data-user-id="213115258041139200" style="color: rgb(245,182,10)">Lt. Cdr. Rekat Parlac</span>
+
+
+        <span class="chatlog__timestamp">25-Apr-21 12:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="835654560152289290" id="message-835654560152289290">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Another fleet dropped out of warp, the flat, broad, and instantly recognizable shapes of Cardassia&#39;s warships materializing into orbit, weapons at the ready.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">12</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127475;" title="&#127475;" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f1f3-08F96.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127462;" title="&#127462;" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f1e6-79872.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127476;" title="&#127476;" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f1f4-6C4DE.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127474;" title="&#127474;" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f1f2-C2511.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="tribblecool" title="tribblecool" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/502643426005745675-E7454.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/f27bd6baf7bee058d5b74c001522978a-ED042.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Romulan Republic Fleet#0000" data-user-id="835630407126089758" style="">Romulan Republic Fleet</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 12:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="835655461746901022" id="message-835655461746901022">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>It was almost as soon as that &#39;green-light&#39; to go ahead was given that the Romulan vessels all seemed to flicker out and vanish, emptiness remaining in their places instead. It might have been viewed as a cowardly option for a moment - seeming to run as soon as the fight started - but instead it was with a sly co-ordination that the Romulans began their attack. Subterfuge may have been founded in the Star Empire&#39;s battle strategies but it was one that even the Republic could not shake. It was in positions where firing arcs could hopefully not hit them that the ships dropped their cloaks again, firing upon the Iconian fleet from below.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">16</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/16ac59bd5557344d05ba1b5062afbd72-F4442.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Iconian Fleet#0000" data-user-id="835630407126089758" style="">Iconian Fleet</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 04:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="835900939272585256" id="message-835900939272585256">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>A vivid orange solar gateway crackled open in front of one of the dreadnoughts, sending gouts of stellar plasma spilling out into space like blood from an open wound towards primarily the Federation attack group. Several raiders had already been damaged, particularly by the Dominion and Romulans, their attack strategy and technology having been mostly unanticipated. A Ferengi ship had already been blown to smithereens by a Dreadnought, having tried to branch off early to gain access to the planet, and slowly the fleet was starting to pick at the ranks of the other allied fleets, but the number of Iconian ships was dwindling much faster than that of their opponents, despite all odds.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/956808ab234ab00027cebe10ca45ea98-E06B9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Starfleet#0000" data-user-id="835630407126089758" style="">Starfleet</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 04:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="835903896706220052" id="message-835903896706220052">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Starfleet&#39;s branch of the fleet was led by none other than Captain Rhea Talos of the USS Rapture, the Presido-class weaving in and out of the Iconian fire, it&#39;s shields still holding.</em>
+
+<em>A group of mixed Alliance escorts including the Kyoto, Sunchaser and K&#39;Warko exited out of warp at the back of the battle, followed by Alliance Medical ships, one bearing the name Inglis. These were the getaway ships for the rescued prisoners.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="PE_PandaYay" title="PE_PandaYay" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/728192432084221952-40A63.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="PanLove" title="PanLove" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/413844320500580362-E0320.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/2540f5306c689344b7700b5bd8b6d311-F58EB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Captain Rhea Talos#0000" data-user-id="835630407126089758" style="">Captain Rhea Talos</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 05:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="835908151811244123" id="message-835908151811244123">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[Comms] <em>The fleet-wide comms which had been established through all allied vessels was alive with the constant sound of radio-chatter, channels left open for swift communication. It was while simultaneously watching to keep track of the Iconian positions and direct their helmsman to get them out of the line of fire and to a position where they could strike that she called over the sound of the comms.</em> 
+
+&quot;Hard to starboard, now roll the ship- yes I said roll, Ensign, don&#39;t be scared of flying her upside-down, &#39;upside-down&#39; is pretty much fake here- <em>Xichun!</em> Our science officers have managed to pin-point the location of all of our life-signs, they&#39;re localised in two areas. If we drop our shields to beam them up then we&#39;ll practically be goners - if we cover you, do you think you can drop in?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="care" title="care" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/711609055021629502-E849D.png">
+                                <span class="chatlog__reaction-count">11</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/c24ae7d36d92fe0608a30186a32137cc-2F66C.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Captain Garima Shen#0000" data-user-id="835630407126089758" style="">Captain Garima Shen</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 05:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="835909632546963466" id="message-835909632546963466">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Xichun was weaving in and about next to the Rapture. When the request was received, Captain Garima Shen sat back down in her chair.</em> &quot;Can do Rapture!&quot; <em>She turned to internal comms.</em> &quot;Bridge to cube, get the spore drive online!&quot; <em>She readied herself.</em> &quot;All hands Black Alert.&quot;
+
+<em>Within a few seconds the Xichun had spun around and disappeared.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="25-Apr-21 05:09 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/16ac59bd5557344d05ba1b5062afbd72-F4442.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Iconian Fleet#0000" data-user-id="835630407126089758" style="">Iconian Fleet</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 05:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="835914778085687338" id="message-835914778085687338">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>If the Iconian Fleet had noticed the disappearing ship or its reappearance, they showed no sign of changing their tactics in response. Gateways opened and closed around the fleet, sending ships in to attack weak-looking segments before retreating and reappearing in other areas.</em>
+
+<em>One heavily damaged dreadnought had powered up its weapons emitter to the point of overload. Purple light crackled around it in a way that ordinarily wouldn&#39;t have been possible in the vacuum of space except for the mixed effect of the graviton emitters on the hull and formerly internal ship atmosphere seeping out of holes in the neutronium. It was about to fire on and frankly obliterate the Rapture when there was a ripple in the space between the dreadnought and its doomed opponent, a space soon filled by a decloaking Romulan warbird - the RRW Abyss Strix. The shot hit the warbird full on. Its singularity core destabilized, and the resulting unstable wormhole was the final gravitational disturbance needed to prevent the neutronium hull from maintaining structural integrity. The Dreadnought imploded, neutronium debris dispersing and scattering into loosely bound arrangements of neutrons in the space where it had once been. The Rapture was saved.</em>
+
+<em>By this point the Iconians were losing, and losing badly. Only a handful of dreadnoughts and raiders remained.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f62d-FE9EC.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/f27bd6baf7bee058d5b74c001522978a-ED042.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Romulan Republic Fleet#0000" data-user-id="835630407126089758" style="">Romulan Republic Fleet</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 07:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="835940979604979792" id="message-835940979604979792">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Thoroughly unimpressed with the destruction of one of their fleet when they had already endured so much and</em> <em><strong>really</strong></em> <em>did not need any further loss of life, it was the Republic who opted to turn the tide. It was in a flurry of well-coordinated manoeuvres that they decided to use the situation to their advantage. With two vessels to each ship they managed to swoop in below two of the Iconian ships, decloaking beneath them and immediately locking on tractor beams. It was with full power to their impulse drives that they then powered forwards, towing the Iconian ships with them- only to come to a full stop and use the momentum to keep the Iconians going forwards. The dreadnought and raider were caught in the wormhole created by the singularity core&#39;s destablisation, destroying them alongside the poor Abyss Strix.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="care" title="care" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/711609055021629502-E849D.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/956808ab234ab00027cebe10ca45ea98-E06B9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Starfleet#0000" data-user-id="835630407126089758" style="">Starfleet</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 07:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="835943493809471498" id="message-835943493809471498">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Two battlecruisers saw what the Romulans did and were impressed, and so they tried their own version of that tactic. Two disabled cruisers lay in front of them, so they tractorbeamed the ships and reversed the emitter, so instead of reeling them in, the two Iconian cuisers were pushed away at a high speed, directly into the gravity well of the planet.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/17cf0398018c2a7c2a5906b91b2ef189-906AF.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="The Dominion#0000" data-user-id="835630407126089758" style="">The Dominion</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">25-Apr-21 07:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="835943987927842826" id="message-835943987927842826">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Dominion Attack Force took this time in the aftermath of the Abyss Strix&#39;s implosion to renew their attack on the Iconian forces, doubling their efforts.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/73876bd0e43e757daa3b116d78c46470-1A740.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Letters#2658" data-user-id="489616540694609931" style="color: rgb(175,36,27)">Commander T&#39;Svai</span>
+
+
+        <span class="chatlog__timestamp">26-Apr-21 12:41 AM</span>
+
+            <div class="chatlog__message " data-message-id="836024104690778193" id="message-836024104690778193">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The final dreadnought&#39;s hull weakened and splintered to pieces, sending a shockwave out that barely rocked the remaining allied vessels, and with that, the sky was finally quiet. There were no Iconian vessels left. Debris littered the void&#39;s expanse and painted the atmosphere of Arkelos II with vibrant orange streaks of flame.</em>
+
+<em>Wing by wing, each section of the allied fleet went to warp, job done, now headed to Earth Spacedock.</em>
+
+<em>Arkelos II hung in the empty space, now alone, devoid of the former prisoners that had once occupied it. Now it was an empty orange dot floating in space, save for the remaining Heralds, the Yediin, and the slowly growing green dot where the Phoenix had fallen that threatened to one day encompass the entire planet.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="26-Apr-21 12:44 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="picardyus" title="picardyus" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/653654387184369665-D0179.png">
+                                <span class="chatlog__reaction-count">14</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="siskocheers" title="siskocheers" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/808801807945695263-0C207.png">
+                                <span class="chatlog__reaction-count">14</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127881;" title="&#127881;" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f389-D0935.png">
+                                <span class="chatlog__reaction-count">14</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127486;" title="&#127486;" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f1fe-B7194.png">
+                                <span class="chatlog__reaction-count">12</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127466;" title="&#127466;" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f1ea-4B558.png">
+                                <span class="chatlog__reaction-count">12</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127480;" title="&#127480;" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/1f1f8-B6AC7.png">
+                                <span class="chatlog__reaction-count">12</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="❕" title="❕" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/2755-FE934.png">
+                                <span class="chatlog__reaction-count">11</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="yeeheart" title="yeeheart" src="Star%20Trek_%20Phoenix%20-%20Arkelos%20II%20-%20orbit%20%5B835620476649996309%5D.html_Files/729460335505047562-DF73F.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 24 message(s)</div>
+</div>
+
+</body>
+
+</html>

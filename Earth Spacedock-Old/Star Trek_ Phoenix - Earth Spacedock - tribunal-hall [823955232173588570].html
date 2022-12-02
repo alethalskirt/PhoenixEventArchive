@@ -1,0 +1,2546 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - tribunal-hall</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Earth Spacedock / tribunal-hall</div>
+
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 07:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="823994557419094106" id="message-823994557419094106">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie walked outside the tribunal hall. Sighing softly. As she waited to be let in. Not wanting to barge in.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/b729c4ff514614d346bfe38021df5d21-4A781.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HNWN_Alt#3496" data-user-id="777301412102799390" style="color: rgb(17,17,17)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 07:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="823997104590553090" id="message-823997104590553090">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime arrived outside the hall and saw Maggie. Rather than say something to her however, they simply looked down at the floor and waited.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/ba626b02ec3d45fe6807dd40b5a4ade8-8DAC3.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="birb#0650" data-user-id="384551551567659009" style="color: rgb(175,36,27)">Lieutenant Mino</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 07:27 PM</span>
+
+            <div class="chatlog__message " data-message-id="824001551663235149" id="message-824001551663235149">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>The tribunal hall awaited both officer’s arrival. It was empty for a few more moments before the proper staff began trickling in, starting with admirals, then onto security. And jury as they were needed.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 07:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="824001879331307573" id="message-824001879331307573">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie sighed as she looked the group begin to filter in. Cracking her neck as she headed down to the hall. Looking around for her place to sit, before sitting there.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/b729c4ff514614d346bfe38021df5d21-4A781.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HNWN_Alt#3496" data-user-id="777301412102799390" style="color: rgb(17,17,17)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 07:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="824002629347573770" id="message-824002629347573770">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime looked along the group that had filed in and shook their head slightly, then looked back down at the floor.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="23-Mar-21 07:32 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/c5bb556f9ad0e88ba0241d25217a8b38-5C0F6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore T&#39;lunvi#0000" data-user-id="824003118894809088" style="">Commodore T&#39;lunvi</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 07:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="824003119859105800" id="message-824003119859105800">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>It was quite odd to see a science admiral at an event that seemed to be more attuned to command. Staff was probably stretched thin defending boarders or whatnot. She took a seat and prepared the necessary paperwork.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2ce220a03e6e6379d1b5ad9b02f7765e-2FC82.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Masren Praanor#0000" data-user-id="824003118894809088" style="">Commodore Masren Praanor</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 07:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="824003784761802792" id="message-824003784761802792">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Praanor&#39;s eyes were a little red as she walked in, recent news and all, but her expression was sharp and determined, and she carried a pile of PADDs with her. She sat down on the far left, not yet acknowledging the two officers.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/14bf4840f0eed784c7a730875db1f48b-68DD2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Theodosia Coleridge#0000" data-user-id="824003118894809088" style="">Theodosia Coleridge</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 07:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="824005150871912479" id="message-824005150871912479">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Right on time, Coleridge also entered the hall, taking her seat and crossing her legs as she looked very carefully at Verne and Devereux. She&#39;d read everything she needed to read, of course, but there were always details to be learned from the way someone sat, where they looked, just how they seemed to regard the group before them - and Theo was definitely taking notes. Once satisfied, she laid her PADD on the table, steepling her fingers and waiting.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2f7452f0ae040b2bc3a615a490185704-E235A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Rejema Khassid#0000" data-user-id="824003118894809088" style="">Commodore Rejema Khassid</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 07:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="824006445363626034" id="message-824006445363626034">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>A set of eyes immediately fell upon Lieutenant Verne as the officer entered, smoothly tracking the woman&#39;s movement as she found her seat. Having been there early - Cardassian efficiency and all - it had given her time to positively</em> <em><strong>seethe</strong></em> <em>about the case which had been set in front of her. How typical that there was limited work for a geologist of all things at present, and how typical that she would wind up assisting Command - only to assist them in</em> <em><strong>this.</strong></em> <em>The concept of her involvement had been considered beforehand. Was there a possibility that Khassid might be biased towards this case? Yes, there was - but the others amongst the Admiralty were well aware of her zero-tolerance for the breaking of Starfleet regulations. Even if she might have been biased in favour of assisting Verne previously, that had rather swiftly changed upon reading over the details of the case.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128010;" title="&#128010;" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/1f40a-12F4D.png">
+                                <span class="chatlog__reaction-count">14</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="smad" title="smad" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/814231760933617679-518F3.png">
+                                <span class="chatlog__reaction-count">9</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129704;" title="&#129704;" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/1faa8-7C0E9.png">
+                                <span class="chatlog__reaction-count">9</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/1f62d-FE9EC.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/c5bb556f9ad0e88ba0241d25217a8b38-5C0F6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore T&#39;lunvi#0000" data-user-id="824003118894809088" style="">Commodore T&#39;lunvi</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 08:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="824011172863934485" id="message-824011172863934485">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Once all had arrived and been seated, T’Lunvi stood up out of her chair, with a padd in her hand. She began reading off of it.</em> 
+“All in attendance, please rise. I will now ask that we take an oath of truth. No lies will be told. The accused, Mrs. Verne and Ensign Devereux. Will be judged and sentenced today by this panel.”<em>After they had done the formal speeches, everyone was permitted to be seated once again.</em> 
+“We shall begin with Devereux. According to the ship’s medical staff, you were able to synthesize a compound that was able to cure a fellow officer. Despite not having any prior medicinal experience. Tell me ensign, once again for the panel. How exactly you were able to accomplish this.” 
+
+<em>That seemed like the best place to begin, she was most certainly not a JAG officer, but she was an excellent reader of notes from a padd.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/b729c4ff514614d346bfe38021df5d21-4A781.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HNWN_Alt#3496" data-user-id="777301412102799390" style="color: rgb(17,17,17)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 08:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="824012240142467155" id="message-824012240142467155">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime stood and made their way to the podium.</em> &quot;As we are here to tell the truth, I would like to start by informing the court that I did not synthesize the compound. I simply provided the formula which would allow the medical staff to synthesize and utilise it in order to save Ensign Nedras&#39; life.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="23-Mar-21 08:12 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/c5bb556f9ad0e88ba0241d25217a8b38-5C0F6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore T&#39;lunvi#0000" data-user-id="824003118894809088" style="">Commodore T&#39;lunvi</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 08:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="824013236810416128" id="message-824013236810416128">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“We will take note of this. However you’ve neglected to answer my question. I want to know how you were able to get a hold of such formula in the first place. We of course have access to all logs pertaining to this situation, but I’d like to hear it from you.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/b729c4ff514614d346bfe38021df5d21-4A781.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HNWN_Alt#3496" data-user-id="777301412102799390" style="color: rgb(17,17,17)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 08:19 PM</span>
+
+            <div class="chatlog__message " data-message-id="824014468571856906" id="message-824014468571856906">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime breathed in, then spoke.</em> &quot;I was able to acquire the formula by accessing Section 31&#39;s files from the Dominion War. The antidote was created to prevent captured Vorta from ending their own lives to avoid interrogation. It is able to neutralise, and immunise against, the toxin contained within their termination implant.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 08:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="824014915417014282" id="message-824014915417014282">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie looked completely shocked as she looked at Jaime. Already trying to get the thought of how ￼ disappointed Khassid ￼must’ve been out of her head. She looked at Jaime. Feeling rage grow within her heart. Jaime was one of them, one of the ones who fucked with her head. She shook her head, she would handle it later.</em>￼￼</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129402;" title="&#129402;" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/1f97a-338D5.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2ce220a03e6e6379d1b5ad9b02f7765e-2FC82.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Masren Praanor#0000" data-user-id="824003118894809088" style="">Commodore Masren Praanor</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 08:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="824016698603601980" id="message-824016698603601980">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Section 31 involvement had been included in the report, but the specifics still didn&#39;t fail to take Praanor aback once they were spoken aloud. She shook her head quietly and kept listening, eyes glued to the report as she cross-referenced it with the testimony.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/14bf4840f0eed784c7a730875db1f48b-68DD2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Theodosia Coleridge#0000" data-user-id="824003118894809088" style="">Theodosia Coleridge</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 08:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="824016841986932816" id="message-824016841986932816">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Let me clarify, Mx. Devereux: according to the report from your Captain,&quot; <em>Theo gestured at her PADD, indicating that she did, in fact, have it directly in front of her.</em> &quot;You were initially assigned to the USS Phoenix to observe Fleet Admiral Phenna Ephrix, and remained on the ship to report on, basically, anything else that came up. So, you were allied with and communicating with S31 for the entire time you were on the Phoenix, correct?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/b729c4ff514614d346bfe38021df5d21-4A781.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HNWN_Alt#3496" data-user-id="777301412102799390" style="color: rgb(17,17,17)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 08:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="824017272133124216" id="message-824017272133124216">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Jaime turned to the woman who addressed them.</em>
+
+&quot;Yes... that is correct.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/c5bb556f9ad0e88ba0241d25217a8b38-5C0F6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore T&#39;lunvi#0000" data-user-id="824003118894809088" style="">Commodore T&#39;lunvi</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 08:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="824017826095562753" id="message-824017826095562753">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“And this means you entered starfleet under a false identity? Are you even remotely a security officer at all?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/b729c4ff514614d346bfe38021df5d21-4A781.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HNWN_Alt#3496" data-user-id="777301412102799390" style="color: rgb(17,17,17)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 08:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="824019231938445406" id="message-824019231938445406">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Not at all...&quot; <em>They looked at the rank pips on the vulcan woman&#39;s uniform</em> &quot;<em>Commodore</em>... my name is and has, since birth, been Jaime Devereux. I applied to Starfleet Academy at the age of 18 and joined the Security Division. After graduating, I was approached by a representative of Section 31, who... <em>invited</em> me within their ranks.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/c5bb556f9ad0e88ba0241d25217a8b38-5C0F6.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore T&#39;lunvi#0000" data-user-id="824003118894809088" style="">Commodore T&#39;lunvi</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 08:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="824020114827378749" id="message-824020114827378749">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She didn’t know how to continue this conversation. As far as she was concerned she knew everything she wanted to know.</em>
+“Are there any further questions from the panel?”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 08:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="824020315385888768" id="message-824020315385888768">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie was very visibly glaring at the ensign. She didn’t care what happened to herself, but she just stared at Jaime with rage in her eyes.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="surejan" title="surejan" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/725529678923825194-E81FF.png">
+                                <span class="chatlog__reaction-count">11</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2ce220a03e6e6379d1b5ad9b02f7765e-2FC82.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Masren Praanor#0000" data-user-id="824003118894809088" style="">Commodore Masren Praanor</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 08:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="824021523908132904" id="message-824021523908132904">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I have a question for you, Ensign, because I just can&#39;t wrap my brain around this. You joined Section 31, spied on one of our ships, on Fleet Admiral Ephrix of all people, somehow, may the Great Bird of the Galaxy rest her soul, kept a perfectly intact cover all that time, then just... decided to throw that all out to help some Ensign from a different department out of nowhere? Don&#39;t tell me that was just out of the kindness of your heart.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/b729c4ff514614d346bfe38021df5d21-4A781.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HNWN_Alt#3496" data-user-id="777301412102799390" style="color: rgb(17,17,17)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 08:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="824021855173869639" id="message-824021855173869639">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Nedras is... <em>was</em> my friend... though I&#39;m sure he won&#39;t want anything to do with me after this... not that I&#39;m likely to see him again soon anyway.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="23-Mar-21 08:49 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/14bf4840f0eed784c7a730875db1f48b-68DD2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Theodosia Coleridge#0000" data-user-id="824003118894809088" style="">Theodosia Coleridge</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 08:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="824022281634054174" id="message-824022281634054174">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Theodosia narrowed her eyes. &#39;Invited&#39;... no one got &#39;invited&#39; into S31. Well, not no one, but very few people would join voluntarily. Brainwashed, forced, kidnapped, conditioned, tortured, threatened - those were all words she&#39;d heard. Rarely &#39;invited&#39;. But that didn&#39;t make a spy any less dangerous, or any less guilty, even if they had saved a life.</em> &quot;Do you believe that any information you communicated to Section 31 caused any harm to your ship, Starfleet, or the Federation as a whole?&quot; <em>She paused, for a moment of impact.</em> &quot;And how do you feel about Section 31 now?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2ce220a03e6e6379d1b5ad9b02f7765e-2FC82.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Masren Praanor#0000" data-user-id="824003118894809088" style="">Commodore Masren Praanor</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 08:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="824022655387697173" id="message-824022655387697173">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Praanor added Jaime&#39;s answer to her notes.</em> &quot;The report doesnt quite say &#39;invited.&#39; I&#39;m curious about that.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/b729c4ff514614d346bfe38021df5d21-4A781.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HNWN_Alt#3496" data-user-id="777301412102799390" style="color: rgb(17,17,17)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 09:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="824024873726246913" id="message-824024873726246913">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I do not believe any harm has come to the Phoenix, Starfleet or the Federation due to my actions... Though... I am never entirely certain what Section Command will do with any information they receive...&quot;
+
+<em>Jaime stood quiet for a while...</em>
+
+&quot;Invited... is not entirely the correct word, but I used the term to expedite what I was saying... It would perhaps be more appropriate to say &#39;coerced&#39;... They threatened my then-boyfriend... said that if I didn&#39;t work for them like my Grandfather had... he would be-&quot;
+
+<em>They choked up and wiped a &#39;tear or two&#39; (there were a lot) from their eyes and looked down at their hands. The Section may not have killed him, but he still wasn&#39;t theirs anymore...</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="23-Mar-21 09:04 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2f7452f0ae040b2bc3a615a490185704-E235A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Rejema Khassid#0000" data-user-id="824003118894809088" style="">Commodore Rejema Khassid</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 09:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="824026256671899669" id="message-824026256671899669">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Section 31 are well known for drawing people into their ranks,&quot; <em>the Cardassian mused, having been content to listen until then.</em> &quot;They were well known for preying upon those with fewer prospects or initiating those with familial ties. The report from the <em>Phoenix</em> states that their commanding officer does believe that this is the case for Ensign Devereux. As much as we can hardly condone the fact that the Ensign <em>was</em> working for an illegal organisation while serving within our ranks, we can at least consider the nature of their coming to work for the group.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/14bf4840f0eed784c7a730875db1f48b-68DD2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Theodosia Coleridge#0000" data-user-id="824003118894809088" style="">Theodosia Coleridge</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 09:48 PM</span>
+
+            <div class="chatlog__message " data-message-id="824036958225432596" id="message-824036958225432596">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I agree. Section 31 has a way of being <em>very</em> persuasive,&quot; <em>Coleridge said, speaking from experience, of course. She turned slightly to speak more directly to the panel, and kept her voice low.</em> &quot;I have the authority to authorize transfers to Intelligence, so long as Ms. Vann does not elect to override my decision. Do you all think that&#39;s appropriate, given the circumstances?&quot; <em>&#39;That&#39;s rather poetic, isn&#39;t it?&#39; Theo thought to herself, though to herself it was kept.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2ce220a03e6e6379d1b5ad9b02f7765e-2FC82.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Masren Praanor#0000" data-user-id="824003118894809088" style="">Commodore Masren Praanor</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 09:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="824038434200485949" id="message-824038434200485949">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Praanor turned to Theodosia, both eyebrows slightly raised.</em> &quot;So long as Intelligence keeps an eye on them in return for a little while, by which I mean as long as it takes to make sure this isn&#39;t some elaborate plot, I don&#39;t see why not.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2f7452f0ae040b2bc3a615a490185704-E235A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Rejema Khassid#0000" data-user-id="824003118894809088" style="">Commodore Rejema Khassid</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 10:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="824041481870114867" id="message-824041481870114867">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;The Ensign&#39;s actions <em>were</em> illegal,&quot; <em>she stated, pausing for a second to regard Devereux.</em> &quot;As much as I can sympathise with Ensign Devereux for the way they wound up within Section 31&#39;s ranks, should there not be some form of punishment even if they are to stay within Starfleet?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2ce220a03e6e6379d1b5ad9b02f7765e-2FC82.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Masren Praanor#0000" data-user-id="824003118894809088" style="">Commodore Masren Praanor</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 10:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="824045807375745034" id="message-824045807375745034">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Privately, Praanor thought to herself that they&#39;d gone a bit past following Starfleet protocol for these kinds of things the moment they&#39;d started a tribunal with the defendant&#39;s evident would-be attacker in the room, but she kept that to herself for the time being.</em> &quot;I know I don&#39;t want them sending anything off-ship any time soon. No external communications, no away missions, shore leave plans need to be reviewed and approved, in my opinion. Not that they covered their tracks all that well with the first couple of reports to Section 31, if this report is anything to go by. <em>She tapped on one of the PADDs with faint contempt.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/14bf4840f0eed784c7a730875db1f48b-68DD2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Theodosia Coleridge#0000" data-user-id="824003118894809088" style="">Theodosia Coleridge</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 10:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="824048821692268554" id="message-824048821692268554">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Intelligence will monitor them closely - plenty of our officers are already kept an eye on in one way or another,&quot; <em>Theo said, just the tiniest hint of a &#39;well, obviously&#39; attitude to her voice, but one that she instantly quelled in the interest of cooperating, what with the task at hand.</em> &quot;No external communication simplifies things, and it would ensure they don&#39;t try to contact S31 again - <em>not that it would be particularly wise for them to try</em>, of course. I think that plan should work nicely.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2f7452f0ae040b2bc3a615a490185704-E235A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Rejema Khassid#0000" data-user-id="824003118894809088" style="">Commodore Rejema Khassid</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 11:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="824056172226281523" id="message-824056172226281523">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Cardassian listened to the options which were proposed. It was difficult to find the fine line between condemning the Ensign for illegal activity and also trying to remain sympathetic to the fact they were all but forced into Section 31&#39;s ranks.</em> &quot;It does sound fitting... And as this report states, it <em>would</em> be a waste of a genuine Security officer if we were to remove them from the fleet. Ensign, is there any further information or statements you would like to make before we finalise our decision?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/b729c4ff514614d346bfe38021df5d21-4A781.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HNWN_Alt#3496" data-user-id="777301412102799390" style="color: rgb(17,17,17)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 11:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="824057071946301490" id="message-824057071946301490">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Another wiping of their eyes and a quick checking of rank pips later, they responded,</em> &quot;No, Commodore... I- I have nothing else to say.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2f7452f0ae040b2bc3a615a490185704-E235A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Rejema Khassid#0000" data-user-id="824003118894809088" style="">Commodore Rejema Khassid</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">23-Mar-21 11:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="824064772076994580" id="message-824064772076994580">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Then I suppose that&#39;s it decided, then,&quot; <em>she stated after a glance to the other junior members of the admiralty who were assembled there. &#39;Junior admiralty&#39; was hardly appropriate considering how two of them were within the board of admiralty itself and the other lead an intelligence division.</em> &quot;Ensign Jaime Devereux, you will be transferred to the division of Intelligence - with your communications monitored and off-ship activity restricted - effective immediately as of stardate 155224.62. Please -- you may take your seat again. Lieutenant Verne, you may now step forward.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 11:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="824065733561942066" id="message-824065733561942066">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie sighed as she walked towards the stand. Taking well, a stand at the podium￼. Placing her hands directly on said￼ podium.</em> “Of course Commodore...”￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/b729c4ff514614d346bfe38021df5d21-4A781.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HNWN_Alt#3496" data-user-id="777301412102799390" style="color: rgb(17,17,17)">Ensign Jaime Devereux</span>
+
+
+        <span class="chatlog__timestamp">23-Mar-21 11:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="824069565264429056" id="message-824069565264429056">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Jaime had returned to their seat after being dismissed from the podium.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2ce220a03e6e6379d1b5ad9b02f7765e-2FC82.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Masren Praanor#0000" data-user-id="824003118894809088" style="">Commodore Masren Praanor</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 12:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="824074532896636928" id="message-824074532896636928">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Captain Praanor spent a couple moments rereading the PADD in front of her, then placed it down. She leaned forward, elbows propped on the table, face set in an expression one could only describe as &#39;disappointed parent&#39;.</em> &quot;<em>Lieutenant</em> Verne,&quot; <em>she started, placing a certain amount of emphasis on that reasonably high rank,</em> &quot;According to the reports we received, you withdrew a phaser from the armory while off-duty, concealed it on your person, and brought it to this here Ensign&#39;s quarters to have some kind of talk with them about the incident in sickbay we all discussed at length just a few moments ago. Is that all correct, and is there anything else you&#39;d like to add?&quot; <em>She asked Maggie.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">24-Mar-21 12:20 AM</span>
+
+            <div class="chatlog__message " data-message-id="824075118505885707" id="message-824075118505885707">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie looked over to the commodore with a nod.</em> “I just wanted to make clear that I had no knowledge of of the ensign’s ties to Section 31, I hadn’t had any prior to coming into this hearing.” <em>She said Section 31 with a measure of disgust.</em>    ￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2ce220a03e6e6379d1b5ad9b02f7765e-2FC82.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Masren Praanor#0000" data-user-id="824003118894809088" style="">Commodore Masren Praanor</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 12:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="824075707712798721" id="message-824075707712798721">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Thank you kindly. Now, the report continues, stating that when your superior officer, one Commander Yllescas Itesh confronted you and told you such actions were unacceptable, you contradicted him, defended your actions, saying you were doing security&#39;s job for &#39;em. Then you insulted him, then stormed out. Is <em>that</em> all correct?&quot; <em>She asked, raising one eyebrow.</em> &quot;For your benefit I&#39;ll specify that the evidence includes a transcript of said conversation.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">24-Mar-21 12:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="824076260606738454" id="message-824076260606738454">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie gave a small sigh.</em> “All of this happened, and I regret it. But yes, I don’t really have a defence for that. My main concern at the time was Ensign Nedras’s safety. It was a mainly emotional series of decisions.”￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2ce220a03e6e6379d1b5ad9b02f7765e-2FC82.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Masren Praanor#0000" data-user-id="824003118894809088" style="">Commodore Masren Praanor</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 12:31 AM</span>
+
+            <div class="chatlog__message " data-message-id="824078018783739934" id="message-824078018783739934">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Captain- wait, no, Commodore Praanor, Praanor on a panel of multiple very responsible, very serious people, she had to remember that, damn it, nodded, a small frown on her face.</em> &quot;Ma&#39;am, how long have you been Assistant Chief Tactical Officer, if I may ask?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">24-Mar-21 12:46 AM</span>
+
+            <div class="chatlog__message " data-message-id="824081752486051860" id="message-824081752486051860">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie looked at the Commodore with a small sigh. Almost one of nervousness.</em> “8 months, it would be 9 at the end of this if I keep it. Which seems unlikely.”￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2ce220a03e6e6379d1b5ad9b02f7765e-2FC82.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Masren Praanor#0000" data-user-id="824003118894809088" style="">Commodore Masren Praanor</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 12:48 AM</span>
+
+            <div class="chatlog__message " data-message-id="824082256045146112" id="message-824082256045146112">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Praanor let out a small &#39;hmm&#39;. She ignored the repeated sighing and obvious attempts to convey guilt. She was on a roll.</em> &quot;Almost nine months as ACTO. That&#39;s a long time. And who was responsible for promoting you to that position?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/637075614662393868-CC03F.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128010;" title="&#128010;" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/1f40a-12F4D.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">24-Mar-21 12:50 AM</span>
+
+            <div class="chatlog__message " data-message-id="824082732291325952" id="message-824082732291325952">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie glanced towards Khassid, hoping that this wouldn’t mess with Khassid’s career.</em> “Commodore￼ Khassid, ma’am.”￼</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2f7452f0ae040b2bc3a615a490185704-E235A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Rejema Khassid#0000" data-user-id="824003118894809088" style="">Commodore Rejema Khassid</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 12:56 AM</span>
+
+            <div class="chatlog__message " data-message-id="824084157398646796" id="message-824084157398646796">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>If the question itself hadn&#39;t made her cringe then the response - which had consolidated the answer they both were aware of - certainly did. A tinge of displeasure seeped into her tone.</em> &quot;Lieutenant Verne is quite correct - I gave her the position. It was an act that I can now tell was evidently a mistake.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128150;" title="&#128150;" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/1f496-0ABD4.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="yikes" title="yikes" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/737358814256300112-749DA.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">24-Mar-21 12:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="824084468037976066" id="message-824084468037976066">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie herself cringed at the mistake line, yeah. That was hit to her already shattered self-confidence.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2ce220a03e6e6379d1b5ad9b02f7765e-2FC82.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Masren Praanor#0000" data-user-id="824003118894809088" style="">Commodore Masren Praanor</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 01:01 AM</span>
+
+            <div class="chatlog__message " data-message-id="824085536209240104" id="message-824085536209240104">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Praanor had been on a roll. Praanor was now on something language had no name for.</em> &quot;I may not have known Commodore Khassid for very long, but I know <em>she&#39;s</em> responsible.&quot; <em>She said, giving the other Commodore a tiny nod before turning back to Maggie.</em> &quot;So that begs the question - you said emotions. You&#39;ve been in your position for close to nine months, you&#39;re a full Lieutenant, your file says you&#39;ve been in more high-adrenaline, high-emotion situations than I can reasonably list in this tribunal hall, and in none of those situations has anyone at least reported as large an error in judgement as this episode of vigilante justice, so I&#39;m going to go ahead and presume that even as &#39;emotional series of decisions&#39; go, this is abnormal for you.&quot; <em>She speculated, leaning a little further forward.</em> &quot;For the benefit of this tribunal, please explain <em>what</em> it was you were thinking.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">24-Mar-21 01:11 AM</span>
+
+            <div class="chatlog__message " data-message-id="824088001050705970" id="message-824088001050705970">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie placed her hands on the desk. Sighing softly as she spoke.</em> “One of my officers had been placed in sickbay after an attack from the Changelings. The ensign offered the cure, tried to order sickbay staff and a science ensign around then stormed out. I was worried for one of my officers, it’s a shit excuse I know. But I never intended to use the phaser. It was more for self-defence should I need it due to...the ensigns odd ￼ behaviour. I didn’t even let the ensign know that I had it. Nor did I try to threaten the ensign. I left after asking about the cure. Then the argument with the commander happened. So yeah. I don’t have a good defence, I fucked up.”</span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Mar-21 01:11 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2f7452f0ae040b2bc3a615a490185704-E235A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Rejema Khassid#0000" data-user-id="824003118894809088" style="">Commodore Rejema Khassid</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 01:14 AM</span>
+
+            <div class="chatlog__message " data-message-id="824088668288974889" id="message-824088668288974889">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;And you are - for lack of a better word - &#39;fucking up&#39; right now by employing that word choice,&quot; <em>the Commodore then spoke coldly. How disappointing it was to see someone she had seen potential in end up acting like</em> <em><strong>this-</strong></em> <em>and this was barely the worst. They had all listened to the recording of her speaking to her CTO. Frankly, Verne&#39;s actions had been vile.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128525;" title="&#128525;" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/1f60d-9AF57.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="phoenixheart" title="phoenixheart" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/769248729893961780-3D8C1.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2ce220a03e6e6379d1b5ad9b02f7765e-2FC82.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Masren Praanor#0000" data-user-id="824003118894809088" style="">Commodore Masren Praanor</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 01:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="824089993907666944" id="message-824089993907666944">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;This is a formal hearing.&quot; <em>Praanor agreed, switching her PADD out for another PADD.</em> &quot;So you did <em>not</em> take a weapon into a fellow officer&#39;s private quarters with the intent to use force, but in fact conducted an investigation of a potentially dangerous target who you believed was behaving erratically, outside of your jurisdiction might I add, without informing any of the proper personnel for such an investigation, and happened to bring along a phaser just in case.&quot; <em>She made a couple more notes.</em> &quot;Have you apologized to the Commander?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">24-Mar-21 01:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="824090547646890014" id="message-824090547646890014">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">“I sent him a message soon after I was confined to quarters. He hasn’t responded, nor does he need to.”</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2ce220a03e6e6379d1b5ad9b02f7765e-2FC82.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Masren Praanor#0000" data-user-id="824003118894809088" style="">Commodore Masren Praanor</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 01:24 AM</span>
+
+            <div class="chatlog__message " data-message-id="824091161316425768" id="message-824091161316425768">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Silver lining.&quot; <em>She muttered.</em> &quot;I&#39;m not sure what you mean by that, but it&#39;s good that you sent that message.&quot; <em>She turned to the rest of the panel.</em> &quot;I have no further questions.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2f7452f0ae040b2bc3a615a490185704-E235A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Rejema Khassid#0000" data-user-id="824003118894809088" style="">Commodore Rejema Khassid</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 01:26 AM</span>
+
+            <div class="chatlog__message " data-message-id="824091872904609802" id="message-824091872904609802">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I believe that the act of checking out a phaser, attending Ensign Devereux&#39;s quarters as if acting on behalf of Security - and unauthorised - and <em>then</em> acting in such a way towards the Chief Tactical Officer all speaks for itself. Are we all in agreement with the actions we discussed earlier?&quot; <em>She then asked of the panel.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlook" title="hyperlook" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/637075614662393868-CC03F.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2ce220a03e6e6379d1b5ad9b02f7765e-2FC82.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Masren Praanor#0000" data-user-id="824003118894809088" style="">Commodore Masren Praanor</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 01:28 AM</span>
+
+            <div class="chatlog__message " data-message-id="824092186491879434" id="message-824092186491879434">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Aye, Commodore.&quot; <em>Praanor responded, shaking her head again in disapproval.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/14bf4840f0eed784c7a730875db1f48b-68DD2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Theodosia Coleridge#0000" data-user-id="824003118894809088" style="">Theodosia Coleridge</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 01:29 AM</span>
+
+            <div class="chatlog__message " data-message-id="824092515858645013" id="message-824092515858645013">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Perfectly, Ms. Khassid.&quot; <em>Theodosia nodded, pursing her lips - though her eyes stayed on the Lieutenant.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2f7452f0ae040b2bc3a615a490185704-E235A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Rejema Khassid#0000" data-user-id="824003118894809088" style="">Commodore Rejema Khassid</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 01:32 AM</span>
+
+            <div class="chatlog__message " data-message-id="824093240357421086" id="message-824093240357421086">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The Cardassian paused and looked upon the Lieutenant in question. With her fingers laced together upon the tabletop and her back perfectly straight, it may well have been the cold look reminiscent of how she had acted when she had</em> <em><strong>first</strong></em> <em>came aboard the Phoenix during her time as its Commanding Officer.</em> &quot;Lieutenant Maggie Verne, you are hereby demoted to the rank of Lieutenant Junior Grade and are relinquished of your position of Assistant Chief Tactical Officer, effective immediately as of stardate 155224.82.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="rosennose" title="rosennose" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/720802229132460062-3819D.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">24-Mar-21 01:33 AM</span>
+
+            <div class="chatlog__message " data-message-id="824093594583171102" id="message-824093594583171102">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie sighed as she looked at the ground.</em> “Very well, Commodore...” ￼</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2f7452f0ae040b2bc3a615a490185704-E235A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Rejema Khassid#0000" data-user-id="824003118894809088" style="">Commodore Rejema Khassid</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 01:34 AM</span>
+
+            <div class="chatlog__message " data-message-id="824093768713371669" id="message-824093768713371669">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I would encourage the two of you to think about making amends for what you&#39;ve done - and please... Do not disappoint us again. ...Dismissed.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/ab514d4744a2f2684f52a7672041724f-CC694.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nax#5811" data-user-id="355861277786243072" style="color: rgb(215,52,42)">Lt. JG. Maggie Verne</span>
+
+
+        <span class="chatlog__timestamp">24-Mar-21 01:35 AM</span>
+
+            <div class="chatlog__message " data-message-id="824093983349014538" id="message-824093983349014538">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Maggie nodded as she walked out of the room at a fast pace. Giving a glare at Jaime as he went.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2f7452f0ae040b2bc3a615a490185704-E235A.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Rejema Khassid#0000" data-user-id="824003118894809088" style="">Commodore Rejema Khassid</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 01:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="824094320310091787" id="message-824094320310091787">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;You&#39;re off to a rather poor start, Lieutenant!&quot; <em>The Cardassian then called after the woman, having very much noticed the pointed glare given to Ensign Devereux.</em> <em><strong>Where</strong></em> <em>had she gone so wrong in thinking that Roode - no, Verne - was a competent and capable officer able to serve as an ACTO? Every little action was proving the fact horribly wrong.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="hyperlaugh" title="hyperlaugh" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/638063538723618825-0B77F.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2ce220a03e6e6379d1b5ad9b02f7765e-2FC82.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Masren Praanor#0000" data-user-id="824003118894809088" style="">Commodore Masren Praanor</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 01:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="824094438707036201" id="message-824094438707036201">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Praanor sat back with a huff.</em> &quot;D&#39;you think we should probably send someone to make sure they don&#39;t kill each other before they get back to the ship? Just a thought. Verne seems to be glaring daggers.&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Mar-21 01:37 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/14bf4840f0eed784c7a730875db1f48b-68DD2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Theodosia Coleridge#0000" data-user-id="824003118894809088" style="">Theodosia Coleridge</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 01:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="824095323131609098" id="message-824095323131609098">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Theo had watched most of the conversation silently - she was here to help handle the S31 - <strong>former</strong> S31 - agent. Silently, that is, aside from her own internal commentary, analysis, and occasional snarky thought.</em> &quot;Well, that certainly was <em>eventful</em>. I really don&#39;t think she&#39;ll try anything, though. And if she were to... Well, we&#39;d just have to see.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/2ce220a03e6e6379d1b5ad9b02f7765e-2FC82.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Commodore Masren Praanor#0000" data-user-id="824003118894809088" style="">Commodore Masren Praanor</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 02:06 AM</span>
+
+            <div class="chatlog__message " data-message-id="824101820825206785" id="message-824101820825206785">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;The thing about loose cannons, in my experience, is that they tend to explode.&quot; <em>She brushed her hair back with one hand.</em> &quot;Has anyone spoken with the Changeling lately? The one who tried to kill that Ensign to start with?&quot;</span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Mar-21 02:07 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/14bf4840f0eed784c7a730875db1f48b-68DD2.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Theodosia Coleridge#0000" data-user-id="824003118894809088" style="">Theodosia Coleridge</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">24-Mar-21 02:22 AM</span>
+
+            <div class="chatlog__message " data-message-id="824105922073985045" id="message-824105922073985045">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;m not a diplomat, Ms. Praanor.&quot; <em>Coleridge slid her PADD into her coat pocket, though she didn&#39;t stand up. Hell- the only reason she was ever concerned about the Dominion (work-wise, at least) was when she thought someone in the Federation was getting suspiciously friendly with them.</em> &quot;But, to me at least, it seems like this Changeling shouldn&#39;t be one either.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Spacedock%20-%20tribunal-hall%20%5B823955232173588570%5D.html_Files/8e9429b8114e3b72f3f67e0802ec6697-4E414.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="HowNowWhatNews?#1873" data-user-id="308627942748192779" style="color: rgb(255,203,37)">Lieutenant Xeya</span>
+
+
+        <span class="chatlog__timestamp">24-Mar-21 06:23 AM</span>
+
+            <div class="chatlog__message " data-message-id="824166400704380959" id="message-824166400704380959">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>Jaime had left the hall when the two of them had been dismissed.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 66 message(s)</div>
+</div>
+
+</body>
+
+</html>

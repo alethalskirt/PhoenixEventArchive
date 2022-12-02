@@ -1,0 +1,2441 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Star Trek: Phoenix - savannah</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+.spoiler--hidden .spoiler-image:after {
+    content: "SPOILER";
+    color: #dcddde;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    padding: 100%;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__reference-symbol {
+    grid-column: 1;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    border-radius: 8px 0 0 0;
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.chatlog__reference {
+    display: flex;
+    grid-column: 2;
+    margin-left: 1.2em;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.chatlog__reference-avatar {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    margin-right: 0.25em;
+}
+
+.chatlog__reference-name {
+    margin-right: 0.25em;
+    font-weight: 600;
+}
+
+.chatlog__reference-link {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatlog__reference-link:hover {
+    text-decoration: none;
+}
+
+.chatlog__reference-content > * {
+    display: inline;
+}
+
+.chatlog__reference-edited-timestamp {
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__attachment-container {
+    height: 40px;
+    width: 100%;
+    max-width: 520px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chatlog__attachment-icon {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatlog__attachment-icon > .a {
+    fill: #f4f5fb;
+    d: path("M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z");
+}
+
+.chatlog__attachment-icon > .b {
+    fill: #7789c4;
+    d: path("M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z");
+}
+
+.chatlog__attachment-icon > .c {
+    fill: #f4f5fb;
+    d: path("M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z");
+}
+
+.chatlog__attachment-icon > .d {
+    fill: #7789c4;
+    d: path("M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z");
+}
+
+.chatlog__attachment-filesize {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.chatlog__attachment-filename {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__reference-symbol {
+    border-color: #4f545c;
+}
+
+.chatlog__reference {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link {
+    color: #b5b6b8;
+}
+
+.chatlog__reference-link:hover {
+    color: #ffffff;
+}
+
+.chatlog__reference-edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__attachment-container {
+    background-color: #2f3136;
+    border-color: #292b2f;
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a_b1fdec8e231f9cc35a25652a0160b868-C2A7D.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Star Trek: Phoenix</div>
+        <div class="preamble__entry">Earth Planetside - Civilian / savannah</div>
+
+            <div class="preamble__entry preamble__entry--small">Requested by Lihne.</div>
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 03:32 AM</span>
+
+            <div class="chatlog__message " data-message-id="836791919925264404" id="message-836791919925264404">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well, here we are. Good ol Savannah, Georgia. Even now still holding a sense of the past for everyone.&quot; <em>She smiled as she did a small welcoming circle. A mix of future managing to find a balance with the classic Antebellum construction as well. A warm breeze wafted through as with a tug of her hair behind her ear, she turned and smiled to <span class="mention" title="Not1011#4615">@Ensign Virol Ota</span> .</em> 
+  &quot;Well, welcome to Lihne&#39;s old stomping grounds. What do you think?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 03:36 AM</span>
+
+            <div class="chatlog__message " data-message-id="836792846006747177" id="message-836792846006747177">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Having come along with Lihne from Earth Spacedock after visiting her own parents, she replied, smiling and looking around at the area,</em> &quot;Looks really nice.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 03:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="836793815225991209" id="message-836793815225991209">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Not sure if your a fan of spooky stuff, but for many years, Savannah had laid claim to being the most Haunted city in the American continent. Still had ghost tours up till I went to the Academy.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 03:44 AM</span>
+
+            <div class="chatlog__message " data-message-id="836794925411598366" id="message-836794925411598366">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She hummed for a bit, then replied,</em> &quot;I wonder if there&#39;s a ghost watching us right now,&quot; <em>giggling slightly as she finished up the sentence.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 03:50 AM</span>
+
+            <div class="chatlog__message " data-message-id="836796582098632704" id="message-836796582098632704">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh with Savannah having taken part in every war to ever happen on American soil.....whhhhhooooo can saayyyyy ooooohhhhh. Teheheheh,&quot; <em>She giggled and hugged her friend.</em>
+ &quot;I told my mom and dad I was on the way with a guest and they offered to put us up while in town, even though I said they didnt have to.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 03:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="836797860431265793" id="message-836797860431265793">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh, it&#39;s the same for my town, too,&quot; <em>she replied.</em> &quot;Richmond&#39;s been involved in every war fought in this country since pretty much it was founded.&quot; <em>It <strong>was</strong> the capital of the Confederate States over half a millennium ago, she thought, but didn&#39;t add.</em>
+&quot;I went to see my parents just a few hours ago, mostly to tell them I was okay.&quot; <em>She then added,</em> &quot;And to introduce to them a friend of mine.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 03:59 AM</span>
+
+            <div class="chatlog__message " data-message-id="836798863708651531" id="message-836798863708651531">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh? Is it a &#39;special&#39; friend?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:01 AM</span>
+
+            <div class="chatlog__message " data-message-id="836799163693793290" id="message-836799163693793290">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;You could say that,&quot; <em>she replied, blushing.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:04 AM</span>
+
+            <div class="chatlog__message " data-message-id="836800065934721034" id="message-836800065934721034">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh my gosh, Ota! Thats wonderful news! Im so happy to hear that,&quot; <em>Her face lit up at the happy news.</em> &quot;Well, even if I havent met them, they better consider themselves lucky.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:07 AM</span>
+
+            <div class="chatlog__message " data-message-id="836800864848445480" id="message-836800864848445480">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I could have him meet you,&quot; <em>she replied, blushing strongly and smiling widely.</em> &quot;He&#39;s a really nice guy. I think I&#39;m really lucky to be with him.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="836802021334974485" id="message-836802021334974485">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Of course. You&#39;re smart, kind, and brave, joining Starfleet and all. Oh....Mommy!&quot; <em>She waived at a green Orion woman walking down the sidewalk toward them. She enveloped Lihne tightly and then Lihne motioned to Ota.</em> &quot;Momma, this is Virol Ota, my best friend from the Phoenix. Ota, this is my mother Valyra.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="836802757330599976" id="message-836802757330599976">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;It&#39;s a pleasure to meet you, Mrs. Carter,&quot; <em>she replied, smiling, extending her hand for a handshake.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="28-Apr-21 04:15 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:18 AM</span>
+
+            <div class="chatlog__message " data-message-id="836803582233149511" id="message-836803582233149511">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Val, please. And it is an honor to meet a friend of my daughter and one she clearly looks up too.&quot; <em>A slight accent played a lilt on the Orion&#39;s voice as she both shook the offered hand and bowed at the waist.</em> &quot;My husband is coming with the transport, but he sent me on ahead in case there was any traffic.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:25 AM</span>
+
+            <div class="chatlog__message " data-message-id="836805182414651392" id="message-836805182414651392">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Smiling, she replied,</em> &quot;I consider your daughter my best friend, too, ma&#39;am. We&#39;ve definitely gotten close to each other over the last few months.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="836806623884214302" id="message-836806623884214302">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;And we&#39;re glad you had yourselves to work together with,&quot; <em>A strong but warm voice said as a door closed. A silver haired man walked around the hover car and stopped.....saluting Ota before turning and lifting Lihne in a massive hug.</em> 
+
+&quot;Gah....O...ta....this is my Dad. Re....ugggghh Retired Officer and Instructor Philip Carter. Wow, Dad....you give my best friend a salute but you treat me like Im still five.&quot; <em>Philip smirked and chuckled.</em> &quot;Well, when you were five, youd be running to me for hugs dressed in you...&quot;
+&quot;DAD!&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="836808234378461184" id="message-836808234378461184">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She couldn&#39;t help but chuckle at the interaction.</em> &quot;You must be... Mr. Carter, yeah?&quot; <em>she asked, smiling, and extending her hand to him in greeting.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="836809588711751721" id="message-836809588711751721">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;You would be right, Ensi...sorry. Old Space Dog. Im glad to meet you, and I know we both want to thank you for being there to look out for each other. Never dealt with the Iconians in my day, but Im sure your parents would be just as grateful as we are that the crew of the Phoenix were willing and able to go the distance for each other.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:54 AM</span>
+
+            <div class="chatlog__message " data-message-id="836812617484861440" id="message-836812617484861440">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Oh, they are,&quot; <em>she replied.</em> &quot;I just recently went to them to tell them I&#39;m alright.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:56 AM</span>
+
+            <div class="chatlog__message " data-message-id="836813140187938838" id="message-836813140187938838">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Good. Well, you must let us put you up while youre here. Least we can do, and Val has long ago mastered old fashioned homecooking. You like waffles by chance?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="836813350667157534" id="message-836813350667157534">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She nodded excitedly in response.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 05:04 AM</span>
+
+            <div class="chatlog__message " data-message-id="836815223347347457" id="message-836815223347347457">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well, your tastebuds will be beamed back to Spacedock at Warp 9 with the first bite. Hop on in, Girls! You are both to relax. Starfleet Orders.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 05:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="836818185151840266" id="message-836818185151840266">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Smiling, she nodded to Lihne, and began heading to the house, waiting for Lihne and her parents to follow.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="836988429107068949" id="message-836988429107068949">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Soon a modest little house is reached and an old dog came walking up, its tail wagging eagerly. Lihne hopped out and hugged the dog tight.</em> &quot;Hey Stan. Who&#39;s keeping Mommy and Daddy safe, you are yes you are.&quot;
+<em>Philip nodded and offered to carry the girls&#39; bags as Val practically glided to the house to unlock the door and start fixing some food for the travelers.</em>
+
+&quot;I will also miss the stars. But if it werent for them....I&#39;d never have found the Polestars I was drifting toward. Ota....thanks.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="836989953706557460" id="message-836989953706557460">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She smiled at Lihne in response.</em> &quot;Thank <em>you</em>, Lihne,&quot; <em>she beamed, proceeding to attempt to pet the dog.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="836991632338452530" id="message-836991632338452530">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Philip smiled and waited till they all four were walking to the house.</em> &quot;I want to thank you too Ota. Before, well....the Iconians attacked Phoenix, Val and I had begun thinking Lihne was withdrawing into herself. But then she sent us a communique literally beaming about her new friend, and asking me to work on her program for her. Said it was a surprise, dont ask me. But we could see, well she was back out of her shell again.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:50 PM</span>
+
+            <div class="chatlog__message " data-message-id="836992706352906260" id="message-836992706352906260">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She replied, smiling even more,</em> &quot;Well then... I&#39;m glad to be her friend, and that I helped her open up.&quot; <em>At the same time, she realized that the program Lihne had told her about really was for her.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="836993127964475453" id="message-836993127964475453">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well, heres Casa De Carter, make yourself at home. Im going to go help the new CO with dinner.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 04:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="836993420475105301" id="message-836993420475105301">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Smiling, she went in, waiting for Lihne to follow.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 05:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="836995792405135380" id="message-836995792405135380">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Lihne sat down on a sofa and rubbed Stanley&#39;s ears before resting back and sighing softly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 05:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="836997603904061447" id="message-836997603904061447">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She followed suit, sitting on the sofa next to Lihne. After a bit, and some hesitation, she asked,</em> &quot;Is it... okay if I pet your dog?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 05:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="837000404822654996" id="message-837000404822654996">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;He loves people. Go right ahead.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 05:21 PM</span>
+
+            <div class="chatlog__message " data-message-id="837000693184593980" id="message-837000693184593980">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Smiling, she reached a hand out and stroked Stanley&#39;s head and back.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 05:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="837001284229005313" id="message-837001284229005313">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>The old dog sniffed, then licked the held out hand before rubbing his head against Ota&#39;s palm. His tail wagged briskly and Lihne opened her eyes with a smile.</em> &quot;He&#39;s always been a very strong sense of character detection. He even sat by my crib when he was a puppy and I was an infant, so Ive been told.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 06:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="837010559899009035" id="message-837010559899009035">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Giggling as Stanley sniffed and then licked her hand, she replied,</em> &quot;He&#39;s such a sweet dog,&quot; <em>while wondering just how old he was.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 10:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="837078952765554729" id="message-837078952765554729">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;He may be not around much longer, its going to be hard when he&#39;s....Sorry, no sad talk. Not today. See, I knew hed like you.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">28-Apr-21 10:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="837081500032827433" id="message-837081500032827433">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She continued to pet Stanley while listening to Lihne, deciding not to continue discussing the dog&#39;s age.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">29-Apr-21 02:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="837144448999358464" id="message-837144448999358464">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Come eat you two&quot; <em>Val called as food smells wafted in through the house.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">29-Apr-21 02:56 AM</span>
+
+            <div class="chatlog__message " data-message-id="837145346760376380" id="message-837145346760376380">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Smiling, she turned to Lihne and said,</em> &quot;Let&#39;s go, then.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">29-Apr-21 03:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="837150448183803914" id="message-837150448183803914">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>On the table was a spread of food, some even Bajoran, Mother and Father already seated and watching with a smile as Lihne lead Ota to the table.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">29-Apr-21 03:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="837150974736859157" id="message-837150974736859157">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Once they reached the table, she took a seat and waited for Lihne to do the same before beginning to eat; she was smiling at the food the Carters had prepared.</em></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Apr-21 03:28 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 01:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="837487847992197140" id="message-837487847992197140">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Dig in girls. Freash Southern Home Cooking. Tons better than Replicator stuff, am I right?&quot; <em>Philip asked with a smile. Lihne nodded smiling and taking some chicken and potatoes to start.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 01:50 AM</span>
+
+            <div class="chatlog__message " data-message-id="837491166844157982" id="message-837491166844157982">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She chuckled slightly, and replied,</em> &quot;Yep,&quot; <em>before beginning to eat. Since they had been rescued from Arkelos II she had been eating as much as possible, especially after two weeks of eating prison &quot;&quot;&quot;food&quot;&quot;&quot;.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 01:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="837491866344882176" id="message-837491866344882176">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Please do not be shy to tell us what you think, Ota?&quot; <em>Val said with a smile as she took her husband&#39;s hand.</em> &quot;I tried to find a balance between Terran food and some old Orion reciepes. I sometimes still feel a bit shy about sharing it among others.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 01:54 AM</span>
+
+            <div class="chatlog__message " data-message-id="837492023300718592" id="message-837492023300718592">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;It&#39;s great,&quot; <em>she replied, mouth full.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 03:33 AM</span>
+
+            <div class="chatlog__message " data-message-id="837516928598933524" id="message-837516928598933524">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Val smiled and nodded. Lihne meanwhile had her mouth full as well, so it gave Philip a chance to speak.</em> &quot;So Ota, is anyone else in your family old Starfleeters, or are you the first in your family to join?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 03:35 AM</span>
+
+            <div class="chatlog__message " data-message-id="837517583888154695" id="message-837517583888154695">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;First in my family, ma&#39;am,&quot; <em>she replied, continuing to eat.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 04:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="837533692850077706" id="message-837533692850077706">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Im sure they are very proud of you. We were worried when we hears about the Iconians attacking, but Philip....&quot;
+<em>Mr Carter took over, his face calm and yet stoic at the same time.</em>
+  &quot;Ive taught with many of my old crewmates and those who made namss for themselves in the service as well, so I was sure the training and education would come in handy.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 04:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="837534424194482229" id="message-837534424194482229">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;It did come in handy,&quot; <em>she replied.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 04:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="837537664545980426" id="message-837537664545980426">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well, we thought you guys might see this as an extended slumber party, so we made sure we had plenty of bedding. We do have a guest room as well.&quot;
+<em>Lihne slowly twirled some of her red hair around her finger as her eyes flicked up toward the second floor. Meanwhile, Philip and Val continued.</em> &quot;So, has Lihne gone over her list of favorite reading materials yet?&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 04:56 AM</span>
+
+            <div class="chatlog__message " data-message-id="837537969681334282" id="message-837537969681334282">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Smiling upon hearing that they had planned a slumber party, she replied,</em> &quot;I don&#39;t think she went over that, no.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 05:06 AM</span>
+
+            <div class="chatlog__message " data-message-id="837540463706636309" id="message-837540463706636309">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Hehe, oh she loves archeology texts, of course. Butttt....she does have a more frivolous side. Think she got her sense of adventure from me and some Edgar Rice Burroughs, and can she read Fantasy like a gasping fish.&quot;
+
+&quot;Dadddd,&quot; <em>Lihne responded, sounding like a teen again, being dropped off at school and being made to say &#39;love you.&#39;</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 05:11 AM</span>
+
+            <div class="chatlog__message " data-message-id="837541725043949588" id="message-837541725043949588">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She smiled widely chuckled a bit at the interaction, as she continued eating.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 01:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="837672466720751647" id="message-837672466720751647">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;So, want to check the rest of the house out?&quot; <em>Lihne asked.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 03:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="837690481924243466" id="message-837690481924243466">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Sure,&quot; <em>she replied.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 09:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="837794505361063947" id="message-837794505361063947">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Standing from the table, thanking her parents for the meal, Lihne lead the way through the house. The Antebellum feel still embraced through the current tech and desing styles. Enclosed porch, all the way to the second floor. Lihne stopped at a door and shrugged.</em>
+ &quot;Ready to see the realm of the nerdy fairy queen,&quot; <em>She asked playfully as she turned the handle.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 10:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="837795509707079680" id="message-837795509707079680">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I sure am,&quot; <em>she replied, just as playfully; she had followed Lihne through the house after getting up from the table and thanking the Carters for the meal as well.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-21 10:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="837807417726468157" id="message-837807417726468157">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Inside was like two sides ofa coin. Half of the room studious as possible, Archeological text here, History there. The rest of the room seemed to be dedicated to the creative and fanciful. Pictures of castles, flying beasts, and a few knight courting princesses adorned several of the dressers.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">01-May-21 12:42 AM</span>
+
+            <div class="chatlog__message " data-message-id="837836367777628220" id="message-837836367777628220">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Woah,&quot; <em>she replied, looking around at the room. It was certainly a lot fancier than her bedroom at her own parents&#39; home; that one was largely sparse, save for a model of Cochrane&#39;s Phoenix on her desk.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">01-May-21 03:17 AM</span>
+
+            <div class="chatlog__message " data-message-id="837875389345824768" id="message-837875389345824768">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well I did say I liked reading. I know back in the 20th century, Earthlings would sometimes play fantasy games as a group. Thats kind of what the holoprogram Dad made is.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">01-May-21 02:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="838044423375945728" id="message-838044423375945728">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>She hummed a bit, listening to Lihne speak; she didn&#39;t really have anything to reply with.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">01-May-21 06:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="838108575113019473" id="message-838108575113019473">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Gosh, I feel like Im in high school again and having a slumber party. I dont know what to suggest we do next.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">01-May-21 07:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="838113822484201552" id="message-838113822484201552">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;I&#39;ve never done a slumber party before,&quot; <em>she replied, chucklindg and smiling sheepishly.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">01-May-21 07:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="838119983853731940" id="message-838119983853731940">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Me either really. Kind of kept to myself a lot growing up. Guess....we could do one now.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">01-May-21 07:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="838121836147245087" id="message-838121836147245087">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><em>Smiling and nodding, she said,</em> &quot;Yeah.&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/a1eead76ec851a6ec49f82481864e913-B11AB.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ronin83#1062" data-user-id="420816526543683585" style="color: rgb(39,126,205)">Lt. JG. Lihne Carter</span>
+
+
+        <span class="chatlog__timestamp">01-May-21 08:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="838133750487449640" id="message-838133750487449640">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Well, make yourself comfy. I&#39;ll....make us some cocoa or smores. Yeah, we have girl chat or tell scary stories.&quot; <em>She gushed in childish joy. Sometimes she was subconciously aware when she got herself excited, she took the view of a starstruck child seeing the world....or a new world, for the first time.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">01-May-21 09:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="838145534820483102" id="message-838145534820483102">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Sure thing,&quot; <em>she replied, as she did just that: make herself comfortable.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="Star%20Trek_%20Phoenix%20-%20Earth%20Planetside%20-%20Civilian%20-%20savannah%20%5B835919751221739590%5D.html_Files/3e0b02efab8257e80615d78aab5df7a6-5971D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Not1011#4615" data-user-id="577304036869668864" style="color: rgb(212,156,2)">Ensign Virol Ota</span>
+
+
+        <span class="chatlog__timestamp">03-May-21 01:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="838753419950424095" id="message-838753419950424095">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[D] <em>After much conversation at the sleepover, they both headed off.</em></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 67 message(s)</div>
+</div>
+
+</body>
+
+</html>
